@@ -25,3 +25,10 @@ libdm.so and libdmu.so are the core libraries for DynaMechs.
 libdmgl.so provides graphic (and interaction) support (based on OpenGL and GLUT) and is used in the test programs. 
 
 DynaMechs is orginally developed by Scott McMillan. 
+
+
+Notes For Mac Users:
+A) As is, make must be in your PATH. If 10.7 this is not the case by default. The make binary is located in /Developer/usr/bin. To add this to your path, follow the steps below:
+cd /etc/paths.d
+touch devpath
+"Now open devpath and add /Developer/usr/bin (followed by a newline) to the file. Close and save"

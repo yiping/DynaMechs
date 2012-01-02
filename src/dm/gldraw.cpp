@@ -38,7 +38,11 @@
 #include "dmEnvironment.hpp"
 #include "dmTreadmill.hpp"
 
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 // yeah I know this is in other places but I really want to limit its scope
 const float RADTODEG = (float)(180.0/M_PI);    // M_PI is defined in math.h

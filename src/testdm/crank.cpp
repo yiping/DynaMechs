@@ -23,7 +23,11 @@
  *  Summary: A simple closed-chain example
  *****************************************************************************/
 
+#if defined(__APPLE__)
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 
 #include <dmTime.h>
 #include <dmGLMouse.hpp>

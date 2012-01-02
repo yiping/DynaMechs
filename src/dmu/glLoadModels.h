@@ -27,7 +27,11 @@
 #define _GL_LOAD_MODELS_H
 
 #include "dmu.h"
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 DMU_DLL_API GLuint dmGLLoadFile_scm(char *filename);
 DMU_DLL_API GLuint dmGLLoadFile_xan(char *filename);

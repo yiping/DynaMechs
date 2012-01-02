@@ -30,7 +30,11 @@
 #include <windows.h>
 #endif
 
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include "../dm/dmObject.hpp"
 #include "../dm/dmSystem.hpp"

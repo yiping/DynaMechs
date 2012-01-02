@@ -53,7 +53,13 @@
 #include "glLoadModels.h"
 
 #include <typeinfo>
+
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
+
 
 int line_num40;
 

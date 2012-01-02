@@ -1,0 +1,27 @@
+
+Have cmake-2.8 installed
+
+out-of-source make (recommended)
+
+$ cd ~/ros/DynaMechs/build
+$ cmake ..
+$ make
+
+
+currently I haven't written anything in the CMakeLists.txt that deals with installation. (so 'make install' won't do anything right now, but I will add it later)
+
+So for now, the crank demo executable will be generated in '~/ros/DynaMechs/build/bin_testdm' directory. In order to run it:
+
+$ cd ~/ros/DynaMechs/build/bin_testdm
+$ ls
+$ cp crank ../../src/testdm/
+$ cd ../../src/testdm/
+$ ./crank
+
+You need to relocate the crank executable because it looks for some external files during runtime [specifically, .cfg file, .dm file, .env file as well as the terrain and 3D model files (in ../models folder, .xan and .dat) ]   This is not very convenient, but let's live with it for just now.
+
+libdm.so and libdmu.so are the core libraries for DynaMechs. 
+
+libdmgl.so provides graphic (and interaction) support (based on OpenGL and GLUT) and is used in the test programs. 
+
+DynaMechs is orginally developed by Scott McMillan. 

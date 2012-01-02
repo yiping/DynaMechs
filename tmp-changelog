@@ -1,0 +1,73 @@
+in dm.h
+
+change 
+	#include <iostream.h>
+	#include <iomanip.h>
+	#include <fstream.h>
+to
+	#include <iostream>
+	#include <iomanip>
+	#include <fstream>
+
+add
+	using namespace std;
+
+---------------------------------
+in dmObject.hpp
+
+change
+	#include <dm.h>
+to
+	#include "dm.h"
+
+---------------------------------
+
+in svd_linpack.cpp
+
+change 
+	#include <iomanip.h>
+to
+	#include <iomanip>
+
+add
+	#include <iostream>
+
+add
+	using namespace std;
+
+
+---------------------------------
+
+in dmUtils.cpp
+change
+	#include <dm.h>
+	#include <dmu.h>
+	#include <dmObject.hpp>
+	#include <dmSystem.hpp>
+	#include <dmArticulation.hpp>
+	#include <dmClosedArticulation.hpp>
+	#include <dmLink.hpp>
+	#include <dmSecondaryJoint.hpp>
+to
+	#include "../dm/dm.h"
+	#include "dmu.h"
+	#include "../dm/dmObject.hpp"
+	#include "../dm/dmSystem.hpp"
+	#include "../dm/dmArticulation.hpp"
+	#include "../dm/dmClosedArticulation.hpp"
+	#include "../dm/dmLink.hpp"
+	#include "../dm/dmSecondaryJoint.hpp"	
+
+------------------------------------
+
+in dmGL.h
+
+add to the bottom
+	using namespace std;
+
+change
+	#include <iostream.h>
+	#include <iomanip.h>
+to	
+	#include <iostream>
+	#include <iomanip>

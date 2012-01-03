@@ -59,7 +59,7 @@ inline void dmGetSysTime(dmTimespec *ts)
     ts->tv_sec = timebuffer.time;
     ts->tv_nsec = timebuffer.millitm*1000000;
 
-#elif defined(_POSIX_TIMERS)
+#elif defined(_POSIX_TIMERS) && !defined(__APPLE__)
     if (clock_gettime(CLOCK_REALTIME, ts) != 0)
     {
         throw ts;

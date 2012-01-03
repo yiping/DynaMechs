@@ -1,16 +1,32 @@
 
-Have cmake-2.8 installed
 
-out-of-source make (recommended)
+First have cmake-2.8 installed
 
+Then perform out-of-source make (recommended):
+
+1. 
 $ cd ~/ros/DynaMechs/build
+
+2.
 $ cmake ..
+or 
+$ cmake .. -DCMAKE_INSTALL_PREFIX=/tmp/dynamechs
+[ in Ubuntu, by default, CMAKE_INSTALL_PREFIX is set to /usr/local ]
+
+3.
 $ make
+or 
+$ make VERBOSE=1
+
+4.
+$ sudo make install
 
 
-currently I haven't written anything in the CMakeLists.txt that deals with installation. (so 'make install' won't do anything right now, but I will add it later)
 
-So for now, the crank demo executable will be generated in '~/ros/DynaMechs/build/bin_testdm' directory. In order to run it:
+
+Run the test program:
+
+For now, the crank demo executable will be generated in '~/ros/DynaMechs/build/bin_testdm' directory. In order to run it:
 
 $ cd ~/ros/DynaMechs/build/bin_testdm
 $ ls
@@ -20,15 +36,18 @@ $ ./crank
 
 You need to relocate the crank executable because it looks for some external files during runtime [specifically, .cfg file, .dm file, .env file as well as the terrain and 3D model files (in ../models folder, .xan and .dat) ]   This is not very convenient, but let's live with it for just now.
 
-libdm.so and libdmu.so are the core libraries for DynaMechs. 
 
-libdmgl.so provides graphic (and interaction) support (based on OpenGL and GLUT) and is used in the test programs. 
+
+Notes:
+
+libdm.so and libdmu.so are the core libraries for DynaMechs. 
+libdmgl.so provides graphic and interaction support (built upon OpenGL and GLUT) and is used in the test programs. However, keep in mind that libdm and libdmu also include some functions based on OpenGL.
 
 DynaMechs is orginally developed by Scott McMillan. 
 
 
 Notes For Mac Users:
-A) As is, make must be in your PATH. If 10.7 this is not the case by default. The make binary is located in /Developer/usr/bin. To add this to your path, follow the steps below:
+As is, make must be in your PATH. If 10.7 this is not the case by default. The make binary is located in /Developer/usr/bin. To add this to your path, follow the steps below:
 cd /etc/paths.d
 touch devpath
 "Now open devpath and add /Developer/usr/bin (followed by a newline) to the file. Save and close"

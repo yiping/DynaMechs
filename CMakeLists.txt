@@ -16,9 +16,16 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # /usr/share/cmake-2.8/Modules
 find_package(GLUT)
 find_package(OpenGL)
+MESSAGE(STATUS "OpenGL library path: " ${OPENGL_LIBRARIES})
+MESSAGE(STATUS "GLUT library path: " ${GLUT_LIBRARIES})
+MESSAGE(STATUS "OpenGL headers path: " ${OPENGL_INCLUDE_DIR})
+MESSAGE(STATUS "GLUT headers path: " ${GLUT_INCLUDE_DIR})
 
 ADD_SUBDIRECTORY(src/dm bin_dm)
 ADD_SUBDIRECTORY(src/dmu bin_dmu)
 ADD_SUBDIRECTORY(src/dmgl bin_dmgl)
 ADD_SUBDIRECTORY(src/testdm bin_testdm)
+
+MESSAGE(STATUS "CMAKE_INSTALL_PREFIX is: " ${CMAKE_INSTALL_PREFIX})
+
 

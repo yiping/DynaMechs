@@ -1,0 +1,23 @@
+emission light  (3)
+ambient color   (3)
+diffuse color   (3)
+specular color  (3)
+shiness         (1)
+alpha           (1)
+
+
+#_of_verteces  #_of_faces
+
+vertexO.x     vertexO.y     vertexO.z
+vertex1.x     vertex1.y     vertex1.z
+...
+vertex(n-l).x vertex(n-l).y vertex(n-l).z
+  
+
+#_of_vertices_in_face_0  #_of_vertices_in_face_1  ...  #_of_vertices_in_face_(m-1)
+
+vertex_list_for_face_0
+vertex_list_for_face_1
+...
+vertex_list_for_face_(m-1)
+

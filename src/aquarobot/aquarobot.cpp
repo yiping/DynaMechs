@@ -27,7 +27,11 @@
 #include <dmu.h>
 #include <dmGL.h>
 
+#if defined(__APPLE__)
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 
 #include <dmTime.h>
 #include <dmGLMouse.hpp>

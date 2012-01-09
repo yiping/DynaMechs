@@ -30,4 +30,3 @@ ADD_SUBDIRECTORY(src/xan_viewer bin_xan_viewer)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX is: " ${CMAKE_INSTALL_PREFIX})
 
-

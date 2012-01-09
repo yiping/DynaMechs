@@ -25,6 +25,8 @@ ADD_SUBDIRECTORY(src/dm bin_dm)
 ADD_SUBDIRECTORY(src/dmu bin_dmu)
 ADD_SUBDIRECTORY(src/dmgl bin_dmgl)
 ADD_SUBDIRECTORY(src/testdm bin_testdm)
+ADD_SUBDIRECTORY(src/aquarobot bin_aquarobot)
+ADD_SUBDIRECTORY(src/xan_viewer bin_xan_viewer)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX is: " ${CMAKE_INSTALL_PREFIX})
 

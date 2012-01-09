@@ -6,6 +6,9 @@ SET(CRANK_SRC  crank.cpp )
 ADD_EXECUTABLE(crank ${CRANK_SRC})
 TARGET_LINK_LIBRARIES(crank ${GLUT_LIBRARY} ${OPENGL_LIBRARY} dm dmu dmgl)
 
+SET(CARTS_SRC  carts.cpp )
+ADD_EXECUTABLE(carts ${CARTS_SRC})
+TARGET_LINK_LIBRARIES(carts ${GLUT_LIBRARY} ${OPENGL_LIBRARY} dm dmu dmgl)
 
 
 # set(DEMOS simple start pendulum tree carts wire ring )

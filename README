@@ -21,12 +21,24 @@ $ make VERBOSE=1
 4.
 $ sudo make install
 
+In Ubuntu:
+the dm, dmu and dmgl libraries will be installed to /usr/local/dynamechs/lib, their header files will be installed to
+/usr/local/dynamechs/dm
+/usr/local/dynamechs/dmu
+/usr/local/dynamechs/dmgl
+respectively.
+
+The xan_viewer executable will be installed to /usr/local/bin .
+
+
+
+
 
 
 
 Run the test program:
 
-For now, the crank demo executable will be generated in '~/ros/DynaMechs/build/bin_testdm' directory. In order to run it:
+For example, the crank demo executable will be generated in '~/ros/DynaMechs/build/bin_testdm' directory. In order to run it:
 
 $ cd ~/ros/DynaMechs/build/bin_testdm
 $ ls
@@ -35,6 +47,21 @@ $ cd ../../src/testdm/
 $ ./crank
 
 You need to relocate the crank executable because it looks for some external files during runtime [specifically, .cfg file, .dm file, .env file as well as the terrain and 3D model files (in ../models folder, .xan and .dat) ]   This is not very convenient, but let's live with it for just now.
+
+
+
+
+
+Use xan_viewer to preview the .xan model
+
+$ xan_viewer "your xan file"
+
+(both relative path or absolute path are OK.)
+
+
+
+
+
 
 
 

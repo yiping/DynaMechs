@@ -258,8 +258,6 @@ void executeGL_xan(ifstream &data_ptr)
                           vertex[face_index[i][2]],
                           normal);
     
-      // // Added by Yiping. 01/11/2012
-      // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
       glBegin(GL_TRIANGLE_STRIP);
       {

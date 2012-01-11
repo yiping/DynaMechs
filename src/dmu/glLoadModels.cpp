@@ -178,8 +178,11 @@ void executeGL_xan(ifstream &data_ptr)
 {
    int i,j;
 
-   glPolygonMode(GL_FRONT, GL_FILL);
-   glPolygonMode(GL_BACK, GL_LINE);
+   // // the following two lines are commented out by Yiping, 01/11/2012
+   // // to allow users to switch betwee solid face and wireframe 
+   // glPolygonMode(GL_FRONT, GL_FILL);
+   // glPolygonMode(GL_BACK, GL_LINE);
+
 
    GLfloat color[4] = {0.0, 0.0, 0.0, 1.0};
    data_ptr >> color[0] >> color[1] >> color[2];  // emission color
@@ -254,6 +257,9 @@ void executeGL_xan(ifstream &data_ptr)
                           vertex[face_index[i][1]],
                           vertex[face_index[i][2]],
                           normal);
+    
+      // // Added by Yiping. 01/11/2012
+      // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
       glBegin(GL_TRIANGLE_STRIP);
       {

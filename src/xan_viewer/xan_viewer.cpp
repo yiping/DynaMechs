@@ -39,7 +39,7 @@ GLfloat view_mat[4][4];
 Float idt;
 Float sim_time=0.0;
 Float rtime=0.0;
-bool paused_flag = true;
+bool IsWireframe = false;
 
 dmSystem *G_robot;
 dmIntegRK4 *G_integrator;
@@ -48,6 +48,7 @@ dmTimespec tv, last_tv;
 
 int render_rate;
 int timer_count = 0;
+
 
 //----------------------------------------------------------------------------
 //
@@ -91,6 +92,8 @@ dmArticulation *Establish_Dummy_Dm_Model(char * xanname )
       
    robot->setName("object");
    GLuint *dlist = new GLuint;
+
+   
    *dlist = glLoadModel(xanname);
    robot->setUserData((void *) dlist);
 
@@ -156,6 +159,14 @@ void display (void)
    (dmEnvironment::getEnvironment())->draw();
 
    glPushAttrib(GL_ALL_ATTRIB_BITS);
+   if (IsWireframe == false )
+   {
+      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+   }
+   else
+   {   
+      glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+   }
    G_robot->draw();
    glPopAttrib();
    // ===============================================================
@@ -229,6 +240,9 @@ void processKeyboard(unsigned char key, int, int)
       case 27:
          glutDestroyWindow(glutGetWindow());
          exit(1);
+         break;
+      case 'w':
+         IsWireframe = !IsWireframe;
          break;
    }
 }

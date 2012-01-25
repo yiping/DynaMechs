@@ -34,19 +34,19 @@
 //============================================================================
 /**
 
-The {\tt dmArticulation} class would be better named the {\tt dmTreeStructure}
-class.  It is a subclass of the {\tt dmSystem} class that implements the
+The dmArticulation class would be better named the \b dmTreeStructure
+class.  It is a subclass of the dmSystem class that implements the
 functionality needed to model a multibody system organized in a tree topology
-(Note: a subclass of {\tt dmArticulation} extends this class to support
+(Note: a subclass of  dmArticulation  extends this class to support
 closed-chain structures).  This class contains a database of links and the
 predecessor/successor relationships between links that define the tree
 topology.  As such, the first link and any other link added to the articulation
-using the {\tt addLink} function with the second argument set to NULL are
+using the \b addLink function with the second argument set to NULL are
 considered that root of the tree.  Then, as additional links are added to the
 articulation, a pointer to a parent link (already added to the articulation) is
 used to specify its location in the tree.  As a result, each link in a tree has
 only one parent.  The only exceptions are the root links that are defined
-relative to the {\tt dmSystem}'s inertial reference coordinate system.
+relative to the  dmSystem 's inertial reference coordinate system.
 
 The default constructor returns an empty articulation (that is, with no
 links).  As links are added to the articulation, internal variables are
@@ -54,51 +54,52 @@ allocated that will be used to perform the dynamic computations.  When the
 destructor is called these internal variables are freed but any links that
 have been added to the articulation are not.
 
-The {\tt addLink} function is called to add a link to the tree structure that
-is maintained by the {\tt dmArticulation} objects.  The first parameter is a
+The \b addLink function is called to add a link to the tree structure that
+is maintained by the dmArticulation objects.  The first parameter is a
 pointer to a (previously instantiated) link object that is to be added, and the
 second parameter is a pointer to a link that has already been added to the
 articulation and will be the "parent" to the new link and placed in the
-database accordingly.  Note that the first link added has no parent so the {\tt
-parent} parameter is set to {\tt NULL}.  If the operation is successful, this
-function returns {\tt true}; otherwise it will return {\tt false} for any one
+database accordingly.  Note that the first link added has no parent so the \b
+parent parameter is set to \b NULL.  If the operation is successful, this
+function returns \b true; otherwise it will return \b false for any one
 of a number of reasons (parent not found, variable allocation failure, etc.)
 
 The articulation can be queried for the number of links in the tree by calling
-{\tt getNumLinks}.  A pointer to a specific link can be obtained by calling
-{\tt getLink} with the appropriate index.  The index corresponds to the order
+\b getNumLinks.  A pointer to a specific link can be obtained by calling
+\b getLink with the appropriate index.  The index corresponds to the order
 in which the links were added to the tree: 0 for the first link,
-1 for the second, etc.  If the index is out of range, {\tt getLink} returns
-{\tt NULL}.  The inverse function, {\tt getLinkIndex} takes a {\tt dmLink}
-pointer and returns its corresponding index, or {\tt -1} if the link is not
-contained in the tree or the pointer is {\tt NULL}.
+1 for the second, etc.  If the index is out of range, \b getLink returns
+\b NULL.  The inverse function, \b getLinkIndex takes a  dmLink
+pointer and returns its corresponding index, or \b -1 if the link is not
+contained in the tree or the pointer is \b NULL.
 
-Three functions, {\tt setJointInput}, {\tt setState}, and {\tt getState}, are
+Three functions, \b setJointInput, \b setState, and \b getState, are
 used to set and query joint states and inputs for the links in the entire
-tree.  The first, {\tt setJointInput}, sets the joint inputs (either torques,
-forces, or motor voltages) for all the links in the articulation.  Its {\tt
-joint\_input} argument is a packed (one-dimensional) array with length equal
+tree.  The first, \b setJointInput, sets the joint inputs (either torques,
+forces, or motor voltages) for all the links in the articulation.  Its \b
+joint_input argument is a packed (one-dimensional) array with length equal
 to the total number of DOFs in the articulation.  The elements of this array
 correspond to the DOFs of each link in the order they were added to the
-articulation. {\tt setState} sets the state of the DOFs in the articulation.
-The two arguments are both packed arrays (like {\tt joint\_input}) containing
-the joint positions and velocities of the links.  The reverse operation, {\tt
-getState}, fills packed arrays with the joint positions velocities.  A
-convenience function, {\tt getNumDOFs}, returns the total number of degrees
+articulation. \b setState sets the state of the DOFs in the articulation.
+The two arguments are both packed arrays (like \b joint_input) containing
+the joint positions and velocities of the links.  The reverse operation, \b
+getState, fills packed arrays with the joint positions velocities.  A
+convenience function, \b getNumDOFs, returns the total number of degrees
 of freedom in the articulation and can be used to determine the appropriate
 size of the above arrays.
 
 Two functions are provided to compute the forward kinematics of the
-articulation.  One {\tt forwardKinematics} function computes the homogeneous
+articulation.  One \b forwardKinematics function computes the homogeneous
 transformation matrix (4x4) describing the position (last column) and
 orientation (upper left 3x3 submatrix) with respect to the inertial coordinate
 system of the link specified by the link index.  If the link index is valid (in
-range), the function returns {\tt true} and the result is in {\tt mat};
-otherwise, it returns {\tt false} and the result in {\tt mat} is unchanged.
-The second {\tt forwardKinematics} function is called by the first, and
-composes the result in the second parameter, {\tt fk}, which is a reference to
-a {\tt dmABForKinStruct} (from {\tt dm.h}):
-\begin{verbatim}
+range), the function returns \b true and the result is in \b mat;
+otherwise, it returns \b false and the result in \b mat is unchanged.
+The second \b forwardKinematics function is called by the first, and
+composes the result in the second parameter, \b fk, which is a reference to
+a \b dmABForKinStruct (from \b dm.h):
+
+\verbatim
    struct dmABForKinStruct
    {
       RotationMatrix  R_ICS;     // orientation of links wrt ICS - ^{ICS}R_{i}
@@ -106,24 +107,25 @@ a {\tt dmABForKinStruct} (from {\tt dm.h}):
       SpatialVector   v;         // velocity of link wrt to i.
         ...
    };
-\end{verbatim}
-Upon exit this function will fill {\tt R\_ICS} and {\tt p\_ICS} with the
-resulting transformation information and return {\tt true}.  If the {\tt
-link\_index} is out of range, this function also returns {\tt false}.
+\endverbatim
 
-The {\tt dynamics} function is the entry point for computation of the dynamics
+Upon exit this function will fill \b R_ICS and \b p_ICS with the
+resulting transformation information and return \b true.  If the \b
+link_index is out of range, this function also returns \b false.
+
+The \b dynamics function is the entry point for computation of the dynamics
 of the system.  For this class, this is a wrapper around the Articulated Body
-(AB) dynamics computation for the multibody system.  The three functions, {\tt
-ABForwardKinematics}, {\tt ABBackwardDynamics}, and {\tt
-ABForwardAccelerations}, comprise the implementation of the Articulated-Body
+(AB) dynamics computation for the multibody system.  The three functions, \b 
+ABForwardKinematics, \b ABBackwardDynamics, and \b 
+ABForwardAccelerations, comprise the implementation of the Articulated-Body
 (AB) Simulation alogrithm recursions and are hidden from the user.
-However, during the ABForwardKinematics traversal, {\tt dmABForKinStruct}s are
-computed for each link which can be accessed by calling the {\tt
-getForKinStruct} function with the index of the desired link.  This functions
+However, during the \b ABForwardKinematics traversal,  dmABForKinStruct s are
+computed for each link which can be accessed by calling the \b 
+getForKinStruct function with the index of the desired link.  This functions
 returns a pointer to the requested struct, or NULL if the index is out of
 range.
 
-See also {\tt dmSystem, dmLink}.
+See also  dmSystem, dmLink.
 
 */
 

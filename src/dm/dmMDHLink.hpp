@@ -34,29 +34,30 @@
 //======================================================================
 
 /**
-The {\tt dmMDHLink} class can model the class of links with one degree
+The dmMDHLink class can model the class of links with one degree
 of freedom (revolute and prismatic) joints.  The class is derived from the
-{\tt dmRigidBody} (for the dynamic parameters) class and, through that, from
-the {\tt dmLink} base class (required by {\tt dmArticulation} for Articulated
+dmRigidBody (for the dynamic parameters) class and, through that, from
+the dmLink base class (required by dmArticulation for Articulated
 Body simulation functions).  This, in turn, is an abstract base class for the
-two kinds of single DOF link classes: {\tt dmRevoluteLink} and {\tt
-dmPrismaticLink}.
+two kinds of single DOF link classes: dmRevoluteLink and 
+dmPrismaticLink.
 
 The kinematics (origin and axis of motion) of these links can be defined with
 four scalar parameters.  The algorithm implemented in this library uses the
 Modified Denavit-Hartenberg (MDH) parameters.  This convention assumes that the
 link's coordinate systems have been placed according to the following rules:
-\begin{center}
+\f[
 \begin{tabular}{lcl}
 $\hat{z}_i$ & ~~ & lies along the axis of motion of the joint, \\
 $\hat{x}_i$ & ~~ & lies along the common normal between $\hat{z}_i$ and
                    $\hat{z}_{i+1}$, and \\
 $\hat{y}_i$ & ~~ & completes the right-handed coordinate system.
 \end{tabular}
-\end{center}
+\f]
 Then the four parameters that define the transformation from the previous
-body's coordinate system ($i-1$) to this link's ($i$) as follows:
-\begin{center}
+body's coordinate system (\f$i-1\f$) to this link's (\f$i\f$) as follows:
+
+\f[
 \begin{tabular}{lcl}
 $a_i$ & ~~  & distance along $\hat{x}_{i-1}$ (common normal) from
               $\hat{z}_{i-1}$ to $\hat{z}_{i}$, \\
@@ -68,45 +69,48 @@ $d_i$      && distance along $\hat{z}_{i}$ from $\hat{x}_{i-1}$ (the inboard
 $\theta_i$ && the angle (in radians) about $\hat{z}_{i}$ from $\hat{x}_{i-1}$
               to $\hat{x}_{i}$.
 \end{tabular}
-\end{center}
-For revolute joints, $\theta_i$ is the joint position variable, and for
-prismatic joints, $d_i$ is the variable.  These parameters (along with the
-joint position) is specified with the {\tt setMDHParameters} function.
+\f]
+For revolute joints, \f$\theta_i\f$ is the joint position variable, and for
+prismatic joints, \f$d_i\f$ is the variable.  These parameters (along with the
+joint position) is specified with the \c setMDHParameters function.
 
-The {\tt setJointLimits} function is used to specify the range (min and max) of
+The \c setJointLimits function is used to specify the range (min and max) of
 motion for the joint position variable.  Should the range be violated,
 DynaMechs provides a mechanism by which compliant joint limit forces can be
-simulated with a spring-damper system specified by the {\tt k\_spring} and {\tt
-b\_damper} constants.  The compliant limit force is computed as follows: \\
-\centerline{$ \tau \: = \: K_{spring} \: \Delta q - B_{damper} \: \dot{q} $\\}
-where $\Delta q$ is the amount by which the joint position exceeds the joint
+simulated with a spring-damper system specified by the \c k_spring and \c
+b_damper constants.  The compliant limit force is computed as follows: 
+
+\f[
+\tau \: = \: K_{spring} \: \Delta q - B_{damper} \: \dot{q} 
+\f]
+where \f$\Delta q \f$ is the amount by which the joint position exceeds the joint
 limits.  This is a force along the joint axis in the case of prismatic joints,
 and is a torque about the joint axis in the case of revolute joints.
 
-In some cases, actuator dynamics can also be simulated with single DOF {\tt
-MDHLink}s.  Currently only DC motors for revolute joints have been provided
-with this library (see {\tt dmRevDCMotor}) which can be ``assigned'' to {\tt
-dmRevoluteLink}s.  This assignment is accomplished with the {\tt setActuator}
-function.  Calling {\tt setActuator} with a NULL argument effectively unsets
+In some cases, actuator dynamics can also be simulated with single DOF 
+MDHLink s.  Currently only DC motors for revolute joints have been provided
+with this library (see dmRevDCMotor) which can be ``assigned'' to  
+dmRevoluteLink s.  This assignment is accomplished with the \c setActuator
+function.  Calling \c setActuator with a NULL argument effectively unsets
 any existing actuator.  A pointer to an assigned actuator can be retrieved with
-the {\tt getActuator} member function.  If no actuator has been assigned it
+the \c getActuator member function.  If no actuator has been assigned it
 returns NULL.
 
-The remainder of the functions are described in the {\tt dmLink} reference
+The remainder of the functions are described in the dmLink reference
 pages and are implemented in this class for the specific case of MDH-type
-joints.  The exceptions is {\tt scongtxToInboardIrefl} which is implemented in
-the two derived subclasses: {\tt dmRevoluteLink}, and {\tt dmPrismaticLink}.
-Note that {\tt getNumDOFs} returns 1 for this and the derived classes.  As such
-the joint variables {\tt q}, {\tt qd}, {\tt qdd}, and {\tt joint\_input} are
+joints.  The exceptions is \c scongtxToInboardIrefl which is implemented in
+the two derived subclasses:  dmRevoluteLink , and   dmPrismaticLink .
+Note that  \c getNumDOFs  returns 1 for this and the derived classes.  As such
+the joint variables \c q, \c qd}, \c qdd, and \c joint_input are
 arrays of one element.
 
-A configuration file reader, {\tt dmLoadFile\_dm} is being supplied with the
+A configuration file reader, \c dmLoadFile_dm is being supplied with the
 dmutils library that can be used to instantiate and intialize these link
-objects.  See the {dmRevoluteLink} and {\tt dmPrismaticLink} classes for the
+objects.  See the  dmRevoluteLink  and  dmPrismaticLink  classes for the
 format for each type of link
 
-See also {\tt dmRigidBody}, {\tt dmLink}, {\tt dmPrismaticLink}, {\tt
-dmRevoluteLink}, {\tt dmRevDCMotor}, {\tt dmLoadFile\_dm}.
+See also  dmRigidBody ,  dmLink,  dmPrismaticLink , 
+dmRevoluteLink},  dmRevDCMotor ,   dmLoadFile_dm.
 */
 
 class DM_DLL_API dmMDHLink : public dmRigidBody

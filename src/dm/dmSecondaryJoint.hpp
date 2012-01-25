@@ -62,9 +62,9 @@ A coulomb friction parameter can also be specified and retrieved using
 the {\tt setJointFriction} and {\tt getJointFriction} functions.  This
 scalar parameters multiplies the joint velocity to produce a
 force/torque opposing the direction of motion as follows:
-\begin{eqnarray*}
+\f[
 \tau \: = \: \mu_c \: \dot{q}.
-\end{eqnarray*}
+\f]
 
 When a secondary joint is added to a {\tt dmClosedArticulation} as a
 `hard' joint, three constraint stabilization options exist.  These
@@ -91,8 +91,8 @@ compute state information common to all secondary joints.
 
 The {\tt getFreeState} function retrieves the free variables of the
 joint, where the {\tt q} and {\tt qd} arguments correspond to position
-and velocity, respectively.  They are arrays containing $n$ elements
-where $n$ is the number of degrees of freedom for this particular type
+and velocity, respectively.  They are arrays containing \f$n\f$ elements
+where \f$n\f$ is the number of degrees of freedom for this particular type
 of joint (spherical joints are an exception).  This number is
 returned when the {\tt getNumDOFs} function is called.  The joint
 input vector for the free modes can be set by calling {\tt
@@ -100,7 +100,7 @@ setJointInput}.  The parameter is also an array of {\tt getNumDOFs}
 elements containing the desired values.  The joint variables in the
 constrained modes of the joint are retrieved with the function {\tt
 getConstrainedState}, where the {\tt q} and {\tt qd} arguments are now
-of length $6-n$.
+of length \f$6-n\f$.
 
 The pure virtual {\tt computeAppliedForce} function is called by {\tt
 dmClosedArticulation::ABForwardKinematics()} to compute the resultant
@@ -124,13 +124,13 @@ forces in link i's force balance equation, and its transpose also
 appears in loop k's constraint equations.  The {\tt computeEtas}
 function computes the eta_k1 and eta_k2 acceleration bias terms for
 the joint coordinate system (Marhefka dissertation Eqs. 4.67 and
-4.69), while the {\tt getZeta} function computes and returns the $6-n$
+4.69), while the {\tt getZeta} function computes and returns the \f$6-n\f$
 Zeta_k acceleration bias term appearing in the loop-closure constraint
 equation (Marhefka dissertation Eq. 4.75).  The above three functions
 are called by {\tt dmClosedArticulation::ABForwardKinematics()}.
 Finally, the {\tt computeStabilizationForce} function is used for
 spring and damper constraint stabilization (not to be confused with
-'soft' constraints).  It returns the $6-n$ vector of additional
+'soft' constraints).  It returns the \f$6-n\f$ vector of additional
 constrained mode joint inputs to be added to those computed by the
 unstabilized constraint-based algorithm, and is called during the
 backward dynamics recursion.

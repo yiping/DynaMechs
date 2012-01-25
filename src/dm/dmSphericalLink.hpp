@@ -52,16 +52,16 @@ specified with three Euler angles. {\em I am considering converting this to a
 quaternion just like I did to the {\tt dmRefMember} class.}  The values of
 these angles can be set and retrieved with the {\tt setState} and {\tt
 getState} member functions where the {\tt q} parameter contains the angles
-$\phi, \theta, \psi$ order.  They are applied, however, in the following order
+\f$\phi, \theta, \psi\f$ order.  They are applied, however, in the following order
 from the inboard to this coordinate system:
-\begin{center}
+\f[
 \begin{tabular}{lcl}
 $\psi$ & ~~ & angle in radians about the inboard $z$ axis, \\
 $\theta$  & & angle in radians about the rotated $y$ axis, and \\
 $\phi$    & & angle in radians about the twice rotated $x$ axis (same as \\
           & & this link's $x$ axis.
 \end{tabular}
-\end{center}
+\f]
 In dynamic simulation, all Euler angles suffer from a singularity when the
 middle angle rotates to the point where the inner and outer axes line up. {\em
 ...which is why I am considering the conversion to a quaternion representation
@@ -83,18 +83,24 @@ question (i.e., the first corresponds to the angle between the x-axes, the
 second y, and the third z).  A zero value in any position corresponds to no
 restriction for the corresponding axis.   If the limit is exceeded, a
 restorative torque equal to:\\
-\centerline{ $\tau \: = \: K_{limit} \: \Delta q$,} \\
-where $\Delta q$ is the amount by which the angle limit is exceeded and is
+\f[
+\tau \: = \: K_{limit} \: \Delta q
+\f]
+where \f$\Delta q\f$ is the amount by which the angle limit is exceeded and is
 applied about an axis normal to the axes in question.  In addition the a
 dampening term is included that opposes the velocity along the other {\em two}
 axes as follows:\\
-\centerline{ $\tau \: = \: - B_{limit} \: \dot{q} $.}\\
-where $K_limit$ and $B_limit$ correspond to the last two parameters of the {\tt
+\f[
+\tau \: = \: - B_{limit} \: \dot{q} 
+\f]
+where \f$K_{limit}\f$ and \f$B_{limit}\f$ correspond to the last two parameters of the {\tt
 setJointLimits} member function.
 
-The coulomb friction parameter, $\mu$, is set with the {\tt setJointFriction}
+The coulomb friction parameter, \f$\mu\f$, is set with the {\tt setJointFriction}
 function and models a dampening force:\\
-\centerline{${\bf \tau} \: = \: -u \: {\bf \omega}$,} \\
+\f[
+{\bf \tau} \: = \: -u \: {\bf \omega}
+\f]
 which is a 3D torque in a "direction" opposite the rotation (angular velocity).
 Finally, an external torque to be applied to link can be specified with the
 {\tt setJointInput} function where the parameter is a 3D torque with respect

@@ -5,7 +5,7 @@ specular color  (3)
 shiness         (1)
 alpha           (1)
 
-
+scale (3)
 #_of_verteces  #_of_faces
 
 vertexO.x     vertexO.y     vertexO.z

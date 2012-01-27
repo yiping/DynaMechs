@@ -119,9 +119,9 @@ public:
 
    // transformation functions
    ///
-   void setRefSystem(Quaternion quat, CartesianVector pos);
+   void setRefSystem(QuaternionDM quat, CartesianVector pos);
    ///
-   void getRefSystem(Quaternion quat, CartesianVector pos) const;
+   void getRefSystem(QuaternionDM quat, CartesianVector pos) const;
    ///
    void getPose(RotationMatrix R, CartesianVector pos) const;
 
@@ -157,7 +157,7 @@ protected:
 
 protected:
    // description of transform to reference system
-   Quaternion      m_quat_ICS;
+   QuaternionDM      m_quat_ICS;
    RotationMatrix  m_R_ICS;     // pose of links wrt ICS - ^{ICS}R_{i}
    CartesianVector m_p_ICS;     // pos. of links wrt ICS - ^{ICS}p_{i}
 };

@@ -149,6 +149,9 @@ public:
    void getInertiaParameters(Float &mass,
                              CartesianTensor inertia,
                              CartesianVector cg_pos) const;
+	
+	//
+	void CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_curr) const;
 
    // manage a list of force objects.
    ///

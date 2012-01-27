@@ -113,6 +113,55 @@
 		1925889914D2F40900778EA7 /* libdm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 192587EE14D2F22F00778EA7 /* libdm.a */; };
 		1925889A14D2F40900778EA7 /* libdmu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925883714D2F28800778EA7 /* libdmu.a */; };
 		1925889B14D2F40900778EA7 /* libdmgl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925885714D2F2DD00778EA7 /* libdmgl.a */; };
+		1952237414D350540042EA6D /* doublePendulum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1952236614D34FB30042EA6D /* doublePendulum.cpp */; };
+		1952239B14D3505B0042EA6D /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876914D2EDF400778EA7 /* GLUT.framework */; };
+		1952239C14D3505B0042EA6D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876B14D2EDF400778EA7 /* OpenGL.framework */; };
+		195224CC14D35AF20042EA6D /* dmActuator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864114D2E95000778EA7 /* dmActuator.cpp */; };
+		195224CD14D35AF20042EA6D /* dmArticulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864314D2E95000778EA7 /* dmArticulation.cpp */; };
+		195224CE14D35AF20042EA6D /* dmClosedArticulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864514D2E95000778EA7 /* dmClosedArticulation.cpp */; };
+		195224CF14D35AF20042EA6D /* dmContactModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864714D2E95000778EA7 /* dmContactModel.cpp */; };
+		195224D014D35AF20042EA6D /* dmEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864914D2E95000778EA7 /* dmEnvironment.cpp */; };
+		195224D114D35AF20042EA6D /* dmForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864B14D2E95000778EA7 /* dmForce.cpp */; };
+		195224D214D35AF20042EA6D /* dmIntegEuler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864D14D2E95000778EA7 /* dmIntegEuler.cpp */; };
+		195224D314D35AF20042EA6D /* dmIntegrator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864F14D2E95000778EA7 /* dmIntegrator.cpp */; };
+		195224D414D35AF20042EA6D /* dmIntegRK4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865114D2E95000778EA7 /* dmIntegRK4.cpp */; };
+		195224D514D35AF20042EA6D /* dmIntegRK45.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865314D2E95000778EA7 /* dmIntegRK45.cpp */; };
+		195224D614D35AF20042EA6D /* dmLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865514D2E95000778EA7 /* dmLink.cpp */; };
+		195224D714D35AF20042EA6D /* dmMDHLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865714D2E95000778EA7 /* dmMDHLink.cpp */; };
+		195224D814D35AF20042EA6D /* dmMobileBaseLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865914D2E95000778EA7 /* dmMobileBaseLink.cpp */; };
+		195224D914D35AF20042EA6D /* dmObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865B14D2E95000778EA7 /* dmObject.cpp */; };
+		195224DA14D35AF20042EA6D /* dmPrismaticLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865D14D2E95000778EA7 /* dmPrismaticLink.cpp */; };
+		195224DB14D35AF20042EA6D /* dmQuaternionLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865F14D2E95000778EA7 /* dmQuaternionLink.cpp */; };
+		195224DC14D35AF20042EA6D /* dmRevDCMotor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866114D2E95000778EA7 /* dmRevDCMotor.cpp */; };
+		195224DD14D35AF20042EA6D /* dmRevoluteLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866314D2E95000778EA7 /* dmRevoluteLink.cpp */; };
+		195224DE14D35AF20042EA6D /* dmRigidBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866514D2E95000778EA7 /* dmRigidBody.cpp */; };
+		195224DF14D35AF20042EA6D /* dmSecondaryForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866714D2E95000778EA7 /* dmSecondaryForce.cpp */; };
+		195224E014D35AF20042EA6D /* dmSecondaryJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866914D2E95000778EA7 /* dmSecondaryJoint.cpp */; };
+		195224E114D35AF20042EA6D /* dmSecondaryPrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866B14D2E95000778EA7 /* dmSecondaryPrismaticJoint.cpp */; };
+		195224E214D35AF20042EA6D /* dmSecondaryRevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866D14D2E95000778EA7 /* dmSecondaryRevoluteJoint.cpp */; };
+		195224E314D35AF20042EA6D /* dmSecondarySphericalJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866F14D2E95000778EA7 /* dmSecondarySphericalJoint.cpp */; };
+		195224E414D35AF20042EA6D /* dmSphericalLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867114D2E95000778EA7 /* dmSphericalLink.cpp */; };
+		195224E514D35AF20042EA6D /* dmStaticRootLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867314D2E95000778EA7 /* dmStaticRootLink.cpp */; };
+		195224E614D35AF20042EA6D /* dmSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867514D2E95000778EA7 /* dmSystem.cpp */; };
+		195224E714D35AF20042EA6D /* dmTreadmill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867814D2E95000778EA7 /* dmTreadmill.cpp */; };
+		195224E814D35AF20042EA6D /* dmZScrewTxLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867A14D2E95000778EA7 /* dmZScrewTxLink.cpp */; };
+		195224E914D35AF20042EA6D /* gldraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867C14D2E95000778EA7 /* gldraw.cpp */; };
+		195224EA14D35AF20042EA6D /* svd_linpack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867D14D2E95000778EA7 /* svd_linpack.cpp */; };
+		195224EB14D35AFA0042EA6D /* dmLoadFile_dm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868114D2E97C00778EA7 /* dmLoadFile_dm.cpp */; };
+		195224EC14D35AFA0042EA6D /* dmLoadFile_dm21.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868214D2E97C00778EA7 /* dmLoadFile_dm21.cpp */; };
+		195224ED14D35AFA0042EA6D /* dmLoadFile_dm30.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868314D2E97C00778EA7 /* dmLoadFile_dm30.cpp */; };
+		195224EE14D35AFA0042EA6D /* dmLoadFile_dm40.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868414D2E97C00778EA7 /* dmLoadFile_dm40.cpp */; };
+		195224EF14D35AFA0042EA6D /* dmLoadFile_dm203.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868514D2E97C00778EA7 /* dmLoadFile_dm203.cpp */; };
+		195224F014D35AFA0042EA6D /* dmLoadFile_env.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868614D2E97C00778EA7 /* dmLoadFile_env.cpp */; };
+		195224F114D35AFA0042EA6D /* dmLoadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868714D2E97C00778EA7 /* dmLoadFile.cpp */; };
+		195224F214D35AFA0042EA6D /* dmUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868A14D2E97C00778EA7 /* dmUtils.cpp */; };
+		195224F314D35AFA0042EA6D /* glLoadModels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868B14D2E97C00778EA7 /* glLoadModels.cpp */; };
+		195224F414D35B010042EA6D /* dmGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869114D2E9A800778EA7 /* dmGLCamera.cpp */; };
+		195224F514D35B010042EA6D /* dmGLFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869314D2E9A800778EA7 /* dmGLFlyCamera.cpp */; };
+		195224F614D35B010042EA6D /* dmGLMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869514D2E9A800778EA7 /* dmGLMouse.cpp */; };
+		195224F714D35B010042EA6D /* dmGLPolarCamera_yup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869714D2E9A800778EA7 /* dmGLPolarCamera_yup.cpp */; };
+		195224F814D35B010042EA6D /* dmGLPolarCamera_zup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869914D2E9A800778EA7 /* dmGLPolarCamera_zup.cpp */; };
+		195224F914D35B010042EA6D /* dmGLPolarCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869B14D2E9A800778EA7 /* dmGLPolarCamera.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -234,6 +283,8 @@
 		1925885714D2F2DD00778EA7 /* libdmgl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libdmgl.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1925887014D2F30D00778EA7 /* xan_viewer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = xan_viewer; sourceTree = BUILT_PRODUCTS_DIR; };
 		1925889214D2F3EB00778EA7 /* crank */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = crank; sourceTree = BUILT_PRODUCTS_DIR; };
+		1952236614D34FB30042EA6D /* doublePendulum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = doublePendulum.cpp; path = src/doublePendulum/doublePendulum.cpp; sourceTree = "<group>"; };
+		1952236C14D34FF10042EA6D /* doublePendulum */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = doublePendulum; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,6 +340,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1952236A14D34FF10042EA6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1952239B14D3505B0042EA6D /* GLUT.framework in Frameworks */,
+				1952239C14D3505B0042EA6D /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -307,6 +367,7 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				1952235214D34F7C0042EA6D /* doublePendulum */,
 				192586A614D2E9F200778EA7 /* aquarobot */,
 				192586A114D2E9E000778EA7 /* testdm */,
 				1925869F14D2E9C400778EA7 /* xan_viewer */,
@@ -470,6 +531,14 @@
 			name = aquarobot;
 			sourceTree = "<group>";
 		};
+		1952235214D34F7C0042EA6D /* doublePendulum */ = {
+			isa = PBXGroup;
+			children = (
+				1952236614D34FB30042EA6D /* doublePendulum.cpp */,
+			);
+			name = doublePendulum;
+			sourceTree = "<group>";
+		};
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,6 +547,7 @@
 				1925885714D2F2DD00778EA7 /* libdmgl.a */,
 				1925887014D2F30D00778EA7 /* xan_viewer */,
 				1925889214D2F3EB00778EA7 /* crank */,
+				1952236C14D34FF10042EA6D /* doublePendulum */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -640,6 +710,22 @@
 			productReference = 1925889214D2F3EB00778EA7 /* crank */;
 			productType = "com.apple.product-type.tool";
 		};
+		1952236B14D34FF10042EA6D /* doublePendulum */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1952237314D34FF80042EA6D /* Build configuration list for PBXNativeTarget "doublePendulum" */;
+			buildPhases = (
+				1952236914D34FF10042EA6D /* Sources */,
+				1952236A14D34FF10042EA6D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = doublePendulum;
+			productName = doublePendulum;
+			productReference = 1952236C14D34FF10042EA6D /* doublePendulum */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -664,6 +750,7 @@
 				1925885614D2F2DD00778EA7 /* dmgl */,
 				1925886F14D2F30D00778EA7 /* xan_viewer */,
 				1925889114D2F3EB00778EA7 /* crank */,
+				1952236B14D34FF10042EA6D /* doublePendulum */,
 			);
 		};
 /* End PBXProject section */
@@ -749,6 +836,60 @@
 			buildActionMask = 2147483647;
 			files = (
 				1925889614D2F3F900778EA7 /* crank.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1952236914D34FF10042EA6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				195224F414D35B010042EA6D /* dmGLCamera.cpp in Sources */,
+				195224F514D35B010042EA6D /* dmGLFlyCamera.cpp in Sources */,
+				195224F614D35B010042EA6D /* dmGLMouse.cpp in Sources */,
+				195224F714D35B010042EA6D /* dmGLPolarCamera_yup.cpp in Sources */,
+				195224F814D35B010042EA6D /* dmGLPolarCamera_zup.cpp in Sources */,
+				195224F914D35B010042EA6D /* dmGLPolarCamera.cpp in Sources */,
+				195224EB14D35AFA0042EA6D /* dmLoadFile_dm.cpp in Sources */,
+				195224EC14D35AFA0042EA6D /* dmLoadFile_dm21.cpp in Sources */,
+				195224ED14D35AFA0042EA6D /* dmLoadFile_dm30.cpp in Sources */,
+				195224EE14D35AFA0042EA6D /* dmLoadFile_dm40.cpp in Sources */,
+				195224EF14D35AFA0042EA6D /* dmLoadFile_dm203.cpp in Sources */,
+				195224F014D35AFA0042EA6D /* dmLoadFile_env.cpp in Sources */,
+				195224F114D35AFA0042EA6D /* dmLoadFile.cpp in Sources */,
+				195224F214D35AFA0042EA6D /* dmUtils.cpp in Sources */,
+				195224F314D35AFA0042EA6D /* glLoadModels.cpp in Sources */,
+				195224CC14D35AF20042EA6D /* dmActuator.cpp in Sources */,
+				195224CD14D35AF20042EA6D /* dmArticulation.cpp in Sources */,
+				195224CE14D35AF20042EA6D /* dmClosedArticulation.cpp in Sources */,
+				195224CF14D35AF20042EA6D /* dmContactModel.cpp in Sources */,
+				195224D014D35AF20042EA6D /* dmEnvironment.cpp in Sources */,
+				195224D114D35AF20042EA6D /* dmForce.cpp in Sources */,
+				195224D214D35AF20042EA6D /* dmIntegEuler.cpp in Sources */,
+				195224D314D35AF20042EA6D /* dmIntegrator.cpp in Sources */,
+				195224D414D35AF20042EA6D /* dmIntegRK4.cpp in Sources */,
+				195224D514D35AF20042EA6D /* dmIntegRK45.cpp in Sources */,
+				195224D614D35AF20042EA6D /* dmLink.cpp in Sources */,
+				195224D714D35AF20042EA6D /* dmMDHLink.cpp in Sources */,
+				195224D814D35AF20042EA6D /* dmMobileBaseLink.cpp in Sources */,
+				195224D914D35AF20042EA6D /* dmObject.cpp in Sources */,
+				195224DA14D35AF20042EA6D /* dmPrismaticLink.cpp in Sources */,
+				195224DB14D35AF20042EA6D /* dmQuaternionLink.cpp in Sources */,
+				195224DC14D35AF20042EA6D /* dmRevDCMotor.cpp in Sources */,
+				195224DD14D35AF20042EA6D /* dmRevoluteLink.cpp in Sources */,
+				195224DE14D35AF20042EA6D /* dmRigidBody.cpp in Sources */,
+				195224DF14D35AF20042EA6D /* dmSecondaryForce.cpp in Sources */,
+				195224E014D35AF20042EA6D /* dmSecondaryJoint.cpp in Sources */,
+				195224E114D35AF20042EA6D /* dmSecondaryPrismaticJoint.cpp in Sources */,
+				195224E214D35AF20042EA6D /* dmSecondaryRevoluteJoint.cpp in Sources */,
+				195224E314D35AF20042EA6D /* dmSecondarySphericalJoint.cpp in Sources */,
+				195224E414D35AF20042EA6D /* dmSphericalLink.cpp in Sources */,
+				195224E514D35AF20042EA6D /* dmStaticRootLink.cpp in Sources */,
+				195224E614D35AF20042EA6D /* dmSystem.cpp in Sources */,
+				195224E714D35AF20042EA6D /* dmTreadmill.cpp in Sources */,
+				195224E814D35AF20042EA6D /* dmZScrewTxLink.cpp in Sources */,
+				195224E914D35AF20042EA6D /* gldraw.cpp in Sources */,
+				195224EA14D35AF20042EA6D /* svd_linpack.cpp in Sources */,
+				1952237414D350540042EA6D /* doublePendulum.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -898,7 +1039,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
-				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_LOCATION = NO;
 				DSTROOT = "$(PROJECT_DIR)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -922,7 +1063,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_LOCATION = NO;
 				DSTROOT = "$(PROJECT_DIR)";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
@@ -935,6 +1076,52 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				PRODUCT_NAME = crank;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		1952236E14D34FF20042EA6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(PROJECT_DIR)";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					src/dmgl,
+					src/dmu,
+					src/dm,
+				);
+				INSTALL_PATH = /exes/doublePendulum;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				PRODUCT_NAME = doublePendulum;
+			};
+			name = Debug;
+		};
+		1952236F14D34FF20042EA6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(PROJECT_DIR)";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					src/dmgl,
+					src/dmu,
+					src/dm,
+				);
+				INSTALL_PATH = /exes/doublePendulum;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				PRODUCT_NAME = doublePendulum;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1009,6 +1196,15 @@
 			buildConfigurations = (
 				1925889414D2F3EC00778EA7 /* Debug */,
 				1925889514D2F3EC00778EA7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1952237314D34FF80042EA6D /* Build configuration list for PBXNativeTarget "doublePendulum" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1952236E14D34FF20042EA6D /* Debug */,
+				1952236F14D34FF20042EA6D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

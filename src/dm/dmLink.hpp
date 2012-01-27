@@ -223,9 +223,10 @@ public:
    virtual void scongtxToInboardIrefl(const SpatialTensor N_curr,
                                       SpatialTensor N_prev) const;
 	
+	// CRB Functions
 	void scongxToInboardIcomp(const CrbInertia & IC_curr, CrbInertia & IC_prev) const;
 	
-	
+	virtual void CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_curr) const;
 	
    ///
    virtual void XikToInboard(Float **Xik_curr,

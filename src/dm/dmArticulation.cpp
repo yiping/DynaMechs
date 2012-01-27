@@ -686,3 +686,58 @@ void dmArticulation::ABForwardAccelerations(SpatialVector a_ref,
       joint_index_offset += m_link_list[i]->link->getNumDOFs();
    }
 }
+
+void CrbToMat(const CrbInertia &I_C, Matrix6F & I_Cm)
+{
+	I_Cm = Matrix6F::Zero();
+	
+	// Initialize Diagonal Blocks
+	for (int i = 0; i<3; i++) {
+		for (int j=0; j<3; j++) {
+			I_Cm(i,j) = I_C.IBar[i][j];
+		}
+		I_Cm(i+3,i+3) = I_C.m;
+	}
+	
+	// Initialize Cross Terms
+	I_Cm(0,4) = I_Cm(4,0) = -I_C.h[2];
+	I_Cm(1,3) = I_Cm(3,1) = I_C.h[2];
+	
+	I_Cm(2,3) = I_Cm(3,2) = -I_C.h[1];
+	I_Cm(0,5) = I_Cm(5,0) = I_C.h[1];
+	
+	I_Cm(1,5) = I_Cm(5,1) = -I_C.h[0];
+	I_Cm(2,4) = I_Cm(4,2) = I_C.h[0];
+}
+
+
+//----
+void dmArticulation::computeH()
+{
+	const CrbInertia IZero = {{{0,0,0},{0,0,0},{0,0,0}},{0,0,0},0};
+	CrbInertia Itmp;
+	int joint_index_offset = 0;
+	for (int j=(m_link_list.size()-1); j>=0; j--) {
+		cout << j << endl;
+		cout << m_link_list.size() << endl;
+		LinkInfoStruct * curr = m_link_list[j];
+		
+		if (curr->child_list.size() == 0) {
+			curr->link->CrbAddInertia(IZero, curr->I_C);
+		}
+		else {
+			CrbCopy(curr->I_C, Itmp);
+			curr->link->CrbAddInertia(Itmp, curr->I_C);
+		}
+		/*Matrix6F I_Cm;
+		CrbToMat(curr->I_C, I_Cm);
+		
+		cout << "I_C(" << j << ") =" << endl << I_Cm << endl;*/
+		
+		
+
+		if (curr->parent) {
+			curr->link->scongxToInboardIcomp(curr->I_C, curr->parent->I_C);
+		}
+	}
+}

@@ -213,6 +213,7 @@ protected:
       vector<LinkInfoStruct*> child_list;
 
       dmABForKinStruct link_val;
+	   CrbInertia I_C;
 
       // AB algorithm temporaries
       SpatialVector accel;

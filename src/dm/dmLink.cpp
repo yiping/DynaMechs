@@ -318,6 +318,13 @@ void dmLink::stxToInboardMat(const Matrix6XF& curr, Matrix6XF & prev) const
 	}
 }
 
+//--
+void dmLink::CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_curr) const
+{
+	CrbCopy(IC_parents, IC_curr);
+}
+
+
 //-------------------------------------------------------------
 Matrix6F dmLink::get_X_FromParent_Motion()
 {

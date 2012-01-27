@@ -299,24 +299,12 @@ inline void doubleCrossProdMat(const CartesianVector p1, const CartesianVector p
 }
 
 //------
-inline void CrbCopy(CrbInertia &A, CrbInertia &B) {
+inline void CrbCopy(const CrbInertia &A, CrbInertia &B) {
 	B.m = A.m;
 	for (int i=0; i<3; i++) {
 		B.h[i] = A.h[i];
 		for (int j =0; j<3; j++) {
 			B.IBar[i][j] = A.IBar[i][j];
-		}
-	}
-}
-
-//-----
-inline void CrbAdd(CrbInertia & a, CrbInertia & b)
-{
-	a.m += b.m;
-	for(int i=0 ; i<3;i++) {
-		a.h[i] += b.h[i];
-		for (int j=0; j<3; j++) {
-			a.IBar[i][j] += b.IBar[i][j];
 		}
 	}
 }

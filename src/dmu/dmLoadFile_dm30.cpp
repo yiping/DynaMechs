@@ -536,7 +536,7 @@ dmArticulation *loadArticulation30(ifstream &cfg_ptr)
 
    // ================== NEW Get Reference System info. =====================
    CartesianVector pos;
-   Quaternion quat;
+   QuaternionDM quat;
 
    readConfigParameterLabel(cfg_ptr, "Position");
    cfg_ptr >> pos[0] >> pos[1] >> pos[2];

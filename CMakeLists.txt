@@ -21,12 +21,18 @@ MESSAGE(STATUS "GLUT library path: " ${GLUT_LIBRARIES})
 MESSAGE(STATUS "OpenGL headers path: " ${OPENGL_INCLUDE_DIR})
 MESSAGE(STATUS "GLUT headers path: " ${GLUT_INCLUDE_DIR})
 
+find_package(Eigen REQUIRED)
+include_directories(${Eigen_INCLUDE_DIRS})
+# Eigen is a header-only library, so you do not need to specify any linking
+MESSAGE(STATUS "Eigen headers path: " ${Eigen_INCLUDE_DIRS})
+
 ADD_SUBDIRECTORY(src/dm bin_dm)
 ADD_SUBDIRECTORY(src/dmu bin_dmu)
 ADD_SUBDIRECTORY(src/dmgl bin_dmgl)
 ADD_SUBDIRECTORY(src/testdm bin_testdm)
 ADD_SUBDIRECTORY(src/aquarobot bin_aquarobot)
 ADD_SUBDIRECTORY(src/xan_viewer bin_xan_viewer)
+ADD_SUBDIRECTORY(src/kurmet bin_kurmet)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX is: " ${CMAKE_INSTALL_PREFIX})
 

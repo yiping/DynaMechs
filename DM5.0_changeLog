@@ -1,0 +1,19 @@
+1/26/2012
+1.   Change typedef Quaternion to QuaternionDM, to resolve a naming conflict with Eigen...
+     Otherwise you will have problems using 'using namespace Egien'
+     Affected files:
+                  dm.h 
+                  dmSystem.hpp dmSystem.cpp
+                  dmMobileBaseLink.hpp dmMobileBaseLink.cpp 
+                  dmQuaternionLink.h dmQuaternionLink.cpp
+                  dmLoadFile_dm40.cpp dmLoadFile_dm30.cpp dmLoadFile_dm21.cpp dmLoadFile_dm203.cpp
+                  xan_viewer.cpp
+
+2.   Adding in dm.h the following functions:
+                  crm()   crf()    cr3()    CrossSpV()    CrossSpF()
+     Plus a couple Eigen typedefs
+
+3.   Adding in dmLink.hpp:
+                  virtual functions:  get_X_FromParent_Motion()  jcalc()  [should later make them PURE virtual]
+                  get_X_FromParent_Motion() is implemented in dmMDHLink 
+                  jcalc() is implemented in dmRevoluteLink                    

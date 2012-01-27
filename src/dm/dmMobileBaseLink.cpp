@@ -58,7 +58,7 @@ dmMobileBaseLink::~dmMobileBaseLink()
 //                 in inboard link coordinates
 //    Returns: none
 //----------------------------------------------------------------------------
-void dmMobileBaseLink::setJointPos(Quaternion q, CartesianVector p)
+void dmMobileBaseLink::setJointPos(QuaternionDM q, CartesianVector p)
 {
    // normalize the quaternion
    ::normalizeQuat(q);

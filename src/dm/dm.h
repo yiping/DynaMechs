@@ -23,13 +23,22 @@
  *  Summary: All typedefs, constants and functions needed for DynaMechs
  *****************************************************************************/
 
+/**
+ *  \brief   All typedefs, constants and inline functions needed for DynaMechs, etc. file: dm.h
+ *  \author  Scott McMillan (founder)
+ *  \author  Patrick Wensing 
+ *  \author  Yiping Liu
+ *  \date    01/25/2012 
+*/
+
+
 #ifndef _DM_H
 #define _DM_H
 
-#define DM_MAJOR_VERSION 4
+#define DM_MAJOR_VERSION 5
 #define DM_MINOR_VERSION 0
 
-//#define DM_DOUBLE_PRECISION
+#define DM_DOUBLE_PRECISION
 //#define DM_HYDRODYNAMICS
 
 #if defined(WIN32) && defined(_DLL)
@@ -65,11 +74,31 @@
 #include <stdlib.h>
 #include <string.h>
 
+// ----------------------------------------
+// v5.0
+#include <Eigen/Core>
+#include <vector>
+
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
+
+//-----------------------------------------
+// v5.0
+#define CROSS_PRODUCT(a,b,c) \
+c[0] = a[1]*b[2]-a[2]*b[1]; \
+c[1] = -a[0]*b[2]+a[2]*b[0]; \
+c[2] = a[0]*b[1]-a[1]*b[0];
+
+#define ADD_CARTESIAN_VECTOR(a,b) \
+a[0]+=b[0]; \
+a[1]+=b[1]; \
+a[2]+=b[2];
+
 using namespace std;
+using namespace Eigen;
 
 #ifdef DM_DOUBLE_PRECISION
 typedef double Float;   // changing this one line between float and double
@@ -83,9 +112,22 @@ typedef Float SpatialVector[6];
 typedef Float CartesianTensor[3][3];
 typedef Float CartesianVector[3];
 typedef Float EulerAngles[3];
-typedef Float Quaternion[4];
+typedef Float QuaternionDM[4];
 typedef Float RotationMatrix[3][3];
 typedef Float HomogeneousTransformationMatrix[4][4];
+
+//-----------------------------------------
+// v5.0
+typedef Eigen::Matrix<Float, 6, 6 > Matrix6F;
+typedef Eigen::Matrix<Float, 6, 1 > Vector6F;
+typedef Eigen::Matrix<Float, 3, 3 > Matrix3F;
+typedef Eigen::Matrix<Float, 3, 1 > Vector3F;
+
+typedef Matrix<Float, Dynamic , 1 > VectorXF;
+typedef Matrix<Float, Dynamic, Dynamic> MatrixXF;
+typedef Matrix<Float, Dynamic,6> MatrixX6F;
+typedef Matrix<Float, 6, Dynamic> Matrix6XF;
+
 
 //----------------------------------------------------------------------------
 // Summary: struct containing variables used in ABForwardKinematics for a
@@ -110,7 +152,7 @@ using namespace std;
 #endif
 
 //----------------------------------------------------------------------------
-inline void normalizeQuat(Quaternion quat)
+inline void normalizeQuat(QuaternionDM quat)
 {
    Float len = sqrt(quat[0]*quat[0] +
                     quat[1]*quat[1] +
@@ -136,7 +178,7 @@ inline void normalizeQuat(Quaternion quat)
 
 // ---------------------------------------------------------------------
 
-inline void buildRotMat(Quaternion quat, RotationMatrix R)
+inline void buildRotMat(QuaternionDM quat, RotationMatrix R)
 {
    // set the transformation matrix
    static Float q1,q2,q3, q1q1,q2q2,q3q3, q1q2,q1q3,q2q3, q1q4,q2q4,q3q4;
@@ -171,7 +213,7 @@ inline void buildRotMat(Quaternion quat, RotationMatrix R)
 }
 
 //----------------------------------------------------------------------------
-inline void buildQuaternion(RotationMatrix R, Quaternion q)
+inline void buildQuaternion(RotationMatrix R, QuaternionDM q)
 {
    Float trace = R[0][0] + R[1][1] + R[2][2];
    if (trace > 0.)
@@ -230,5 +272,144 @@ inline Float normalize(CartesianVector v)
 
     return norm;
 }
+
+
+
+
+
+//-----------------------------------------------------------------------------
+// v5.0
+
+
+/*! 
+Spatial cross product for forces.
+*/
+//! DM 5.0 function 
+/*!
+\f$ { \dot{\bf f} } = {\bf v} \times^* {\bf f}\f$
+*/
+/*!
+\param v the spatial velocity of the coordinate.
+\param F1 the force vector.
+\param F2   the derivative of F1 (output)
+\sa CrossSpV()
+*/
+inline void CrossSpF(Vector6F &v, Vector6F &F1, Vector6F &F2) {
+	Float * f1 = F1.data();
+	Float * f2 = F2.data();
+	Float * vOf = v.data();
+	Float * vv  = vOf + 3;
+	
+	CartesianVector tmp; //type def in dm.h
+
+	Float * f12 = f1+3;
+	
+	CROSS_PRODUCT(vOf,f1,tmp);
+	CROSS_PRODUCT(vv,f12,f2);
+	ADD_CARTESIAN_VECTOR(f2,tmp);
+	
+	f2+=3;
+	
+	CROSS_PRODUCT(vOf,f12,f2);
+}
+
+/*! 
+Spatial cross product for motions.
+*/
+//! DM 5.0 function 
+/*!
+\f$ { \dot{\bf m} } = {\bf v} \times {\bf m}\f$
+*/
+/**
+\param v  the spatial velocity of the coordinate.
+\param M1  the motion vector.
+\param M2  the derivative of M1 (output)
+\sa CrossSpF()
+*/
+inline void CrossSpV(Vector6F &v, Vector6F & M1, Vector6F &M2) {
+	Float * m1 = M1.data();
+	Float * m2 = M2.data();
+	Float * vOm = v.data();
+	Float * vv  = vOm + 3;
+	
+	CartesianVector tmp;
+	
+	CROSS_PRODUCT(vOm,m1,m2);
+	m2+=3;
+	Float * m12 = m1+3;
+	
+	CROSS_PRODUCT(vv,m1,tmp);
+	CROSS_PRODUCT(vOm,m12,m2);
+	ADD_CARTESIAN_VECTOR(m2,tmp);
+}
+
+
+
+
+
+/*!
+ crm  spatial cross-product operator (motion).
+ crm(v) calculates the 6x6 matrix such that the expression crm(v)*m is the
+ cross product of the spatial motion vectors v and m.
+*/
+//! DM 5.0 function 
+/**
+\param v  spatial motion vector.
+\return the 6x6 matrix
+\sa crf()
+*/
+
+inline Matrix6F crm(Vector6F &v)
+{
+	Matrix6F vcross;  
+	vcross <<   0,    -v(2),  v(1),    0,     0,     0,    
+		  v(2),      0,  -v(0),    0,     0,     0,    
+		-v(1),     v(0),    0,     0,     0,     0,
+		    0,    -v(5),  v(4),    0,  -v(2),   v(1),
+		  v(5),      0,  -v(3),  v(2),    0,   -v(0),
+		 -v(4),    v(3),    0,  -v(1),  v(0),     0;
+
+	return vcross;
+}
+
+
+
+/*!
+ crf  spatial cross-product operator (force).
+ crf(v) calculates the 6x6 matrix such that the expression crf(v)*f is the
+ cross product of the spatial motion vector v with the spatial force vector f.
+*/
+//! DM 5.0 function 
+/**
+\param v  spatial force vector.
+\return the 6x6 matrix
+\sa crm()
+*/
+inline Matrix6F crf(Vector6F &v)
+{
+	Matrix6F vcross;
+	vcross = -crm(v).transpose();
+	return vcross;
+}
+
+
+/*!
+ cr3  cross-product operator for 3d vector.
+*/
+//! DM 5.0 function 
+/**
+\param v  3d vector.
+\return the 3x3 matrix (Eigen matrix)
+\sa crm()
+*/
+inline Matrix3F cr3(Vector3F &v)
+{
+	Matrix3F vcross;  
+	vcross <<   0,    -v(2),  v(1),    
+		  v(2),      0,  -v(0),       
+		-v(1),     v(0),    0;
+	return vcross;
+}
+
 
 #endif

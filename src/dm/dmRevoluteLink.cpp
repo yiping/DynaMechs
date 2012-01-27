@@ -269,3 +269,13 @@ void dmRevoluteLink::scongtxToInboardIrefl(const SpatialTensor N,
       I[j + 3][2] = (I[2][j + 3] += tE[2][j]);
    }
 }
+
+
+//---------------------------------------------------
+Matrix6XF dmRevoluteLink::jcalc()
+{
+    
+    Matrix6XF  S(6,1);
+    S << 0, 0, 1, 0, 0, 0;
+    return S;
+}

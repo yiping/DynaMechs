@@ -151,6 +151,10 @@ public:
    void getPose(RotationMatrix R, CartesianVector p) const;
 
    ///
+   // v5.0
+   Matrix6F get_X_FromParent_Motion();
+
+   ///
    inline void setJointInput(Float joint_input[])
    {
       m_joint_input = joint_input[0];

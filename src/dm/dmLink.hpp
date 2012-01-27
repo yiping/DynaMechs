@@ -40,18 +40,18 @@ that must be defined in the derived link classes (currently, dmMDHLink,
 dmSphericalLink, dmQuaternionLink, dmMobileBaseLink, and dmZScrewTxLink).
 
 The link's state variables (generalized position and velocity variables) can be
-set and retrieved using the \c setState and \c getState functions.  The
-\c q and \c qd arguments correspond to position and velocity,
+set and retrieved using the \b setState and \b getState functions.  The
+\b q and \b qd arguments correspond to position and velocity,
 respectively.  They are arrays containing $n$ elements where $n$ is the number
 of degrees of freedom for this particular type of link (and determined by the
-derived classes).  This number is returned when the \c getNumDOFs function
+derived classes).  This number is returned when the \b getNumDOFs function
 is called.  The joint input vector (containing motor inputs where applicable,
-but usually generalized joint forces) can be set by calling \c setJointInput.  
-The parameter is also an array of \c getNumDOFs elements
+but usually generalized joint forces) can be set by calling \b setJointInput.  
+The parameter is also an array of \b getNumDOFs elements
 containing the desired values.
 
-A coulomb friction parameter can also be specified and retrieved using the \c 
-setJointFriction and \c getJointFriction functions.  This scalar parameters
+A coulomb friction parameter can also be specified and retrieved using the \b 
+setJointFriction and \b getJointFriction functions.  This scalar parameters
 multiplies the joint velocity to produce a force/torque opposing the direction
 of motion as follows:
 \f[
@@ -79,10 +79,10 @@ listed as follows:
 The first two rotate Cartesian vectors between this link's and the inboard
 (parent) link's coordinate systems, while the second two transform (rotate and
 translate) spatial vectors.  The last three functions perform congruence
-transformations on matrices to the inboard coordinate system.  \c
+transformations on matrices to the inboard coordinate system.  \b
 rcongtxToInboardSym affects a rotational congruence transform on sysmmetric
-$3\times 3$ matrices while its counterpart, \c rcongtxToInboardGen,
-transforms general \f$3\times 3\f$ matrices.  The last function, \c
+$3\times 3$ matrices while its counterpart, \b rcongtxToInboardGen,
+transforms general \f$3\times 3\f$ matrices.  The last function, \b
 scongtxToInboardIrefl, is a specialized function for the AB algorithm which
 efficiently transforms \f$6\times 6\f$ reflected articulated-body inertia matrices
 taking into account special structure of the matrix based on its joint axes.
@@ -91,79 +91,79 @@ of the AB algorithm.
 
 The next four functions are used to perform the three recursions of the AB
 simulation algorithm.  The first forward kinematics recursion is implemented
-for each link with the \c ABForwardKinematics function.  This function
+for each link with the \b ABForwardKinematics function.  This function
 should only be called by dmArticulation::ABForwardKinematics <em> yeah,
 this should be private and dmArticulation should be made a friend</em>.
-Again, the \c q and \c qd parameters are the joint position and velocity
+Again, the \b q and \b qd parameters are the joint position and velocity
 vectors computed by the current interation of the numerical integration
-algorithm and are used to set the new state of the link.  The \c
-link_val_inboard is the \c ABForKinStruct (see dmArticulation) that
+algorithm and are used to set the new state of the link.  The \b
+link_val_inboard is the \b ABForKinStruct (see dmArticulation) that
 has been filled with the values for the inboard link's state dependent
-quantities.  Using these values, the \c link_val_curr struct elements are
+quantities.  Using these values, the \b link_val_curr struct elements are
 computed for this link.
 
 The second backward recursion of the AB algorithm is implemented with two
 different functions for reasons of efficiency.  If this link has no children,
 it is a leaf node in the tree structure, and therefore, the 
-dmArticulation::ABBackwardDynamics function will call the \c
+dmArticulation::ABBackwardDynamics function will call the \b
 ABBackwardDynamicsN function which will begin the recursion which requires
-less computation, by computing \c f_star_inboard and \c
+less computation, by computing \b f_star_inboard and \b
 N_refl_inboard, the AB bias force and inertia that are reflected across this
 link's joint and transformed to the inboard link's coordinate system.  The
-function \c ABBackwardDynamics performs a full recursive step for a link
-with children.  It takes the accumulated results of the child links in \c
-f_star_curr and \c N_refl_curr and computes the same quantities as
-before.  The \c ABForKinStruct parameter is the \c link_val_curr
+function \b ABBackwardDynamics performs a full recursive step for a link
+with children.  It takes the accumulated results of the child links in \b
+f_star_curr and \b N_refl_curr and computes the same quantities as
+before.  The \b ABForKinStruct parameter is the \b link_val_curr
 computed in the first pass, and is used to call dmForce::computeForce()
 functions if they have been added to the associated dmRigidBody.
 
-The third forward recursion of the AB algorithm is implemented in the \c
-ABForwardAcceleration function.  Its input parameter, \c a_inboard is the
+The third forward recursion of the AB algorithm is implemented in the \b
+ABForwardAcceleration function.  Its input parameter, \b a_inboard is the
 spatial acceleration of the inboard link.  This function computes and outputs
-the spatial acceleration of this link in \c a_curr and fills in the
-derivative of state variables (\c qd and \c qdd).  Note that the velocity
-vector, \c qd, is not necessarily the same as that used in \c
-ABForwardKinematics}.  Rather, it contains the time derivatives of \c q.
+the spatial acceleration of this link in \b a_curr and fills in the
+derivative of state variables (\b qd and \b qdd).  Note that the velocity
+vector, \b qd, is not necessarily the same as that used in \b
+ABForwardKinematics}.  Rather, it contains the time derivatives of \b q.
 See dmSphericalLink for an example where they are not the same.
 
 Another set of four functions are required for simulating systems with
 kinematic loops.  Three of these function are used in the backward dynamics
-recursion of the AB algorithm.  The \c XikToInboard function is used when
+recursion of the AB algorithm.  The \b XikToInboard function is used when
 eliminating a link from the force-balance equation of its predecessor.  This
 function computes the update to the coefficient of the loop-closure constraint
 forces of a loop in the predecessor link's force-balance equation (as a result
-of the elimination).  The \c BtoInboard function computes the new
+of the elimination).  The \b BtoInboard function computes the new
 coefficient of loop n's constraint forces in the loop-closure constraint
 equation for loop k after elimination of the current link in favor of its
-predecessor.  The \c xformZetak function computes the new bias term
+predecessor.  The \b xformZetak function computes the new bias term
 ($\zeta_k$) in loop k's loop-closure constraint equation after elimination of
-the link.  Finally, the last function, \c ABForwardAccelerations, is used
+the link.  Finally, the last function, \b ABForwardAccelerations, is used
 in the forward accelerations recursion of the AB algorithm.  It is an
 overloaded version of the same function used for tree topologies, requiring
 additional parameters containing topology information and computed
 loop-closure forces.
 
-Two functions, \c pushForceStates and \c popForceStates, save and
+Two functions, \b pushForceStates and \b popForceStates, save and
 restore the state of all dmForce objects attached to the link.  These
 functions are provided for adaptive-stepsize integrators which may need to
 back out of an integration step.
 
 Another two functions are provided for retrieving the energy of a link.  The
-\c getPotentialEnergy function returns the gravitational potential energy of
-the link based on the supplied gravity vector and the \c ABForKinStruct
+\b getPotentialEnergy function returns the gravitational potential energy of
+the link based on the supplied gravity vector and the \b ABForKinStruct
 parameter for the link.  The potential energy zero is defined by the plane
 passing through the origin of the inertial coordinate system with the gravity
-vector as its normal.  The \c getKineticEnergy function returns the kinetic
-energy of the link (translational + rotational) based on the supplied \c
+vector as its normal.  The \b getKineticEnergy function returns the kinetic
+energy of the link (translational + rotational) based on the supplied \b
 ABForKinStruct parameter.
 
-The only function that is implemented in this class is the \c
+The only function that is implemented in this class is the \b
 forwardKinematics function.  It is called by 
 dmArticulation::forwardKinematics function and computes the current link's
-position (\c link_val_curr->p_ICS) and orientation (\c
+position (\b link_val_curr->p_ICS) and orientation (\b
 link_val_curr->R_ICS) with respect to the inertial coordinate frame given
-the inboard link's position and orientation (\c link_val_inboard->p_ICS
-and \c link_val_inboard->R_ICS).
+the inboard link's position and orientation (\b link_val_inboard->p_ICS
+and \b link_val_inboard->R_ICS).
 
 See also: dmArticulation, dmMDHLink, dmSphericalLink,
           dmQuaternionLink, dmZScrewTxLink, dmMobileBaseLink.
@@ -228,6 +228,22 @@ public:
    ///
    virtual void xformZetak(Float *zetak,
                            Float **Xik, int cols_Xik) const = 0;
+
+   ///
+   //! Return the 6x6 spatial transformation matrix (\f$ {}^i X_{i-1}\f$).
+   /*!
+      v5.0 function
+      \b Should make it a pure virtual function, but that involves adding the implementation for 
+       all link types. Let's worry about it later. 
+   */
+   virtual Matrix6F get_X_FromParent_Motion();
+   
+   //! Return the subspace vector of the joint
+   /*!
+      v5.0 function
+      \b Should make it a pure virtual function, too, later.
+   */
+   virtual Matrix6XF jcalc();
 
 
 // Articulated-Body (AB) algorithm functions:

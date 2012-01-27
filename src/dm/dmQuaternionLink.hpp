@@ -171,10 +171,10 @@ private:
 
    inline void matrixInverse3PD(CartesianTensor A,
                                 CartesianTensor A_inv);
-   inline void setJointPos(Quaternion q);
+   inline void setJointPos(QuaternionDM q);
 
 private:
-   Quaternion m_q;           // orientation quaternion
+   QuaternionDM m_q;           // orientation quaternion
    Float m_qd[3];            // relative angular velocity wrt i coords.
    Float m_qdd[3];           // acceleration.
 

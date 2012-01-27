@@ -249,6 +249,30 @@ void dmMDHLink::stxFromInboard(const SpatialVector prev,
    curr[4] = tmpa*m_ctheta - tmpb*m_stheta;
 }
 
+
+
+//---------------------------------------------------------------------
+Matrix6F dmMDHLink::get_X_FromParent_Motion()
+{
+    RotationMatrix R;
+    CartesianVector p;
+    getPose(R,p);
+    Matrix3F R1;
+    Vector3F p1; 
+    R1 << R[0][0], R[0][1], R[0][2],
+          R[1][0], R[1][1], R[1][2],
+	  R[2][0], R[2][1], R[2][2];
+    p1 << p[0], p[1], p[2];
+    Matrix6F X;
+    X.block<3,3>(0,0) = R1;
+    X.block<3,3>(0,3) = Matrix3F::Zero();
+    X.block<3,3>(3,0) = -R1*cr3(p1);
+    X.block<3,3>(3,3) = R1;
+  
+    return X;
+}
+
+
 // ---------------------------------------------------------------------
 // Function : stxToInboard
 // Purpose  : Spatial transform of 6d vector to inboard CS

@@ -31,23 +31,23 @@
 //============================================================================
 /**
 
-This class is one of the two concrete link classes derived from the {\tt
-dmMDHLink} class.  It implements the dynamics specific to a prismatic
+This class is one of the two concrete link classes derived from the 
+dmMDHLink class.  It implements the dynamics specific to a prismatic
 (translational) one degree of freedom joint.
 
-{\em Not reference manual material:} The primary purpose of this class is to
-implement the {\tt scongToInboardIrefl} member function, a very efficient
+<b>Not reference manual material:</b> The primary purpose of this class is to
+implement the \b scongToInboardIrefl member function, a very efficient
 congruence transformation of the Articulated-Body inertia matrix that is
 transformed across the prismatic joint.  In this case, the sixth row and column
 of the matrix are zero and taking this into account results in significant
 computation savings (for all the gorey details, please read my dissertation or
-Robotics and Automation Journal article).  The {\tt
-dmMDHLink::ABBackwardDynamics[N]} functions call this function in the course of
+Robotics and Automation Journal article).  The 
+dmMDHLink::ABBackwardDynamics[N] functions call this function in the course of
 computing the dynamics.  It should probably be a private/protected member
 function, but since it does not modify any member variables there is no harm in
 leaving it public.
 
-See also: {\tt dmMDHLink}, {\tt dmLoadFile\_dm}.
+See also:  dmMDHLink ,  dmLoadFile_dm .
  */
 
 class DM_DLL_API dmPrismaticLink : public dmMDHLink

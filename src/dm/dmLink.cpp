@@ -275,3 +275,23 @@ void dmLink::scongtxToInboardIrefl(const SpatialTensor Curr,
       for (j = i+1; j < 6; j++)
          Prev[i][j] = Prev[j][i];
 }
+
+
+
+
+
+//-------------------------------------------------------------
+Matrix6F dmLink::get_X_FromParent_Motion()
+{
+    //dummy implementation
+    Matrix6F X = Matrix6F::Zero();
+    return X;
+}
+
+Matrix6XF dmLink::jcalc()
+{
+    //dummy implementation
+    Matrix6XF  m(6,1);
+    m << 0, 0, 1, 0, 0, 0;
+    return m;
+}

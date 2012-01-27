@@ -417,7 +417,7 @@ void setDynamicRefMemParameters21(dmMobileBaseLink *ref, ifstream &cfg_ptr)
 void setStaticRefMemParameters21(dmSystem *robot, ifstream &cfg_ptr)
 {
    CartesianVector pos;
-   Quaternion quat;
+   QuaternionDM quat;
 
    readConfigParameterLabel(cfg_ptr, "Position");
    cfg_ptr >> pos[0] >> pos[1] >> pos[2];

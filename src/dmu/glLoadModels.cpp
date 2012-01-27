@@ -180,8 +180,8 @@ void executeGL_xan(ifstream &data_ptr)
 
    // // the following two lines are commented out by Yiping, 01/11/2012
    // // to allow users to switch betwee solid face and wireframe 
-   // glPolygonMode(GL_FRONT, GL_FILL);
-   // glPolygonMode(GL_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT, GL_FILL);
+    glPolygonMode(GL_BACK, GL_LINE);
 
 
    GLfloat color[4] = {0.0, 0.0, 0.0, 1.0};

@@ -205,6 +205,11 @@ public:
    ///
    virtual void stxToInboard(const SpatialVector curr,
                              SpatialVector prev) const;
+	
+	void stxToInboardMat(const Matrix6XF &curr,
+							  Matrix6XF &prev) const;
+	
+	
    ///
    virtual void stxFromInboard(const SpatialVector prev,
                                SpatialVector curr) const;
@@ -217,6 +222,11 @@ public:
    ///
    virtual void scongtxToInboardIrefl(const SpatialTensor N_curr,
                                       SpatialTensor N_prev) const;
+	
+	void scongxToInboardIcomp(const CrbInertia & IC_curr, CrbInertia & IC_prev) const;
+	
+	
+	
    ///
    virtual void XikToInboard(Float **Xik_curr,
                              Float **Xik_prev,
@@ -298,7 +308,7 @@ public:
 // rendering functions:
    ///
    virtual void draw() const = 0;
-
+	
 private:   // not implemented
    dmLink(const dmLink &);
    dmLink &operator=(const dmLink &);
@@ -315,6 +325,7 @@ protected:
    SpatialVector m_zeta;          // Additional variables for the AB algorithm
    SpatialTensor m_N_refl;        // member functions that are not
    SpatialVector m_gamma;         // dependent on the joint type.
+	
 };
 
 #endif

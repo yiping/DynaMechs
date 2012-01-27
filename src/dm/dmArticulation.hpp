@@ -183,6 +183,10 @@ public:
    // dynamic algorithm
    ///
    void dynamics(Float *qy, Float *qdy);
+	
+	// v5.0
+	// CRB Inerta Algorithm
+	void computeH();
 
    // rendering function:
    ///
@@ -228,6 +232,8 @@ private:
    SpatialTensor    m_I_star_ref;
    SpatialVector    m_beta_star_ref;
    SpatialVector    m_accel_ref;
+	
+	MatrixXF H;
 };
 
 #endif

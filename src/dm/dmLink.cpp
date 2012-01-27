@@ -277,8 +277,46 @@ void dmLink::scongtxToInboardIrefl(const SpatialTensor Curr,
 }
 
 
+//---------------------------------------------------------
+void dmLink::scongxToInboardIcomp(const CrbInertia & IC_curr, CrbInertia & IC_prev) const
+{
+	IC_prev.m = IC_curr.m;
+	
+	rcongtxToInboardSym(IC_curr.IBar, IC_prev.IBar);
+	CartesianVector RTh;
+	rtxToInboard(IC_curr.h, RTh);
+	CartesianTensor C1, C2;
+	
+	//cout << "RTH\tmp" << endl;
+	for (int i=0; i<3; i++) {
+		//cout << RTh[i] << "\t" <<  cur.m * X.pi_p_i[i] << endl;
+		IC_prev.h[i] = RTh[i] + IC_curr.m * m_p[i];
+	}
+	
+	doubleCrossProdMat(m_p, RTh, C1);
+	doubleCrossProdMat(m_p, m_p, C2);
+	
+	for (int i =0 ; i < 3 ; i++) {
+		for (int j=0; j<3; j++) {
+			IC_prev.IBar[i][j] -= C1[i][j] + C1[j][i] + IC_curr.m*C2[i][j];
+		}
+	}
+}
 
-
+//-------------------------
+void dmLink::stxToInboardMat(const Matrix6XF& curr, Matrix6XF & prev) const
+{
+	const int c = curr.cols();
+	prev.resize(6,curr.cols());
+	
+	const Float * cPtr = curr.data();
+	Float * pPtr = prev.data();
+	for (int i=0; i<c; i++) {
+		stxToInboard(cPtr,pPtr);
+		cPtr +=6;
+		pPtr +=6;
+	}
+}
 
 //-------------------------------------------------------------
 Matrix6F dmLink::get_X_FromParent_Motion()

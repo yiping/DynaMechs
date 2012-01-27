@@ -128,6 +128,12 @@ typedef Matrix<Float, Dynamic, Dynamic> MatrixXF;
 typedef Matrix<Float, Dynamic,6> MatrixX6F;
 typedef Matrix<Float, 6, Dynamic> Matrix6XF;
 
+typedef struct CRBI {
+	CartesianTensor IBar;
+	CartesianVector h;
+	Float m;
+} CrbInertia;
+
 
 //----------------------------------------------------------------------------
 // Summary: struct containing variables used in ABForwardKinematics for a
@@ -279,6 +285,41 @@ inline Float normalize(CartesianVector v)
 
 //-----------------------------------------------------------------------------
 // v5.0
+
+
+//-----
+inline void doubleCrossProdMat(const CartesianVector p1, const CartesianVector p2, CartesianTensor pCross)
+{
+	const Float p10 = p1[0], p11 = p1[1], p12 = p1[2];
+	const Float p20 = p2[0], p21 = p2[1], p22 = p2[2];
+	
+	pCross[0][0] = -p11*p21-p12*p22;	pCross[0][1] = p11*p20;				pCross[0][2] = p12*p20;
+	pCross[1][0] = p10*p21;				pCross[1][1] = -p10*p20-p12*p22;	pCross[1][2] = p12*p21;
+	pCross[2][0] = p10*p22;				pCross[2][1] = p11*p22;				pCross[2][2] = -p10*p20-p11*p21;
+}
+
+//------
+inline void CrbCopy(CrbInertia &A, CrbInertia &B) {
+	B.m = A.m;
+	for (int i=0; i<3; i++) {
+		B.h[i] = A.h[i];
+		for (int j =0; j<3; j++) {
+			B.IBar[i][j] = A.IBar[i][j];
+		}
+	}
+}
+
+//-----
+inline void CrbAdd(CrbInertia & a, CrbInertia & b)
+{
+	a.m += b.m;
+	for(int i=0 ; i<3;i++) {
+		a.h[i] += b.h[i];
+		for (int j=0; j<3; j++) {
+			a.IBar[i][j] += b.IBar[i][j];
+		}
+	}
+}
 
 
 /*! 

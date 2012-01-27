@@ -131,7 +131,7 @@ Float dmRevDCMotor::computeTau(Float source_voltage,
       // May be made more efficient as "source_voltage" is the only
       // variable. Left as is for clarity.
       source_voltage -= sgn(source_voltage)*m_max_brush_drop *
-         (1.0 - pow(0.5f, (fabs(source_voltage)/m_half_drop_value)));
+         (1.0 - pow((Float) 0.5f, (fabs(source_voltage)/m_half_drop_value)));
    }
 
    // add torque developed internally by motor (Kt*i).

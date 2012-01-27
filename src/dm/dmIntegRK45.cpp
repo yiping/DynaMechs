@@ -406,7 +406,7 @@ void dmIntegRK45::rkqs(Float htry, Float *hdid, Float *hnext)
 
       if (errmax > 1.0)  // Didn't satisfy accuracy requirement.
       {
-         hscale = SAFETY*pow(errmax,(float)PCORRECT);
+         hscale = SAFETY*pow(errmax,(Float)PCORRECT);
          if (hscale < 0.1)
             hscale=(Float)0.1;
          h *= hscale;
@@ -444,7 +444,7 @@ void dmIntegRK45::rkqs(Float htry, Float *hdid, Float *hnext)
                m_qy[j] = m_qy_temp[j];
 
             if (errmax > ERRCON)
-               *hnext = SAFETY*h*pow(errmax,(float)PCORRECT);
+               *hnext = SAFETY*h*pow(errmax,(Float)PCORRECT);
             else
                *hnext = 5.0*h;
             *hdid = h;

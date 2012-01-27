@@ -160,7 +160,7 @@ void dmArticulation::draw() const
 
    glTranslatef(m_p_ICS[0], m_p_ICS[1], m_p_ICS[2]);
 
-   float len = sqrt(m_quat_ICS[0]*m_quat_ICS[0] +
+   Float len = sqrt(m_quat_ICS[0]*m_quat_ICS[0] +
                     m_quat_ICS[1]*m_quat_ICS[1] +
                     m_quat_ICS[2]*m_quat_ICS[2]);
    if (len > 1.0e-6)
@@ -293,7 +293,7 @@ void dmQuaternionLink::draw() const
 {
    glTranslatef(m_p[0], m_p[1], m_p[2]);
 
-   float len = sqrt(m_q[0]*m_q[0] + m_q[1]*m_q[1] + m_q[2]*m_q[2]);
+   Float len = sqrt(m_q[0]*m_q[0] + m_q[1]*m_q[1] + m_q[2]*m_q[2]);
    if (len > 1.0e-6)
    {
       float angle = 2.0*atan2(len, m_q[3]);
@@ -308,7 +308,7 @@ void dmMobileBaseLink::draw() const
 {
    glTranslatef(m_p[0], m_p[1], m_p[2]);
 
-   float len = sqrt(m_quat[0]*m_quat[0] +
+   Float len = sqrt(m_quat[0]*m_quat[0] +
                     m_quat[1]*m_quat[1] +
                     m_quat[2]*m_quat[2]);
    if (len > 1.0e-6)

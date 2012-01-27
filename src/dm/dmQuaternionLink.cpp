@@ -43,7 +43,7 @@ dmQuaternionLink::dmQuaternionLink() : dmRigidBody()
       m_joint_input[i] = 0.0;
    }
 
-   QuaternionDM q = {0.0, 0.0, 0.0, 1.0};
+   dmQuaternion q = {0.0, 0.0, 0.0, 1.0};
    setJointPos(q);
 }
 
@@ -146,7 +146,7 @@ inline void dmQuaternionLink::matrixInverse3PD(CartesianTensor A,
 // Parameters: q - quaternion
 //    Returns: none
 //----------------------------------------------------------------------------
-inline void dmQuaternionLink::setJointPos(QuaternionDM q)
+inline void dmQuaternionLink::setJointPos(dmQuaternion q)
 {
    // normalize the quaternion
    ::normalizeQuat(q);

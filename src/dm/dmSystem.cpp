@@ -38,7 +38,7 @@
 //----------------------------------------------------------------------------
 dmSystem::dmSystem() : dmObject()
 {
-   QuaternionDM q = {0., 0., 0., 1.};
+   dmQuaternion q = {0., 0., 0., 1.};
    CartesianVector p = {0., 0., 0.};
    setRefSystem(q,p);
 }
@@ -60,7 +60,7 @@ dmSystem::~dmSystem()
 // Parameters: quaternion and position vector relative to the origin
 //    Returns: none
 //----------------------------------------------------------------------------
-void dmSystem::setRefSystem(QuaternionDM quat, CartesianVector pos)
+void dmSystem::setRefSystem(dmQuaternion quat, CartesianVector pos)
 {
    normalizeQuat(quat);
    m_quat_ICS[0] = quat[0];
@@ -76,7 +76,7 @@ void dmSystem::setRefSystem(QuaternionDM quat, CartesianVector pos)
 }
 
 //----------------------------------------------------------------------------
-void dmSystem::getRefSystem(QuaternionDM quat, CartesianVector pos) const
+void dmSystem::getRefSystem(dmQuaternion quat, CartesianVector pos) const
 {
    quat[0] = m_quat_ICS[0];
    quat[1] = m_quat_ICS[1];

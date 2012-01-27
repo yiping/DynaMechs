@@ -149,10 +149,10 @@ private:
    dmMobileBaseLink &operator=(const dmMobileBaseLink &);
 
    void initABVars() {};
-   inline void setJointPos(QuaternionDM q, CartesianVector p);
+   inline void setJointPos(dmQuaternion q, CartesianVector p);
 
 private:
-   QuaternionDM      m_quat;     // orientation quaternion
+   dmQuaternion      m_quat;     // orientation quaternion
                                //   rotation matrix, ^i{\bf R}_{i-1} and
                                //   position stored in dmLink::m_p
 

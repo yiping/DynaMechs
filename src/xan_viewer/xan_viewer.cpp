@@ -98,7 +98,7 @@ dmArticulation *Establish_Dummy_Dm_Model(char * xanname )
    robot->setUserData((void *) dlist);
 
    CartesianVector pos;
-   QuaternionDM quat;
+   dmQuaternion quat;
 
    pos[0]=0; pos[1]=0;  pos[2]=0;
    quat[0]=0; quat[1]=0; quat[2]=0; quat[3]=1.0;

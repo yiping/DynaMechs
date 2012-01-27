@@ -112,7 +112,7 @@ typedef Float SpatialVector[6];
 typedef Float CartesianTensor[3][3];
 typedef Float CartesianVector[3];
 typedef Float EulerAngles[3];
-typedef Float QuaternionDM[4];
+typedef Float dmQuaternion[4];
 typedef Float RotationMatrix[3][3];
 typedef Float HomogeneousTransformationMatrix[4][4];
 
@@ -152,7 +152,7 @@ using namespace std;
 #endif
 
 //----------------------------------------------------------------------------
-inline void normalizeQuat(QuaternionDM quat)
+inline void normalizeQuat(dmQuaternion quat)
 {
    Float len = sqrt(quat[0]*quat[0] +
                     quat[1]*quat[1] +
@@ -178,7 +178,7 @@ inline void normalizeQuat(QuaternionDM quat)
 
 // ---------------------------------------------------------------------
 
-inline void buildRotMat(QuaternionDM quat, RotationMatrix R)
+inline void buildRotMat(dmQuaternion quat, RotationMatrix R)
 {
    // set the transformation matrix
    static Float q1,q2,q3, q1q1,q2q2,q3q3, q1q2,q1q3,q2q3, q1q4,q2q4,q3q4;
@@ -213,7 +213,7 @@ inline void buildRotMat(QuaternionDM quat, RotationMatrix R)
 }
 
 //----------------------------------------------------------------------------
-inline void buildQuaternion(RotationMatrix R, QuaternionDM q)
+inline void buildQuaternion(RotationMatrix R, dmQuaternion q)
 {
    Float trace = R[0][0] + R[1][1] + R[2][2];
    if (trace > 0.)

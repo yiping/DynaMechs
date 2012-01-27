@@ -17,3 +17,6 @@
                   virtual functions:  get_X_FromParent_Motion()  jcalc()  [should later make them PURE virtual]
                   get_X_FromParent_Motion() is implemented in dmMDHLink 
                   jcalc() is implemented in dmRevoluteLink                    
+
+1/27/2012
+1.   Renaming QuaternionDM to dmQuaternion

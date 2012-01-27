@@ -271,3 +271,12 @@ void dmPrismaticLink::scongtxToInboardIrefl(const SpatialTensor N,
       I[j + 3][2] = (I[2][j + 3] += tE[2][j]);
    }
 }
+
+
+//-------------------------------------------------------
+Matrix6XF dmPrismaticLink::jcalc()
+{
+    Matrix6XF  S(6,1);
+    S << 0, 0, 0, 0, 0, 1;
+    return S;
+}

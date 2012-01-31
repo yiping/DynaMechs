@@ -541,3 +541,26 @@ void dmZScrewTxLink::xformZetak(Float *zetak,
       for (j = 3; j < 6; j++)             // Know that m_zeta[0:2] = 0.0
          zetak[i] -= Xik[j][i]*m_zeta[j];
 }
+
+
+
+//---------------------------------------------------------------------
+Matrix6F dmZScrewTxLink::get_X_FromParent_Motion()
+{
+    RotationMatrix R;
+    CartesianVector p;
+    getPose(R,p);
+    Matrix3F R1;
+    Vector3F p1; 
+    R1 << R[0][0], R[0][1], R[0][2],
+          R[1][0], R[1][1], R[1][2],
+	  R[2][0], R[2][1], R[2][2];
+    p1 << p[0], p[1], p[2];
+    Matrix6F X;
+    X.block<3,3>(0,0) = R1;
+    X.block<3,3>(0,3) = Matrix3F::Zero();
+    X.block<3,3>(3,0) = -R1*cr3(p1);
+    X.block<3,3>(3,3) = R1;
+  
+    return X;
+}

@@ -643,7 +643,7 @@ void dmRigidBody::computeHydrodynamicBias(const dmABForKinStruct &val,
 #endif
 
 
-//--
+//---------------------------------------------------------------------------------------
 void dmRigidBody::CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_curr) const
 {
 	IC_curr.m = IC_parents.m + m_mass;
@@ -654,3 +654,28 @@ void dmRigidBody::CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_cu
 			}
 	}
 }
+
+
+//-----------------------------------------------------------------------------------------
+Matrix6F dmRigidBody::getSpatialInertiaMatrix()
+{
+	Matrix6F I;
+	for (int i = 0; i<6; i++)
+	{
+		for (int j = 0; j<6; j++)
+		{
+			I(i,j) = m_SpInertia[i][j];
+		}
+	}
+		
+//	I<< m_SpInertia[0][0], m_SpInertia[0][1], m_SpInertia[0][2], m_SpInertia[0][3], m_SpInertia[0][4], m_SpInertia[0][5], 
+//	    m_SpInertia[1][0], m_SpInertia[1][1], m_SpInertia[1][2], m_SpInertia[1][3], m_SpInertia[1][4], m_SpInertia[1][5], 
+//	    m_SpInertia[2][0], m_SpInertia[2][1], m_SpInertia[2][2], m_SpInertia[2][3], m_SpInertia[2][4], m_SpInertia[2][5],
+//	    m_SpInertia[3][0], m_SpInertia[3][1], m_SpInertia[3][2], m_SpInertia[3][3], m_SpInertia[3][4], m_SpInertia[3][5], 
+//	    m_SpInertia[4][0], m_SpInertia[4][1], m_SpInertia[4][2], m_SpInertia[4][3], m_SpInertia[4][4], m_SpInertia[4][5], 
+//	    m_SpInertia[5][0], m_SpInertia[5][1], m_SpInertia[5][2], m_SpInertia[5][3], m_SpInertia[5][4], m_SpInertia[5][5];
+	return I;
+}
+
+
+

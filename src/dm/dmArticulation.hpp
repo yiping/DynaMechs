@@ -160,6 +160,17 @@ public:
    ///
    void getState(Float q[], Float qd[]) const;
 
+   /// 
+   //! calculates the Jacobian matrix for a single chain
+   /**
+   DM v5.0 function<CR>
+   We will 
+   \param index of the target link, the function will trace back to root (if ini_idx is not otherwise set)
+   \return the 6xn Jacobian matrix, 
+   */
+   Matrix6XF calculateJacobian(unsigned int target_idx, Matrix6F & X_target, unsigned int ini_idx = 0);
+
+
    ///
    bool forwardKinematics(unsigned int link_index,
                           HomogeneousTransformationMatrix mat) const;
@@ -183,9 +194,12 @@ public:
    // dynamic algorithm
    ///
    void dynamics(Float *qy, Float *qdy);
+
+   ///
+   //! DM v5.0 function, Inverse Dynamics (RNEA); For articulation tree only, 
+   void inverseDynamics();
 	
-	// v5.0
-	// CRB Inerta Algorithm
+	//! v5.0, CRB Inerta Algorithm
 	void computeH();
 
    // rendering function:
@@ -213,7 +227,12 @@ protected:
       vector<LinkInfoStruct*> child_list;
 
       dmABForKinStruct link_val;
-	   CrbInertia I_C;
+
+      //! DM v5.0, a struct containing intermediate variables for recursive NE algorithm.
+      dmRNEAStruct link_val2; //spatial velocity, acceleration, force and qdd.
+
+      //! v5.0, composite rigid body inertia	   
+      CrbInertia I_C;
 
       // AB algorithm temporaries
       SpatialVector accel;

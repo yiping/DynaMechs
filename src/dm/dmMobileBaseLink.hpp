@@ -105,6 +105,10 @@ public:
    void xformZetak(Float *zetak,
                    Float **Xik, int cols_Xik) const;
 
+   //! v5.0 function
+   Matrix6XF jcalc();
+
+
 // Articulated-Body (AB) algorithm functions:
    ///
    virtual void ABForwardKinematics(Float q[],

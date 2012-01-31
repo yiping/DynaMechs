@@ -150,6 +150,10 @@ public:
                              CartesianTensor inertia,
                              CartesianVector cg_pos) const;
 	
+   /// 
+   //! DM v5.0 function, get spatial intertia matrix (eigen format)
+   Matrix6F getSpatialInertiaMatrix();
+
 	//
 	void CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_curr) const;
 

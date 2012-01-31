@@ -81,6 +81,7 @@ void dmLink::forwardKinematics(dmABForKinStruct &link_val_inboard,
 }
 
 
+
 // ---------------------------------------------------------------------
 // Function : rtxToInboard
 // Purpose  : rotate a 3d vector from this link's CS to inboard CS
@@ -339,4 +340,27 @@ Matrix6XF dmLink::jcalc()
     Matrix6XF  m(6,1);
     m << 0, 0, 1, 0, 0, 0;
     return m;
+}
+
+//-------------------------------------------------------------
+
+
+void dmLink::RNEAOutwardFKID(dmRNEAStruct &link_val2_curr, 
+                                      dmRNEAStruct &link_val2_inboard)
+{
+        //dummy
+}
+
+void dmLink::RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
+					  CartesianVector  p_ref_ICS,  
+                                          RotationMatrix  R_ref_ICS, 
+                                          Vector6F a_ini, Vector6F v_ini)
+{
+	//dummy
+}
+
+void dmLink::RNEAInwardID( dmRNEAStruct &link_val2_curr,
+                            dmRNEAStruct &link_val2_inboard)
+{
+	//dummy
 }

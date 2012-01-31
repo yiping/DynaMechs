@@ -38,3 +38,8 @@ dmForce::dmForce() : dmObject()
 dmForce::~dmForce()
 {
 }
+
+void dmForce::computeForce(const dmRNEAStruct &val, SpatialVector force)
+{
+	//dummy
+}

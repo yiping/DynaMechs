@@ -34,24 +34,24 @@
 /**
 
 This is an unusual concrete link class because while it inherits the AB
-simulation algorithm functionality from the {\tt dmLink} class, it does not
+simulation algorithm functionality from the  dmLink  class, it does not
 represent a rigid body so it does not contain any dynamic parameters (that is,
-it does not inherit from the {\tt dmRigidBody} class).  The purpose of this
+it does not inherit from the \b dmRigidBody  class).  The purpose of this
 class is to implement efficient branching within tree stuctures by modelling a
-constant $z$ axial screw transformation between coordinate systems as
+constant \f$z\f$ axial screw transformation between coordinate systems as
 recommended in the kinematics literature by Khalil and Kleinfinger.
 
-The $z$ axial screw is defined by two parameters: a translation along and a
-rotation about the $z$ axis.  Since they are constant, these parameters can
-only be set with arguments to the constructor where {\tt d} is the translation
-amount and {\tt theta} is the rotation in radians.
+The \f$z\f$ axial screw is defined by two parameters: a translation along and a
+rotation about the \f$z\f$ axis.  Since they are constant, these parameters can
+only be set with arguments to the constructor where \b d is the translation
+amount and \b theta  is the rotation in radians.
 
-The remainder of the functions are described in the {\tt dmLink} reference
-pages and are implemented in this class for the specific case of $z$ axial
-screws.  Note that {\tt getNumDOFs} returns 0.  As such the joint variables
-{\tt q}, {\tt qd}, {\tt qdd}, and {\tt joint\_input} are empty arrays.
+The remainder of the functions are described in the  dmLink  reference
+pages and are implemented in this class for the specific case of \f$z\f$ axial
+screws.  Note that \b getNumDOFs returns \b 0.  As such the joint variables
+\b q, \b qd, \b qdd, and \b joint_input are empty arrays.
 
-See also {\tt dmLink}.
+See also  dmLink .
 
  */
 
@@ -113,6 +113,10 @@ public:
    ///
    void xformZetak(Float *zetak,
                    Float **Xik, int cols_Xik) const;
+
+   /// 
+   //! DM v5.0 function
+   Matrix6F get_X_FromParent_Motion();
 
 // AB algorithm functions:
    ///

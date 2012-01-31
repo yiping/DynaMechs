@@ -714,3 +714,16 @@ void dmMobileBaseLink::ABForwardAccelerations(SpatialVector a_inboard,
    qd[5] = m_vel[4];
    qd[6] = m_vel[5];
 }
+
+
+
+
+
+
+//---------------------------------------------------
+Matrix6XF dmMobileBaseLink::jcalc()
+{
+    Matrix6XF  S(6,6);
+    S = Matrix6XF::Identity(6,6);
+    return S;
+}

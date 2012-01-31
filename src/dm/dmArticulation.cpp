@@ -425,7 +425,7 @@ void dmArticulation::dynamics(Float *qy, Float *qdy)
       m_ref_val.p_ICS[i] = m_p_ICS[i];
       for (j = 0; j < 3; j++)
       {
-         m_ref_val.R_ICS[i][j] = m_R_ICS[j][i];
+         m_ref_val.R_ICS[i][j] = m_R_ICS[j][i];  //? why transpose?
       }
    }
 
@@ -687,6 +687,7 @@ void dmArticulation::ABForwardAccelerations(SpatialVector a_ref,
    }
 }
 
+//-------------------------------------------------------
 void CrbToMat(const CrbInertia &I_C, Matrix6F & I_Cm)
 {
 	I_Cm = Matrix6F::Zero();
@@ -711,7 +712,7 @@ void CrbToMat(const CrbInertia &I_C, Matrix6F & I_Cm)
 }
 
 
-//----
+//---------------------------------------------------------
 void dmArticulation::computeH()
 {
 	const CrbInertia IZero = {{{0,0,0},{0,0,0},{0,0,0}},{0,0,0},0};
@@ -738,6 +739,134 @@ void dmArticulation::computeH()
 
 		if (curr->parent) {
 			curr->link->scongxToInboardIcomp(curr->I_C, curr->parent->I_C);
+		}
+	}
+}
+
+//------------------------------------------------------------
+Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & X_target, unsigned int ini_idx)
+{
+	//trace back all the way to the root. 
+	
+	vector<unsigned int> indices;
+	if ((target_idx < m_link_list.size() ) && (target_idx >= 0) )
+   	{
+		unsigned int idx = target_idx;
+                indices.push_back(target_idx);
+      		while (m_link_list[idx]->parent) // if the parent is not null (i.e., at the root level)
+         	{
+			idx = m_link_list[idx]->parent->index;
+                        indices.push_back(idx);
+		}
+   	}
+	else
+	{
+		cerr << "dmArticulation::calculateJacobian() error: target link index out of range"<< endl;
+		exit (1);
+	}
+
+	// 
+	if (ini_idx != 0)
+	{
+		unsigned int x = 0;
+		bool isFound = false;
+		for (unsigned i = 0; i<indices.size(); i++)
+		{
+			if (indices[i] == ini_idx)
+			{
+				x=i;
+				isFound = true;
+			}
+		}
+		if (isFound == false)
+		{
+			cerr << "dmArticulation::calculateJacobian() error: initial link index is illegal"<< endl;
+			exit (1);
+		}
+		else
+		{
+			indices.resize(x+1);
+		}
+	}
+
+	// outward iteration
+	vector<unsigned int>::iterator it;
+	Matrix6XF Jacobian;  // 6 x 0
+        Matrix6F  X = Matrix6F::Identity();
+	for (unsigned i = indices.size()-1; i>=0; i--)
+	{    
+		dmLink *link = NULL;
+		link = getLink(indices[i]);
+		Matrix6XF S; 
+		int c=0;
+		S = link->jcalc();
+		c = Jacobian.cols(); 		
+		if (i == indices.size()-1)
+		{
+			Jacobian.conservativeResize(6, c + S.cols());
+			Jacobian.block(0,c,6,S.cols() ) = S;	        	
+		}
+		else
+		{		
+			X = link->get_X_FromParent_Motion();// {}^i X_{i-1}, comes with Link i
+			Jacobian = X*Jacobian; // this is ok 		
+			Jacobian.conservativeResize(6, c + S.cols());
+			Jacobian.block(0,c, 6, S.cols()) = S;
+		}
+	}
+
+	return Jacobian;
+
+}
+
+
+
+
+
+
+//-------------------------------------------------------------------
+void dmArticulation::inverseDynamics()
+{
+
+	Vector6F a_g;
+	a_g <<0, 0, 0, 0, 0, -9.81;
+	Vector6F v_ini = Vector6F::Zero();
+	Vector6F a_ini = -a_g;
+
+
+	// outward recursion
+	for (int i = 0;i < getNumLinks(); i++) //link indices in this articulation
+	{
+		if (!m_link_list[i]->parent)
+		{
+   			CartesianVector  p_ref_ICS;  
+   			RotationMatrix  R_ref_ICS;  			
+			for (int r = 0; r < 3; r++)
+   			{
+				p_ref_ICS[r] = m_p_ICS[r];
+      				for (int k = 0; k < 3; k++)
+      				{
+         				R_ref_ICS[r][k] = m_R_ICS[k][r];  //? why transpose?
+      				}
+			}
+
+			m_link_list[i]->link->RNEAOutwardFKIDFirst(m_link_list[i]->link_val2, 
+								    p_ref_ICS, R_ref_ICS, a_ini, v_ini);
+		}
+		else
+		{
+			m_link_list[i]->link->RNEAOutwardFKID(m_link_list[i]->link_val2, 
+                                                            m_link_list[i]->parent->link_val2);
+		}
+
+	}
+	// inward recursion 
+	for (int i = getNumLinks()-1; i >= 0; i--) //link indices in reverse order
+	{
+		if (m_link_list[i]->parent)
+		{
+			m_link_list[i]->link->RNEAInwardID(m_link_list[i]->link_val2,
+                                                           m_link_list[i]->parent->link_val2);
 		}
 	}
 }

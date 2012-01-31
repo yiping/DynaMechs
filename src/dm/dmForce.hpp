@@ -34,30 +34,30 @@
 /**
 
 This is the abstract base class for all force objects that would be associated
-with a {\tt dmRigidBody} class.
+with a  dmRigidBody  class.
 
-The {\tt reset} function is one required by the {\tt dmContactModel} because
+The \b reset  function is one required by the  dmContactModel  because
 certain retained state variables when the state of the rigid body is brutally
 overridden (which should never be done in a normal simulation).  As such this
 requirement on the interface is most unsatisfying.
 
-The {\tt computeForce} function is the heart of this class which computes the
+The \b computeForce function is the heart of this class which computes the
 compliant force based on the rigid body's state information provided by the
-{\tt dmABForKinStruct} parameter and returns the spatial force in the {\tt
-force} parameter.
+\b dmABForKinStruct  parameter and returns the spatial force in the \b
+force  parameter.
 
-The {\tt getBoundaryFlag} function is used by adaptive stepsize
+The \b getBoundaryFlag  function is used by adaptive stepsize
 integrators to determine if any force objects encountered collision
 boundaries across which the integrator may not be able to converge.
-The {\tt resetBoundaryFlag} function is called to reset the collision
+The \b resetBoundaryFlag  function is called to reset the collision
 boundary flag prior to an adaptive integration step.  Note that all
-force objects share one flag.  Additionally, the {\tt pushState} and
-{\tt popState} functions must be implemented for derived force objects
+force objects share one flag.  Additionally, the \b pushState and
+\b popState functions must be implemented for derived force objects
 which retain state.  These functions are used by adaptive stepsize
 integrators to back out of the integration at collision boundaries.
 
 
-See also {\tt dmContactModel}, {\tt dmRigidBody}. */
+See also  dmContactModel,  dmRigidBody. */
 
 //============================================================================
 
@@ -74,6 +74,8 @@ public:
    ///
    virtual void computeForce(const dmABForKinStruct &val,
                              SpatialVector force) = 0;
+   virtual void computeForce(const dmRNEAStruct &val,
+                             SpatialVector force);
 
    ///
    static bool getBoundaryFlag() {return m_boundary_flag;}

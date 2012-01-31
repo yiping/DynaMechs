@@ -123,7 +123,7 @@ spatial acceleration of the inboard link.  This function computes and outputs
 the spatial acceleration of this link in \b a_curr and fills in the
 derivative of state variables (\b qd and \b qdd).  Note that the velocity
 vector, \b qd, is not necessarily the same as that used in \b
-ABForwardKinematics}.  Rather, it contains the time derivatives of \b q.
+ABForwardKinematics.  Rather, it contains the time derivatives of \b q.
 See dmSphericalLink for an example where they are not the same.
 
 Another set of four functions are required for simulating systems with
@@ -255,6 +255,25 @@ public:
       \b Should make it a pure virtual function, too, later.
    */
    virtual Matrix6XF jcalc();
+
+//Inverse Dynamics Algorithm (Recursive NE) Functions 
+   //! DM v5.0 Function, recursive NE algorithm, outward forward kinematics and inverse dynamics, later should be made a pure virtual. 
+   virtual void RNEAOutwardFKID(dmRNEAStruct &link_val2_curr, 
+                                      dmRNEAStruct &link_val2_inboard);
+
+   //! DM v5.0 Function, recursive NE algorithm, outward forward kinematics and dynamics for the first link. Later should be made a pure virtual.
+   virtual void RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
+					  CartesianVector  p_ref_ICS,  
+                                          RotationMatrix  R_ref_ICS, 
+                                          Vector6F a_ini, Vector6F v_ini = Vector6F::Zero());
+
+   //! DM v5.0 Function, recursive NE algorithm, inward inverse dynamics, later should be made a pure virtual. 
+   virtual void RNEAInwardID( dmRNEAStruct &link_val2_curr,
+                            dmRNEAStruct &link_val2_inboard);
+
+
+
+   //! DM v5.0 function, 
 
 
 // Articulated-Body (AB) algorithm functions:

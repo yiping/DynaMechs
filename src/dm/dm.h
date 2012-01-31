@@ -440,5 +440,18 @@ inline Matrix3F cr3(Vector3F &v)
 	return vcross;
 }
 
+//! DM v5.0 typedef: a struct containing intermediate variables used for recursive NE algorithm calculation.
+struct dmRNEAStruct
+{
+   Vector6F  v;     // spatial velocity of link wrt to i.
+   Vector6F  a;     // spatial acceleration wrt to i
+   Vector6F  f;     // spatial force
+   VectorXF  qdd;   // joint acc
+   VectorXF  tau;   //
+   //--------------------
+   CartesianVector  p_ICS;  // link position w.r.t ICS
+   RotationMatrix  R_ICS;  // link orientation w.r.t. ICS
+};
+
 
 #endif

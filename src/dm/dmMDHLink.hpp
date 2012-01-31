@@ -151,8 +151,24 @@ public:
    void getPose(RotationMatrix R, CartesianVector p) const;
 
    ///
-   // v5.0
+   //! v5.0, generate the spatial transformation matrix. I probably should later move this implementation to dmRigidBody class. 
    Matrix6F get_X_FromParent_Motion();
+
+   //! DM v5.0 Function, 
+   void RNEAOutwardFKID(dmRNEAStruct &link_val2_curr, 
+                           dmRNEAStruct &link_val2_inboard); // should make the second param const
+
+   //! DM v5.0 Function,  for the first link. 
+   void RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
+				CartesianVector p_ref_ICS,  
+                                RotationMatrix  R_ref_ICS, 
+                                Vector6F a_ini,
+                                Vector6F v_ini = Vector6F::Zero() 
+                                );
+   //! DM v5.0 Function, 
+   void RNEAInwardID(dmRNEAStruct &link_val2_curr,
+                    dmRNEAStruct &link_val2_inboard);
+
 
    ///
    inline void setJointInput(Float joint_input[])

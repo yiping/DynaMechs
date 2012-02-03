@@ -220,7 +220,7 @@ protected:
 
    struct LinkInfoStruct
    {
-      unsigned int index;
+      unsigned int index, index_ext, dof;
       dmLink *link;
 
       LinkInfoStruct *parent;

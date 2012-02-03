@@ -226,7 +226,7 @@ public:
 	// CRB Functions
 	void scongxToInboardIcomp(const CrbInertia & IC_curr, CrbInertia & IC_prev) const;
 	
-	virtual void CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_curr) const;
+	virtual void initializeCrbInertia(CrbInertia & IC_curr) const;
 	
    ///
    virtual void XikToInboard(Float **Xik_curr,

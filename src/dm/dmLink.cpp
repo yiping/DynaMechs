@@ -320,9 +320,15 @@ void dmLink::stxToInboardMat(const Matrix6XF& curr, Matrix6XF & prev) const
 }
 
 //--
-void dmLink::CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_curr) const
+void dmLink::initializeCrbInertia(CrbInertia & IC_curr) const
 {
-	CrbCopy(IC_parents, IC_curr);
+	IC_curr.m =0;
+	for (int i=0; i<3; i++) {
+		IC_curr.h[i]=0;
+		for (int j=0; j<3; j++) {
+			IC_curr.IBar[i][j]=0;
+		}
+	}
 }
 
 

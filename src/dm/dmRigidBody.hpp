@@ -155,7 +155,7 @@ public:
    Matrix6F getSpatialInertiaMatrix();
 
 	//
-	void CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_curr) const;
+	void initializeCrbInertia(CrbInertia & IC_curr) const;
 
    // manage a list of force objects.
    ///

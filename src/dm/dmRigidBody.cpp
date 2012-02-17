@@ -642,19 +642,16 @@ void dmRigidBody::computeHydrodynamicBias(const dmABForKinStruct &val,
 }
 #endif
 
-
-//---------------------------------------------------------------------------------------
-void dmRigidBody::CrbAddInertia(const CrbInertia& IC_parents, CrbInertia & IC_curr) const
+void dmRigidBody::initializeCrbInertia(CrbInertia & IC_curr) const
 {
-	IC_curr.m = IC_parents.m + m_mass;
-	for(int i=0 ; i<3;i++) {
-			IC_curr.h[i] = IC_parents.h[i] + m_h[i];
-			for (int j=0; j<3; j++) {
-				IC_curr.IBar[i][j] = IC_parents.IBar[i][j] + m_I_bar[i][j];
-			}
+	IC_curr.m = m_mass;
+	for (int i=0; i<3; i++) {
+		IC_curr.h[i]=m_h[i];
+		for (int j=0; j<3; j++) {
+			IC_curr.IBar[i][j]=m_I_bar[i][j];
+		}
 	}
 }
-
 
 //-----------------------------------------------------------------------------------------
 Matrix6F dmRigidBody::getSpatialInertiaMatrix()

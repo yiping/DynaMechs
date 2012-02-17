@@ -687,60 +687,58 @@ void dmArticulation::ABForwardAccelerations(SpatialVector a_ref,
    }
 }
 
-//-------------------------------------------------------
-void CrbToMat(const CrbInertia &I_C, Matrix6F & I_Cm)
-{
-	I_Cm = Matrix6F::Zero();
-	
-	// Initialize Diagonal Blocks
-	for (int i = 0; i<3; i++) {
-		for (int j=0; j<3; j++) {
-			I_Cm(i,j) = I_C.IBar[i][j];
-		}
-		I_Cm(i+3,i+3) = I_C.m;
-	}
-	
-	// Initialize Cross Terms
-	I_Cm(0,4) = I_Cm(4,0) = -I_C.h[2];
-	I_Cm(1,3) = I_Cm(3,1) = I_C.h[2];
-	
-	I_Cm(2,3) = I_Cm(3,2) = -I_C.h[1];
-	I_Cm(0,5) = I_Cm(5,0) = I_C.h[1];
-	
-	I_Cm(1,5) = I_Cm(5,1) = -I_C.h[0];
-	I_Cm(2,4) = I_Cm(4,2) = I_C.h[0];
-}
-
+#define DOFBLOCK(b1,b2) block(b1->index_ext,b2->index_ext,b1->dof,b2->dof)
 
 //---------------------------------------------------------
 void dmArticulation::computeH()
 {
-	const CrbInertia IZero = {{{0,0,0},{0,0,0},{0,0,0}},{0,0,0},0};
+	int N = getNumDOFs();
+	H.resize(N,N);
+	
 	CrbInertia Itmp;
-	int joint_index_offset = 0;
+	unsigned int jjoint_index_offset = 0;
+	
+	for (int j=0; j<m_link_list.size(); j++) {
+		LinkInfoStruct * curr = m_link_list[j];
+		curr->link->initializeCrbInertia(curr->I_C);
+		curr->index_ext = jjoint_index_offset;
+		curr->dof = curr->link->getNumDOFs();
+		jjoint_index_offset += curr->dof;
+	}
+	
+	
 	for (int j=(m_link_list.size()-1); j>=0; j--) {
 		cout << j << endl;
 		cout << m_link_list.size() << endl;
-		LinkInfoStruct * curr = m_link_list[j];
+		LinkInfoStruct * bodyj = m_link_list[j];
 		
-		if (curr->child_list.size() == 0) {
-			curr->link->CrbAddInertia(IZero, curr->I_C);
+		Matrix6XF phij = bodyj->link->jcalc();
+		MatrixX6F phiiT = phij.transpose();
+		
+		if(phij.cols()>0) {
+			Matrix6F I_C;
+			CrbToMat(bodyj->I_C, I_C);
+			Matrix6XF F = I_C * phij, Ftmp;
+			H.DOFBLOCK(bodyj,bodyj) = phiiT * F;
+			
+			LinkInfoStruct * bodyi = bodyj;
+			while (bodyi->parent) {
+				bodyi->link->stxToInboardMat(F,Ftmp);
+				F = Ftmp;
+				bodyi = bodyi->parent;
+				cout << "Body (i,j) " << bodyi->index << "," << bodyj->index << " size " << H.DOFBLOCK(bodyi,bodyj).rows() << " x " << H.DOFBLOCK(bodyi,bodyj).cols() << endl;
+				H.DOFBLOCK(bodyi,bodyj) = bodyi->link->jcalc().transpose() * F;
+				H.DOFBLOCK(bodyj,bodyi) = H.DOFBLOCK(bodyi,bodyj).transpose();
+			}
 		}
-		else {
-			CrbCopy(curr->I_C, Itmp);
-			curr->link->CrbAddInertia(Itmp, curr->I_C);
-		}
-		/*Matrix6F I_Cm;
-		CrbToMat(curr->I_C, I_Cm);
-		
-		cout << "I_C(" << j << ") =" << endl << I_Cm << endl;*/
-		
-		
 
-		if (curr->parent) {
-			curr->link->scongxToInboardIcomp(curr->I_C, curr->parent->I_C);
+		if (bodyj->parent) {
+			bodyj->link->scongxToInboardIcomp(bodyj->I_C,Itmp );
+			CrbAdd(bodyj->parent->I_C,Itmp);
 		}
 	}
+	cout << " H = " << endl;
+	cout << H  << endl;
 }
 
 //------------------------------------------------------------

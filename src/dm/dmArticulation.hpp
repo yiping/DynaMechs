@@ -273,6 +273,7 @@ protected:
    virtual void ABForwardAccelerations(SpatialVector a_ref,
                                        Float qd[], Float qdd[]);
 
+<<<<<<< HEAD
 //   struct LinkInfoStruct
 //   {
 //      unsigned int index;
@@ -294,6 +295,29 @@ protected:
 //      SpatialVector f_star;
 //      SpatialTensor I_refl;
 //   };
+=======
+   struct LinkInfoStruct
+   {
+      unsigned int index, index_ext, dof;
+      dmLink *link;
+
+      LinkInfoStruct *parent;
+      vector<LinkInfoStruct*> child_list;
+
+      dmABForKinStruct link_val;
+
+      //! DM v5.0, a struct containing intermediate variables for recursive NE algorithm.
+      dmRNEAStruct link_val2; //spatial velocity, acceleration, force and qdd.
+
+      //! v5.0, composite rigid body inertia	   
+      CrbInertia I_C;
+
+      // AB algorithm temporaries
+      SpatialVector accel;
+      SpatialVector f_star;
+      SpatialTensor I_refl;
+   };
+>>>>>>> origin/master
 
    void drawTraversal(LinkInfoStruct *node) const;
 

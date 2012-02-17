@@ -456,5 +456,40 @@ struct dmRNEAStruct
    RotationMatrix  R_ICS;  // link orientation w.r.t. ICS
 };
 
+//! DM 5.0 function
+inline void CrbAdd(CrbInertia & a, const CrbInertia & b) {
+	a.m += b.m;
+	for(int i=0 ; i<3;i++) {
+		a.h[i] += b.h[i];
+		for (int j=0; j<3; j++) {
+			a.IBar[i][j] += b.IBar[i][j];
+		}
+	}
+}
+
+//! DM 5.0 function
+inline void CrbToMat(const CrbInertia &I_C, Matrix6F & I_Cm)
+{
+	I_Cm = Matrix6F::Zero();
+	
+	// Initialize Diagonal Blocks
+	for (int i = 0; i<3; i++) {
+		for (int j=0; j<3; j++) {
+			I_Cm(i,j) = I_C.IBar[i][j];
+		}
+		I_Cm(i+3,i+3) = I_C.m;
+	}
+	
+	// Initialize Cross Terms
+	I_Cm(0,4) = I_Cm(4,0) = -I_C.h[2];
+	I_Cm(1,3) = I_Cm(3,1) = I_C.h[2];
+	
+	I_Cm(2,3) = I_Cm(3,2) = -I_C.h[1];
+	I_Cm(0,5) = I_Cm(5,0) = I_C.h[1];
+	
+	I_Cm(1,5) = I_Cm(5,1) = -I_C.h[0];
+	I_Cm(2,4) = I_Cm(4,2) = I_C.h[0];
+}
+
 
 #endif

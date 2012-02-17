@@ -77,6 +77,8 @@
 // ----------------------------------------
 // v5.0
 #include <Eigen/Core>
+#include <Eigen/LU>
+#include <Eigen/Dense>
 #include <vector>
 
 
@@ -122,6 +124,7 @@ typedef Eigen::Matrix<Float, 6, 6 > Matrix6F;
 typedef Eigen::Matrix<Float, 6, 1 > Vector6F;
 typedef Eigen::Matrix<Float, 3, 3 > Matrix3F;
 typedef Eigen::Matrix<Float, 3, 1 > Vector3F;
+typedef Eigen::Matrix<Float, 2, 1 > Vector2F;
 
 typedef Matrix<Float, Dynamic , 1 > VectorXF;
 typedef Matrix<Float, Dynamic, Dynamic> MatrixXF;

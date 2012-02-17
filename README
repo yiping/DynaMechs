@@ -13,6 +13,7 @@ or
 $ cmake .. -DCMAKE_INSTALL_PREFIX=/tmp/dynamechs
 [ in Ubuntu, by default, CMAKE_INSTALL_PREFIX is set to /usr/local ]
 
+
 3.
 $ make
 or 
@@ -32,6 +33,13 @@ The xan_viewer executable will be installed to /usr/local/bin .
 
 
 
+If you want to generate Eclipse project, use the following line:
+$ cmake -G "Eclipse CDT4 - Unix Makefiles" -D CMAKE_BUILD_TYPE=Debug ../DynaMechs/
+
+Note here, if you want to use Eclipse CDT as the IDE and at the same time use out-of-source build, 
+you cannot make the 'build' folder a subfolder of 'DynaMechs' (which is the project source folder). 
+You have to make the 'build' folder a sibling of 'DynaMechs' folder. Otherwise you won't see the generated binaries/libraries
+in the treeview.
 
 
 

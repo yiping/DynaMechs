@@ -259,21 +259,34 @@ public:
 //Inverse Dynamics Algorithm (Recursive NE) Functions 
    //! DM v5.0 Function, recursive NE algorithm, outward forward kinematics and inverse dynamics, later should be made a pure virtual. 
    virtual void RNEAOutwardFKID(dmRNEAStruct &link_val2_curr, 
-                                      dmRNEAStruct &link_val2_inboard);
+                                      dmRNEAStruct &link_val2_inboard,
+                                       bool ExtForceFlag = false);
 
    //! DM v5.0 Function, recursive NE algorithm, outward forward kinematics and dynamics for the first link. Later should be made a pure virtual.
    virtual void RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
 					  CartesianVector  p_ref_ICS,  
                                           RotationMatrix  R_ref_ICS, 
-                                          Vector6F a_ini, Vector6F v_ini = Vector6F::Zero());
+                                          Vector6F a_ini, Vector6F v_ini = Vector6F::Zero(),
+                                          bool ExtForceFlag = false);
 
    //! DM v5.0 Function, recursive NE algorithm, inward inverse dynamics, later should be made a pure virtual. 
    virtual void RNEAInwardID( dmRNEAStruct &link_val2_curr,
                             dmRNEAStruct &link_val2_inboard);
+   //! DM v5.0 function,
+   virtual void compute_AccBias_First(dmRNEAStruct &link_val2_curr);
+   //! DM v5.0 function,
+   virtual void compute_AccBias(dmRNEAStruct &link_val2_curr,
+                                            dmRNEAStruct &link_val2_inboard);
+   //! DM v5.0 Function
+   virtual void computeSpatialVelAndICSPoseFirst(  dmRNEAStruct &link_val2_curr,
+                                           CartesianVector  p_ref_ICS,
+                                           RotationMatrix  R_ref_ICS,
+                                           Vector6F a_ini);
+   //! DM v5.0 Function
+   virtual void computeSpatialVelAndICSPose(  dmRNEAStruct &link_val2_curr,
+                                              dmRNEAStruct &link_val2_inboard);
 
 
-
-   //! DM v5.0 function, 
 
 
 // Articulated-Body (AB) algorithm functions:

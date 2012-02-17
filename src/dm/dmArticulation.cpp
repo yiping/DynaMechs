@@ -770,7 +770,7 @@ Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & 
 	{
 		unsigned int x = 0;
 		bool isFound = false;
-		for (unsigned i = 0; i<indices.size(); i++)
+		for (int i = 0; i<indices.size(); i++)
 		{
 			if (indices[i] == ini_idx)
 			{
@@ -790,10 +790,10 @@ Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & 
 	}
 
 	// outward iteration
-	vector<unsigned int>::iterator it;
+	vector<int>::iterator it;
 	Matrix6XF Jacobian;  // 6 x 0
         Matrix6F  X = Matrix6F::Identity();
-	for (unsigned i = indices.size()-1; i>=0; i--)
+	for (int i = indices.size()-1; i>=0; i--)
 	{    
 		dmLink *link = NULL;
 		link = getLink(indices[i]);
@@ -822,14 +822,109 @@ Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & 
 
 
 
+Vector6F dmArticulation::computeAccelerationBias(unsigned int target_idx,
+		                  Matrix6F & X_target,
+		                  unsigned int ini_idx ) // Jdot qdot
+{
+	//step1: trace back all the way to the root.
+
+	vector<unsigned int> indices;
+	if ((target_idx < m_link_list.size() ) && (target_idx >= 0) )//check if the target_ini is out-of-range
+   	{
+		unsigned int idx = target_idx;
+		indices.push_back(target_idx);
+		while (m_link_list[idx]->parent) // if the parent is not null (i.e., not the root link)
+		{
+			idx = m_link_list[idx]->parent->index;
+			indices.push_back(idx);
+		}
+   	}
+	else
+	{
+		cerr << "dmArticulation::computeAccelerationBias() error: target link index out of range"<< endl;
+		exit (1);
+	}
+
+
+	//step 2
+
+	// outward iteration to compute the product of Jdot and qdot
+
+	if (indices[indices.size()-1] != 0 )
+	{
+		cerr << "dmArticulation::computeAccelerationBias() error: failed to trace back to the root"<< endl;
+		exit (1);
+	}
+	vector<int>::iterator it;
+	for (int i = indices.size()-1; i>=0; i--) // reverse order...
+	{
+		unsigned int idx_curr = indices[i];
+		unsigned int idx_inboard = indices[i+1];
+
+		if (i == indices.size() -1)
+		{
+			m_link_list[idx_curr]->link->compute_AccBias_First(m_link_list[idx_curr]->link_val2);
+		}
+		else
+		{
+			m_link_list[idx_curr]->link->compute_AccBias(m_link_list[idx_curr]->link_val2,
+					                                            m_link_list[idx_inboard]->link_val2);
+		}
+	}
+
+	Vector6F acc;
+	acc = m_link_list[indices[0]]->link_val2.a;
+	// step 3:
+	// if ini_idx is not the 0,
+	// i.e. you want to know the acceleration bias from an intermediate link.
+	// we need to minus the acceleration bias before that link
+
+	if (ini_idx != 0)
+	{
+		// step 3.1 check if the ini_idx is valid
+		bool isFound = false;
+		unsigned int x = 0;
+		for (int i = 0; i<indices.size(); i++)
+		{
+			if (indices[i] == ini_idx)
+			{
+				x = i;
+				isFound = true;
+			}
+		}
+
+		if (isFound == false)
+		{
+			cerr << "dmArticulation::compute_Jdotqdot() error: initial link index is illegal"<< endl;
+			exit (1);
+		}
+		else
+		{
+			Matrix6F X = Matrix6F::Identity();
+			if (x>0)
+			{
+				X = computeSpatialTransformation(target_idx, indices[x-1], false);
+			}
+			acc = m_link_list[target_idx]->link_val2.a - X * m_link_list[indices[x]]->link_val2.a ;
+		}
+	}
+
+
+
+
+	return X_target * acc;
+
+
+}
+
 
 
 //-------------------------------------------------------------------
-void dmArticulation::inverseDynamics()
+void dmArticulation::inverseDynamics(bool ExtForceFlag )
 {
 
 	Vector6F a_g;
-	a_g <<0, 0, 0, 0, 0, -9.81;
+	a_g <<0, 0, 0, 0, -9.81, 0 ; // expressed in the articulation coordinate, not ICS!
 	Vector6F v_ini = Vector6F::Zero();
 	Vector6F a_ini = -a_g;
 
@@ -846,17 +941,17 @@ void dmArticulation::inverseDynamics()
 				p_ref_ICS[r] = m_p_ICS[r];
       				for (int k = 0; k < 3; k++)
       				{
-         				R_ref_ICS[r][k] = m_R_ICS[k][r];  //? why transpose?
+         				R_ref_ICS[r][k] = m_R_ICS[k][r];  //? transpose because m_R_ICS is the rotation from ICS to link frame
       				}
 			}
 
 			m_link_list[i]->link->RNEAOutwardFKIDFirst(m_link_list[i]->link_val2, 
-								    p_ref_ICS, R_ref_ICS, a_ini, v_ini);
+								    p_ref_ICS, R_ref_ICS, a_ini, v_ini, ExtForceFlag);
 		}
 		else
 		{
 			m_link_list[i]->link->RNEAOutwardFKID(m_link_list[i]->link_val2, 
-                                                            m_link_list[i]->parent->link_val2);
+                                                            m_link_list[i]->parent->link_val2, ExtForceFlag);
 		}
 
 	}
@@ -870,3 +965,165 @@ void dmArticulation::inverseDynamics()
 		}
 	}
 }
+
+
+
+
+//-------------------------------------------------------------------
+void dmArticulation::computeSpatialVelAndICSPose(unsigned int target_idx )
+{
+	//step1: trace back all the way to the root.
+
+	vector<unsigned int> indices;
+	if ((target_idx < m_link_list.size() ) && (target_idx >= 0) )//check if the target_ini is out-of-range
+   	{
+		unsigned int idx = target_idx;
+		indices.push_back(target_idx);
+		while (m_link_list[idx]->parent) // if the parent is not null (i.e., not the root link)
+		{
+			idx = m_link_list[idx]->parent->index;
+			indices.push_back(idx);
+		}
+   	}
+	else
+	{
+		cerr << "dmArticulation::compute_Jdotqdot() error: target link index out of range"<< endl;
+		exit (1);
+	}
+
+	//in the future optimization, step 1 only needs to be done once
+
+	//step 2
+
+	// outward iteration to compute the spatial velocity of the link and the pose in inertial coordinate system
+
+	Vector6F a_g;
+	a_g <<0, 0, 0, 0, -9.81, 0; // In articulation coordinate
+	Vector6F a_ini = -a_g;
+
+	vector<int>::iterator it;
+	for ( int i = indices.size()-1; i>=0; i--) // reverse order...
+	{
+		//cout<<indices.size()<<endl;
+		unsigned int idx_curr = indices[i];
+		unsigned int idx_inboard = indices[i+1];
+
+		if (i == indices.size() -1)
+		{
+			CartesianVector  p_ref_ICS;
+			RotationMatrix  R_ref_ICS;
+			for (int r = 0; r < 3; r++)
+			{
+				p_ref_ICS[r] = m_p_ICS[r];
+					for (int k = 0; k < 3; k++)
+					{
+						R_ref_ICS[r][k] = m_R_ICS[k][r];  //? why transpose? because: rotation matrix R^{T} = R^{-1}, here we want
+						                                  // m_R_ICS is to rotate from ICS to link i frame, R_ref_ICS does the opposite.
+					}
+			}
+
+			m_link_list[idx_curr]->link->computeSpatialVelAndICSPoseFirst(m_link_list[idx_curr]->link_val2,
+					                                                      p_ref_ICS, R_ref_ICS, a_ini);
+		}
+		else
+		{
+			m_link_list[idx_curr]->link->computeSpatialVelAndICSPose(m_link_list[idx_curr]->link_val2,
+					                                                 m_link_list[idx_inboard]->link_val2);
+		}
+	}
+
+}
+
+
+//-------------------------------------------------------------------
+// Only calculate the spatial transformation from link i frame to its child link frame
+Matrix6F dmArticulation::computeSpatialTransformation(unsigned int target_idx,
+		                               unsigned int ini_idx,
+		                               bool fromICS)
+{
+	vector<unsigned int> indices;
+	if ((target_idx < m_link_list.size() ) && (target_idx >= 0) )//check if the target_ini is out-of-range
+   	{
+		unsigned int idx = target_idx;
+		indices.push_back(target_idx);
+		while (m_link_list[idx]->parent) // if the parent is not null (i.e., not the root link)
+		{
+			idx = m_link_list[idx]->parent->index;
+			indices.push_back(idx);
+		}
+   	}
+	else
+	{
+		cerr << "dmArticulation::computeSpatialTransformation() error: target link index out of range"<< endl;
+		exit (1);
+	}
+
+	// if ini_idx is not the 0
+	if (ini_idx != 0)
+	{
+		// check if the ini_idx is valid
+		bool isFound = false;
+		unsigned int x = 0;
+		for (int i = 0; i<indices.size(); i++)
+		{
+			if (indices[i] == ini_idx)
+			{
+				x = i;
+				isFound = true;
+			}
+		}
+
+		if (isFound == false)
+		{
+			cerr << "dmArticulation::computeSpatialTransformation() error: initial link index is illegal"<< endl;
+			exit (1);
+		}
+		else
+		{
+			indices.resize(x+1);
+		}
+	}
+
+	Matrix6F Xr = Matrix6F::Identity();
+	if ((ini_idx == 0) && (fromICS == true))
+	{
+		CartesianVector  p_ref_ICS;
+		RotationMatrix  R_ref_ICS;
+		for (int r = 0; r < 3; r++)
+		{
+			p_ref_ICS[r] = m_p_ICS[r];
+				for (int k = 0; k < 3; k++)
+				{
+					R_ref_ICS[r][k] = m_R_ICS[r][k];  //? we shouldn't use transpose here!
+                                                      //? since we want rotate from ICS to link i frame
+				}
+		}
+
+	    Matrix3F Rr;
+	    Vector3F pr;
+	    Rr << R_ref_ICS[0][0], R_ref_ICS[0][1], R_ref_ICS[0][2],
+	    	 R_ref_ICS[1][0], R_ref_ICS[1][1], R_ref_ICS[1][2],
+	    	 R_ref_ICS[2][0], R_ref_ICS[2][1], R_ref_ICS[2][2];
+	    pr << p_ref_ICS[0], p_ref_ICS[1], p_ref_ICS[2];
+
+	    Xr.block<3,3>(0,0) = Rr;
+	    Xr.block<3,3>(0,3) = Matrix3F::Zero();
+	    Xr.block<3,3>(3,0) = -Rr*cr3(pr);
+	    Xr.block<3,3>(3,3) = Rr;
+	}
+
+	// outward iterationG_robot->computeSpatialTransformation(8)
+	Matrix6F X = Matrix6F::Identity();
+    X = Xr * X;
+    // cout<<"Xr = "<<endl<<Xr<<endl<<endl;
+	vector<int>::iterator it;
+	for ( int i = indices.size()-1; i>=0; i--) // reverse order...
+	{
+		unsigned int idx_curr = indices[i];
+		X = m_link_list[idx_curr]->link->get_X_FromParent_Motion() * X;
+		//cout <<"X"<<idx_curr<<" = "<<endl<< m_link_list[idx_curr]->link->get_X_FromParent_Motion()  <<endl<<endl;
+	}
+
+	return X;
+}
+

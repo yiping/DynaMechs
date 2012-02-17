@@ -114,9 +114,58 @@ public:
    void xformZetak(Float *zetak,
                    Float **Xik, int cols_Xik) const;
 
+
+
+
+
+
+
    /// 
    //! DM v5.0 function
    Matrix6F get_X_FromParent_Motion();
+
+
+   //! DM v5.0 Function,
+   void RNEAOutwardFKID(dmRNEAStruct &link_val2_curr,
+                        dmRNEAStruct &link_val2_inboard,
+                        bool ExtForceFlag = false);
+
+   //! DM v5.0 Function
+   void RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr,
+				                CartesianVector p_ref_ICS,
+                                RotationMatrix  R_ref_ICS,
+                                Vector6F a_ini,
+                                Vector6F v_ini = Vector6F::Zero(),
+                                      bool ExtForceFlag = false
+                                );
+   //! DM v5.0 Function,
+   void RNEAInwardID(dmRNEAStruct &link_val2_curr,
+                     dmRNEAStruct &link_val2_inboard);
+
+
+
+   //! DM v5.0 Function
+   void compute_AccBias_First(dmRNEAStruct &link_val2_curr);
+   //! DM v5.0 Function
+   void compute_AccBias(dmRNEAStruct &link_val2_curr,
+                                 dmRNEAStruct &link_val2_inboard) ;
+   //! DM v5.0 Function
+   void computeSpatialVelAndICSPoseFirst(  dmRNEAStruct &link_val2_curr,
+                                           CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
+                                           RotationMatrix  R_ref_ICS,
+                                           Vector6F a_ini);
+   //! DM v5.0 Function
+   void computeSpatialVelAndICSPose(  dmRNEAStruct &link_val2_curr,
+                                                 dmRNEAStruct &link_val2_inboard);
+   //! DM v5.0 Function
+   Matrix6XF jcalc();
+
+
+
+
+
+
+
 
 // AB algorithm functions:
    ///

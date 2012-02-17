@@ -131,6 +131,29 @@ See also  dmSystem, dmLink.
 
 //============================================================================
 
+// Now made public
+struct LinkInfoStruct
+{
+  unsigned int index;
+  dmLink *link;
+
+  LinkInfoStruct *parent;
+  vector<LinkInfoStruct*> child_list;
+
+  dmABForKinStruct link_val;
+
+  //! DM v5.0, a struct containing intermediate variables for recursive NE algorithm.
+  dmRNEAStruct link_val2; //spatial velocity, acceleration, force and qdd.
+
+  //! v5.0, composite rigid body inertia
+  CrbInertia I_C;
+
+  // AB algorithm temporaries
+  SpatialVector accel;
+  SpatialVector f_star;
+  SpatialTensor I_refl;
+};
+
 class DM_DLL_API dmArticulation : public dmSystem
 {
 public:
@@ -164,12 +187,41 @@ public:
    //! calculates the Jacobian matrix for a single chain
    /**
    DM v5.0 function<CR>
-   We will 
-   \param index of the target link, the function will trace back to root (if ini_idx is not otherwise set)
+   the function will trace back to root (if ini_idx is not otherwise set)
+   \param target_idx index of the target link
+   \param X_target the final transformation
+   \param ini_idx index of the starting link, default to 0
    \return the 6xn Jacobian matrix, 
    */
    Matrix6XF calculateJacobian(unsigned int target_idx, Matrix6F & X_target, unsigned int ini_idx = 0);
 
+   //! calculates \f$ \dot{J}\dot{q}\f$
+   /**
+   DM v5.0 function<CR>
+   the function will trace back to root link (index 0) first (if ini_idx is not otherwise set)
+   \param target_idx index of the target link
+   \param X_target the final transformation
+   \param ini_idx index of the starting link, default to 0
+   \return the product value,
+   */
+   Vector6F computeAccelerationBias(unsigned int target_idx,
+		                     Matrix6F & X_target ,
+		                     unsigned int ini_idx = 0); //Jdotqdot
+
+   //! calculates the spatial velocity and pose w.r.t. ICS for the specified link
+   /**
+    *    DM v5.0 function<CR>
+    */
+   void computeSpatialVelAndICSPose(unsigned int target_idx );
+
+
+   //! Only calculate the spatial transformation from link i frame to its child link frame
+   /**
+    * DM v 5.0 function, if ini_idx == -1, it means we start from the ICS.
+    */
+   Matrix6F computeSpatialTransformation(unsigned int target_idx,
+		                                 unsigned int ini_idx = 0,
+		                                 bool fromICS = true);
 
    ///
    bool forwardKinematics(unsigned int link_index,
@@ -197,7 +249,7 @@ public:
 
    ///
    //! DM v5.0 function, Inverse Dynamics (RNEA); For articulation tree only, 
-   void inverseDynamics();
+   void inverseDynamics(bool ExtForceFlag = false);
 	
 	//! v5.0, CRB Inerta Algorithm
 	void computeH();
@@ -205,6 +257,9 @@ public:
    // rendering function:
    ///
    void draw() const;
+
+   //! DM v5.0 change: Now made public, use with caution!
+   vector<LinkInfoStruct*> m_link_list;
 
 protected:
    // not implemented
@@ -218,32 +273,32 @@ protected:
    virtual void ABForwardAccelerations(SpatialVector a_ref,
                                        Float qd[], Float qdd[]);
 
-   struct LinkInfoStruct
-   {
-      unsigned int index;
-      dmLink *link;
-
-      LinkInfoStruct *parent;
-      vector<LinkInfoStruct*> child_list;
-
-      dmABForKinStruct link_val;
-
-      //! DM v5.0, a struct containing intermediate variables for recursive NE algorithm.
-      dmRNEAStruct link_val2; //spatial velocity, acceleration, force and qdd.
-
-      //! v5.0, composite rigid body inertia	   
-      CrbInertia I_C;
-
-      // AB algorithm temporaries
-      SpatialVector accel;
-      SpatialVector f_star;
-      SpatialTensor I_refl;
-   };
+//   struct LinkInfoStruct
+//   {
+//      unsigned int index;
+//      dmLink *link;
+//
+//      LinkInfoStruct *parent;
+//      vector<LinkInfoStruct*> child_list;
+//
+//      dmABForKinStruct link_val;
+//
+//      //! DM v5.0, a struct containing intermediate variables for recursive NE algorithm.
+//      dmRNEAStruct link_val2; //spatial velocity, acceleration, force and qdd.
+//
+//      //! v5.0, composite rigid body inertia
+//      CrbInertia I_C;
+//
+//      // AB algorithm temporaries
+//      SpatialVector accel;
+//      SpatialVector f_star;
+//      SpatialTensor I_refl;
+//   };
 
    void drawTraversal(LinkInfoStruct *node) const;
 
 protected:
-   vector<LinkInfoStruct*> m_link_list;
+//   vector<LinkInfoStruct*> m_link_list;
    unsigned int m_num_state_vars;
 
 private:
@@ -254,6 +309,9 @@ private:
    SpatialVector    m_accel_ref;
 	
 	MatrixXF H;
+
+
+
 };
 
 #endif

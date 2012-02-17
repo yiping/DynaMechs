@@ -33,22 +33,22 @@
 
 /**
 
-The {\tt dmMobileBaseLinks} objects are links with six degrees of freedom, and
-hence, the class is derived from the {\tt dmRigidBody} (for the dynamic
-parameters) and, through that, the {\tt dmLink} base class (required by {\tt
-dmArticulation} for Articulated-Body simulation functions.  The default
+The  dmMobileBaseLinks  objects are links with six degrees of freedom, and
+hence, the class is derived from the  dmRigidBody (for the dynamic
+parameters) and, through that, the  dmLink  base class (required by
+dmArticulation  for Articulated-Body simulation functions.  The default
 constructor instantiates a generic mobile base with some valid inertial
-parameters and zero state variables, but subsequent calls to this and the {\tt
-dmRigidBody} member functions are needed to set the desired values.
+parameters and zero state variables, but subsequent calls to this and the
+dmRigidBody  member functions are needed to set the desired values.
 
 Note that joint inputs and friction are currently ignored for this type of
 link.
 
-Nearly all of the remainder of the functions are described in the {\tt
-dmLink} reference pages and are implemented in this class for the specific
+Nearly all of the remainder of the functions are described in the
+dmLink  reference pages and are implemented in this class for the specific
 case of links with a full 6 DOF.
 
-See also: {\tt dmRigidBody}, {\tt dmLink}, {\tt dmLoadFile\_dm} */
+See also:  dmRigidBody ,  dmLink , \b dmLoadFile_dm */
 
 class DM_DLL_API dmMobileBaseLink : public dmRigidBody
 {

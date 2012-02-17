@@ -346,7 +346,8 @@ Matrix6XF dmLink::jcalc()
 
 
 void dmLink::RNEAOutwardFKID(dmRNEAStruct &link_val2_curr, 
-                                      dmRNEAStruct &link_val2_inboard)
+                                      dmRNEAStruct &link_val2_inboard,
+                                                     bool ExtForceFlag)
 {
         //dummy
 }
@@ -354,13 +355,46 @@ void dmLink::RNEAOutwardFKID(dmRNEAStruct &link_val2_curr,
 void dmLink::RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
 					  CartesianVector  p_ref_ICS,  
                                           RotationMatrix  R_ref_ICS, 
-                                          Vector6F a_ini, Vector6F v_ini)
+                                          Vector6F a_ini, Vector6F v_ini,
+                                                     bool ExtForceFlag)
 {
 	//dummy
 }
 
 void dmLink::RNEAInwardID( dmRNEAStruct &link_val2_curr,
                             dmRNEAStruct &link_val2_inboard)
+{
+	//dummy
+}
+
+//--------------------------------------------------------------------
+void dmLink::compute_AccBias_First(dmRNEAStruct &link_val2_curr)
+{
+	//dummy
+
+}
+
+//--------------------------------------------------------------------
+void dmLink::compute_AccBias(dmRNEAStruct &link_val2_curr,
+                                         dmRNEAStruct &link_val2_inboard)
+{
+	//dummy
+}
+
+//---------------------------------------------------------------------
+//! DM v5.0 function,
+void dmLink::computeSpatialVelAndICSPoseFirst(  dmRNEAStruct &link_val2_curr,
+                                       CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
+                                       RotationMatrix  R_ref_ICS,
+                                          Vector6F a_ini)
+{
+	//dummy
+}
+
+
+//----------------------------------------------------------------------
+void dmLink::computeSpatialVelAndICSPose(  dmRNEAStruct &link_val2_curr,
+                                         dmRNEAStruct &link_val2_inboard)
 {
 	//dummy
 }

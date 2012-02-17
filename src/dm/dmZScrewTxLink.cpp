@@ -564,3 +564,200 @@ Matrix6F dmZScrewTxLink::get_X_FromParent_Motion()
   
     return X;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------
+void dmZScrewTxLink::compute_AccBias_First(dmRNEAStruct &link_val2_curr)
+{
+
+	Vector6F vJ = Vector6F::Zero();
+	Matrix6F X =  get_X_FromParent_Motion();
+
+	link_val2_curr.v =  vJ;
+	link_val2_curr.a =  crm( link_val2_curr.v ) * vJ;
+
+}
+
+//--------------------------------------------------------------------
+void dmZScrewTxLink::compute_AccBias(dmRNEAStruct &link_val2_curr,
+                                         dmRNEAStruct &link_val2_inboard)
+{
+
+	Vector6F vJ = Vector6F::Zero();
+	Matrix6F X =  get_X_FromParent_Motion();
+
+	link_val2_curr.v = X * link_val2_inboard.v;
+	link_val2_curr.a = X * link_val2_inboard.a ;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------
+//! DM v5.0 function,
+void dmZScrewTxLink::computeSpatialVelAndICSPoseFirst(  dmRNEAStruct &link_val2_curr,
+                                       CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
+                                       RotationMatrix  R_ref_ICS,
+                                          Vector6F a_ini)
+{
+    CartesianVector mp;
+    mp[0] = 0; mp[1] = 0; mp[2]= m_dMDH;
+	// compute R_ICS and p_ICS)
+	for (int i = 0; i < 3; i++)
+	{
+		link_val2_curr.p_ICS[i] = p_ref_ICS[i];
+		for (int j = 0; j < 3; j++)
+		{
+			link_val2_curr.p_ICS[i] += R_ref_ICS[i][j] * mp[j]; // position Note here!!! not m_p
+			rtxFromInboard(&(R_ref_ICS[i][0]),
+		     		         &(link_val2_curr.R_ICS[i][0])); //orientation
+		}
+	}
+
+
+	Vector6F vJ = Vector6F::Zero();
+	link_val2_curr.v = vJ;
+
+}
+
+
+//----------------------------------------------------------------------
+void dmZScrewTxLink::computeSpatialVelAndICSPose(  dmRNEAStruct &link_val2_curr,
+                                                   dmRNEAStruct &link_val2_inboard)
+{
+    CartesianVector mp;
+    mp[0] = 0; mp[1] = 0; mp[2]= m_dMDH;
+	for (int i = 0; i < 3; i++)
+	{
+		link_val2_curr.p_ICS[i] = link_val2_inboard.p_ICS[i];
+		for (int j = 0; j < 3; j++)
+		{
+	 		link_val2_curr.p_ICS[i] += link_val2_inboard.R_ICS[i][j] * mp[j]; // position   Note here!!! not m_p
+		}
+		rtxFromInboard(&(link_val2_inboard.R_ICS[i][0]),
+		     		  &(link_val2_curr.R_ICS[i][0])); //orientation
+	}
+
+
+	Vector6F vJ = Vector6F::Zero();
+	Matrix6F X = get_X_FromParent_Motion();
+	link_val2_curr.v = X * link_val2_inboard.v;
+
+}
+
+
+//------------------------------------------------------------------------
+
+Matrix6XF dmZScrewTxLink::jcalc()
+{
+    Matrix6XF  S(6,1);
+    S = Matrix6XF::Zero(6,1);
+    return S;
+}
+
+
+//-------------------------------------------------------------------
+
+void dmZScrewTxLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr,
+                                     dmRNEAStruct &link_val2_inboard,
+                                        bool ExtForceFlag)
+{
+	// compute the position and orientation of the link in the inertial coordinate system (ICS)
+
+	for (int i = 0; i < 3; i++)
+	{
+		link_val2_curr.p_ICS[i] = link_val2_inboard.p_ICS[i];
+		for (int j = 0; j < 3; j++)
+		{
+	 		link_val2_curr.p_ICS[i] += link_val2_inboard.R_ICS[i][j] * m_p[j]; // position
+		}
+		rtxFromInboard(&(link_val2_inboard.R_ICS[i][0]),
+		     		  &(link_val2_curr.R_ICS[i][0])); //orientation
+	}
+
+
+	Vector6F vJ = Vector6F::Zero();
+	Matrix6F X = get_X_FromParent_Motion();
+	link_val2_curr.v = X * link_val2_inboard.v + vJ;
+	link_val2_curr.a = X * link_val2_inboard.a ;
+	link_val2_curr.f = Vector6F::Zero();
+
+
+	if (ExtForceFlag == false)
+	{
+		// doing nothing, since dmZScrewTxLink does not have a m_force member
+	}
+
+}
+
+
+
+
+
+//------------------------------------------------------------------------
+void dmZScrewTxLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
+                                       CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
+                                       RotationMatrix  R_ref_ICS,
+                                          Vector6F a_ini,
+                                          Vector6F v_ini,
+                                       bool ExtForceFlag)
+{
+	// compute R_ICS and p_ICS)
+	for (int i = 0; i < 3; i++)
+	{
+		link_val2_curr.p_ICS[i] = p_ref_ICS[i];
+		for (int j = 0; j < 3; j++)
+		{
+			link_val2_curr.p_ICS[i] += R_ref_ICS[i][j] * m_p[j]; // position
+			rtxFromInboard(&(R_ref_ICS[i][0]),
+		     		         &(link_val2_curr.R_ICS[i][0])); //orientation
+		}
+	}
+
+
+	Vector6F vJ = Vector6F::Zero();
+	Matrix6F X = get_X_FromParent_Motion();
+	link_val2_curr.v = vJ;
+	link_val2_curr.a = X * a_ini ;
+
+	link_val2_curr.f = Vector6F::Zero();
+
+	if (ExtForceFlag == false)
+	{
+		// doing nothing, since dmZScrewTxLink does not have a m_force member
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+void dmZScrewTxLink::RNEAInwardID(dmRNEAStruct &link_val2_curr,
+                                  dmRNEAStruct &link_val2_inboard)
+{
+	link_val2_curr.tau = Vector6F::Zero();
+	Matrix6F X = get_X_FromParent_Motion();
+	link_val2_inboard.f += X.transpose() *  link_val2_curr.f;
+}
+

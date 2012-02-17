@@ -156,19 +156,34 @@ public:
 
    //! DM v5.0 Function, 
    void RNEAOutwardFKID(dmRNEAStruct &link_val2_curr, 
-                           dmRNEAStruct &link_val2_inboard); // should make the second param const
+                           dmRNEAStruct &link_val2_inboard,
+                                       bool ExtForceFlag = false); // should make the second param const
 
    //! DM v5.0 Function,  for the first link. 
    void RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
 				CartesianVector p_ref_ICS,  
                                 RotationMatrix  R_ref_ICS, 
                                 Vector6F a_ini,
-                                Vector6F v_ini = Vector6F::Zero() 
+                                Vector6F v_ini = Vector6F::Zero(), 
+                                      bool ExtForceFlag = false
                                 );
    //! DM v5.0 Function, 
    void RNEAInwardID(dmRNEAStruct &link_val2_curr,
                     dmRNEAStruct &link_val2_inboard);
 
+   //! DM v5.0 Function
+   void compute_AccBias_First(dmRNEAStruct &link_val2_curr);
+   //! DM v5.0 Function
+   void compute_AccBias(dmRNEAStruct &link_val2_curr,
+                                 dmRNEAStruct &link_val2_inboard) ;
+   //! DM v5.0 Function
+   void computeSpatialVelAndICSPoseFirst(  dmRNEAStruct &link_val2_curr,
+                                           CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
+                                           RotationMatrix  R_ref_ICS,
+                                           Vector6F a_ini);
+   //! DM v5.0 Function
+   void computeSpatialVelAndICSPose(  dmRNEAStruct &link_val2_curr,
+                                                 dmRNEAStruct &link_val2_inboard);
 
    ///
    inline void setJointInput(Float joint_input[])

@@ -996,15 +996,18 @@ Matrix6F dmMDHLink::get_X_FromParent_Motion()
 }
 
 
+
+
 //-------------------------------------------------------------------
 /* The following codes are mostly written in Pure Eigen style. 
    Consider to gradually optimize the following code in the future 
    by switching to those more efficient, DynaMechs-native functions, such as stxToInboard, stxFromInboard etc. */
  //! DM v5.0 function, 
 void dmMDHLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr, 
-                                     dmRNEAStruct &link_val2_inboard)
+                                     dmRNEAStruct &link_val2_inboard,
+                                        bool ExtForceFlag)
 {
-	// compute the position and orientation of the link in the inertial coordiant system (ICS)
+	// compute the position and orientation of the link in the inertial coordinate system (ICS)
         // This part reuses the code snippet in dmLink::forwardKinematics() 
         // R_ICS and p_ICS are only used to compute contact forces
         // dmContactModel::computeForce() requires CartesianVector and RotationMatrix as inputs. 
@@ -1031,14 +1034,17 @@ void dmMDHLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr,
 	link_val2_curr.f = I *  link_val2_curr.a  + crf(link_val2_curr.v) * I * link_val2_curr.v;
 
 
-	for (int i = 0; i < m_force.size(); i++)// if there are external forces
+	if (ExtForceFlag == false)
 	{
-		// currently there is only ground contact force.
-		SpatialVector ext_f;
-		m_force[i]->computeForce( link_val2_curr, ext_f );//ext_f is ALREADY with respect to the body's coordinate system
-		Vector6F Ext_f;
-		Ext_f<< ext_f[0], ext_f[1], ext_f[2], ext_f[3], ext_f[4], ext_f[5];
-		link_val2_curr.f -= Ext_f;
+		for (int i = 0; i < m_force.size(); i++)// if there are external forces
+		{
+			// currently there is only ground contact force.
+			SpatialVector ext_f;
+			m_force[i]->computeForce( link_val2_curr, ext_f );//ext_f is ALREADY with respect to the body's coordinate system
+			Vector6F Ext_f;
+			Ext_f<< ext_f[0], ext_f[1], ext_f[2], ext_f[3], ext_f[4], ext_f[5];
+			link_val2_curr.f -= Ext_f;
+		}
 	}
 		
 }
@@ -1050,7 +1056,8 @@ void dmMDHLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
                                        CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
                                        RotationMatrix  R_ref_ICS,  
                                           Vector6F a_ini, 
-                                          Vector6F v_ini)
+                                          Vector6F v_ini,
+                                       bool ExtForceFlag)
 {
 	// compute R_ICS and p_ICS)
 	for (int i = 0; i < 3; i++)
@@ -1074,15 +1081,18 @@ void dmMDHLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
 	Matrix6F I = getSpatialInertiaMatrix();
 	link_val2_curr.f = I *  link_val2_curr.a  + crf(link_val2_curr.v) * I * link_val2_curr.v;	
 
-	for (int i = 0; i < m_force.size(); i++)// if there are external forces
+	if (ExtForceFlag == false)
 	{
-		// currently there is only ground contact force.
-		SpatialVector ext_f;
-		m_force[i]->computeForce( link_val2_curr, ext_f );//ext_f is ALREADY with respect to the body's coordinate system
-		Vector6F Ext_f;
-		Ext_f<< ext_f[0], ext_f[1], ext_f[2], ext_f[3], ext_f[4], ext_f[5];
-		link_val2_curr.f -= Ext_f;
-	}	
+		for (int i = 0; i < m_force.size(); i++)// if there are external forces
+		{
+			// currently there is only ground contact force.
+			SpatialVector ext_f;
+			m_force[i]->computeForce( link_val2_curr, ext_f );//ext_f is ALREADY with respect to the body's coordinate system
+			Vector6F Ext_f;
+			Ext_f<< ext_f[0], ext_f[1], ext_f[2], ext_f[3], ext_f[4], ext_f[5];
+			link_val2_curr.f -= Ext_f;
+		}	
+	}
 }
 
 
@@ -1094,4 +1104,85 @@ void dmMDHLink::RNEAInwardID(dmRNEAStruct &link_val2_curr,
 	link_val2_curr.tau = jcalc().transpose() * link_val2_curr.f;
 	Matrix6F X = get_X_FromParent_Motion();
 	link_val2_inboard.f += X.transpose() *  link_val2_curr.f;
+}
+
+
+//--------------------------------------------------------------------
+void dmMDHLink::compute_AccBias_First(dmRNEAStruct &link_val2_curr)
+{
+	Float q[1], qd[1];
+	getState(q,qd);
+	Vector6F vJ = jcalc() * qd[0];
+	Matrix6F X =  get_X_FromParent_Motion();
+
+	link_val2_curr.v =  vJ;
+	link_val2_curr.a =  crm( link_val2_curr.v ) * vJ;
+
+}
+
+//--------------------------------------------------------------------
+void dmMDHLink::compute_AccBias(dmRNEAStruct &link_val2_curr,
+                                         dmRNEAStruct &link_val2_inboard)
+{
+	Float q[1], qd[1];
+	getState(q,qd);
+	Vector6F vJ = jcalc() * qd[0];
+	Matrix6F X =  get_X_FromParent_Motion();
+
+	link_val2_curr.v = X * link_val2_inboard.v + vJ;
+	link_val2_curr.a = X * link_val2_inboard.a + crm( link_val2_curr.v ) * vJ;
+
+}
+
+
+//---------------------------------------------------------------------
+//! DM v5.0 function,
+void dmMDHLink::computeSpatialVelAndICSPoseFirst(  dmRNEAStruct &link_val2_curr,
+                                       CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
+                                       RotationMatrix  R_ref_ICS,
+                                          Vector6F a_ini)
+{
+	// compute R_ICS and p_ICS)
+	for (int i = 0; i < 3; i++)
+	{
+		link_val2_curr.p_ICS[i] = p_ref_ICS[i];
+		for (int j = 0; j < 3; j++)
+		{
+			link_val2_curr.p_ICS[i] += R_ref_ICS[i][j] * m_p[j]; // position
+			rtxFromInboard(&(R_ref_ICS[i][0]),
+		     		         &(link_val2_curr.R_ICS[i][0])); //orientation
+		}
+	}
+
+	Float q[1], qd[1];
+	getState(q,qd);
+	Vector6F vJ = jcalc() * qd[0];
+	Matrix6F X = get_X_FromParent_Motion();
+	link_val2_curr.v = vJ;
+
+}
+
+
+//----------------------------------------------------------------------
+void dmMDHLink::computeSpatialVelAndICSPose(  dmRNEAStruct &link_val2_curr,
+                                         dmRNEAStruct &link_val2_inboard)
+{
+
+	for (int i = 0; i < 3; i++)
+	{
+		link_val2_curr.p_ICS[i] = link_val2_inboard.p_ICS[i];
+		for (int j = 0; j < 3; j++)
+		{
+	 		link_val2_curr.p_ICS[i] += link_val2_inboard.R_ICS[i][j] * m_p[j]; // position
+		}
+		rtxFromInboard(&(link_val2_inboard.R_ICS[i][0]),
+		     		  &(link_val2_curr.R_ICS[i][0])); //orientation
+	}
+
+	Float q[1], qd[1];
+	getState(q,qd);
+	Vector6F vJ = jcalc() * qd[0];
+	Matrix6F X = get_X_FromParent_Motion();
+	link_val2_curr.v = X * link_val2_inboard.v + vJ;
+
 }

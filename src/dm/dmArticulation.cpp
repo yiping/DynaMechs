@@ -790,7 +790,7 @@ Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & 
 	// outward iteration
 	vector<int>::iterator it;
 	Matrix6XF Jacobian;  // 6 x 0
-        Matrix6F  X = Matrix6F::Identity();
+    Matrix6F  X = Matrix6F::Identity();
 	for (int i = indices.size()-1; i>=0; i--)
 	{    
 		dmLink *link = NULL;
@@ -798,22 +798,32 @@ Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & 
 		Matrix6XF S; 
 		int c=0;
 		S = link->jcalc();
-		c = Jacobian.cols(); 		
+		int ndof = link->getNumDOFs();
+		c = Jacobian.cols(); 	// the number of columns.
 		if (i == indices.size()-1)
 		{
-			Jacobian.conservativeResize(6, c + S.cols());
-			Jacobian.block(0,c,6,S.cols() ) = S;	        	
+			Jacobian.conservativeResize(6, c + ndof);
+			if (ndof > 0)
+			{
+				Jacobian.block(0,c,6,ndof ) = S;
+			}
 		}
 		else
-		{		
-			X = link->get_X_FromParent_Motion();// {}^i X_{i-1}, comes with Link i
+		{
+
+			X = link->get_X_FromParent_Motion(); // {}^i X_{i-1}, comes with Link i
+
 			Jacobian = X*Jacobian; // this is ok 		
-			Jacobian.conservativeResize(6, c + S.cols());
-			Jacobian.block(0,c, 6, S.cols()) = S;
+			Jacobian.conservativeResize(6, c + ndof);
+			if (ndof > 0)
+			{
+				Jacobian.block(0,c, 6, ndof) = S;
+			}
+
 		}
 	}
 
-	return Jacobian;
+	return X_target* Jacobian;
 
 }
 
@@ -893,7 +903,7 @@ Vector6F dmArticulation::computeAccelerationBias(unsigned int target_idx,
 
 		if (isFound == false)
 		{
-			cerr << "dmArticulation::compute_Jdotqdot() error: initial link index is illegal"<< endl;
+			cerr << "dmArticulation::computeAccelerationBias() error: initial link index is illegal"<< endl;
 			exit (1);
 		}
 		else
@@ -951,8 +961,13 @@ void dmArticulation::inverseDynamics(bool ExtForceFlag )
 			m_link_list[i]->link->RNEAOutwardFKID(m_link_list[i]->link_val2, 
                                                             m_link_list[i]->parent->link_val2, ExtForceFlag);
 		}
+		// debug
+		// cout<<"ID: OutwardRecursion | link["<<i<<"] f: "<< (m_link_list[i]->link_val2.f).transpose()<<endl;
+		// cout<<"ID: OutwardRecursion | link["<<i<<"] v: "<< (m_link_list[i]->link_val2.v).transpose()<<endl;
+		// cout<<"ID: OutwardRecursion | link["<<i<<"] a: "<< (m_link_list[i]->link_val2.a).transpose()<<endl;
 
 	}
+	//cout<<"--- --- --- "<<endl;
 	// inward recursion 
 	for (int i = getNumLinks()-1; i >= 0; i--) //link indices in reverse order
 	{
@@ -961,6 +976,8 @@ void dmArticulation::inverseDynamics(bool ExtForceFlag )
 			m_link_list[i]->link->RNEAInwardID(m_link_list[i]->link_val2,
                                                            m_link_list[i]->parent->link_val2);
 		}
+		// debug
+		// cout<<"ID: InwardRecursion | link["<<i<<"] f: "<< (m_link_list[i]->link_val2.f).transpose()<<endl;
 	}
 }
 
@@ -985,7 +1002,7 @@ void dmArticulation::computeSpatialVelAndICSPose(unsigned int target_idx )
    	}
 	else
 	{
-		cerr << "dmArticulation::compute_Jdotqdot() error: target link index out of range"<< endl;
+		cerr << "dmArticulation::computeSpatialVelAndICSPose() error: target link index out of range"<< endl;
 		exit (1);
 	}
 
@@ -1115,12 +1132,15 @@ Matrix6F dmArticulation::computeSpatialTransformation(unsigned int target_idx,
     X = Xr * X;
     // cout<<"Xr = "<<endl<<Xr<<endl<<endl;
 	vector<int>::iterator it;
+	//cout<<"computeSpatialTransformation: ";
 	for ( int i = indices.size()-1; i>=0; i--) // reverse order...
 	{
 		unsigned int idx_curr = indices[i];
 		X = m_link_list[idx_curr]->link->get_X_FromParent_Motion() * X;
 		//cout <<"X"<<idx_curr<<" = "<<endl<< m_link_list[idx_curr]->link->get_X_FromParent_Motion()  <<endl<<endl;
+		//cout<<" "<<idx_curr;
 	}
+	//cout<<endl;
 
 	return X;
 }

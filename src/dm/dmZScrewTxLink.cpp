@@ -706,7 +706,7 @@ void dmZScrewTxLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr,
 	link_val2_curr.f = Vector6F::Zero();
 
 
-	if (ExtForceFlag == false)
+	if (ExtForceFlag != false)
 	{
 		// doing nothing, since dmZScrewTxLink does not have a m_force member
 	}
@@ -745,7 +745,7 @@ void dmZScrewTxLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
 
 	link_val2_curr.f = Vector6F::Zero();
 
-	if (ExtForceFlag == false)
+	if (ExtForceFlag != false)
 	{
 		// doing nothing, since dmZScrewTxLink does not have a m_force member
 	}

@@ -53,10 +53,10 @@ Articulation {
 			Graphics_Model	"./kurmet_model/torso.xan"
 
 			Mass			12.1
-			Inertia			0.218	0.00176	0.159
-						0.00176	0.47	0.00482
-						0.159	0.004818	0.334
-			Center_of_Gravity	0.138	0.0008	0.0849	
+			Inertia			0.218	0.0027	0.0117
+						0.0027	0.257	0.0048
+						0.0117	0.0048	0.121
+			Center_of_Gravity	0.038	0.0008	0.0849	
 			Number_of_Contact_Points	0
 
 			MDH_Parameters		0	1.5708	2.08	0	
@@ -109,18 +109,8 @@ Articulation {
 							-2e-006	0.0116	0
 							-1e-006	0	0.0116
 				Center_of_Gravity	0.0964	-0.0003	-0.0002	
-				Number_of_Contact_Points	11
-			Contact_Locations	 0.2285   -0.0280         0
-						 0.2355   -0.0251         0
-    						 0.2415   -0.0205         0
-  						 0.2461   -0.0145         0
-  						 0.2490   -0.0075         0
-    						 0.2500         0         0
- 						 0.2490    0.0075         0
-  						 0.2461    0.0145         0
- 						 0.2415    0.0205         0
-						 0.2355    0.0251         0
-					         0.2285    0.0280         0
+				Number_of_Contact_Points	1
+			        Contact_Locations	 0.2500         0         0
 
 
 				MDH_Parameters		0.25	0	0	0.1	
@@ -162,20 +152,8 @@ Articulation {
 						-2e-006	0.0116	0
 						-1e-006	0	0.0116
 			Center_of_Gravity	0.0964	-0.0003	-0.0002	
-			Number_of_Contact_Points	11
-			Contact_Locations	 0.2285   -0.0280         0
-						 0.2355   -0.0251         0
-    						 0.2415   -0.0205         0
-  						 0.2461   -0.0145         0
-  						 0.2490   -0.0075         0
-    						 0.2500         0         0
- 						 0.2490    0.0075         0
-  						 0.2461    0.0145         0
- 						 0.2415    0.0205         0
-						 0.2355    0.0251         0
-					         0.2285    0.0280         0
-
-	
+			Number_of_Contact_Points	1
+			Contact_Locations	 0.2500         0         0
 
 			MDH_Parameters		0.25	0	0	0.1	
 			Initial_Joint_Velocity	0

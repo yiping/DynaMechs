@@ -30,9 +30,12 @@
 #include <dmMDHLink.hpp>
 #include <dmMobileBaseLink.hpp>
 
-
+#include "functions.h"
+#include "global_typedef.h"
 
 //#define KURMET_DEBUG
+
+#define OUTPUT_DEBUG_INFO
 
 // ----------------------------------------------------------------------
 
@@ -46,6 +49,18 @@ GLfloat view_mat[4][4];
 Float idt;
 Float sim_time=0.0;
 Float rtime=0.0;
+
+DataRecVector MyVec;
+Vector6F err = Vector6F::Zero();
+Vector6F desired_torso_acc = Vector6F::Zero();
+Float tr[9][1];
+Vector3F ZMP_ICS = Vector3F::Zero();
+Vector3F p_RF_ICS = Vector3F::Zero();
+Vector3F p_LF_ICS = Vector3F::Zero();
+Float q1ss,q2ss,q0ss;
+Float qd1ss, qd2ss, qd0ss;
+bool outputOnce = true;
+bool pc_ini = true;
 
 bool IsWireframe = false;
 
@@ -63,7 +78,7 @@ int render_rate;
 int render_count = 0;
 int timer_count = 0;
 
-
+void SaveToDataRecord(DataRecord *Rec);
 
 
 //----------------------------------------------------------------------------
@@ -291,13 +306,139 @@ void updateSim()
 
     	if (sim_time > 5.0)
     	{
-			//postural control
+
+    		if (pc_ini == true) // set steady state torso state - will be used as reference
+    		{
+				Float Q[1], Qd[1];
+				G_robot->getLink(2)->getState(Q,Qd); q2ss = Q[0]; qd2ss = Qd[0];
+				G_robot->getLink(1)->getState(Q,Qd); q1ss = Q[0]; qd1ss = Qd[0];
+				G_robot->getLink(0)->getState(Q,Qd); q0ss = Q[0]; qd0ss = Qd[0];
+				pc_ini = false;
+    		}
+
+			//begin postural control
+
+    		/// 1. figure out qdd0, qdd1, qdd2 through PD control
+			Float q2[1], qd2[1];
+			G_robot->getLink(2)->getState(q2,qd2);
+
+			Float q1[1], qd1[1];
+			G_robot->getLink(1)->getState(q1,qd1);
+
+			Float q0[1], qd0[1];
+			G_robot->getLink(0)->getState(q0,qd0);
+
+			Float k_p, k_d;
+			k_d = 20;
+			k_p = 400;
+
+			G_robot_linkinfo_list[2]->link_val2.qdd(0) = k_p * (q2ss - q2[0]) + k_d * (qd2ss - qd2[0] );
+			G_robot_linkinfo_list[1]->link_val2.qdd(0) = k_p * (q1ss - q1[0]) + k_d * (qd1ss - qd1[0] );
+			G_robot_linkinfo_list[0]->link_val2.qdd(0) = k_p * (q0ss - q0[0]) + k_d * (qd0ss - qd0[0] );
+
+			/// 2. calculate desired torso spatial acceleration (in local coordinate)
+			desired_torso_acc(2) = G_robot_linkinfo_list[2]->link_val2.qdd(0);
+			desired_torso_acc(3) = G_robot_linkinfo_list[1]->link_val2.qdd(0) * 2.08;
+			desired_torso_acc(4) = -G_robot_linkinfo_list[0]->link_val2.qdd(0) * 2.08;
 
 
-			/// 1.calculate Kurmet torso spatial velocity
+
+			//#ifdef KURMET_DEBUG
+			cout<<"desired torso acceleration is: "<<endl<<desired_torso_acc<<endl<<endl;
+			//#endif
+
+
+			Matrix3F Rot1;
+			Matrix3F Rot2;
+			G_robot->computeSpatialVelAndICSPose(6);
+			G_robot->computeSpatialVelAndICSPose(8);
+			for (int m = 0; m< 3; m++)
+			{
+				for (int n = 0; n< 3; n++)
+				{
+					Rot1(m,n) = G_robot_linkinfo_list[6]->link_val2.R_ICS[m][n];
+					Rot2(m,n) = G_robot_linkinfo_list[8]->link_val2.R_ICS[m][n];
+				}
+			}
+
+			/// 3.calculate the desired qdd for the leg joints
 			//
-			// expressed in torso coordinate
-			G_robot->computeSpatialVelAndICSPose(2);
+			// right leg:
+			Matrix6F X_rf;
+			Vector3F prf;
+			prf<< 0.25,0, 0;
+			X_rf.block<3,3>(0,0) = Matrix3F::Identity();
+			X_rf.block<3,3>(0,3) = Matrix3F::Zero();
+			X_rf.block<3,3>(3,0) = -cr3(prf);
+			X_rf.block<3,3>(3,3) = Matrix3F::Identity();
+			Vector6F accBiasR;
+			Matrix6XF JR;
+			Matrix6F X_TR; // spatial transformation from torso to right foot
+			accBiasR = G_robot->computeAccelerationBias(6,X_rf,3); //double check...
+			JR = G_robot->calculateJacobian(6,X_rf,3); //double check...
+			X_TR = X_rf*G_robot->computeSpatialTransformation(6,3); //double check...
+			Vector2F qdd_R;
+			Vector6F rhs1 = (- X_TR * desired_torso_acc - accBiasR);
+
+			qdd_R = solveJacobianPseudoInverse(JR, rhs1);
+			#ifdef KURMET_DEBUG
+			cout<<"JR is: "<<endl<<JR<<endl<<endl;
+			cout<<"rhs1 is: "<<endl<<rhs1<<endl<<endl;
+			cout<<"qdd_R: "<<endl<<qdd_R<<endl<<endl;
+			#endif
+
+			G_robot_linkinfo_list[5]->link_val2.qdd(0) = qdd_R(0);
+			G_robot_linkinfo_list[6]->link_val2.qdd(0) = qdd_R(1);
+
+			// left leg:
+			Matrix6F X_lf;
+			Vector3F plf;
+			plf<< 0.25,0, 0;
+			X_lf.block<3,3>(0,0) = Matrix3F::Identity();
+			X_lf.block<3,3>(0,3) = Matrix3F::Zero();
+			X_lf.block<3,3>(3,0) = -cr3(plf);
+			X_lf.block<3,3>(3,3) = Matrix3F::Identity();
+			Vector6F accBiasL;
+			Matrix6XF JL;
+			Matrix6F X_TL; // spatial transformation from torso to left foot
+			accBiasL = G_robot->computeAccelerationBias(8,X_lf,3);
+			JL = G_robot->calculateJacobian(8,X_lf,3);
+			X_TL = X_lf*G_robot->computeSpatialTransformation(8,3);
+			Vector2F qdd_L;
+			Vector6F rhs2 = (- X_TL * desired_torso_acc - accBiasL);
+
+			qdd_L = solveJacobianPseudoInverse(JL, rhs2);
+			#ifdef KURMET_DEBUG
+			cout<<"JL is: "<<endl<<JL<<endl<<endl;
+			cout<<"rhs2 is: "<<endl<<rhs2<<endl<<endl;
+			cout<<"qdd_L: "<<endl<<qdd_L<<endl<<endl;
+			#endif
+
+			G_robot_linkinfo_list[7]->link_val2.qdd(0) = qdd_L(0);
+			G_robot_linkinfo_list[8]->link_val2.qdd(0) = qdd_L(1);
+
+
+
+			#ifdef KURMET_DEBUG
+			for (int g = 0; g<9; g++)
+			{
+				if ((g != 3) && (g!= 4))
+					cout<<"qdd "<<g<<" :"<<endl<<G_robot_linkinfo_list[g]->link_val2.qdd(0)<<endl;
+			}
+			cout<<endl;
+			#endif
+
+			/// 4.free space inverse dynamics, to figure out the spatial force on torso
+			//
+			G_robot->inverseDynamics(false); //no external forces
+
+
+
+
+			/// 5. calculate feet and ZMP locations (in ICS)
+
+			Matrix6F XI2 = G_robot->computeSpatialTransformation(2);
+
 			G_robot->computeSpatialVelAndICSPose(6);
 			G_robot->computeSpatialVelAndICSPose(8);
 			CartesianVector p_RK_ICS;
@@ -314,300 +455,207 @@ void updateSim()
 					R_LK_ICS[i][j] = G_robot_linkinfo_list[8]->link_val2.R_ICS[i][j]; //leftt knee Rostation ICS
 				}
 			}
-			#ifdef KURMET_DEBUG
-			cout<<"p_RK_ICS = "<<endl<<p_RK_ICS[0]<<"  " <<p_RK_ICS[1]<<"  " <<p_RK_ICS[2] <<endl<<endl;
-
-			#endif
-
-
-
-			Vector6F TorsoVel_curr = G_robot_linkinfo_list[2]->link_val2.v;
-
-			#ifdef KURMET_DEBUG
-			cout<<"current torso spatial vel: "<<endl<<TorsoVel_curr<<endl<<endl;
-			cout<<"current torso ICS position: "<<endl<<G_robot_linkinfo_list[2]->link_val2.p_ICS[0]<<" "
-				<<G_robot_linkinfo_list[2]->link_val2.p_ICS[1]<<" "
-				<<G_robot_linkinfo_list[2]->link_val2.p_ICS[2]<<endl<<endl;
-			cout<<"current torso ICS orientation: "<<endl
-				<<G_robot_linkinfo_list[2]->link_val2.R_ICS[0][0]<<" "
-				<<G_robot_linkinfo_list[2]->link_val2.R_ICS[0][1]<<" "
-				<<G_robot_linkinfo_list[2]->link_val2.R_ICS[0][2]<<endl
-				<<G_robot_linkinfo_list[2]->link_val2.R_ICS[1][0]<<" "
-				<<G_robot_linkinfo_list[2]->link_val2.R_ICS[1][1]<<" "
-				<<G_robot_linkinfo_list[2]->link_val2.R_ICS[1][2]<<endl
-				<<G_robot_linkinfo_list[2]->link_val2.R_ICS[2][0]<<" "
-				<<G_robot_linkinfo_list[2]->link_val2.R_ICS[2][1]<<" "
-				<<G_robot_linkinfo_list[2]->link_val2.R_ICS[2][2]<<endl
-				<<endl;
-			#endif
-
-			/// 2.figure out the desired acceleration
-			//
-
-			// 2.a Reference (desired) torso position and orientation (ICS)
-			Vector3F ref_torso_p_ICS;
-			ref_torso_p_ICS<< 3.0, 5.08, 0.5;  // 3.00347 5.07999 0.493448
-			Vector3F ref_c1, ref_c2, ref_c3;
-			ref_c1 << 0,
-					  0,
-					  1;
-			ref_c2 << 1,
-					  0,
-					  0;
-			ref_c3 << 0,
-					  1,
-					  0;
-
-
-			// 2.b position and orientation error
-			Vector6F err;
-			err(3) = ref_torso_p_ICS[0] - G_robot_linkinfo_list[2]->link_val2.p_ICS[0];
-			err(4) = ref_torso_p_ICS[1] - G_robot_linkinfo_list[2]->link_val2.p_ICS[1];
-			err(5) = ref_torso_p_ICS[2] - G_robot_linkinfo_list[2]->link_val2.p_ICS[2];
-			#ifdef KURMET_DEBUG
-			cout<<"before = "<<endl<<err<<endl<<endl;
-			#endif
-
-			Vector3F c1,c2,c3; // columns of ref_torso_R_ICS
-			c1 << G_robot_linkinfo_list[2]->link_val2.R_ICS[0][0],
-					G_robot_linkinfo_list[2]->link_val2.R_ICS[1][0],
-					G_robot_linkinfo_list[2]->link_val2.R_ICS[2][0];
-			c2 << G_robot_linkinfo_list[2]->link_val2.R_ICS[0][1],
-				  G_robot_linkinfo_list[2]->link_val2.R_ICS[1][1],
-				  G_robot_linkinfo_list[2]->link_val2.R_ICS[2][1];
-			c3 << G_robot_linkinfo_list[2]->link_val2.R_ICS[0][2],
-				  G_robot_linkinfo_list[2]->link_val2.R_ICS[1][2],
-				  G_robot_linkinfo_list[2]->link_val2.R_ICS[2][2];
-			Matrix6F XI2 = G_robot->computeSpatialTransformation(2);
-			err.head(3) = XI2.block(0,0,3,3) * (cr3(c1)* ref_c1 + cr3(c2)* ref_c2 + cr3(c3)* ref_c3); // there is a bias... lwp
-			Vector3F temp1 = XI2.block(0,0,3,3)* err.tail(3);
-			err.tail(3) = temp1;
-
-			#ifdef KURMET_DEBUG
-			cout<<"XI2 = "<<endl<<XI2<<endl<<endl;
-			cout<<"orienation/pos error is: "<<endl<<err<<endl<<endl;
-			#endif
-			// 2.c PD gain
-			Vector6F desired_torso_acc;
-			Matrix6F Kd = Matrix6F::Zero();
-			Matrix6F Kp = Matrix6F::Zero();
-			Float k_wz, k_vx, k_vy;
-			Float k_theta, k_px, k_py;
-			k_wz = k_vx = k_vy = 20;
-			k_theta = k_px = k_py = 100; // should be close to critically damped...
-			Kd(2,2) = k_wz;
-			Kd(3,3) = k_vx;
-			Kd(4,4) = k_vy; // velocity error in torso coordinate
-			Kp(2,2) = k_theta;
-			Kp(3,3) = k_px;
-			Kp(4,4) = k_py; // pos/ori error in ICS
-			desired_torso_acc = Kd * ( - TorsoVel_curr) + Kp * (err);
-			// the desired spatial acceleration of torso is expressed in local coordinate (a earth-fixed frame coinciding with...)
-			//#ifdef KURMET_DEBUG
-			cout<<"desired torso acceleration is: "<<endl<<desired_torso_acc<<endl<<endl;
-			//#endif
-
-
-
-			/// 3.calculate the desired qdd for the leg joints
-			//
-			// right leg:
-			Matrix6F X_rf;
-			Vector3F prf;
-			prf<< 0.25,0, 0;
-			X_rf.block<3,3>(0,0) = Matrix3F::Identity();
-			X_rf.block<3,3>(0,3) = Matrix3F::Zero();
-			X_rf.block<3,3>(3,0) = -cr3(prf);
-			X_rf.block<3,3>(3,3) = Matrix3F::Identity();;
-			Vector6F accBiasR;
-			Matrix6XF JR;
-			Matrix6F X_Rt; // spatial transformation from torso to right foot
-			accBiasR = G_robot->computeAccelerationBias(6,X_rf,5);
-			JR = G_robot->calculateJacobian(6,X_rf,5);
-			X_Rt = X_rf*G_robot->computeSpatialTransformation(6,5);
-			Vector2F temp2;
-			Vector6F rhs1 = (- X_Rt * desired_torso_acc - accBiasR);
-			#ifdef KURMET_DEBUG
-			cout<<"JR is: "<<endl<<JR<<endl<<endl;
-			cout<<"rhs1 is: "<<endl<<rhs1<<endl<<endl;
-			#endif
-
-			temp2 = JR.jacobiSvd(ComputeThinU | ComputeThinV).solve(rhs1);
-			#ifdef KURMET_DEBUG
-			cout<<"temp2a: "<<endl<<temp2<<endl<<endl;
-			#endif
-
-			G_robot_linkinfo_list[5]->link_val2.qdd(0) = temp2(0);
-			G_robot_linkinfo_list[6]->link_val2.qdd(0) = temp2(1);
-	//
-			// left leg:
-			Matrix6F X_lf;
-			Vector3F plf;
-			prf<< 0.25,0, 0;
-			X_lf.block<3,3>(0,0) = Matrix3F::Identity();
-			X_lf.block<3,3>(0,3) = Matrix3F::Zero();
-			X_lf.block<3,3>(3,0) = -cr3(plf);
-			X_lf.block<3,3>(3,3) = Matrix3F::Identity();;
-			Vector6F accBiasL;
-			Matrix6XF JL;
-			Matrix6F X_Lt; // spatial transformation from torso to left foot
-			accBiasL = G_robot->computeAccelerationBias(8,X_lf,7);
-			JL = G_robot->calculateJacobian(8,X_lf,7);
-			X_Lt = X_lf*G_robot->computeSpatialTransformation(8,7);
-			Vector6F rhs2 = (- X_Lt * desired_torso_acc - accBiasL);
-			#ifdef KURMET_DEBUG
-			cout<<"JL is: "<<endl<<JR<<endl<<endl;
-			cout<<"rhs2 is: "<<endl<<rhs2<<endl<<endl;
-			#endif
-
-			temp2 = JL.jacobiSvd(ComputeThinU | ComputeThinV).solve(rhs2);
-			#ifdef KURMET_DEBUG
-			cout<<"temp2b: "<<endl<<temp2<<endl<<endl;
-			#endif
-
-			G_robot_linkinfo_list[7]->link_val2.qdd(0) = temp2(0);
-			G_robot_linkinfo_list[8]->link_val2.qdd(0) = temp2(1);
-
-			// torso:
-			//  from desired torso spatial acceleration to joint angle accelerations | any approximations??
-
-			G_robot_linkinfo_list[2]->link_val2.qdd(0) = desired_torso_acc(2);
-			G_robot_linkinfo_list[1]->link_val2.qdd(0) = desired_torso_acc(3)/2.08 ;
-			G_robot_linkinfo_list[0]->link_val2.qdd(0) = -desired_torso_acc(5)/2.08 ;
-
-
-
-			/// 4.free space inverse dynamics, to figure out the spatial force on torso
-			//
-			G_robot->inverseDynamics(); //no external forces
-
-
-
-			/// 5.force distribution to feet
-			//
-			Vector6F netForce_ICS;
-			Matrix6F X2IF = XI2.transpose();
-			netForce_ICS = X2IF * G_robot_linkinfo_list[2]->link_val2.f;
-			// calculate ZMP location in ICS
-			Vector3F ZMP_ICS;
-			ZMP_ICS(0) = - netForce_ICS(1)/netForce_ICS(5);
-			ZMP_ICS(1) = netForce_ICS(0)/netForce_ICS(5);
-			ZMP_ICS(2) = 0;
 			// foot location in ICS
-			// right:
-			Vector3F p_RF_ICS;
-			Vector3F p_LF_ICS;
-
+			// Vector3F p_RF_ICS;
+			// Vector3F p_LF_ICS;
 			for (int i = 0; i < 3; i++)
 			{
 				p_RF_ICS(i) = p_RK_ICS[i] + 0.25*R_RK_ICS[i][0];
 				p_LF_ICS(i) = p_LK_ICS[i] + 0.25*R_LK_ICS[i][0];
 			}
-			//#ifdef KURMET_DEBUG
-			cout<<"Torso force w.r.t Torso coordinate"<<endl<<G_robot_linkinfo_list[2]->link_val2.f<<endl<<endl;
-			cout<<"Torso force w.r.t ICS"<<endl<<netForce_ICS<<endl<<endl;
+
+			Vector6F netForce_ICS;
+			Matrix6F X2IF = XI2.transpose();
+			Vector6F nf = G_robot_linkinfo_list[2]->link_val2.f;
+			nf(0) = 0; nf(1) = 0; nf(5) = 0;
+			netForce_ICS = X2IF * (nf);
+
+			// ZMP location in ICS
+			//Vector3F ZMP_ICS;
+			ZMP_ICS(0) = - netForce_ICS(1)/netForce_ICS(5);
+			ZMP_ICS(1) = netForce_ICS(0)/netForce_ICS(5);
+			ZMP_ICS(2) = 0;
+
+
+			#ifdef KURMET_DEBUG
+			//cout<<"Torso force w.r.t Torso coordinate"<<endl<<G_robot_linkinfo_list[2]->link_val2.f<<endl<<endl;
+			//cout<<"Net force ICS"<<endl<<netForce_ICS<<endl<<endl;
 			cout<<"Right foot position ICS is: "<<endl<<p_RF_ICS<<endl<<endl;
 			cout<<"left foot  position ICS is: "<<endl<<p_LF_ICS<<endl<<endl;
 			cout<<"ZMP        position ICS is: "<<endl<<ZMP_ICS<<endl<<endl;
-			//#endif
+			#endif
 
-			//    	Vector6F netForce_ZMP;
-			//    	Matrix6F XIZF;
-			//    	XIZF << Matrix3F::Identity(), -crm(ZMP_ICS),
-			//    			Matrix3F::Zero(), Matrix3F::Identity();
-			//    	netForce_ZMP = XIZF * netForce_ICS;
-
-			Vector6F netForce_Rf;
-			Vector6F netForce_Lf;
-			Matrix6F XIRfF;
-			Matrix6F XILfF;
-
-			XIRfF << Matrix3F::Identity(), -cr3(p_RF_ICS),
-					Matrix3F::Zero(), Matrix3F::Identity();
-			XILfF << Matrix3F::Identity(), -cr3(p_LF_ICS),
-					Matrix3F::Zero(), Matrix3F::Identity();
+			Vector6F netForce_ZMP;
+			Matrix6F XIZF;
+			XIZF << Matrix3F::Identity(), -cr3(ZMP_ICS),
+			        Matrix3F::Zero(), Matrix3F::Identity();
+			netForce_ZMP = XIZF * netForce_ICS;
+			cout<<"netForce_ZMP = ["<< netForce_ZMP.transpose()<<"]"<<endl<<endl;
 
 
 
+			/// 6. simple force distribution
 			Float a = abs(p_RF_ICS[0] - ZMP_ICS(0) );
 			Float b = abs(p_LF_ICS[0] - ZMP_ICS(0) );
+
+			Float c = abs(p_RF_ICS[1] - ZMP_ICS(1) );
+			Float d = abs(p_LF_ICS[1] - ZMP_ICS(1) );
+
 			if (( max(p_RF_ICS[0], p_LF_ICS[0]) >ZMP_ICS(0) ) && ( ZMP_ICS(0)>min(p_RF_ICS[0], p_LF_ICS[0]) ) )
 			{
-				netForce_Rf = XIRfF * (b/(a+b)) * netForce_ICS; //
-				netForce_Lf = XILfF * (a/(a+b)) * netForce_ICS; // No need though...
+
 			}
 			else
 			{
 				   cerr << " ZMP is outside support polygon!  " << endl;
-				   exit(1);
+
+				   //simDataOutput(MyVec);
+				   //exit(1);
 			}
 
-			/// 6.inverse dynamics again with the distributed force on each foot
+
+
+			// ZMP coordinate has the same orientation as ICS,
+			// Right foot coordinate has the same orientation as right knee coordinate
+
+			Vector6F GRF_rf = Vector6F::Zero();
+			Vector6F GRF_lf = Vector6F::Zero();
+
+			GRF_rf.tail(3) = Rot1.inverse() * ((b/(a+b))*netForce_ZMP.tail(3));
+
+			GRF_lf.tail(3) = Rot2.inverse() * ((a/(a+b))*netForce_ZMP.tail(3));
+
+			/// 7.inverse dynamics again with the distributed force on each foot
 			//
 			// calculated external force for each foot needs to transfer to the corresponding knee joint frame.
-			Matrix6F XILk = G_robot->computeSpatialTransformation(8);
-			Matrix6F XIRk = G_robot->computeSpatialTransformation(6);
 
+//			Matrix6F XIRk = G_robot->computeSpatialTransformation(6);
+//			Matrix6F XILk = G_robot->computeSpatialTransformation(8);
+//
+//			Matrix6F XRkIF = XIRk.transpose();
+//			Vector6F netForce_Rk;
+//			netForce_Rk = solveInverse(XRkIF,  (b/(a+b))*netForce_ICS);
+//
+//			Matrix6F XLkIF = XILk.transpose();
+//			Vector6F netForce_Lk;
+//			netForce_Lk = solveInverse(XLkIF, (a/(a+b))*netForce_ICS);
 
-			Matrix6F XRkIF = XIRk.transpose();
+			Matrix6F X26 = G_robot->computeSpatialTransformation(6,3);
+			Matrix6F X28 = G_robot->computeSpatialTransformation(8,3);
 			Vector6F netForce_Rk;
-			netForce_Rk = XRkIF.partialPivLu().solve( (b/(a+b))*netForce_ICS);
+			Matrix6F X62F = X26.transpose();
+			netForce_Rk = solveInverse(X62F, (b/(a+b))*nf);
 
-			Matrix6F XLkIF = XILk.transpose();
+			// -rf
+			Matrix6F X2rf = X_rf * X26; Matrix6F Xrf2F = X2rf.transpose();
+			Vector6F netForce_rf;
+			netForce_rf = solveInverse(Xrf2F, (b/(a+b))*nf);
+
 			Vector6F netForce_Lk;
-			netForce_Lk = XLkIF.partialPivLu().solve( (a/(a+b))*netForce_ICS );
+			Matrix6F X82F = X28.transpose();
+			netForce_Lk = solveInverse(X82F, (a/(a+b))*nf);
+
+			// -lf
+			Matrix6F X2lf = X_lf * X26; Matrix6F Xlf2F = X2lf.transpose();
+			Vector6F netForce_lf;
+			netForce_lf = solveInverse(Xlf2F, (a/(a+b))*nf);
+
+
+
+
+
+
+
 
 			// travel back to torso, adding in the additional force to each joint.
-			G_robot_linkinfo_list[6]->link_val2.f += netForce_Rk;
+			//G_robot_linkinfo_list[6]->link_val2.f -= netForce_Rk;
+			Matrix6F X_rf6F = X_rf.transpose();
+			G_robot_linkinfo_list[6]->link_val2.f -= X_rf6F * GRF_rf;
 			G_robot_linkinfo_list[6]->link_val2.tau(0) = G_robot_linkinfo_list[6]->link_val2.f(2);
 			Matrix6F X56 = G_robot->computeSpatialTransformation(6,6);
 			Matrix6F X65F = X56.transpose();
-			G_robot_linkinfo_list[5]->link_val2.f += X65F * G_robot_linkinfo_list[6]->link_val2.f;
+			//G_robot_linkinfo_list[5]->link_val2.f -= X65F * netForce_Rk;
+			G_robot_linkinfo_list[5]->link_val2.f -= X65F * X_rf6F * GRF_rf;
 			G_robot_linkinfo_list[5]->link_val2.tau(0) = G_robot_linkinfo_list[5]->link_val2.f(2);
 
 			Matrix6F X25 = G_robot->computeSpatialTransformation(5,3);
 			Matrix6F X52F = X25.transpose();
 
-			G_robot_linkinfo_list[8]->link_val2.f += netForce_Lk;
+			//G_robot_linkinfo_list[8]->link_val2.f -= netForce_Lk;
+			Matrix6F X_lf8F = X_lf.transpose();
+			G_robot_linkinfo_list[8]->link_val2.f -= X_lf8F * GRF_lf;
 			G_robot_linkinfo_list[8]->link_val2.tau(0) = G_robot_linkinfo_list[8]->link_val2.f(2);
 			Matrix6F X78 = G_robot->computeSpatialTransformation(8,8);
 			Matrix6F X87F = X78.transpose();
-			G_robot_linkinfo_list[7]->link_val2.f += X87F * G_robot_linkinfo_list[8]->link_val2.f;
+			//G_robot_linkinfo_list[7]->link_val2.f -= X87F * netForce_Lk;
+			G_robot_linkinfo_list[7]->link_val2.f -= X87F * X_lf8F * GRF_lf;
 			G_robot_linkinfo_list[7]->link_val2.tau(0) = G_robot_linkinfo_list[7]->link_val2.f(2);
 
 			Matrix6F X27 = G_robot->computeSpatialTransformation(7,3);
 			Matrix6F X72F = X27.transpose();
 
+			#ifdef KURMET_DEBUG
+				cout<<"X28 "<<endl<<X78*X27<<endl<<endl;
+				cout<<"G_robot->computeSpatialTransformation(8,3): "<<endl<<G_robot->computeSpatialTransformation(8,3)<<endl<<endl;
+			#endif
+
 			//verification!!
 			G_robot_linkinfo_list[2]->link_val2.f;
+			cout<<"b/(a+b) = "<<(b/(a+b))<<"|| a/(a+b) = "<<(a/(a+b))<<endl<<endl;
+			cout<<"d/(c+d) = "<<(d/(c+d))<<"|| c/(c+d) = "<<(c/(c+d))<<endl<<endl;
+			//cout<<"X26 = "<<endl<<X26<<endl<<endl;
+			//cout<<"X28 = "<<endl<<X28<<endl<<endl;
+			cout<<"GRF_lf = ["<< GRF_lf.transpose()<<"]"<<endl<<endl;
+			cout<<"GRF_rf = ["<< GRF_rf.transpose()<<"]"<<endl<<endl;
+
+			cout<<"nf = ["<<nf.transpose()<<"]"<<endl<<endl;
+
 			cout<<"calculated free space torso force: "<<endl<< (G_robot_linkinfo_list[2]->link_val2.f).transpose()<<endl<<endl;
-			Vector6F expectedTorsoForce = G_robot_linkinfo_list[2]->link_val2.f - X52F*G_robot_linkinfo_list[5]->link_val2.f
-												  - X72F*G_robot_linkinfo_list[7]->link_val2.f;
+			Vector6F expectedTorsoForce = G_robot_linkinfo_list[2]->link_val2.f
+					                    - X52F* X65F * X_rf6F * GRF_rf
+										- X72F* X87F * X_lf8F * GRF_lf;
 			cout<<"calculated torso force with contact: "<<endl<< expectedTorsoForce.transpose()<<endl<<endl;
 
-			//set joint torques
+			/// 8. set joint torques
 			Float JointTorque[1];
-			JointTorque[0] = G_robot_linkinfo_list[5]->link_val2.tau(0);
-			G_robot->getLink(5)->setJointInput(JointTorque);
 			JointTorque[0] = G_robot_linkinfo_list[6]->link_val2.tau(0);
 			G_robot->getLink(6)->setJointInput(JointTorque);
-			JointTorque[0] = G_robot_linkinfo_list[7]->link_val2.tau(0);
-			G_robot->getLink(7)->setJointInput(JointTorque);
+			tr[6][0] = JointTorque[0];
+
+			JointTorque[0] = G_robot_linkinfo_list[5]->link_val2.tau(0);
+			G_robot->getLink(5)->setJointInput(JointTorque);
+			tr[5][0] = JointTorque[0];
+
 			JointTorque[0] = G_robot_linkinfo_list[8]->link_val2.tau(0);
 			G_robot->getLink(8)->setJointInput(JointTorque);
+			tr[8][0] = JointTorque[0];
 
-			//    	for (int i = 0; i<3; i++) //link indices
-			//    	{
-			//    		Float q[1],qd[1];
-			//    		Float tr[1];
-			//    		G_robot->getLink(i)->getState(q,qd);
-			//    	}
+			JointTorque[0] = G_robot_linkinfo_list[7]->link_val2.tau(0);
+			G_robot->getLink(7)->setJointInput(JointTorque);
+			tr[7][0] = JointTorque[0];
 
 
-			///// A proposed test ///////////////////////////////////////////////////////
-			// Calculate the torso spatial force for a 2D (planar), STATIC KURMET.
-			// Assume qdd = 0 and qd = 0 for all joints.
-			/////////////////////////////////////////////////////////////////////////////
+//			// This is just for sanity check
+//			JointTorque[0] = G_robot_linkinfo_list[2]->link_val2.f(2);
+//			G_robot->getLink(2)->setJointInput(JointTorque);
+//			tr[2][0] = JointTorque[0];
+//
+//			JointTorque[0] = G_robot_linkinfo_list[1]->link_val2.f(2);
+//			G_robot->getLink(1)->setJointInput(JointTorque);
+//			tr[1][0] = JointTorque[0];
+//
+//			JointTorque[0] = G_robot_linkinfo_list[0]->link_val2.f(2);
+//			G_robot->getLink(0)->setJointInput(JointTorque);
+//			tr[0][0] = JointTorque[0];
+//			// This is just for sanity check
+
+
+
+			cout<<"Joint Torques:  "<<endl<<" |rh| "<<G_robot_linkinfo_list[5]->link_val2.tau(0)
+					          <<" |rk| "<<G_robot_linkinfo_list[6]->link_val2.tau(0)
+					          <<" |lh| "<<G_robot_linkinfo_list[7]->link_val2.tau(0)
+					          <<" |lk| "<<G_robot_linkinfo_list[8]->link_val2.tau(0)<<endl<<endl;
+
 
 			// some debug info
 			#ifdef KURMET_DEBUG
@@ -635,35 +683,49 @@ void updateSim()
 			// of what the desired ICS position/orientation should be. Only for testing.
 			// torso
 			Float q[1],qd[1];
-			Float tr[1];
+			// Float tr[9][1];
 			G_robot->getLink(2)->getState(q,qd);
-			tr[0]= 0* (0 - q[0])  - 0*(qd[0]);
-			G_robot->getLink(2)->setJointInput(tr);
+			tr[2][0]= 0* (0 - q[0])  - 0*(qd[0]);
+			G_robot->getLink(2)->setJointInput(tr[2]);
 			// right hip
 			G_robot->getLink(5)->getState(q,qd);
-			tr[0]= 100* (-0.2 - q[0])  - 20*(qd[0]);
-			G_robot->getLink(5)->setJointInput(tr);
+			tr[5][0]= 100* (-0.2 - q[0])  - 20*(qd[0]);
+			G_robot->getLink(5)->setJointInput(tr[5]);
 			// right knee
 			G_robot->getLink(6)->getState(q,qd);
-			tr[0]= 100* (0.1 - q[0])  - 20*(qd[0]);
-			G_robot->getLink(6)->setJointInput(tr);
+			tr[6][0]= 100* (0.1 - q[0])  - 20*(qd[0]);
+			G_robot->getLink(6)->setJointInput(tr[6]);
 
 			// left hip
 			G_robot->getLink(7)->getState(q,qd);
-			tr[0]= 100* (0.1 - q[0])  - 20*(qd[0]);
-			G_robot->getLink(7)->setJointInput(tr);
+			tr[7][0]= 100* (0.1 - q[0])  - 20*(qd[0]);
+			G_robot->getLink(7)->setJointInput(tr[7]);
 			// left knee
 			G_robot->getLink(8)->getState(q,qd);
-			tr[0]= 100* (0.1 - q[0])  - 20*(qd[0]);
-			G_robot->getLink(8)->setJointInput(tr);
+			tr[8][0]= 100* (0.1 - q[0])  - 20*(qd[0]);
+			G_robot->getLink(8)->setJointInput(tr[8]);
+
+			G_robot->computeSpatialVelAndICSPose(2);
     	}
 
     	///
 		G_integrator->simulate(idt);
     	sim_time += idt;
 
+		if (sim_time>0)
+		{
+			  DataRecord * RecThisStep = new DataRecord;
+			  SaveToDataRecord(RecThisStep);
+			  MyVec.push_back(RecThisStep);
+		}
       }
+
+
+
    }
+
+
+
 
    camera->update(mouse);
    camera->applyView();
@@ -687,7 +749,13 @@ void updateSim()
       last_tv.tv_nsec = tv.tv_nsec;
    }
 
+   if (sim_time >6.0 && outputOnce == true)
+   {
+       simDataOutput(MyVec);
+       outputOnce = false;
+   }
 
+   //cout<<"--- --- --- "<<endl;
 }
 
 
@@ -744,7 +812,7 @@ int main(int argc, char** argv)
       exit(3);
    }
 
-   // control_stepsize =
+   // control_stepsize =%lf\t
 
    readConfigParameterLabel(cfg_ptr,"Display_Update_Rate");
    cfg_ptr >> render_rate;
@@ -800,20 +868,84 @@ int main(int argc, char** argv)
 
    cout<<"kurmet has "<<G_robot->getNumLinks()<<" links."<<endl;
    cout<<"link 0 has "<<G_robot->getLink(0)->getNumDOFs()<<" DOFs."<<endl;
-   cout<<"link 1 's X is "<<endl<<G_robot->getLink(1)->get_X_FromParent_Motion()<<endl<<endl;
-   cout<<"link 0 's X is "<<endl<<G_robot->getLink(0)->get_X_FromParent_Motion()<<endl<<endl;
-   if (G_robot->getLinkParent(0) )
-   {
-      cout<<"link 0's parent index is "<<G_robot->getLinkIndex(G_robot->getLinkParent(0) ) <<"."<<endl;
-   }
-   else 
-   {
-      cout<<"link 0's parent link is NULL"<<endl;
-   }
+
+   // cout<<"link 1 's X is "<<endl<<G_robot->getLink(1)->get_X_FromParent_Motion()<<endl<<endl;
+   // cout<<"link 0 's X is "<<endl<<G_robot->getLink(0)->get_X_FromParent_Motion()<<endl<<endl;
+   // if (G_robot->getLinkParent(0) )
+   // {
+   //    cout<<"link 0's parent index is "<<G_robot->getLinkIndex(G_robot->getLinkParent(0) ) <<"."<<endl;
+   // }
+   // else
+   // {
+   //    cout<<"link 0's parent link is NULL"<<endl;
+   // }
    
+   cout<<"Torso Inertia M: "<<endl<< dynamic_cast <dmRigidBody*>(G_robot_linkinfo_list[2]->link)->getSpatialInertiaMatrix()<<endl<<endl;
+
    cout << endl;
    cout << "               p - toggles dynamic simulation" << endl;
 
    glutMainLoop();
+
+
    return 0;             /* ANSI C requires main to return int. */
+}
+
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------------------------
+// I am lazy here... should put this function to a separate file
+void SaveToDataRecord(DataRecord *Rec)
+{
+	Rec->sim_time = sim_time;
+	Float q[1],qd[1];
+
+	for (int i=0; i<9;i++)
+	{
+		if ((i != 3) && (i != 4))
+		{
+			G_robot->getLink(i)->getState(q,qd);
+			Rec->q[i] = q[0];
+			Rec->qd[i] = qd[0];
+		}
+		if (i>4)
+		{
+			Rec->JointTorque[i] = tr[i][0];
+		}
+	}
+	Rec->actual_torso_p_ICS[0] = G_robot_linkinfo_list[2]->link_val2.p_ICS[0];
+	Rec->actual_torso_p_ICS[1] = G_robot_linkinfo_list[2]->link_val2.p_ICS[1];
+	Rec->actual_torso_p_ICS[2] = G_robot_linkinfo_list[2]->link_val2.p_ICS[2];
+
+	Rec->ref_torso_p_ICS[0] = 3.0;
+	Rec->ref_torso_p_ICS[1] = 5.08;
+	Rec->ref_torso_p_ICS[2] = 0.4935;
+
+	for (int j=0; j<6;j++)
+	{
+		//Rec->error[j] = err(j);
+		Rec->desired_torso_acc[j] = desired_torso_acc(j);
+	}
+
+	Rec->ZMPx_ICS = ZMP_ICS(0);
+	Rec->Rfx_ICS = p_RF_ICS[0];
+	Rec->Lfx_ICS = p_LF_ICS[0];
+
+	Rec->q0ss = q0ss; Rec->qd0ss = qd0ss;
+	Rec->q1ss = q1ss; Rec->qd1ss = qd1ss;
+	Rec->q2ss = q2ss; Rec->qd2ss = qd2ss;
+
+	Rec->computed_tq2 = G_robot_linkinfo_list[2]->link_val2.f(2);
+
+    Rec->tr[1][0] = tr[1][0];
+
+
 }

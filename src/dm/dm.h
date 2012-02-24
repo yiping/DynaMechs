@@ -80,6 +80,7 @@
 #include <Eigen/LU>
 #include <Eigen/Dense>
 #include <vector>
+#include <deque>
 
 
 #ifndef M_PI

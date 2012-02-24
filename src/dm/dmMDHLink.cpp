@@ -1034,7 +1034,7 @@ void dmMDHLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr,
 	link_val2_curr.f = I *  link_val2_curr.a  + crf(link_val2_curr.v) * I * link_val2_curr.v;
 
 
-	if (ExtForceFlag == false)
+	if (ExtForceFlag != false)
 	{
 		for (int i = 0; i < m_force.size(); i++)// if there are external forces
 		{
@@ -1081,7 +1081,7 @@ void dmMDHLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
 	Matrix6F I = getSpatialInertiaMatrix();
 	link_val2_curr.f = I *  link_val2_curr.a  + crf(link_val2_curr.v) * I * link_val2_curr.v;	
 
-	if (ExtForceFlag == false)
+	if (ExtForceFlag != false)
 	{
 		for (int i = 0; i < m_force.size(); i++)// if there are external forces
 		{

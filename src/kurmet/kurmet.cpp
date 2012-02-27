@@ -318,43 +318,7 @@ void updateSim()
 
 			//begin postural control
 
-    		/// 1. figure out qdd0, qdd1, qdd2 through PD control
-			Float q2[1], qd2[1];
-			G_robot->getLink(2)->getState(q2,qd2);
-
-			Float q1[1], qd1[1];
-			G_robot->getLink(1)->getState(q1,qd1);
-
-			Float q0[1], qd0[1];
-			G_robot->getLink(0)->getState(q0,qd0);
-
-			Float k_p, k_d;
-			k_d = 20;
-			k_p = 0.2*400;
-
-			q0ss = 0;
-			q1ss = 1.5708;
-			q2ss = 0;
-
-			//note: the PD gains and the initial leg configurations can affect
-			//      the final result to a great extent.
-
-			G_robot_linkinfo_list[2]->link_val2.qdd(0) = k_p * (q2ss - q2[0]) + k_d * (qd2ss - qd2[0] );
-			G_robot_linkinfo_list[1]->link_val2.qdd(0) = 2*k_p * (q1ss - q1[0]) + 2*k_d * (qd1ss - qd1[0] );
-			G_robot_linkinfo_list[0]->link_val2.qdd(0) = k_p * (q0ss - q0[0]) + k_d * (qd0ss - qd0[0] );
-
-			/// 2. calculate desired torso spatial acceleration (in local coordinate)
-			desired_torso_acc(2) = G_robot_linkinfo_list[2]->link_val2.qdd(0);
-			desired_torso_acc(3) = G_robot_linkinfo_list[1]->link_val2.qdd(0) * 2.08;
-			desired_torso_acc(4) = -G_robot_linkinfo_list[0]->link_val2.qdd(0) * 2.08;
-
-
-
-			//#ifdef KURMET_DEBUG
-			cout<<"desired torso acceleration is: "<<endl<<desired_torso_acc<<endl<<endl;
-			//#endif
-
-
+    		/// 1. Resolved Acceleration Control
 			Matrix3F Rot1;
 			Matrix3F Rot2;
 			G_robot->computeSpatialVelAndICSPose(6);
@@ -367,6 +331,110 @@ void updateSim()
 					Rot2(m,n) = G_robot_linkinfo_list[8]->link_val2.R_ICS[m][n];
 				}
 			}
+			Vector6F TorsoVel_curr = G_robot_linkinfo_list[2]->link_val2.v;
+
+    		// Desired torso position and orientation (ICS)
+    		Vector3F ref_torso_p_ICS;
+    		ref_torso_p_ICS<< 3.0, 5.08, 0.46;
+    		Vector3F ref_torso_R_ICS_c1, ref_torso_R_ICS_c2, ref_torso_R_ICS_c3;
+    		ref_torso_R_ICS_c1 << 0, 0, 1;
+    		ref_torso_R_ICS_c2 << 1, 0, 0;
+    		ref_torso_R_ICS_c3 << 0, 1, 0;
+
+    		Vector6F poseError;
+
+    		poseError(3) = ref_torso_p_ICS[0] - G_robot_linkinfo_list[2]->link_val2.p_ICS[0];
+    		poseError(4) = ref_torso_p_ICS[1] - G_robot_linkinfo_list[2]->link_val2.p_ICS[1];
+    		poseError(5) = ref_torso_p_ICS[2] - G_robot_linkinfo_list[2]->link_val2.p_ICS[2];
+
+    		Vector3F c1,c2,c3; // columns of ref_torso_R_ICS
+
+    		for (int g = 0; g<3;g++)
+    		{
+    			c1(g) = G_robot_linkinfo_list[2]->link_val2.R_ICS[g][0];
+    			c2(g) = G_robot_linkinfo_list[2]->link_val2.R_ICS[g][1];
+    			c3(g) = G_robot_linkinfo_list[2]->link_val2.R_ICS[g][2];
+
+    		}
+
+    		Matrix6F XI2 = G_robot->computeSpatialTransformation(2);
+
+    		poseError.head(3) = XI2.block(0,0,3,3) * (0.5*(cr3(c1)* ref_torso_R_ICS_c1 + cr3(c2)* ref_torso_R_ICS_c2 + cr3(c3)* ref_torso_R_ICS_c3)); // there is a bias... lwp
+    		poseError.tail(3) = XI2.block(0,0,3,3)* poseError.tail(3); //in torso coordinate
+
+    		// PD gain
+    		Vector6F desired_torso_acc = Vector6F::Zero();
+
+    		Float kp, kd;
+    		kd = 15;
+    		kp = 100;  // if I use kd = 20, kp = 200, everything works, but the ZMPx's behavior is kinda weird... how to explain?
+    		desired_torso_acc(2) = kp * poseError(2) + kd * ( - TorsoVel_curr(2));
+    		desired_torso_acc(3) = 2*kp * poseError(3) + 2*kd * ( - TorsoVel_curr(3));
+    		desired_torso_acc(4) = kp * poseError(4) + kd * ( - TorsoVel_curr(4));
+
+    		//#ifdef KURMET_DEBUG
+    		cout<<"desired spatial torso acceleration is: "<<endl<<desired_torso_acc<<endl<<endl;
+    		//#endif
+
+    		///2. express the spatial torso acceleration in joint space
+    		G_robot_linkinfo_list[2]->link_val2.qdd(0) = desired_torso_acc(2);
+    		Float torsoTheta[1],torsoOmega[1];
+    		G_robot->getLink(2)->getState(torsoTheta, torsoOmega);
+    		G_robot_linkinfo_list[1]->link_val2.qdd(0) =
+    				(desired_torso_acc(3)*cos( torsoTheta[0])  + desired_torso_acc(4)*sin(torsoTheta[0]))/2.08;
+    		G_robot_linkinfo_list[0]->link_val2.qdd(0) =
+    				-(desired_torso_acc(3)*sin(torsoTheta[0]) + desired_torso_acc(4)*cos(torsoTheta[0]))/2.08 ;
+
+
+//    		/// 1. figure out qdd0, qdd1, qdd2 through PD control
+//			Float q2[1], qd2[1];
+//			G_robot->getLink(2)->getState(q2,qd2);
+//
+//			Float q1[1], qd1[1];
+//			G_robot->getLink(1)->getState(q1,qd1);
+//
+//			Float q0[1], qd0[1];
+//			G_robot->getLink(0)->getState(q0,qd0);
+//
+//			Float k_p, k_d;
+//			k_d = 20;
+//			k_p = 0.2*400;
+//
+//			q0ss = 0;
+//			q1ss = 1.5708;
+//			q2ss = 0;
+//
+//			//note: the PD gains and the initial leg configurations can affect
+//			//      the final result to a great extent.
+//
+//			G_robot_linkinfo_list[2]->link_val2.qdd(0) = k_p * (q2ss - q2[0]) + k_d * (qd2ss - qd2[0] );
+//			G_robot_linkinfo_list[1]->link_val2.qdd(0) = 2*k_p * (q1ss - q1[0]) + 2*k_d * (qd1ss - qd1[0] );
+//			G_robot_linkinfo_list[0]->link_val2.qdd(0) = k_p * (q0ss - q0[0]) + k_d * (qd0ss - qd0[0] );
+//
+//			/// 2. calculate desired torso spatial acceleration (in local coordinate)
+//			desired_torso_acc(2) = G_robot_linkinfo_list[2]->link_val2.qdd(0);
+//			desired_torso_acc(3) = G_robot_linkinfo_list[1]->link_val2.qdd(0) * 2.08;
+//			desired_torso_acc(4) = -G_robot_linkinfo_list[0]->link_val2.qdd(0) * 2.08;
+//
+//
+//
+//			//#ifdef KURMET_DEBUG
+//			cout<<"desired torso acceleration is: "<<endl<<desired_torso_acc<<endl<<endl;
+//			//#endif
+//
+//
+//			Matrix3F Rot1;
+//			Matrix3F Rot2;
+//			G_robot->computeSpatialVelAndICSPose(6);
+//			G_robot->computeSpatialVelAndICSPose(8);
+//			for (int m = 0; m< 3; m++)
+//			{
+//				for (int n = 0; n< 3; n++)
+//				{
+//					Rot1(m,n) = G_robot_linkinfo_list[6]->link_val2.R_ICS[m][n];
+//					Rot2(m,n) = G_robot_linkinfo_list[8]->link_val2.R_ICS[m][n];
+//				}
+//			}
 
 			/// 3.calculate the desired qdd for the leg joints
 			//
@@ -426,14 +494,14 @@ void updateSim()
 
 
 
-			#ifdef KURMET_DEBUG
+			//#ifdef KURMET_DEBUG
 			for (int g = 0; g<9; g++)
 			{
 				if ((g != 3) && (g!= 4))
-					cout<<"qdd "<<g<<" :"<<endl<<G_robot_linkinfo_list[g]->link_val2.qdd(0)<<endl;
+					cout<<"qdd["<<g<<"]= "<<endl<<G_robot_linkinfo_list[g]->link_val2.qdd(0)<<endl;
 			}
 			cout<<endl;
-			#endif
+			//#endif
 
 			/// 4.free space inverse dynamics, to figure out the spatial force on torso
 			//
@@ -444,7 +512,7 @@ void updateSim()
 
 			/// 5. calculate feet and ZMP locations (in ICS)
 
-			Matrix6F XI2 = G_robot->computeSpatialTransformation(2);
+			//Matrix6F XI2 = G_robot->computeSpatialTransformation(2);
 
 			G_robot->computeSpatialVelAndICSPose(6);
 			G_robot->computeSpatialVelAndICSPose(8);

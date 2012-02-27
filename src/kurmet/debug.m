@@ -19,7 +19,7 @@ title('q[1]');
 a = subplot(3,3,3);
 ax = [ax a];
 plot(data(:,1),data(:,26));
-title('boom 1 torque');
+title('boom 2 torque');
 
 a = subplot(3,3, 4);
 ax = [ax a];

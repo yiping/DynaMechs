@@ -12,14 +12,14 @@ Articulation {
 			Name		"Pillar"
 			Graphics_Model	"./kurmet_model/pillar.xan"
 
-			Mass			1
-			Inertia			1	0	0
-						0	1	0
-						0	0	1
+			Mass			0.00001
+			Inertia			0.00000001	0	0
+						    0	0.00000001	0
+						    0	0	0.00000001
 			Center_of_Gravity	0	0	0	
 			Number_of_Contact_Points	0
 
-			MDH_Parameters		0	-1.5708	0.5	0	
+			MDH_Parameters		0	-1.5708	0.46	0	
 			Initial_Joint_Velocity	0
 			Joint_Limits			0	0
 			Joint_Limit_Spring_Constant	0
@@ -32,11 +32,11 @@ Articulation {
 			Name		"Boom"
 			Graphics_Model	"./kurmet_model/boom.xan"
 
-			Mass			2.7
-			Inertia			3.6	0	0
-						0	0.0041	0
-						0	0	3.6
-			Center_of_Gravity	0	-1	0	
+			Mass			0.00000027
+			Inertia			0.000001272	0	0
+						    0	0.00000041	0
+						    0	0	 0.000001272
+			Center_of_Gravity	0	-2.17	0	
 			Number_of_Contact_Points	0
 
 			MDH_Parameters		0	1.5708	0	1.5708	
@@ -91,7 +91,7 @@ Articulation {
 				Number_of_Contact_Points	1
 				Contact_Locations	0.25	0	0	
 
-				MDH_Parameters		0	0	-0.09	-0.2	
+				MDH_Parameters		0	0	-0.09	-0.22	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0

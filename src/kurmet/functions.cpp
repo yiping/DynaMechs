@@ -56,7 +56,7 @@ void simDataOutput(const DataRecVector & MyVec)
 		        MyVec[u]->qd0ss,
 		        MyVec[u]->q[2],
 		        MyVec[u]->qd[2],
-		        MyVec[u]->tr[1][0],
+		        MyVec[u]->tr[2][0],
 		        MyVec[u]->q[1]
 		        );
 		fprintf(fPtr,"\n");

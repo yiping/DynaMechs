@@ -244,16 +244,16 @@ void updateSim()
 	dmArticulation * art = (dmArticulation*) G_robot;
 	//art.setArticulation((dmArticulation*) G_robot);
 	
-   if (elapsed_time > 0)
+   if (elapsed_time > .1)
    {
 	   
-	   VectorXF q(3), qd(3);
-	   q << 0 , 3.1415926535897932384/4, -3.1415926535897932384/2;
-	   qd << .1 , .7 , 0;
+	   //VectorXF q(3), qd(3);
+	   //q << 0 , 3.1415926535897932384/4, -3.1415926535897932384/2;
+	   //qd << .1 , .7 , 0;
 	   
-	   art->setState(q.data(),qd.data());
+	   //art->setState(q.data(),qd.data());
 	   //art.obtainState();
-	   art->computeH();
+	   //art->computeH();
 	   //art.computeCandG();
 	   //art.computeQdd();
 	   
@@ -302,7 +302,7 @@ void updateSim()
 	   (1.0e-9*((double) tv.tv_nsec - last_tv.tv_nsec));
 	   cout << elapsed_time << endl;*/
 	   
-	   exit(0);
+	   //exit(0);
 	   
       rtime += elapsed_time;
       cout << "time/real_time: " << sim_time << '/' << rtime

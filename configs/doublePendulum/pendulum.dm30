@@ -56,7 +56,7 @@ Articulation {
 	
 	RevoluteLink {
 	    Name "link3"
-	    Graphics_Model	"obj_cylinder_x.xan"
+	    Graphics_Model	"obj_mace.xan"
 
 	    Mass			 0.25
 	    Inertia			 0.1   0.0  0.0

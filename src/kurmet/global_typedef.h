@@ -35,6 +35,7 @@ struct DataRecord{
 	Float actual_torso_p_ICS[3];
 
 	Float ZMPx_ICS;
+	Float actual_ZMPx_ICS;
 	Float Rfx_ICS;
 	Float Lfx_ICS;
 

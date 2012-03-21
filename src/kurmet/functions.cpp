@@ -19,7 +19,7 @@ VectorXF solveJacobianPseudoInverse(const Matrix6XF & J, const Vector6F & rhs)
 
 void simDataOutput(const DataRecVector & MyVec)
 {
-	cout<<"outputing simulation data..."<<endl;
+	cout<<"outputting simulation data..."<<endl;
     string OutputFileString = "sim_data.txt";
     FILE *fPtr = fopen(OutputFileString.c_str(),"w");
 
@@ -30,7 +30,7 @@ void simDataOutput(const DataRecVector & MyVec)
 	for( int u = 0; u<MyVec.size();u++)
 	{
 		fprintf(fPtr ,"%lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t  %lf\t"
-				" %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t", //
+				" %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t %lf\t", //
 				MyVec[u]->sim_time,
 				MyVec[u]->actual_torso_p_ICS[0],
 				MyVec[u]->actual_torso_p_ICS[1],
@@ -57,7 +57,8 @@ void simDataOutput(const DataRecVector & MyVec)
 		        MyVec[u]->q[2],
 		        MyVec[u]->qd[2],
 		        MyVec[u]->tr[2][0],
-		        MyVec[u]->q[1]
+		        MyVec[u]->q[1],
+		        MyVec[u]->actual_ZMPx_ICS
 		        );
 		fprintf(fPtr,"\n");
 	}

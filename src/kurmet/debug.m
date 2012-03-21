@@ -32,8 +32,9 @@ hold on
 plot(data(:,1),data(:,16)); % Rfx
 plot(data(:,1),data(:,17),'r'); % Lfx
 plot(data(:,1),data(:,15),'m'); % Zmpx
+plot(data(:,1),data(:,28),'k-.'); % actual_Zmpx
 hold off
-title('lfx, rfx, ZMPx');
+title('lfx, rfx, commaned ZMPx, actual ZMPx');
 
 a = subplot(3,3, 6);
 ax = [ax a];

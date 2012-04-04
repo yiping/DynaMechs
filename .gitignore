@@ -1,4 +1,5 @@
 build
 src/testdm/crank
 src/testdm/carts
+src/kurmet/sim_data.txt
 

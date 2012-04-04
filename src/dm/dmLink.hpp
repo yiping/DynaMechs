@@ -268,10 +268,7 @@ public:
                                           RotationMatrix  R_ref_ICS, 
                                           Vector6F a_ini, Vector6F v_ini = Vector6F::Zero(),
                                           bool ExtForceFlag = false);
-
-   //! DM v5.0 Function, recursive NE algorithm, inward inverse dynamics, later should be made a pure virtual. 
-   virtual void RNEAInwardID( dmRNEAStruct &link_val2_curr,
-                            dmRNEAStruct &link_val2_inboard);
+	
    //! DM v5.0 function,
    virtual void compute_AccBias_First(dmRNEAStruct &link_val2_curr);
    //! DM v5.0 function,

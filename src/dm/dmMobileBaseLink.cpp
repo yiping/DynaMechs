@@ -727,3 +727,87 @@ Matrix6XF dmMobileBaseLink::jcalc()
     S = Matrix6XF::Identity(6,6);
     return S;
 }
+
+
+//-------------------------------------------------------------------
+/* The following codes are mostly written in Pure Eigen style. 
+ Consider to gradually optimize the following code in the future 
+ by switching to those more efficient, DynaMechs-native functions, such as stxToInboard, stxFromInboard etc. */
+//! DM v5.0 function, 
+void dmMobileBaseLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr, 
+								dmRNEAStruct &link_val2_inboard,
+								bool ExtForceFlag)
+{
+	exit(-1);
+}
+
+
+//-------------------------------------------------------------------
+//! DM v5.0 function, 
+void dmMobileBaseLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
+									 CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
+									 RotationMatrix  R_ref_ICS,  
+									 Vector6F a_ini, 
+									 Vector6F v_ini,
+									 bool ExtForceFlag)
+{
+	// compute R_ICS and p_ICS)
+	for (int i = 0; i < 3; i++)
+	{
+		link_val2_curr.p_ICS[i] = p_ref_ICS[i];
+		for (int j = 0; j < 3; j++)
+		{
+			link_val2_curr.p_ICS[i] += R_ref_ICS[i][j] * m_p[j]; // position 
+			rtxFromInboard(&(R_ref_ICS[i][0]),
+						   &(link_val2_curr.R_ICS[i][0])); //orientation			
+		}
+	}
+	
+
+	Float q[7], qd[7];
+	getState(q,qd);
+	
+	Vector6F vJ;;
+	rtxFromInboard( qd, vJ.data() );
+	rtxFromInboard( qd+3, vJ.data()+3);
+	
+	// qd for Floating Base contains a rogue zero as the last element
+	
+	
+	Matrix6F X = get_X_FromParent_Motion();
+	link_val2_curr.v = vJ;
+	
+	// Spatial acceleration here my friends
+	link_val2_curr.a = X * a_ini + link_val2_curr.qdd;
+	
+	Matrix6F I = getSpatialInertiaMatrix();
+	
+	// Initialize f
+	link_val2_curr.f = I *  link_val2_curr.a  + crf(link_val2_curr.v) * I * link_val2_curr.v;	
+	
+	// Trsuting Yipings code here
+	if (ExtForceFlag != false)
+	{
+		for (int i = 0; i < m_force.size(); i++)// if there are external forces
+		{
+			// currently there is only ground contact force.
+			SpatialVector ext_f;
+			m_force[i]->computeForce( link_val2_curr, ext_f );//ext_f is ALREADY with respect to the body's coordinate system
+			Vector6F Ext_f;
+			Ext_f<< ext_f[0], ext_f[1], ext_f[2], ext_f[3], ext_f[4], ext_f[5];
+			link_val2_curr.f -= Ext_f;
+		}	
+	}
+}
+
+
+/*//--------------------------------------------------------------------
+//! DM v5.0 function, 
+void dmMobileBaseLink::RNEAInwardID(dmRNEAStruct &link_val2_curr,
+							 dmRNEAStruct &link_val2_inboard)
+{
+	cout << "f at mobile base " << link_val2_curr.f << endl;
+	link_val2_curr.tau = link_val2_curr.f;
+	Matrix6F X = get_X_FromParent_Motion();
+	link_val2_inboard.f += X.transpose() *  link_val2_curr.f;
+}*/

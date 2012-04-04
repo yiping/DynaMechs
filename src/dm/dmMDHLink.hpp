@@ -167,9 +167,9 @@ public:
                                 Vector6F v_ini = Vector6F::Zero(), 
                                       bool ExtForceFlag = false
                                 );
-   //! DM v5.0 Function, 
+   /*//! DM v5.0 Function, 
    void RNEAInwardID(dmRNEAStruct &link_val2_curr,
-                    dmRNEAStruct &link_val2_inboard);
+                    dmRNEAStruct &link_val2_inboard);*/
 
    //! DM v5.0 Function
    void compute_AccBias_First(dmRNEAStruct &link_val2_curr);

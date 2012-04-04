@@ -139,8 +139,8 @@ public:
                                       bool ExtForceFlag = false
                                 );
    //! DM v5.0 Function,
-   void RNEAInwardID(dmRNEAStruct &link_val2_curr,
-                     dmRNEAStruct &link_val2_inboard);
+   /*void RNEAInwardID(dmRNEAStruct &link_val2_curr,
+                     dmRNEAStruct &link_val2_inboard);*/
 
 
 

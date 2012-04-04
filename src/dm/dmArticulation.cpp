@@ -692,9 +692,6 @@ void dmArticulation::ABForwardAccelerations(SpatialVector a_ref,
 //---------------------------------------------------------
 void dmArticulation::computeH()
 {
-	int N = getNumDOFs();
-	H.resize(N,N);
-	
 	CrbInertia Itmp;
 	unsigned int jjoint_index_offset = 0;
 	
@@ -703,22 +700,34 @@ void dmArticulation::computeH()
 		curr->link->initializeCrbInertia(curr->I_C);
 		curr->index_ext = jjoint_index_offset;
 		curr->dof = curr->link->getNumDOFs();
+		if (curr->dof == 7) {
+			curr->dof =6;
+		}
 		jjoint_index_offset += curr->dof;
 	}
 	
+	int N = jjoint_index_offset;
+	//cout << "H is square of size " << N << endl;
+	
+	H.resize(N,N);
+	
+	//cout << "H = [" << endl << H << "]" << endl;
+	
 	
 	for (int j=(m_link_list.size()-1); j>=0; j--) {
-		cout << j << endl;
-		cout << m_link_list.size() << endl;
+		//cout << j << endl;
+		//cout << m_link_list.size() << endl;
 		LinkInfoStruct * bodyj = m_link_list[j];
 		
 		Matrix6XF phij = bodyj->link->jcalc();
 		MatrixX6F phiiT = phij.transpose();
 		
-		if(phij.cols()>0) {
+		if(bodyj->dof>0) {
 			Matrix6F I_C;
 			CrbToMat(bodyj->I_C, I_C);
 			Matrix6XF F = I_C * phij, Ftmp;
+			
+			
 			H.DOFBLOCK(bodyj,bodyj) = phiiT * F;
 			
 			LinkInfoStruct * bodyi = bodyj;
@@ -726,9 +735,16 @@ void dmArticulation::computeH()
 				bodyi->link->stxToInboardMat(F,Ftmp);
 				F = Ftmp;
 				bodyi = bodyi->parent;
-				cout << "Body (i,j) " << bodyi->index << "," << bodyj->index << " size " << H.DOFBLOCK(bodyi,bodyj).rows() << " x " << H.DOFBLOCK(bodyi,bodyj).cols() << endl;
-				H.DOFBLOCK(bodyi,bodyj) = bodyi->link->jcalc().transpose() * F;
-				H.DOFBLOCK(bodyj,bodyi) = H.DOFBLOCK(bodyi,bodyj).transpose();
+				Matrix6XF phii = bodyi->link->jcalc();
+				
+				//cout << "Body (i,j) " << bodyi->index << "," << bodyj->index << " size " << H.DOFBLOCK(bodyi,bodyj).rows() << " x " << H.DOFBLOCK(bodyi,bodyj).cols() << endl;
+				//cout << "F = [" << F << "]" << endl;
+				//cout << "Phii Cols " << phii.cols() << " Phij Cols " << phij.cols() << endl;
+				
+				if (bodyi->dof > 0) {
+					H.DOFBLOCK(bodyi,bodyj) =  phii.transpose()* F;
+					H.DOFBLOCK(bodyj,bodyi) = H.DOFBLOCK(bodyi,bodyj).transpose();
+				}				
 			}
 		}
 
@@ -737,8 +753,8 @@ void dmArticulation::computeH()
 			CrbAdd(bodyj->parent->I_C,Itmp);
 		}
 	}
-	cout << " H = " << endl;
-	cout << H  << endl;
+	//cout << " H = [" << endl;
+	//cout << H  << "]"<< endl;
 }
 
 //------------------------------------------------------------
@@ -930,11 +946,24 @@ Vector6F dmArticulation::computeAccelerationBias(unsigned int target_idx,
 //-------------------------------------------------------------------
 void dmArticulation::inverseDynamics(bool ExtForceFlag )
 {
-
-	Vector6F a_g;
-	a_g <<0, 0, 0, 0, -9.81, 0 ; // expressed in the articulation coordinate, not ICS!
 	Vector6F v_ini = Vector6F::Zero();
-	Vector6F a_ini = -a_g;
+	Vector6F a_ini;
+	
+	
+	// Update PW - initial acceleration provided by the acceleration reference in the env file
+	a_ini(0) = 0.0;
+	a_ini(1) = 0.0;
+	a_ini(2) = 0.0;
+	
+	CartesianVector g_ICS, g_ref;
+	dmEnvironment::getEnvironment()->getGravity(g_ICS);
+	rtxFromICS(g_ICS, g_ref);
+	
+	a_ini(3) = -g_ref[0];
+	a_ini(4) = -g_ref[1];
+	a_ini(5) = -g_ref[2];
+	
+	//cout << "a_ini = " << a_ini.transpose() << endl;
 
 
 	// outward recursion
@@ -962,19 +991,33 @@ void dmArticulation::inverseDynamics(bool ExtForceFlag )
                                                             m_link_list[i]->parent->link_val2, ExtForceFlag);
 		}
 		// debug
-		// cout<<"ID: OutwardRecursion | link["<<i<<"] f: "<< (m_link_list[i]->link_val2.f).transpose()<<endl;
-		// cout<<"ID: OutwardRecursion | link["<<i<<"] v: "<< (m_link_list[i]->link_val2.v).transpose()<<endl;
-		// cout<<"ID: OutwardRecursion | link["<<i<<"] a: "<< (m_link_list[i]->link_val2.a).transpose()<<endl;
+		//cout<<"ID: OutwardRecursion | link["<<i<<"] f: "<< (m_link_list[i]->link_val2.f).transpose()<<endl;
+		//cout<<"ID: OutwardRecursion | link["<<i<<"] v: "<< (m_link_list[i]->link_val2.v).transpose()<<endl;
+		//cout<<"ID: OutwardRecursion | link["<<i<<"] a: "<< (m_link_list[i]->link_val2.a).transpose()<<endl;
 
 	}
 	//cout<<"--- --- --- "<<endl;
-	// inward recursion 
+	
+	// New inward recursion PMW
+	// Old inward recursion did not reach the base link!
+	// We really don't need to offload the inward RNEA to memberspecific routines
+	// the only benefit we could get from such is the the computation of Phi' * f
+	// which is a selection operation for revolute joints
+	// We can offload this in the future.
+	
 	for (int i = getNumLinks()-1; i >= 0; i--) //link indices in reverse order
 	{
+		Vector6F fCurr = m_link_list[i]->link_val2.f;
+		
+		if (m_link_list[i]->link->getNumDOFs() > 0) {
+			// Future Optimization (Offload PhiT * ( ) to a link specific routine)
+			m_link_list[i]->link_val2.tau = m_link_list[i]->link->jcalc().transpose() * fCurr;
+		}
 		if (m_link_list[i]->parent)
 		{
-			m_link_list[i]->link->RNEAInwardID(m_link_list[i]->link_val2,
-                                                           m_link_list[i]->parent->link_val2);
+			Vector6F fInboard;
+			m_link_list[i]->link->stxToInboard(fCurr.data(),fInboard.data());
+			m_link_list[i]->parent->link_val2.f +=fInboard;
 		}
 		// debug
 		// cout<<"ID: InwardRecursion | link["<<i<<"] f: "<< (m_link_list[i]->link_val2.f).transpose()<<endl;

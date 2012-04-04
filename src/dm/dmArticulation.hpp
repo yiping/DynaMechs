@@ -261,6 +261,8 @@ public:
    //! DM v5.0 change: Now made public, use with caution!
    vector<LinkInfoStruct*> m_link_list;
 
+	MatrixXF H;
+	
 protected:
    // not implemented
    dmArticulation(const dmArticulation &);
@@ -309,7 +311,7 @@ private:
    SpatialVector    m_beta_star_ref;
    SpatialVector    m_accel_ref;
 	
-	MatrixXF H;
+	
 
 
 

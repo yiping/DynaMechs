@@ -753,11 +753,11 @@ void dmZScrewTxLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
 
 //-----------------------------------------------------------------------------
 
-void dmZScrewTxLink::RNEAInwardID(dmRNEAStruct &link_val2_curr,
+/*void dmZScrewTxLink::RNEAInwardID(dmRNEAStruct &link_val2_curr,
                                   dmRNEAStruct &link_val2_inboard)
 {
 	link_val2_curr.tau = Vector6F::Zero();
 	Matrix6F X = get_X_FromParent_Motion();
 	link_val2_inboard.f += X.transpose() *  link_val2_curr.f;
-}
+}*/
 

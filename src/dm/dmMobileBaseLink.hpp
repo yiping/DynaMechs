@@ -142,6 +142,22 @@ public:
                                SpatialVector a_curr,
                                Float qd[],
                                Float qdd[]);
+	
+	//------- v5.0 functions
+	void RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr, 
+										   dmRNEAStruct &link_val2_inboard,
+										   bool ExtForceFlag);
+	
+	void RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
+												CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
+												RotationMatrix  R_ref_ICS,  
+												Vector6F a_ini, 
+												Vector6F v_ini,
+							  bool ExtForceFlag);
+	
+	/*void RNEAInwardID(dmRNEAStruct &link_val2_curr,
+					  dmRNEAStruct &link_val2_inboard);*/
+	
 
 // rendering functions:
    ///

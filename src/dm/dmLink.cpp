@@ -367,11 +367,11 @@ void dmLink::RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr,
 	//dummy
 }
 
-void dmLink::RNEAInwardID( dmRNEAStruct &link_val2_curr,
+/*void dmLink::RNEAInwardID( dmRNEAStruct &link_val2_curr,
                             dmRNEAStruct &link_val2_inboard)
 {
 	//dummy
-}
+}*/
 
 //--------------------------------------------------------------------
 void dmLink::compute_AccBias_First(dmRNEAStruct &link_val2_curr)

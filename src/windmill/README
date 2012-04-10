@@ -1,0 +1,12 @@
+
+A tip for using the Eclipse CDT
+
+If you want to run the kurmet executable by simply clicking the 'run' button in Eclipse, you need to
+
+1. go to 'run configureations' of kurmet
+2. go to arguments tab
+3. uncheck the 'Use default' checkbox
+4. change the 'working directory' to
+   "[your_path]/DynaMechs/src/kurmet", since all the configuration files that the kurmet executable requires to run are there.  
+
+If you don't use the IDE, you need to manually copy the executable file to that directory. However, this is not a very good practice for out-of-source building.

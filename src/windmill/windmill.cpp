@@ -206,6 +206,8 @@ void display (void)
 	gluOrtho2D (0,viewport[2], viewport[3], 0);
 	// build a orthographic projection matrix using width and height of view port
 
+
+	glDisable (GL_LIGHTING);// ****
 	glDepthFunc (GL_ALWAYS);
 	glColor3f (0,0,0);
 	glRasterPos2f(10, 20);
@@ -224,7 +226,7 @@ void display (void)
 	glPopMatrix ();
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix ();
-
+	glEnable (GL_LIGHTING);// ****
 
 
     //  When lighting is enabled, the primary color is calculated from the lighting equation instead of being taken from glColor and equivalent functions

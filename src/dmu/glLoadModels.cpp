@@ -184,20 +184,40 @@ void executeGL_xan(ifstream &data_ptr)
     glPolygonMode(GL_BACK, GL_LINE);
 
 
-   GLfloat color[4] = {0.0, 0.0, 0.0, 1.0};
-   data_ptr >> color[0] >> color[1] >> color[2];  // emission color
-   //glMaterialfv(GL_FRONT, GL_EMISSION, color);
-   data_ptr >> color[0] >> color[1] >> color[2];  // ambient color
-   glMaterialfv(GL_FRONT, GL_AMBIENT, color);
-   data_ptr >> color[0] >> color[1] >> color[2];  // diffuse color
-   glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
-   data_ptr >> color[0] >> color[1] >> color[2];  // specular color
-   glMaterialfv(GL_FRONT, GL_SPECULAR, color);
+//   GLfloat color[4] = {0.0, 0.0, 0.0, 1.0};
+//   data_ptr >> color[0] >> color[1] >> color[2];  // emission color
+//   //glMaterialfv(GL_FRONT, GL_EMISSION, color);
+//   data_ptr >> color[0] >> color[1] >> color[2];  // ambient color
+//   glMaterialfv(GL_FRONT, GL_AMBIENT, color);
+//   data_ptr >> color[0] >> color[1] >> color[2];  // diffuse color
+//   glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
+//   data_ptr >> color[0] >> color[1] >> color[2];  // specular color
+//   glMaterialfv(GL_FRONT, GL_SPECULAR, color);
 
-   GLfloat alpha, shininess;
-   data_ptr >> shininess;
-   glMaterialf(GL_FRONT, GL_SHININESS, shininess);
-   data_ptr >> alpha;
+//    GLfloat alpha, shininess;
+//    data_ptr >> shininess;
+//    glMaterialf(GL_FRONT, GL_SHININESS, shininess);
+//    data_ptr >> alpha;
+
+    // ****
+    //since I have switched to use glColorMaterial - yiping
+    GLfloat color[4] = {0.0, 0.0, 0.0, 1.0};
+    data_ptr >> color[0] >> color[1] >> color[2];  // emission color
+    //
+    data_ptr >> color[0] >> color[1] >> color[2];  // ambient color
+    glColor3f(color[0], color[1], color[2]);
+    data_ptr >> color[0] >> color[1] >> color[2];  // diffuse color
+    //
+    data_ptr >> color[0] >> color[1] >> color[2];  // specular color
+    //
+    GLfloat alpha, shininess;
+    data_ptr >> shininess;
+    data_ptr >> alpha;
+
+
+
+
+
 
    GLfloat scale[3];
    data_ptr >> scale[0] >> scale[1] >> scale[2];

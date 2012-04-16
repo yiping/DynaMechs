@@ -123,18 +123,62 @@ Articulation {
 			}
 
 		}
-		RevoluteLink {
-			Name		"LeftThigh"
-			Graphics_Model	"./kurmet_model/thigh.xan"
+		
+		Branch {
+			RevoluteLink {
+				Name		"LeftThigh"
+				Graphics_Model	"./kurmet_model/thigh.xan"
+	
+				Mass			0.81
+				Inertia			0.00039	-1.6e-005	-0.00021
+							-1.6e-005	0.0127	0
+							-0.00021	0	0.0127
+				Center_of_Gravity	0.0784	-0.0001	-0.0015	
+				Number_of_Contact_Points	0
+	
+				MDH_Parameters		0	0	0.0	0.1	
+				Initial_Joint_Velocity	0
+				Joint_Limits			0	0
+				Joint_Limit_Spring_Constant	0
+				Joint_Limit_Damper_Constant	0
+				Actuator_Type		0
+				Joint_Friction		0
+			}
+	
+			RevoluteLink {
+				Name		"LeftShank"
+				Graphics_Model	"./kurmet_model/shank.xan"
+	
+				Mass			0.63
+				Inertia			0.000238	-2e-006	-1e-006
+							-2e-006	0.0116	0
+							-1e-006	0	0.0116
+				Center_of_Gravity	0.0964	-0.0003	-0.0002	
+				Number_of_Contact_Points	1
+				Contact_Locations	 0.2500         0         0
+	
+				MDH_Parameters		0.25	0	0	0.1	
+				Initial_Joint_Velocity	0
+				Joint_Limits			0	0
+				Joint_Limit_Spring_Constant	0
+				Joint_Limit_Damper_Constant	0
+				Actuator_Type		0
+				Joint_Friction		0
+			}
+		}
 
-			Mass			0.81
-			Inertia			0.00039	-1.6e-005	-0.00021
-						-1.6e-005	0.0127	0
-						-0.00021	0	0.0127
-			Center_of_Gravity	0.0784	-0.0001	-0.0015	
+		RevoluteLink {
+			Name		"Flywheel"
+			Graphics_Model	"./kurmet_model/flywheel.xan"
+
+			Mass			6.0
+			Inertia			0.1641	0.0	0.0
+						0.0	0.1641	0.0
+						0.0	0.0	0.0543
+			Center_of_Gravity	0.0	0.0	0.0	
 			Number_of_Contact_Points	0
 
-			MDH_Parameters		0	0	0.0	0.1	
+			MDH_Parameters		0.0	0	0	0.0	
 			Initial_Joint_Velocity	0
 			Joint_Limits			0	0
 			Joint_Limit_Spring_Constant	0
@@ -142,27 +186,5 @@ Articulation {
 			Actuator_Type		0
 			Joint_Friction		0
 		}
-
-		RevoluteLink {
-			Name		"LeftShank"
-			Graphics_Model	"./kurmet_model/shank.xan"
-
-			Mass			0.63
-			Inertia			0.000238	-2e-006	-1e-006
-						-2e-006	0.0116	0
-						-1e-006	0	0.0116
-			Center_of_Gravity	0.0964	-0.0003	-0.0002	
-			Number_of_Contact_Points	1
-			Contact_Locations	 0.2500         0         0
-
-			MDH_Parameters		0.25	0	0	0.1	
-			Initial_Joint_Velocity	0
-			Joint_Limits			0	0
-			Joint_Limit_Spring_Constant	0
-			Joint_Limit_Damper_Constant	0
-			Actuator_Type		0
-			Joint_Friction		0
-		}
-
 	}
 }

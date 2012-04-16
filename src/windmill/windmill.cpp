@@ -96,10 +96,16 @@ void myinit (void)
    glLightfv (GL_LIGHT0, GL_AMBIENT, light_ambient);
    glLightfv (GL_LIGHT0, GL_DIFFUSE, light_diffuse);
    glLightfv (GL_LIGHT0, GL_SPECULAR, light_specular);
-   glLightfv (GL_LIGHT0, GL_POSITION, light_position);
+   //glLightfv (GL_LIGHT0, GL_POSITION, light_position);
+
+   glLightfv (GL_LIGHT1, GL_AMBIENT, light_ambient);
+   glLightfv (GL_LIGHT1, GL_DIFFUSE, light_diffuse);
+   glLightfv (GL_LIGHT1, GL_SPECULAR, light_specular);
+
 
    glEnable (GL_LIGHTING);
    glEnable (GL_LIGHT0);
+   glEnable (GL_LIGHT1);
    glDepthFunc(GL_LESS);
    glEnable(GL_DEPTH_TEST);
 
@@ -1039,8 +1045,11 @@ void updateSim()
 
 	   // ****
 	   // if you want the GL light to move with the camera, comment the following two lines - yiping
-	   GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
-	   glLightfv (GL_LIGHT0, GL_POSITION, light_position);
+	   GLfloat light_position0[] = { 1.0, 1.0, 1.0, 0.0 };
+	   glLightfv (GL_LIGHT0, GL_POSITION, light_position0);
+
+	   GLfloat light_position1[] = { -1.0, -1.0, 1.0, 0.0 };
+	   glLightfv (GL_LIGHT1, GL_POSITION, light_position1);
 
 	display();
 

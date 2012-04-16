@@ -54,7 +54,7 @@ Float rtime=0.0;
 DataRecVector MyVec;
 Vector6F err = Vector6F::Zero();
 Vector6F desired_torso_acc = Vector6F::Zero();
-Float tr[9][1];
+Float tr[10][1];
 Vector3F p_ZMP_ICS = Vector3F::Zero();
 Vector3F actual_p_ZMP_ICS = Vector3F::Zero();
 Vector3F p_RF_ICS = Vector3F::Zero();
@@ -1162,7 +1162,7 @@ int main(int argc, char** argv)
 
    //initAquaControl(G_robot);
 
-   for( int i =0;i<9; i++)
+   for( int i =0;i<10; i++)
 	   tr[i][0]=0;
    // Use with extra caution!!
    G_robot_linkinfo_list = G_robot->m_link_list;

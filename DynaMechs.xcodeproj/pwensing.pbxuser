@@ -2,9 +2,10 @@
 {
 	08FB7793FE84155DC02AAC07 /* Project object */ = {
 		activeBuildConfigurationName = Release;
-		activeExecutable = 1940A4D61507C75B00CD4386 /* humanoid */;
-		activeTarget = 1940A49D1507C75B00CD4386 /* humanoid */;
+		activeExecutable = 19EE34A0153C526D0029D664 /* windmill */;
+		activeTarget = 19EE3465153C526D0029D664 /* windmill */;
 		addToTargets = (
+			197B842B15070B530064753B /* kurmet */,
 		);
 		breakpoints = (
 			1952240C14D353FD0042EA6D /* crank.cpp:160 */,
@@ -38,6 +39,7 @@
 			197B846315070B530064753B /* kurmet */,
 			1940A4D61507C75B00CD4386 /* humanoid */,
 			192D66D5151BAEEC00966570 /* catbot */,
+			19EE34A0153C526D0029D664 /* windmill */,
 		);
 		perUserDictionary = {
 			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
@@ -134,8 +136,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 356274598;
-			PBXWorkspaceStateSaveDate = 356274598;
+			PBXPerProjectTemplateStateSaveDate = 356274693;
+			PBXWorkspaceStateSaveDate = 356274693;
 		};
 		perUserProjectItems = {
 			193CC281152E2EE1005C3064 = 193CC281152E2EE1005C3064 /* PBXTextBookmark */;
@@ -145,7 +147,12 @@
 			194EE4BD151CBE97002774ED = 194EE4BD151CBE97002774ED /* PBXTextBookmark */;
 			194EE54B151CD8F4002774ED = 194EE54B151CD8F4002774ED /* PBXTextBookmark */;
 			194EE54D151CD8F4002774ED = 194EE54D151CD8F4002774ED /* PBXTextBookmark */;
-			19EE3434153C51AB0029D664 /* PBXTextBookmark */ = 19EE3434153C51AB0029D664 /* PBXTextBookmark */;
+			19EE3434153C51AB0029D664 = 19EE3434153C51AB0029D664 /* PBXTextBookmark */;
+			19EE34A7153C52E70029D664 /* PBXTextBookmark */ = 19EE34A7153C52E70029D664 /* PBXTextBookmark */;
+			19EE34A8153C52E70029D664 /* PBXTextBookmark */ = 19EE34A8153C52E70029D664 /* PBXTextBookmark */;
+			19EE34A9153C52E70029D664 /* PBXTextBookmark */ = 19EE34A9153C52E70029D664 /* PBXTextBookmark */;
+			19EE34AA153C52E70029D664 /* PBXBookmark */ = 19EE34AA153C52E70029D664 /* PBXBookmark */;
+			19EE34AB153C52E70029D664 /* PBXTextBookmark */ = 19EE34AB153C52E70029D664 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
 		userBuildSettings = {
@@ -499,6 +506,13 @@
 			sepNavIntBoundsRect = "{{0, 0}, {1264, 2607}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 2274}";
+		};
+	};
+	1925869514D2E9A800778EA7 /* dmGLMouse.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {719, 2035}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 4274}";
 		};
 	};
 	1925869B14D2E9A800778EA7 /* dmGLPolarCamera.cpp */ = {
@@ -1267,6 +1281,13 @@
 		originalNumberOfMultipleMatches = 0;
 		state = 2;
 	};
+	197B842715070B450064753B /* functions.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {792, 1512}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1906}";
+		};
+	};
 	197B842A15070B450064753B /* kurmet.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1062, 11902}}";
@@ -1336,5 +1357,113 @@
 		rType = 0;
 		vrLen = 1738;
 		vrLoc = 7781;
+	};
+	19EE345D153C52670029D664 /* functions.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {792, 1512}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1906}";
+		};
+	};
+	19EE345E153C52670029D664 /* windmill.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {719, 14267}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 3642}";
+		};
+	};
+	19EE3465153C526D0029D664 /* windmill */ = {
+		activeExec = 0;
+		executables = (
+			19EE34A0153C526D0029D664 /* windmill */,
+		);
+	};
+	19EE34A0153C526D0029D664 /* windmill */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+			"PBXLSLaunchAction-0" = {
+				PBXLSLaunchAction = 0;
+				PBXLSLaunchStartAction = 1;
+				PBXLSLaunchStdioStyle = 2;
+				PBXLSLaunchStyle = 0;
+				class = PBXLSRunLaunchConfig;
+				commandLineArgs = (
+				);
+				displayName = "Executable Runner";
+				environment = {
+				};
+				identifier = com.apple.Xcode.launch.runConfig;
+				remoteHostInfo = "";
+				startActionInfo = "";
+			};
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = windmill;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		startupPath = /Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/src/windmill;
+	};
+	19EE34A7153C52E70029D664 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 197B842715070B450064753B /* functions.cpp */;
+		name = "functions.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1906;
+		vrLoc = 0;
+	};
+	19EE34A8153C52E70029D664 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19EE345E153C52670029D664 /* windmill.cpp */;
+		name = "windmill.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 3642;
+		vrLoc = 0;
+	};
+	19EE34A9153C52E70029D664 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19EE345D153C52670029D664 /* functions.cpp */;
+		name = "functions.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1906;
+		vrLoc = 0;
+	};
+	19EE34AA153C52E70029D664 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 1925869514D2E9A800778EA7 /* dmGLMouse.cpp */;
+	};
+	19EE34AB153C52E70029D664 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1925869514D2E9A800778EA7 /* dmGLMouse.cpp */;
+		name = "dmGLMouse.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 4274;
+		vrLoc = 0;
 	};
 }

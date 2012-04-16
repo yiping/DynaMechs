@@ -310,6 +310,56 @@
 		197B845E15070B530064753B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876B14D2EDF400778EA7 /* OpenGL.framework */; };
 		197B846415070B6C0064753B /* functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 197B842715070B450064753B /* functions.cpp */; };
 		197B846515070B6C0064753B /* kurmet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 197B842A15070B450064753B /* kurmet.cpp */; };
+		19EE3469153C526D0029D664 /* dmGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869114D2E9A800778EA7 /* dmGLCamera.cpp */; };
+		19EE346A153C526D0029D664 /* dmGLFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869314D2E9A800778EA7 /* dmGLFlyCamera.cpp */; };
+		19EE346B153C526D0029D664 /* dmGLMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869514D2E9A800778EA7 /* dmGLMouse.cpp */; };
+		19EE346C153C526D0029D664 /* dmGLPolarCamera_yup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869714D2E9A800778EA7 /* dmGLPolarCamera_yup.cpp */; };
+		19EE346D153C526D0029D664 /* dmGLPolarCamera_zup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869914D2E9A800778EA7 /* dmGLPolarCamera_zup.cpp */; };
+		19EE346E153C526D0029D664 /* dmGLPolarCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869B14D2E9A800778EA7 /* dmGLPolarCamera.cpp */; };
+		19EE346F153C526D0029D664 /* dmLoadFile_dm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868114D2E97C00778EA7 /* dmLoadFile_dm.cpp */; };
+		19EE3470153C526D0029D664 /* dmLoadFile_dm21.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868214D2E97C00778EA7 /* dmLoadFile_dm21.cpp */; };
+		19EE3471153C526D0029D664 /* dmLoadFile_dm30.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868314D2E97C00778EA7 /* dmLoadFile_dm30.cpp */; };
+		19EE3472153C526D0029D664 /* dmLoadFile_dm40.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868414D2E97C00778EA7 /* dmLoadFile_dm40.cpp */; };
+		19EE3473153C526D0029D664 /* dmLoadFile_dm203.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868514D2E97C00778EA7 /* dmLoadFile_dm203.cpp */; };
+		19EE3474153C526D0029D664 /* dmLoadFile_env.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868614D2E97C00778EA7 /* dmLoadFile_env.cpp */; };
+		19EE3475153C526D0029D664 /* dmLoadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868714D2E97C00778EA7 /* dmLoadFile.cpp */; };
+		19EE3476153C526D0029D664 /* dmUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868A14D2E97C00778EA7 /* dmUtils.cpp */; };
+		19EE3477153C526D0029D664 /* glLoadModels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868B14D2E97C00778EA7 /* glLoadModels.cpp */; };
+		19EE3478153C526D0029D664 /* dmActuator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864114D2E95000778EA7 /* dmActuator.cpp */; };
+		19EE3479153C526D0029D664 /* dmArticulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864314D2E95000778EA7 /* dmArticulation.cpp */; };
+		19EE347A153C526D0029D664 /* dmClosedArticulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864514D2E95000778EA7 /* dmClosedArticulation.cpp */; };
+		19EE347B153C526D0029D664 /* dmContactModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864714D2E95000778EA7 /* dmContactModel.cpp */; };
+		19EE347C153C526D0029D664 /* dmEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864914D2E95000778EA7 /* dmEnvironment.cpp */; };
+		19EE347D153C526D0029D664 /* dmForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864B14D2E95000778EA7 /* dmForce.cpp */; };
+		19EE347E153C526D0029D664 /* dmIntegEuler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864D14D2E95000778EA7 /* dmIntegEuler.cpp */; };
+		19EE347F153C526D0029D664 /* dmIntegrator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864F14D2E95000778EA7 /* dmIntegrator.cpp */; };
+		19EE3480153C526D0029D664 /* dmIntegRK4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865114D2E95000778EA7 /* dmIntegRK4.cpp */; };
+		19EE3481153C526D0029D664 /* dmIntegRK45.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865314D2E95000778EA7 /* dmIntegRK45.cpp */; };
+		19EE3482153C526D0029D664 /* dmLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865514D2E95000778EA7 /* dmLink.cpp */; };
+		19EE3483153C526D0029D664 /* dmMDHLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865714D2E95000778EA7 /* dmMDHLink.cpp */; };
+		19EE3484153C526D0029D664 /* dmMobileBaseLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865914D2E95000778EA7 /* dmMobileBaseLink.cpp */; };
+		19EE3485153C526D0029D664 /* dmObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865B14D2E95000778EA7 /* dmObject.cpp */; };
+		19EE3486153C526D0029D664 /* dmPrismaticLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865D14D2E95000778EA7 /* dmPrismaticLink.cpp */; };
+		19EE3487153C526D0029D664 /* dmQuaternionLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865F14D2E95000778EA7 /* dmQuaternionLink.cpp */; };
+		19EE3488153C526D0029D664 /* dmRevDCMotor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866114D2E95000778EA7 /* dmRevDCMotor.cpp */; };
+		19EE3489153C526D0029D664 /* dmRevoluteLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866314D2E95000778EA7 /* dmRevoluteLink.cpp */; };
+		19EE348A153C526D0029D664 /* dmRigidBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866514D2E95000778EA7 /* dmRigidBody.cpp */; };
+		19EE348B153C526D0029D664 /* dmSecondaryForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866714D2E95000778EA7 /* dmSecondaryForce.cpp */; };
+		19EE348C153C526D0029D664 /* dmSecondaryJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866914D2E95000778EA7 /* dmSecondaryJoint.cpp */; };
+		19EE348D153C526D0029D664 /* dmSecondaryPrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866B14D2E95000778EA7 /* dmSecondaryPrismaticJoint.cpp */; };
+		19EE348E153C526D0029D664 /* dmSecondaryRevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866D14D2E95000778EA7 /* dmSecondaryRevoluteJoint.cpp */; };
+		19EE348F153C526D0029D664 /* dmSecondarySphericalJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866F14D2E95000778EA7 /* dmSecondarySphericalJoint.cpp */; };
+		19EE3490153C526D0029D664 /* dmSphericalLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867114D2E95000778EA7 /* dmSphericalLink.cpp */; };
+		19EE3491153C526D0029D664 /* dmStaticRootLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867314D2E95000778EA7 /* dmStaticRootLink.cpp */; };
+		19EE3492153C526D0029D664 /* dmSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867514D2E95000778EA7 /* dmSystem.cpp */; };
+		19EE3493153C526D0029D664 /* dmTreadmill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867814D2E95000778EA7 /* dmTreadmill.cpp */; };
+		19EE3494153C526D0029D664 /* dmZScrewTxLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867A14D2E95000778EA7 /* dmZScrewTxLink.cpp */; };
+		19EE3495153C526D0029D664 /* gldraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867C14D2E95000778EA7 /* gldraw.cpp */; };
+		19EE3496153C526D0029D664 /* svd_linpack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867D14D2E95000778EA7 /* svd_linpack.cpp */; };
+		19EE349A153C526D0029D664 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876914D2EDF400778EA7 /* GLUT.framework */; };
+		19EE349B153C526D0029D664 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876B14D2EDF400778EA7 /* OpenGL.framework */; };
+		19EE34A1153C52CA0029D664 /* functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19EE345D153C52670029D664 /* functions.cpp */; };
+		19EE34A2153C52CA0029D664 /* windmill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19EE345E153C52670029D664 /* windmill.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -442,6 +492,11 @@
 		197B842915070B450064753B /* global_typedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global_typedef.h; path = src/kurmet/global_typedef.h; sourceTree = "<group>"; };
 		197B842A15070B450064753B /* kurmet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kurmet.cpp; path = src/kurmet/kurmet.cpp; sourceTree = "<group>"; };
 		197B846215070B530064753B /* kurmet */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kurmet; sourceTree = BUILT_PRODUCTS_DIR; };
+		19EE345B153C52670029D664 /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = src/windmill/functions.h; sourceTree = "<group>"; };
+		19EE345C153C52670029D664 /* global_typedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global_typedef.h; path = src/windmill/global_typedef.h; sourceTree = "<group>"; };
+		19EE345D153C52670029D664 /* functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = functions.cpp; path = src/windmill/functions.cpp; sourceTree = "<group>"; };
+		19EE345E153C52670029D664 /* windmill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = windmill.cpp; path = src/windmill/windmill.cpp; sourceTree = "<group>"; };
+		19EE349F153C526D0029D664 /* windmill */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = windmill; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -533,6 +588,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		19EE3499153C526D0029D664 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19EE349A153C526D0029D664 /* GLUT.framework in Frameworks */,
+				19EE349B153C526D0029D664 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -556,6 +620,7 @@
 				197B842615070B1E0064753B /* kurmet */,
 				1952235214D34F7C0042EA6D /* doublePendulum */,
 				192586A614D2E9F200778EA7 /* aquarobot */,
+				19EE345A153C52350029D664 /* windmill */,
 				192586A114D2E9E000778EA7 /* testdm */,
 				1925869F14D2E9C400778EA7 /* xan_viewer */,
 				1925868F14D2E99800778EA7 /* dmgl */,
@@ -753,6 +818,17 @@
 			name = kurmet;
 			sourceTree = "<group>";
 		};
+		19EE345A153C52350029D664 /* windmill */ = {
+			isa = PBXGroup;
+			children = (
+				19EE345B153C52670029D664 /* functions.h */,
+				19EE345C153C52670029D664 /* global_typedef.h */,
+				19EE345D153C52670029D664 /* functions.cpp */,
+				19EE345E153C52670029D664 /* windmill.cpp */,
+			);
+			name = windmill;
+			sourceTree = "<group>";
+		};
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -765,6 +841,7 @@
 				197B846215070B530064753B /* kurmet */,
 				1940A4D51507C75B00CD4386 /* humanoid */,
 				192D66D4151BAEEC00966570 /* catbot */,
+				19EE349F153C526D0029D664 /* windmill */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -991,6 +1068,22 @@
 			productReference = 197B846215070B530064753B /* kurmet */;
 			productType = "com.apple.product-type.tool";
 		};
+		19EE3465153C526D0029D664 /* windmill */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 19EE349C153C526D0029D664 /* Build configuration list for PBXNativeTarget "windmill" */;
+			buildPhases = (
+				19EE3466153C526D0029D664 /* Sources */,
+				19EE3499153C526D0029D664 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = windmill;
+			productName = doublePendulum;
+			productReference = 19EE349F153C526D0029D664 /* windmill */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1019,6 +1112,7 @@
 				197B842B15070B530064753B /* kurmet */,
 				1940A49D1507C75B00CD4386 /* humanoid */,
 				192D669D151BAEEC00966570 /* catbot */,
+				19EE3465153C526D0029D664 /* windmill */,
 			);
 		};
 /* End PBXProject section */
@@ -1321,6 +1415,61 @@
 				197B845815070B530064753B /* dmZScrewTxLink.cpp in Sources */,
 				197B845915070B530064753B /* gldraw.cpp in Sources */,
 				197B845A15070B530064753B /* svd_linpack.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		19EE3466153C526D0029D664 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19EE34A1153C52CA0029D664 /* functions.cpp in Sources */,
+				19EE34A2153C52CA0029D664 /* windmill.cpp in Sources */,
+				19EE3469153C526D0029D664 /* dmGLCamera.cpp in Sources */,
+				19EE346A153C526D0029D664 /* dmGLFlyCamera.cpp in Sources */,
+				19EE346B153C526D0029D664 /* dmGLMouse.cpp in Sources */,
+				19EE346C153C526D0029D664 /* dmGLPolarCamera_yup.cpp in Sources */,
+				19EE346D153C526D0029D664 /* dmGLPolarCamera_zup.cpp in Sources */,
+				19EE346E153C526D0029D664 /* dmGLPolarCamera.cpp in Sources */,
+				19EE346F153C526D0029D664 /* dmLoadFile_dm.cpp in Sources */,
+				19EE3470153C526D0029D664 /* dmLoadFile_dm21.cpp in Sources */,
+				19EE3471153C526D0029D664 /* dmLoadFile_dm30.cpp in Sources */,
+				19EE3472153C526D0029D664 /* dmLoadFile_dm40.cpp in Sources */,
+				19EE3473153C526D0029D664 /* dmLoadFile_dm203.cpp in Sources */,
+				19EE3474153C526D0029D664 /* dmLoadFile_env.cpp in Sources */,
+				19EE3475153C526D0029D664 /* dmLoadFile.cpp in Sources */,
+				19EE3476153C526D0029D664 /* dmUtils.cpp in Sources */,
+				19EE3477153C526D0029D664 /* glLoadModels.cpp in Sources */,
+				19EE3478153C526D0029D664 /* dmActuator.cpp in Sources */,
+				19EE3479153C526D0029D664 /* dmArticulation.cpp in Sources */,
+				19EE347A153C526D0029D664 /* dmClosedArticulation.cpp in Sources */,
+				19EE347B153C526D0029D664 /* dmContactModel.cpp in Sources */,
+				19EE347C153C526D0029D664 /* dmEnvironment.cpp in Sources */,
+				19EE347D153C526D0029D664 /* dmForce.cpp in Sources */,
+				19EE347E153C526D0029D664 /* dmIntegEuler.cpp in Sources */,
+				19EE347F153C526D0029D664 /* dmIntegrator.cpp in Sources */,
+				19EE3480153C526D0029D664 /* dmIntegRK4.cpp in Sources */,
+				19EE3481153C526D0029D664 /* dmIntegRK45.cpp in Sources */,
+				19EE3482153C526D0029D664 /* dmLink.cpp in Sources */,
+				19EE3483153C526D0029D664 /* dmMDHLink.cpp in Sources */,
+				19EE3484153C526D0029D664 /* dmMobileBaseLink.cpp in Sources */,
+				19EE3485153C526D0029D664 /* dmObject.cpp in Sources */,
+				19EE3486153C526D0029D664 /* dmPrismaticLink.cpp in Sources */,
+				19EE3487153C526D0029D664 /* dmQuaternionLink.cpp in Sources */,
+				19EE3488153C526D0029D664 /* dmRevDCMotor.cpp in Sources */,
+				19EE3489153C526D0029D664 /* dmRevoluteLink.cpp in Sources */,
+				19EE348A153C526D0029D664 /* dmRigidBody.cpp in Sources */,
+				19EE348B153C526D0029D664 /* dmSecondaryForce.cpp in Sources */,
+				19EE348C153C526D0029D664 /* dmSecondaryJoint.cpp in Sources */,
+				19EE348D153C526D0029D664 /* dmSecondaryPrismaticJoint.cpp in Sources */,
+				19EE348E153C526D0029D664 /* dmSecondaryRevoluteJoint.cpp in Sources */,
+				19EE348F153C526D0029D664 /* dmSecondarySphericalJoint.cpp in Sources */,
+				19EE3490153C526D0029D664 /* dmSphericalLink.cpp in Sources */,
+				19EE3491153C526D0029D664 /* dmStaticRootLink.cpp in Sources */,
+				19EE3492153C526D0029D664 /* dmSystem.cpp in Sources */,
+				19EE3493153C526D0029D664 /* dmTreadmill.cpp in Sources */,
+				19EE3494153C526D0029D664 /* dmZScrewTxLink.cpp in Sources */,
+				19EE3495153C526D0029D664 /* gldraw.cpp in Sources */,
+				19EE3496153C526D0029D664 /* svd_linpack.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1697,6 +1846,52 @@
 			};
 			name = Release;
 		};
+		19EE349D153C526D0029D664 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = NO;
+				DSTROOT = "$(PROJECT_DIR)";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					src/dmgl,
+					src/dmu,
+					src/dm,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				PRODUCT_NAME = windmill;
+			};
+			name = Debug;
+		};
+		19EE349E153C526D0029D664 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = NO;
+				DSTROOT = "$(PROJECT_DIR)";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					src/dmgl,
+					src/dmu,
+					src/dm,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				PRODUCT_NAME = windmill;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		1DEB923608733DC60010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1803,6 +1998,15 @@
 			buildConfigurations = (
 				197B846015070B530064753B /* Debug */,
 				197B846115070B530064753B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		19EE349C153C526D0029D664 /* Build configuration list for PBXNativeTarget "windmill" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19EE349D153C526D0029D664 /* Debug */,
+				19EE349E153C526D0029D664 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

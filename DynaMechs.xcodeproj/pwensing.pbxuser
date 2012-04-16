@@ -2,8 +2,8 @@
 {
 	08FB7793FE84155DC02AAC07 /* Project object */ = {
 		activeBuildConfigurationName = Release;
-		activeExecutable = 192D66D5151BAEEC00966570 /* catbot */;
-		activeTarget = 192D669D151BAEEC00966570 /* catbot */;
+		activeExecutable = 1940A4D61507C75B00CD4386 /* humanoid */;
+		activeTarget = 1940A49D1507C75B00CD4386 /* humanoid */;
 		addToTargets = (
 		);
 		breakpoints = (
@@ -59,7 +59,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					755,
+					541,
 					20,
 					48,
 					43,
@@ -134,21 +134,18 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 355253592;
-			PBXWorkspaceStateSaveDate = 355253592;
+			PBXPerProjectTemplateStateSaveDate = 356274598;
+			PBXWorkspaceStateSaveDate = 356274598;
 		};
 		perUserProjectItems = {
-			194EE4A7151CBE54002774ED = 194EE4A7151CBE54002774ED /* PBXTextBookmark */;
-			194EE4A8151CBE54002774ED = 194EE4A8151CBE54002774ED /* PBXTextBookmark */;
-			194EE4A9151CBE54002774ED = 194EE4A9151CBE54002774ED /* PBXTextBookmark */;
-			194EE4AA151CBE54002774ED = 194EE4AA151CBE54002774ED /* PBXTextBookmark */;
+			193CC281152E2EE1005C3064 = 193CC281152E2EE1005C3064 /* PBXTextBookmark */;
+			193CC282152E2EE1005C3064 = 193CC282152E2EE1005C3064 /* PBXBookmark */;
+			193CC283152E2EE1005C3064 = 193CC283152E2EE1005C3064 /* PBXTextBookmark */;
 			194EE4AC151CBE54002774ED = 194EE4AC151CBE54002774ED /* PBXTextBookmark */;
 			194EE4BD151CBE97002774ED = 194EE4BD151CBE97002774ED /* PBXTextBookmark */;
 			194EE54B151CD8F4002774ED = 194EE54B151CD8F4002774ED /* PBXTextBookmark */;
-			194EE54C151CD8F4002774ED = 194EE54C151CD8F4002774ED /* PBXTextBookmark */;
 			194EE54D151CD8F4002774ED = 194EE54D151CD8F4002774ED /* PBXTextBookmark */;
-			194EE553151DEC32002774ED = 194EE553151DEC32002774ED /* PBXTextBookmark */;
-			19FF4AD71520DB2D00CBF079 = 19FF4AD71520DB2D00CBF079 /* PBXTextBookmark */;
+			19EE3434153C51AB0029D664 /* PBXTextBookmark */ = 19EE3434153C51AB0029D664 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
 		userBuildSettings = {
@@ -193,9 +190,9 @@
 	1925864314D2E95000778EA7 /* dmArticulation.cpp */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{25897, 1702}\";\n            s = 0;\n        },\n                {\n            r = \"{27777, 2161}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 37410}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1129, 11948}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1068, 11926}}";
 			sepNavSelRange = "{26913, 0}";
-			sepNavVisRange = "{29161, 2015}";
+			sepNavVisRange = "{29161, 1665}";
 			sepNavWindowFrame = "{{-1050, 0}, {1188, 800}}";
 		};
 	};
@@ -726,12 +723,36 @@
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
+	193CC281152E2EE1005C3064 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1925864314D2E95000778EA7 /* dmArticulation.cpp */;
+		name = "dmArticulation.cpp: 978";
+		rLen = 0;
+		rLoc = 30774;
+		rType = 0;
+		vrLen = 1665;
+		vrLoc = 33022;
+	};
+	193CC282152E2EE1005C3064 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 1940A49C1507C62100CD4386 /* humanoid.cpp */;
+	};
+	193CC283152E2EE1005C3064 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1940A49C1507C62100CD4386 /* humanoid.cpp */;
+		name = "humanoid.cpp: 350";
+		rLen = 0;
+		rLoc = 8231;
+		rType = 0;
+		vrLen = 1696;
+		vrLoc = 7823;
+	};
 	1940A49C1507C62100CD4386 /* humanoid.cpp */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1653, 659}\";\n            s = 0;\n        },\n                {\n            r = \"{2417, 2208}\";\n            s = 0;\n        },\n                {\n            r = \"{4861, 208}\";\n            s = 0;\n        },\n                {\n            r = \"{5326, 191}\";\n            s = 0;\n        },\n                {\n            r = \"{5768, 199}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 9519}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {664, 2612}}";
-			sepNavSelRange = "{3844, 0}";
-			sepNavVisRange = "{3844, 2057}";
+			sepNavIntBoundsRect = "{{0, 0}, {719, 2554}}";
+			sepNavSelRange = "{4771, 0}";
+			sepNavVisRange = "{4321, 1738}";
 			sepNavWindowFrame = "{{-1050, 0}, {1048, 1680}}";
 		};
 	};
@@ -786,46 +807,6 @@
 		sourceDirectories = (
 		);
 		startupPath = /Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/src/humanoid;
-	};
-	194EE4A7151CBE54002774ED /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 1925865614D2E95000778EA7 /* dmLink.hpp */;
-		name = "dmLink.hpp: 271";
-		rLen = 0;
-		rLoc = 12905;
-		rType = 0;
-		vrLen = 3221;
-		vrLoc = 11851;
-	};
-	194EE4A8151CBE54002774ED /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 1925865814D2E95000778EA7 /* dmMDHLink.hpp */;
-		name = "dmMDHLink.hpp: 172";
-		rLen = 0;
-		rLoc = 7290;
-		rType = 0;
-		vrLen = 2773;
-		vrLoc = 6155;
-	};
-	194EE4A9151CBE54002774ED /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 1925867B14D2E95000778EA7 /* dmZScrewTxLink.hpp */;
-		name = "dmZScrewTxLink.hpp: 143";
-		rLen = 0;
-		rLoc = 5051;
-		rType = 0;
-		vrLen = 2140;
-		vrLoc = 4246;
-	};
-	194EE4AA151CBE54002774ED /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 1925865A14D2E95000778EA7 /* dmMobileBaseLink.hpp */;
-		name = "dmMobileBaseLink.hpp: 159";
-		rLen = 0;
-		rLoc = 6009;
-		rType = 0;
-		vrLen = 2565;
-		vrLoc = 4229;
 	};
 	194EE4AC151CBE54002774ED /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -1037,16 +1018,6 @@
 		vrLen = 1684;
 		vrLoc = 4844;
 	};
-	194EE54C151CD8F4002774ED /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 1925864314D2E95000778EA7 /* dmArticulation.cpp */;
-		name = "dmArticulation.cpp: 978";
-		rLen = 0;
-		rLoc = 30774;
-		rType = 0;
-		vrLen = 2191;
-		vrLoc = 33022;
-	};
 	194EE54D151CD8F4002774ED /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 1925865914D2E95000778EA7 /* dmMobileBaseLink.cpp */;
@@ -1056,16 +1027,6 @@
 		rType = 0;
 		vrLen = 2488;
 		vrLoc = 6800;
-	};
-	194EE553151DEC32002774ED /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 192D6698151BAEE900966570 /* catbot.cpp */;
-		name = "catbot.cpp: 259";
-		rLen = 0;
-		rLoc = 6199;
-		rType = 0;
-		vrLen = 1615;
-		vrLoc = 7815;
 	};
 	1952236614D34FB30042EA6D /* doublePendulum.cpp */ = {
 		uiCtxt = {
@@ -1366,14 +1327,14 @@
 		);
 		startupPath = /Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/src/kurmet;
 	};
-	19FF4AD71520DB2D00CBF079 /* PBXTextBookmark */ = {
+	19EE3434153C51AB0029D664 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = 192D6698151BAEE900966570 /* catbot.cpp */;
-		name = "catbot.cpp: 324";
+		fRef = 1940A49C1507C62100CD4386 /* humanoid.cpp */;
+		name = "humanoid.cpp: 350";
 		rLen = 0;
-		rLoc = 8445;
+		rLoc = 8231;
 		rType = 0;
-		vrLen = 1235;
-		vrLoc = 7815;
+		vrLen = 1738;
+		vrLoc = 7781;
 	};
 }

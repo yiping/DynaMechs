@@ -32,11 +32,11 @@
 
 /**
 
-The {\tt dmSystem} is the abstract base class for all types of objects that
-need to be simulated by a {\tt dmIntegrator} class.  As such this class defines
+The dmSystem is the abstract base class for all types of objects that
+need to be simulated by a dmIntegrator class.  As such this class defines
 the interface needed by the dmIntegrator classes, and is the base class
 for robotic systems (dmArticulation and dmClosedArticulation), dynamic
-environments (dmTreadmill through dmEnvironment), and (in the future) control
+environments (dmTreadmill through dmEnvironment), and (<b> in the future</b> ) control
 systems.  By adding all the dynamic systems to a single integrator, it will be
 ensured that all the systems will be numerically integrated in synchrony with
 one another.  This is especially important when multi-step and/or variable
@@ -45,57 +45,57 @@ calculated at more then one point across the interval, where some computations
 may be rejected due to accuracy constraints, and the interval may be subdivided
 into smaller steps.
 
-The {\tt setState} and {\tt getState} functions are used to set and query joint
-states in the entire tree.  {\tt setState} sets the state of the DOFs in the
-articulation.  The two arguments are both packed arrays (like {\tt
-joint\_input}) containing the joint positions and velocities of the links.  The
-reverse operation, {\tt getState}, fills packed arrays with the joint positions
-velocities.  A convenience function, {\tt getNumDOFs}, returns the total number
+The \b setState and \b getState functions are used to set and query joint
+states in the entire tree.  \b setState sets the state of the DOFs in the
+articulation.  The two arguments are both packed arrays (like \b
+joint_input) containing the joint positions and velocities of the links.  The
+reverse operation, \b getState, fills packed arrays with the joint positions
+velocities.  A convenience function, \b getNumDOFs, returns the total number
 of degrees of freedom in the articulation and can be used to determine the
 appropriate size of the above arrays.
 
-The {\tt initSimVars} function initializes the state and derivative of state
-vectors with the current state of the system.  The parameters, {\tt qy} and
-{\tt qdy}, are the arrays with 2*{\tt getNumDOFs()} elements.  All necessary
-calls to {\tt initSimVars} are done automatically by the {\tt dmIntegrator}
-class when a {\tt dmSystem} object is added to or removed from it.  Note that
-{\tt initSimVars} is different from the {\tt getState} function that returns
-just the position and velocity state vectors in two separate vectors ({\tt q}
-and {\tt qd}) of {\tt getNumDOFs()} each.  {\bf IMPORTANT}: The {\tt
-dmIntegrator} class cannot detect subsequent changes that would affect the
+The \b initSimVars function initializes the state and derivative of state
+vectors with the current state of the system.  The parameters, \b qy and
+\b qdy, are the arrays with 2* \b getNumDOFs() elements.  All necessary
+calls to \b initSimVars are done automatically by the  dmIntegrator
+class when a dmSystem object is added to or removed from it.  Note that
+\b initSimVars is different from the \b getState function that returns
+just the position and velocity state vectors in two separate vectors (\b q
+and {\b qd) of \b getNumDOFs() each.  \b IMPORTANT: The \b
+dmIntegrator class cannot detect subsequent changes that would affect the
 number of DOFs (e.g., addition/removal of links); therefore, the entire system
-must be built before it is assigned to the {\tt dmIntegrator} object and no
+must be built before it is assigned to the dmIntegrator object and no
 changes can be made after this point.
 
 Specification of an inertial coordinate system other than the origin can be
-specified by calling {\tt setRefSystem} and passing the position and
+specified by calling \b setRefSystem and passing the position and
 orientation (relative to the origin) of the new coordinate system.
 This ability is not necessary or even computationally efficient, but it makes
-it much more flexible in specifying systems.  The functions {\tt getRefSystem}
-and {\tt getPose} return this position and orientation -- the latter in two
-different formats: quaternion or rotation matrix.  The functions, {\tt
-rtxFromICS} and {\tt rtxToICS}, are used to rotate free vectors from one system
+it much more flexible in specifying systems.  The functions \b getRefSystem
+and \b getPose return this position and orientation -- the latter in two
+different formats: quaternion or rotation matrix.  The functions, \b
+rtxFromICS and \b rtxToICS, are used to rotate free vectors from one system
 to the other.
 
-The {\tt dynamics} function is the entry point for computation of the dynamics
-of the system.  It takes, as input, the state vector {\tt qy} and computes the
-derivative of state vector, {\tt qdy}.  This is the derivative function that
-the {\tt dmIntegrator} class uses to perform the numerical integration.
+The \b dynamics function is the entry point for computation of the dynamics
+of the system.  It takes, as input, the state vector \b qy and computes the
+derivative of state vector, \b qdy.  This is the derivative function that
+the  dmIntegrator  class uses to perform the numerical integration.
 
 Two functions are provided for use by adaptive-stepsize integrators which may
 need to back out of a rejected integration step.  This is required because some
-{\tt dmForce} objects attached to links may retain state information.  The {\tt
-pushForceStates} function is used to save the state information of all force
-objects attached to links in the system, while the {\tt popForceStates}
+ dmForce objects attached to links may retain state information.  The
+\b pushForceStates function is used to save the state information of all force
+objects attached to links in the system, while the \b popForceStates
 function is used if necessary to restore the state to the stored values.
 
 Another two functions are used for retrieving the energy of the system.  The
-{\tt getPotentialEnergy} function returns the potential energy.  Note that the
+\b getPotentialEnergy function returns the potential energy.  Note that the
 potential energy zero is defined by the plane which passes through the origin
-and has the gravity vector as its normal.  The {\tt getKineticEnergy} function
+and has the gravity vector as its normal.  The \b getKineticEnergy function
 returns the sum of translational and rotational kinetic energy of the system.
 
-See also: {\tt dmArticulation, dmEnvironment, dmIntegrator}.  */
+See also: dmArticulation, dmEnvironment, dmIntegrator.  */
 
 //======================================================================
 

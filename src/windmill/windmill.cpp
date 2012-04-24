@@ -1162,7 +1162,7 @@ int main(int argc, char** argv)
 
    //initAquaControl(G_robot);
 
-   for( int i =0;i<10; i++)
+   for( int i =0;i<G_robot->getNumLinks(); i++)
 	   tr[i][0]=0;
    // Use with extra caution!!
    G_robot_linkinfo_list = G_robot->m_link_list;
@@ -1232,7 +1232,7 @@ void SaveToDataRecord(DataRecord *Rec)
 	Rec->sim_time = sim_time;
 	Float q[1],qd[1];
 
-	for (int i=0; i<9;i++)
+	for (int i=0; i<G_robot->getNumLinks();i++)
 	{
 		if ((i != 3) && (i != 4))
 		{

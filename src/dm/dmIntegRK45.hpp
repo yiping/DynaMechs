@@ -31,31 +31,31 @@
 //============================================================================
 
 /**
-This is a concrete integrator class derived from the {\tt
-dmIntegrator} class, which implements an embedded fourth/fifth order,
+This is a concrete integrator class derived from the
+dmIntegrator class, which implements an embedded fourth/fifth order,
 adaptive stepsize Runge-Kutta integration algorithm.  Note that when calling
-{\tt simulate}, six calls to the associated {\tt dmSystem::dynamics}
-functions will be made.  The {\tt delta\_t} parameter corresponds to the
+\b simulate, six calls to the associated dmSystem::dynamics
+functions will be made.  The \b delta_t parameter corresponds to the
 amount of time that should be simulated, but not necessarily the size
 of the step that is taken within a single iteration of the algorithm.
-Upon returning from this function, {\tt delta\_t} will be set to the amount of
+Upon returning from this function, \b delta_t will be set to the amount of
 time was simulated.
 
 Four parameters are available to configure the numerical behaviour of this
-integrator may be set.  The {\tt setMaxSteps} function specifies the
-maximum number of steps are permitted in attempting to simulate the {\tt
-delta\_t} interval when {\tt simulate(..)} is called before returning with what
-it has.  The {\tt setErrorBound} function is the main method of controlling the
+integrator.  The \b setMaxSteps function specifies the
+maximum number of steps are permitted in attempting to simulate the \b
+delta_t interval when \b simulate(..) is called before returning with what
+it has.  The \b setErrorBound function is the main method of controlling the
 accuracy of the integrator with two parameters.  The fourth- and fifth-order
-Runge-Kutta steps must produce new state vectors $q_{n+1}^{RK4}$ and
-$q_{n+1}^{RK5}$ such that $|q_{n+1}^{RK4} - q_{n+1}^{RK5}|$ is less
-than the {\tt epsilon}$*q_n$ (a function of the first parameter) for each
-element.  However, the elements of $|q_{n+1}^{RK4} - q_{n+1}^{RK5}|$ are never
-required to be smaller than the second parameter, {\tt max_accuracy}.
+Runge-Kutta steps must produce new state vectors \f$q_{n+1}^{RK4}\f$ and
+\f$q_{n+1}^{RK5}\f$ such that \f$|q_{n+1}^{RK4} - q_{n+1}^{RK5}|\f$ is less
+than the \b epsilon \f$*q_n\f$ (a function of the first parameter) for each
+element.  However, the elements of \f$|q_{n+1}^{RK4} - q_{n+1}^{RK5}|\f$ are never
+required to be smaller than the second parameter, \b max_accuracy.
 Finally, when the integrator crosses collision boundaries by first approaching
 the boundary using successively smaller Runge-Kutte steps, and then finally
 taking an Euler step over the boundary.  The stepsize of this Euler step is can
-be set by calling {\tt setEulerStep}.
+be set by calling \b setEulerStep.
 */
 
 //======================================================================

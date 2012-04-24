@@ -34,6 +34,7 @@ ADD_SUBDIRECTORY(src/aquarobot bin_aquarobot)
 ADD_SUBDIRECTORY(src/xan_viewer bin_xan_viewer)
 ADD_SUBDIRECTORY(src/kurmet bin_kurmet)
 ADD_SUBDIRECTORY(src/windmill bin_windmill)
+ADD_SUBDIRECTORY(src/flywheel_biped bin_flywheel_biped)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX is: " ${CMAKE_INSTALL_PREFIX})
 

@@ -34,10 +34,10 @@
 
 This class is under major construction.
 
-This is a concrete integrator class derived from the {\tt dmIntegrator} class,
+This is a concrete integrator class derived from the dmIntegrator class,
 which implements the fourth order, fixed stepsize Runge-Kutta integration
-algorithm.  Note that in the process, four calls to the associated {\tt
-dmSystem::ABDynamics} function will be made. The {\tt idt} parameter
+algorithm.  Note that in the process, four calls to the associated
+dmSystem::ABDynamics function will be made. The \b idt parameter
 corresponds to the size of the step that is taken with a single iteration of
 the algorithm.  No judgement of success or failure of the step is made and the
 parameter will be unchanged on return.

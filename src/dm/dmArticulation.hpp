@@ -31,7 +31,32 @@
 
 #include <vector>
 
+// Now made public
+struct LinkInfoStruct
+{
+  unsigned int index, index_ext, dof;
+  dmLink *link;
+
+  LinkInfoStruct *parent;
+  vector<LinkInfoStruct*> child_list;
+
+  dmABForKinStruct link_val;
+
+  //! DM v5.0, a struct containing intermediate variables for recursive NE algorithm.
+  dmRNEAStruct link_val2; //spatial velocity, acceleration, force and qdd.
+
+  //! v5.0, composite rigid body inertia
+  CrbInertia I_C;
+
+  // AB algorithm temporaries
+  SpatialVector accel;
+  SpatialVector f_star;
+  SpatialTensor I_refl;
+};
+
+
 //============================================================================
+
 /**
 
 The dmArticulation class would be better named the \b dmTreeStructure
@@ -115,44 +140,21 @@ link_index is out of range, this function also returns \b false.
 
 The \b dynamics function is the entry point for computation of the dynamics
 of the system.  For this class, this is a wrapper around the Articulated Body
-(AB) dynamics computation for the multibody system.  The three functions, \b 
-ABForwardKinematics, \b ABBackwardDynamics, and \b 
+(AB) dynamics computation for the multibody system.  The three functions, \b
+ABForwardKinematics, \b ABBackwardDynamics, and \b
 ABForwardAccelerations, comprise the implementation of the Articulated-Body
 (AB) Simulation alogrithm recursions and are hidden from the user.
 However, during the \b ABForwardKinematics traversal,  dmABForKinStruct s are
-computed for each link which can be accessed by calling the \b 
+computed for each link which can be accessed by calling the \b
 getForKinStruct function with the index of the desired link.  This functions
 returns a pointer to the requested struct, or NULL if the index is out of
 range.
 
 See also  dmSystem, dmLink.
 
-*/
+ */
 
 //============================================================================
-
-// Now made public
-struct LinkInfoStruct
-{
-  unsigned int index, index_ext, dof;
-  dmLink *link;
-
-  LinkInfoStruct *parent;
-  vector<LinkInfoStruct*> child_list;
-
-  dmABForKinStruct link_val;
-
-  //! DM v5.0, a struct containing intermediate variables for recursive NE algorithm.
-  dmRNEAStruct link_val2; //spatial velocity, acceleration, force and qdd.
-
-  //! v5.0, composite rigid body inertia
-  CrbInertia I_C;
-
-  // AB algorithm temporaries
-  SpatialVector accel;
-  SpatialVector f_star;
-  SpatialTensor I_refl;
-};
 
 class DM_DLL_API dmArticulation : public dmSystem
 {
@@ -316,5 +318,7 @@ private:
 
 
 };
+
+
 
 #endif

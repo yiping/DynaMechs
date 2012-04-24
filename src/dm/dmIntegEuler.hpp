@@ -32,9 +32,9 @@
 
 /**
 
-This is a concrete integrator class derived from the {\tt dmIntegrator} class,
+This is a concrete integrator class derived from the dmIntegrator class,
 which implements the first order, fixed stepsize Euler integration algorithm.
-The {\tt idt} parameter corresponds to the size of the step that is taken with
+The \b idt parameter corresponds to the size of the step that is taken with
 a single iteration of the algorithm.  No judgement of success or failure of the
 step is made and the parameter will be unchanged on return.
 

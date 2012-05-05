@@ -757,6 +757,51 @@ void dmArticulation::computeH()
 	//cout << H  << "]"<< endl;
 }
 
+
+//---------------------------------------------------------
+Vector3F dmArticulation::computeCoM_ICS()
+{
+	for (int j=0; j<m_link_list.size(); j++)
+	{
+		LinkInfoStruct * curr = m_link_list[j];
+		curr->link->initializeCrbInertia(curr->I_C);
+	}
+
+	CrbInertia Itmp;
+	for (int j=(m_link_list.size()-1); j>=0; j--)
+	{
+		LinkInfoStruct * bodyj = m_link_list[j];
+		if (bodyj->parent) {
+			bodyj->link->scongxToInboardIcomp(bodyj->I_C,Itmp );// spatial congruence inboard
+			CrbAdd(bodyj->parent->I_C,Itmp);
+		}
+	}
+
+	Vector3F CRB_cg_pose0;
+	CRB_cg_pose0(0) = m_link_list[0]->I_C.h[0]/m_link_list[0]->I_C.m;
+	CRB_cg_pose0(1) = m_link_list[0]->I_C.h[1]/m_link_list[0]->I_C.m;
+	CRB_cg_pose0(2) = m_link_list[0]->I_C.h[2]/m_link_list[0]->I_C.m;
+
+	//getPose(R,p);
+	computeSpatialVelAndICSPose(0);
+
+	Matrix3F Rot;
+	Vector3F pos;
+	for(int i = 0; i < 3; i++)
+	{
+		pos(i) = m_link_list[0]->link_val2.p_ICS[i];
+	    for(int j = 0; j < 3; j++)
+	    {
+	    	Rot(i,j)=m_link_list[0]->link_val2.R_ICS[i][j];
+	    }
+	}
+	Vector3F CRB_cg_position_ICS;
+	CRB_cg_position_ICS = Rot * CRB_cg_pose0 + pos;
+	//cout<<"CRB m is: [ "<<m_link_list[0]->I_C.m<<" ]"<<endl;
+	//cout<<"current CoM location is: [ "<<CRB_cg_pose_ICS.transpose() <<" ]"<<endl;
+	return CRB_cg_position_ICS;
+}
+
 //------------------------------------------------------------
 Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & X_target, unsigned int ini_idx)
 {

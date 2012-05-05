@@ -255,6 +255,8 @@ public:
 	
 	//! v5.0, CRB Inerta Algorithm
 	void computeH();
+	//! v5.0, compute the Center of Mass location in inertia coordinate system
+	Vector3F computeCoM_ICS();
 
    // rendering function:
    ///

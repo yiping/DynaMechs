@@ -76,3 +76,6 @@ Float dGain = 5;
 dmRigidBody *Rfoot;
 dmContactModel *Rcontact;    //
 
+Vector3F CoM_pos_ICS = Vector3F::Zero();
+vector<Matrix3F> tRotVec;
+vector<Vector3F> tpVec;

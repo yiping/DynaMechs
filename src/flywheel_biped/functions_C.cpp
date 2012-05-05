@@ -56,7 +56,7 @@ void simDataOutput(const DataRecVector & MyVec)
 	ofstream Writer;
 	string OutputFile = "biped_sim_data.txt";
 	Writer.open(OutputFile.c_str(),ios::out|ios::trunc);  
-    	if( !Writer.is_open())
+    if( !Writer.is_open())
 	{
 		cerr<<"Data File not open! - Error"<<endl<<endl; 
 	}
@@ -65,13 +65,13 @@ void simDataOutput(const DataRecVector & MyVec)
 		for( int u = 0; u<MyVec.size();u++)
 		{
 			Writer<<setw(15)<<MyVec[u]->sim_time;
-			Writer<<setw(15)<<MyVec[u]->q[0]; 
-			Writer<<setw(15)<<MyVec[u]->q[1];                     
+			//Writer<<setw(15)<<MyVec[u]->q[0];
+			//Writer<<setw(15)<<MyVec[u]->q[1];
 			Writer<<setw(15)<<MyVec[u]->q[2];      
-			Writer<<setw(15)<<MyVec[u]->q[5];     
-			Writer<<setw(15)<<MyVec[u]->q[6];      
-			Writer<<setw(15)<<MyVec[u]->q[7];
-			Writer<<setw(15)<<MyVec[u]->q[8];
+			//Writer<<setw(15)<<MyVec[u]->q[5];
+			//Writer<<setw(15)<<MyVec[u]->q[6];
+			//Writer<<setw(15)<<MyVec[u]->q[7];
+			//Writer<<setw(15)<<MyVec[u]->q[8];
 			Writer<<setw(15)<<MyVec[u]->q[9];
 
 			/*Writer<<setw(15)<<MyVec[u]->qd[0]; 
@@ -80,17 +80,62 @@ void simDataOutput(const DataRecVector & MyVec)
 			Writer<<setw(15)<<MyVec[u]->qd[5];     
 			Writer<<setw(15)<<MyVec[u]->qd[6];      
 			Writer<<setw(15)<<MyVec[u]->qd[7];
-			Writer<<setw(15)<<MyVec[u]->qd[8];
-			Writer<<setw(15)<<MyVec[u]->qd[9];*/
+			Writer<<setw(15)<<MyVec[u]->qd[8];*/
+			Writer<<setw(15)<<MyVec[u]->qd[9];
 
-			Writer<<setw(15)<<MyVec[u]->JointTorque[5];     
-			Writer<<setw(15)<<MyVec[u]->JointTorque[6];      
-			Writer<<setw(15)<<MyVec[u]->JointTorque[7];
-			Writer<<setw(15)<<MyVec[u]->JointTorque[8];
+			//Writer<<setw(15)<<MyVec[u]->JointTorque[5];
+			//Writer<<setw(15)<<MyVec[u]->JointTorque[6];
+			//Writer<<setw(15)<<MyVec[u]->JointTorque[7];
+			//Writer<<setw(15)<<MyVec[u]->JointTorque[8];
 			Writer<<setw(15)<<MyVec[u]->JointTorque[9]<<endl; 
 		}
 		Writer.close();
 		cout<<"done."<<endl<<endl;
 	}
 
+}
+
+
+void readTorsoPoseSetpoints()
+{
+
+	ifstream reader;
+	string inputFile1 = "sp.txt";
+	reader.open(inputFile1.c_str(),ios::in);
+    if( !reader.is_open())
+	{
+
+		cerr<<"sp not open! - Error"<<endl<<endl;
+	}
+	else
+	{
+		Vector3F p;
+		while (reader>>p(0)>>p(1)>>p(2))
+		{
+			tpVec.push_back(p);
+		}
+	}
+    reader.close();
+
+    string inputFile2 = "sR.txt";
+	reader.open(inputFile2.c_str(),ios::in);
+    if( !reader.is_open())
+	{
+		cerr<<"sR not open! - Error"<<endl<<endl;
+	}
+	else
+	{
+		Matrix3F R;
+		while (reader>>R(0,0)>>R(0,1)>>R(0,2)
+				  >>R(1,0)>>R(1,1)>>R(1,2)
+				  >>R(2,0)>>R(2,1)>>R(2,2))
+		{
+			tRotVec.push_back(R);
+		}
+	}
+    reader.close();
+    //cout<<"# of setpoints(R): "<<tRotVec.size()<<endl;
+    //cout<<"# of setpoints(p): "<<tpVec.size()<<endl;
+    //cout<<"  tpVec[0] = "<<tpVec[0].transpose()<<endl;
+    //cout<<"  tRotVec[0] = "<<endl<<tRotVec[0]<<endl;
 }

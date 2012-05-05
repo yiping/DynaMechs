@@ -34,6 +34,14 @@ void myinit (void)
 	glEnable(GL_DEPTH_TEST);
 
 	// ****
+	glEnable(GL_LINE_SMOOTH);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	// Enable Blending
+	glEnable(GL_BLEND);
+	// Specifies pixel arithmetic
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// ****
 	//glShadeModel(GL_FLAT);
 	glShadeModel(GL_SMOOTH);
 
@@ -118,7 +126,24 @@ void display (void)
 	}
 	glPopMatrix();*/
 
-
+	glPushMatrix();
+	{
+		glTranslatef(CoM_pos_ICS(0), CoM_pos_ICS(1), 0.001);
+		glLineWidth((GLfloat)2);
+		glBegin(GL_LINES);
+		glColor3f(0.0, 0.0, 1.0);
+		glVertex3f(0.0, 0.1, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.1, 0.0, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, -0.1, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(-0.1, 0.0, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glEnd();
+		glLineWidth(1.0f);
+	}
+	glPopMatrix();
 
 
 	//glEnable (GL_LIGHTING);

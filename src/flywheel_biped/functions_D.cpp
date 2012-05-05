@@ -202,6 +202,56 @@ void computeBipedLeftLegDesiredQdd()
 }
 
 
+Vector3F popTorsoPositionSetPoint()
+{
+	Vector3F tp_ICS;
+	tp_ICS<< 3.0, 5.08, 0.46;
+	if (sim_time < 4.0)
+	{
+		return tp_ICS;
+	}
+	else
+	{
+		if (tpVec.size()>1)
+		{
+			tp_ICS = tpVec.front();
+			tpVec.erase(tpVec.begin());
+			return tp_ICS;
+		}
+		else
+		{
+			return tpVec.front();
+		}
+	}
+}
+
+Matrix3F popTorsoOrientationSetPoint()
+{
+	Matrix3F tR_ICS;
+	tR_ICS<< 0, 1, 0,
+			 0, 0, 1,
+			 1, 0, 0;
+	if (sim_time < 4.0)
+	{
+		return tR_ICS;
+	}
+	else
+	{
+		if (tRotVec.size()>0)
+		{
+			tR_ICS = tRotVec.front();
+			tRotVec.erase(tRotVec.begin());
+			return tR_ICS;
+		}
+		else
+		{
+			return tRotVec.front();
+		}
+
+	}
+}
+
+
 Vector6F resolveTorsoAcceleration()
 {
 	Vector6F desired_torso_acceleration = Vector6F::Zero();
@@ -209,14 +259,22 @@ Vector6F resolveTorsoAcceleration()
 	Vector6F poseError;
 
 	Vector3F ref_torso_p_ICS;
+	Matrix3F ref_torso_R_ICS;
 	Vector3F ref_torso_R_ICS_c1, ref_torso_R_ICS_c2, ref_torso_R_ICS_c3;// columns of ref_torso_R_ICS
 	Vector3F c1,c2,c3;
 
-	ref_torso_p_ICS<< 3.0, 5.08, 0.46;
+	//ref_torso_p_ICS<< 3.0, 5.08, 0.46;
 
-	ref_torso_R_ICS_c1 << 0, 0, 1;
-	ref_torso_R_ICS_c2 << 1, 0, 0;
-	ref_torso_R_ICS_c3 << 0, 1, 0; //upright
+	//ref_torso_R_ICS_c1 << 0, 0, 1;
+	//ref_torso_R_ICS_c2 << 1, 0, 0;
+	//ref_torso_R_ICS_c3 << 0, 1, 0; //upright
+
+	ref_torso_p_ICS = popTorsoPositionSetPoint();
+	ref_torso_R_ICS = popTorsoOrientationSetPoint();
+	ref_torso_R_ICS_c1 = ref_torso_R_ICS.block(0,0,3,1);
+	ref_torso_R_ICS_c2 = ref_torso_R_ICS.block(0,1,3,1);
+	ref_torso_R_ICS_c3 = ref_torso_R_ICS.block(0,2,3,1);
+
 
 	poseError(3) = ref_torso_p_ICS[0] - G_robot_linkinfo_list[2]->link_val2.p_ICS[0];
 	poseError(4) = ref_torso_p_ICS[1] - G_robot_linkinfo_list[2]->link_val2.p_ICS[1];
@@ -245,3 +303,5 @@ Vector6F resolveTorsoAcceleration()
 	#endif
 	return desired_torso_acceleration;
 }
+
+

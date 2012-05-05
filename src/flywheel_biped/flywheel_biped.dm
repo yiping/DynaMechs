@@ -175,7 +175,7 @@ Articulation {
 			Mass			6.0
 			Inertia			0.1641	0.0	0.0
 						0.0	0.1641	0.0
-						0.0	0.0	0.0543
+						0.0	0.0	5.43
 			Center_of_Gravity	0.0	0.0	0.0	
 			Number_of_Contact_Points	0
 

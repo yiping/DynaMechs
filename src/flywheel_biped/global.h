@@ -132,4 +132,8 @@ extern Float dGain;
 extern dmRigidBody *Rfoot;
 extern dmContactModel *Rcontact;    //
 
+extern Vector3F CoM_pos_ICS;
+extern vector<Matrix3F> tRotVec;
+extern vector<Vector3F> tpVec;
+
 #endif

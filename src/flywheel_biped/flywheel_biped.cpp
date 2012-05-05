@@ -203,7 +203,7 @@ void updateSim()
 					// PD
 					Float q[1],qd[1];
 					Float q5d, q6d, q7d, q8d;
-					q5d = -0.3; q6d = 0.6; q7d = 0.7; q8d = 0.3;
+					q5d = -0.1; q6d = 0.6; q7d = 0.7; q8d = 0.3;
 
 					// right hip
 					G_robot->getLink(5)->getState(q,qd);
@@ -270,6 +270,7 @@ void updateSim()
 
 	}
 
+	CoM_pos_ICS = G_robot->computeCoM_ICS();
 	
 	/// Graphics Rendering
 	camera->update(mouse);
@@ -302,7 +303,7 @@ void updateSim()
 		last_tv.tv_nsec = tv.tv_nsec;
 	}
 
-	if (sim_time >3.0 && outputOnce == true)
+	if (sim_time >8.0 && outputOnce == true)
 	{
 		simDataOutput(MyVec);
 		outputOnce = false;
@@ -406,7 +407,9 @@ int main(int argc, char** argv)
 		G_robot_linkinfo_list[i]->link_val2.qdd = VectorXF::Zero(1);
 	}
 
-	adjustBipedLegConfig(-0.3,0.6,0.7,0.3);
+	adjustBipedLegConfig(-0.1,0.6,0.7,0.3);
+
+	readTorsoPoseSetpoints();
 
 	glutReshapeFunc(myReshape);
 	glutKeyboardFunc(processKeyboard);

@@ -19,6 +19,7 @@ void processSpecialKeys(int , int, int);
 
 void SaveToDataRecord(DataRecord *Rec);
 void simDataOutput(const DataRecVector & );
+void readTorsoPoseSetpoints();
 
 // ----------------------------------------------------------------------
 
@@ -32,4 +33,7 @@ void adjustBipedLegConfig(Float , Float , Float , Float);
 void applyTorsoDisturbance(Float , Float , Vector3F , Vector3F );
 void computeBipedRightLegDesiredQdd();
 void computeBipedLeftLegDesiredQdd();
+Vector3F popTorsoPositionSetPoint();
+Matrix3F popTorsoOrientationSetPoint();
 Vector6F resolveTorsoAcceleration(void);
+

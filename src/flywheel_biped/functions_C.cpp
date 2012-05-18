@@ -43,6 +43,8 @@ void SaveToDataRecord(DataRecord *Rec)
 		Rec->p_Lf_ICS[j] = p_lf_ICS[j];
 	}
 
+	Rec->CoMx_ICS = CoM_pos_ICS(0);
+
 }
 
 
@@ -67,12 +69,12 @@ void simDataOutput(const DataRecVector & MyVec)
 			Writer<<setw(15)<<MyVec[u]->sim_time;
 			//Writer<<setw(15)<<MyVec[u]->q[0];
 			//Writer<<setw(15)<<MyVec[u]->q[1];
-			Writer<<setw(15)<<MyVec[u]->q[2];      
+			//Writer<<setw(15)<<MyVec[u]->q[2];
 			//Writer<<setw(15)<<MyVec[u]->q[5];
 			//Writer<<setw(15)<<MyVec[u]->q[6];
 			//Writer<<setw(15)<<MyVec[u]->q[7];
 			//Writer<<setw(15)<<MyVec[u]->q[8];
-			Writer<<setw(15)<<MyVec[u]->q[9];
+			//Writer<<setw(15)<<MyVec[u]->q[9];
 
 			/*Writer<<setw(15)<<MyVec[u]->qd[0]; 
 			Writer<<setw(15)<<MyVec[u]->qd[1];                     
@@ -87,7 +89,9 @@ void simDataOutput(const DataRecVector & MyVec)
 			//Writer<<setw(15)<<MyVec[u]->JointTorque[6];
 			//Writer<<setw(15)<<MyVec[u]->JointTorque[7];
 			//Writer<<setw(15)<<MyVec[u]->JointTorque[8];
-			Writer<<setw(15)<<MyVec[u]->JointTorque[9]<<endl; 
+			Writer<<setw(15)<<MyVec[u]->JointTorque[9];
+			Writer<<setw(15)<<MyVec[u]->CoMx_ICS;
+			Writer<<setw(15)<<MyVec[u]->p_Rf_ICS[0]<<endl;
 		}
 		Writer.close();
 		cout<<"done."<<endl<<endl;

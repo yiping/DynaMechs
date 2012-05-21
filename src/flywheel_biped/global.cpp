@@ -70,12 +70,19 @@ Vector6F LkneeVel_curr;
 Vector6F f_torso_ICS;
 Vector6F f_torso;
 Vector6F GRF_rf = Vector6F::Zero();
+Vector6F GRF_lf = Vector6F::Zero();
 Float pGain = 30;
 Float dGain = 5;
+Float pGain_lh = 30;
+Float dGain_lh = 5;
 
 dmRigidBody *Rfoot;
 dmContactModel *Rcontact;    //
+dmRigidBody *Lfoot;
+dmContactModel *Lcontact;    //
 
 Vector3F CoM_pos_ICS = Vector3F::Zero();
 vector<Matrix3F> tRotVec;
 vector<Vector3F> tpVec;
+
+bool doubleSupportOn = false;

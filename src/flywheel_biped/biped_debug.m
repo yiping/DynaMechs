@@ -38,7 +38,7 @@ hold on
 plot(data(:,1),data(:,4)); % CoMx_ICS
 plot(data(:,1),data(:,5),'r'); % p_Rf_ICS_x
 hold off
-title('flywheel torque');
+title('CoMx and Rfx in ICS');
 linkaxes(ax,'x');
 
 % sim_time

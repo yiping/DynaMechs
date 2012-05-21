@@ -37,3 +37,4 @@ Vector3F popTorsoPositionSetPoint();
 Matrix3F popTorsoOrientationSetPoint();
 Vector6F resolveTorsoAcceleration(void);
 
+

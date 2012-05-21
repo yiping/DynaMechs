@@ -127,14 +127,21 @@ extern Vector6F LkneeVel_curr;
 extern Vector6F f_torso_ICS;
 extern Vector6F f_torso;
 extern Vector6F GRF_rf;
+extern Vector6F GRF_lf;
 extern Float pGain;
 extern Float dGain;
+extern Float pGain_lh;
+extern Float dGain_lh;
 
 extern dmRigidBody *Rfoot;
 extern dmContactModel *Rcontact;    //
+extern dmRigidBody *Lfoot;
+extern dmContactModel *Lcontact;    //
 
 extern Vector3F CoM_pos_ICS;
 extern vector<Matrix3F> tRotVec;
 extern vector<Vector3F> tpVec;
+
+extern bool doubleSupportOn;
 
 #endif

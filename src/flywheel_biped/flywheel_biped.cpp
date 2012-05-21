@@ -35,6 +35,8 @@ void updateSim()
 			    Rfoot = dynamic_cast<dmRigidBody*>(G_robot->getLink(6));
 			    Rcontact = dynamic_cast<dmContactModel*>(Rfoot->getForce(0));
 			    // force object 0 is instantiated to be the dmContactModel object.
+			    Lfoot = dynamic_cast<dmRigidBody*>(G_robot->getLink(8));
+			    Lcontact = dynamic_cast<dmContactModel*>(Lfoot->getForce(0));
 
 				#ifndef JOINT_POSITION_PD_ONLY
 				if (Rcontact->getContactState(0))//sim_time > 5.0
@@ -114,8 +116,11 @@ void updateSim()
 
 					Matrix6F XI2 = G_robot->computeSpatialTransformation(2);
 					Matrix6F X2IF = XI2.transpose();
-					f_torso_ICS = X2IF * (G_robot_linkinfo_list[2]->link_val2.f);
+
 					f_torso = G_robot_linkinfo_list[2]->link_val2.f;
+					f_torso_ICS = X2IF * f_torso;
+
+
 
 
 					// Computed ZMP location in ICS
@@ -128,8 +133,51 @@ void updateSim()
 					// Right foot coordinate has the same orientation as right knee coordinate
 
 					//
-					Matrix3F Rot_t_rf = Rot_rf_ICS.inverse() * Rot_t_ICS;
-					GRF_rf.tail(3) = Rot_t_rf * f_torso.tail(3);
+					if ((!Lcontact->getContactState(0))&& (doubleSupportOn == false)) //%%
+					{
+						Matrix3F Rot_t_rf = Rot_rf_ICS.inverse() * Rot_t_ICS;
+						GRF_rf.tail(3) = Rot_t_rf * f_torso.tail(3);
+					}
+					else
+					{
+						doubleSupportOn = true;
+						// force distribution if both feet on ground
+					    Float a = abs(p_rf_ICS[0] - p_ZMP_ICS(0) );
+					    Float b = abs(p_lf_ICS[0] - p_ZMP_ICS(0) );
+
+					    Matrix3F Rot_t_rf = Rot_rf_ICS.inverse() * Rot_t_ICS;
+					    Matrix3F Rot_t_lf = Rot_lf_ICS.inverse() * Rot_t_ICS;
+
+					    if (sim_time < 21)
+					    {
+					    	GRF_rf.tail(3) = Rot_t_rf * ( (b/(a+b)) * f_torso.tail(3) );
+					    	GRF_lf.tail(3) = Rot_t_lf * ( (a/(a+b)) * f_torso.tail(3) );
+					    }
+					    else
+						{
+					    	Float cr, cl;
+					    	cr = b/(a+b);
+					    	cl = a/(a+b);
+							Float q9[1],qd9[1];
+							G_robot->getLink(9)->getState(q9,qd9);
+							Float qd9sign = -1;
+							if (qd9[0] > 0) qd9sign = 0;
+							if (abs(qd9[0]) > 0.001)
+							{
+								cr += 0.2* qd9sign ;
+								cl -= 0.2* qd9sign;
+							}
+
+					    	GRF_rf.tail(3) = Rot_t_rf * ( cr * f_torso.tail(3) );
+					    	GRF_lf.tail(3) = Rot_t_lf * ( cl * f_torso.tail(3) );
+						}
+
+					    //cout<<sim_time<<" zmpx= "<< p_ZMP_ICS(0)<<endl;
+					    //cout<<sim_time<<" rfx= "<< p_rf_ICS(0)<<endl;
+					    //cout<<sim_time<<" lfx= "<< p_lf_ICS(0)<<endl;
+
+					}
+
 
 
 
@@ -153,7 +201,32 @@ void updateSim()
 
 					Vector6F f_remain;
 					f_remain = f_torso - X52F* X65F * X_rf6F * GRF_rf;
-					cout<<" ["<< f_remain.transpose()<<"] "<<endl;
+					//cout<<" ["<< f_remain.transpose()<<"] "<<endl;
+
+					if (Lcontact->getContactState(0))
+					{
+						Matrix6F X_lf;
+						X_lf << Matrix3F::Identity(), Matrix3F::Zero(),
+									      -cr3(plf), Matrix3F::Identity();
+						Matrix6F X_lf8F = X_lf.transpose();
+						G_robot_linkinfo_list[8]->link_val2.f -= X_lf8F * GRF_lf;
+						G_robot_linkinfo_list[8]->link_val2.tau(0) = G_robot_linkinfo_list[8]->link_val2.f(2);
+						Matrix6F X78 = G_robot->computeSpatialTransformation(8,8);
+						Matrix6F X87F = X78.transpose();
+						G_robot_linkinfo_list[7]->link_val2.f -= X87F * X_lf8F * GRF_lf;
+						G_robot_linkinfo_list[7]->link_val2.tau(0) = G_robot_linkinfo_list[7]->link_val2.f(2);
+
+						Matrix6F X27 = G_robot->computeSpatialTransformation(7,3);
+						Matrix6F X72F = X27.transpose();
+
+						f_remain = f_remain - X72F* X87F * X_lf8F * GRF_lf;
+					}
+
+					//cout<<sim_time<<" - L:  "<<Lcontact->getContactState(0)<<endl;
+					//cout<<"f_torso = ["<< f_torso.transpose()<<"] "<<endl;
+					//cout<<"f_remain = ["<< f_remain.transpose()<<"] "<<endl;
+
+
 
 					#ifdef BIPED_DEBUG
 					cout<<"GRF_rf = ["<< GRF_rf.transpose()<<"]"<<endl<<endl;
@@ -170,13 +243,23 @@ void updateSim()
 					G_robot->getLink(5)->setJointInput(tr[5]);
 
 					// left leg
-					Float q[1],qd[1];
-					G_robot->getLink(7)->getState(q,qd);
-					tr[7][0]= pGain * (0.7 - q[0])  - dGain *(qd[0]);
-					G_robot->getLink(7)->setJointInput(tr[7]);
-					G_robot->getLink(8)->getState(q,qd);
-					tr[8][0]= pGain * (0.3 - q[0])  - dGain *(qd[0]);
-					G_robot->getLink(8)->setJointInput(tr[8]);
+					if (((!Lcontact->getContactState(0)) && (doubleSupportOn == false)))
+					{
+						Float q[1],qd[1];
+						G_robot->getLink(7)->getState(q,qd);
+						tr[7][0]= pGain_lh * (0.7 - q[0])  - dGain_lh *(qd[0]);
+						G_robot->getLink(7)->setJointInput(tr[7]);
+						G_robot->getLink(8)->getState(q,qd);
+						tr[8][0]= pGain * (0.3 - q[0])  - dGain *(qd[0]);
+						G_robot->getLink(8)->setJointInput(tr[8]);
+					}
+					else
+					{
+						tr[8][0] = G_robot_linkinfo_list[8]->link_val2.tau(0);
+						G_robot->getLink(8)->setJointInput(tr[8]);
+						tr[7][0] = G_robot_linkinfo_list[7]->link_val2.tau(0);
+						G_robot->getLink(7)->setJointInput(tr[7]);
+					}
 
 					// flywheel joint
 					tr[9][0] = - f_remain(2);
@@ -305,10 +388,15 @@ void updateSim()
 		last_tv.tv_nsec = tv.tv_nsec;
 	}
 
-	if (sim_time >15.0 && outputOnce == true)
+	if (sim_time >32.0 && outputOnce == true)
 	{
 		simDataOutput(MyVec);
 		outputOnce = false;
+	}
+
+	if (sim_time >15.0)
+	{
+		pGain_lh = 2; dGain_lh = 1;
 	}
 
 	//cout<<"--- --- --- "<<endl;

@@ -250,7 +250,7 @@ void updateSim()
 						tr[7][0]= pGain_lh * (0.7 - q[0])  - dGain_lh *(qd[0]);
 						G_robot->getLink(7)->setJointInput(tr[7]);
 						G_robot->getLink(8)->getState(q,qd);
-						tr[8][0]= pGain * (0.3 - q[0])  - dGain *(qd[0]);
+						tr[8][0]= pGain * (0.4 - q[0])  - dGain *(qd[0]);// !
 						G_robot->getLink(8)->setJointInput(tr[8]);
 					}
 					else
@@ -286,7 +286,7 @@ void updateSim()
 					// PD
 					Float q[1],qd[1];
 					Float q5d, q6d, q7d, q8d;
-					q5d = -0.1; q6d = 0.6; q7d = 0.7; q8d = 0.3;
+					q5d = -0.1; q6d = 0.6; q7d = 0.7; q8d = 0.4; // !
 
 					// right hip
 					G_robot->getLink(5)->getState(q,qd);
@@ -396,7 +396,8 @@ void updateSim()
 
 	if (sim_time >15.0)
 	{
-		pGain_lh = 2; dGain_lh = 1;
+		pGain_lh = 1; // !
+		dGain_lh = 1;
 	}
 
 	//cout<<"--- --- --- "<<endl;

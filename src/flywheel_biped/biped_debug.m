@@ -3,6 +3,8 @@
 % (3) JointTorque[9]
 % (4) CoMx_ICS
 % (5) p_Rf_ICS[0]
+% (6) p_Lf_ICS[0]
+% (7) actual_ZMPx_ICS
 
 close all
 clear all
@@ -35,8 +37,10 @@ figure()
 a = gca;
 ax = [ax a];
 hold on
-plot(data(:,1),data(:,4)); % CoMx_ICS
-plot(data(:,1),data(:,5),'r'); % p_Rf_ICS_x
+plot(data(:,1),data(:,4),'k.'); % CoMx_ICS
+plot(data(:,1),data(:,5),'r.'); % p_Rf_ICS_x
+plot(data(:,1),data(:,6),'b.'); % p_Rf_ICS_x
+plot(data(:,1),data(:,7),'m.'); % actual_ZMPx_ICS
 hold off
 title('CoMx and Rfx in ICS');
 linkaxes(ax,'x');

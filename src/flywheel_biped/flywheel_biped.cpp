@@ -226,6 +226,10 @@ void updateSim()
 					//cout<<"f_torso = ["<< f_torso.transpose()<<"] "<<endl;
 					//cout<<"f_remain = ["<< f_remain.transpose()<<"] "<<endl;
 
+					if (Lcontact->getContactState(0))
+					{
+						calculateActualZMP();
+					}
 
 
 					#ifdef BIPED_DEBUG

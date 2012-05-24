@@ -91,7 +91,9 @@ void simDataOutput(const DataRecVector & MyVec)
 			//Writer<<setw(15)<<MyVec[u]->JointTorque[8];
 			Writer<<setw(15)<<MyVec[u]->JointTorque[9];
 			Writer<<setw(15)<<MyVec[u]->CoMx_ICS;
-			Writer<<setw(15)<<MyVec[u]->p_Rf_ICS[0]<<endl;
+			Writer<<setw(15)<<MyVec[u]->p_Rf_ICS[0];
+			Writer<<setw(15)<<MyVec[u]->p_Lf_ICS[0];
+			Writer<<setw(15)<<MyVec[u]->actual_ZMPx_ICS<<endl;
 		}
 		Writer.close();
 		cout<<"done."<<endl<<endl;

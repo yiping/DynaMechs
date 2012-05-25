@@ -691,7 +691,7 @@ void dmArticulation::ABForwardAccelerations(SpatialVector a_ref,
 #define DOFSEGMENT(b1)  segment(b1->index_ext,b1->dof)
 
 //---------------------------------------------------------
-MatrixXF dmArticulation::computeH()
+void dmArticulation::computeH()
 {
 	CrbInertia Itmp;
 	unsigned int jjoint_index_offset = 0;
@@ -754,7 +754,7 @@ MatrixXF dmArticulation::computeH()
 			CrbAdd(bodyj->parent->I_C,Itmp);
 		}
 	}
-	return H;
+	return;// H;
 	//cout << " H = [" << endl;
 	//cout << H  << "]"<< endl;
 }
@@ -1071,7 +1071,7 @@ void dmArticulation::inverseDynamics(bool ExtForceFlag )
 	}
 }
 
-VectorXF dmArticulation::computeCandG()
+void dmArticulation::computeCandG()
 {
 	unsigned int jjoint_index_offset = 0;
 	
@@ -1097,7 +1097,7 @@ VectorXF dmArticulation::computeCandG()
 		if(bodyj->dof > 0)
 			CandG.DOFSEGMENT(bodyj) = bodyj->link_val2.tau;
 	}
-	return CandG;
+	return;// CandG;
 }
 
 

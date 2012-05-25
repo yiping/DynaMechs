@@ -131,8 +131,8 @@ TaskSpaceController::~TaskSpaceController() {
 }
 
 void TaskSpaceController::ObtainArticulationData() {
-	H = artic->computeH();
-	CandG = artic->computeCandG();
+	artic->computeH();
+	artic->computeCandG();
 	
 	for (int i=0; i<NS; i++) {
 		SupportJacobians[i] = artic->calculateJacobian(SupportIndices[i], SupportXforms[i]);
@@ -243,15 +243,15 @@ void TaskSpaceController::UpdateConstraintBounds() {
 	//Bounds on Dynamics Constraints
 	for (i = dynConstrStart; i<=dynConstrEnd; i++) {
 		bkc[i] = MSK_BK_FX;
-		blc[i] = -CandG(i);
-		buc[i] = -CandG(i);
+		blc[i] = -artic->CandG(i);
+		buc[i] = -artic->CandG(i);
 	}
 	
 	//Bounds on Force
 	for (i = fConstrStart; i<=fConstrEnd; i++) {
 		bkc[i] = MSK_BK_FX;
-		blc[i] = -CandG(i);
-		buc[i] = -CandG(i);
+		blc[i] = -artic->CandG(i);
+		buc[i] = -artic->CandG(i);
 	}
 	
 	

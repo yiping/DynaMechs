@@ -258,8 +258,8 @@ public:
 	Vector3F computeCoM_ICS();
 
 		//! v5.0, CRB Inerta Algorithm
-	MatrixXF computeH();
-	VectorXF computeCandG();
+	void computeH();
+	void computeCandG();
 
    // rendering function:
    ///

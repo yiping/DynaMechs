@@ -44,8 +44,6 @@ private:
 	MSKrescodee   r;
 	int numCon;
 	
-	MatrixXF H;
-	VectorXF CandG; 
 	MatrixXF TaskJacobian;
 	MatrixXF ConstraintJacobian;
 	VectorXF TaskBias;

@@ -266,6 +266,7 @@
 							<array>
 								<string>08FB7794FE84155DC02AAC07</string>
 								<string>08FB7795FE84155DC02AAC07</string>
+								<string>1940A4981507C5FE00CD4386</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C37FAAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
@@ -273,7 +274,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>13</integer>
+									<integer>5</integer>
+									<integer>4</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
@@ -316,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>dmArticulation.hpp</string>
+								<string>TaskSpaceController.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -324,23 +326,23 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>dmArticulation.hpp</string>
+										<string>TaskSpaceController.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>19E6A71F156FF71400A7DE40</string>
+										<string>1925D379156FF8A90098FF95</string>
 										<key>history</key>
 										<array>
 											<string>1953EF96155C22B400BC7C6D</string>
 											<string>1914373E156D281A004AB008</string>
-											<string>1914376B156E829D004AB008</string>
 											<string>1914376D156E829D004AB008</string>
 											<string>1914376E156E829D004AB008</string>
 											<string>191437BF156E9390004AB008</string>
 											<string>191437C1156E9390004AB008</string>
-											<string>19E6A71A156FF71400A7DE40</string>
-											<string>19E6A71B156FF71400A7DE40</string>
-											<string>191437C5156E9839004AB008</string>
+											<string>1925D375156FF8A90098FF95</string>
+											<string>1925D376156FF8A90098FF95</string>
+											<string>1925D377156FF8A90098FF95</string>
+											<string>1925D378156FF8A90098FF95</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -398,9 +400,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>19E6A71D156FF71400A7DE40</string>
+				<string>1925D37A156FF8A90098FF95</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>19E6A71E156FF71400A7DE40</string>
+				<string>1925D37B156FF8A90098FF95</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -563,7 +565,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>dmArticulation.hpp</string>
+								<string>TaskSpaceController.cpp</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -621,7 +623,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1925863714D2E86400778EA7</string>
-				<string>19E6A717156FF6EA00A7DE40</string>
+				<string>1925D372156FF8930098FF95</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

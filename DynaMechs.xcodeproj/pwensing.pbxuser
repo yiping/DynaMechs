@@ -137,21 +137,28 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 359659189;
-			PBXWorkspaceStateSaveDate = 359659189;
+			PBXPerProjectTemplateStateSaveDate = 359659541;
+			PBXWorkspaceStateSaveDate = 359659541;
 		};
 		perUserProjectItems = {
-			1914373E156D281A004AB008 /* PBXTextBookmark */ = 1914373E156D281A004AB008 /* PBXTextBookmark */;
-			1914376B156E829D004AB008 /* PBXTextBookmark */ = 1914376B156E829D004AB008 /* PBXTextBookmark */;
-			1914376D156E829D004AB008 /* PBXTextBookmark */ = 1914376D156E829D004AB008 /* PBXTextBookmark */;
-			1914376E156E829D004AB008 /* PBXTextBookmark */ = 1914376E156E829D004AB008 /* PBXTextBookmark */;
-			191437BF156E9390004AB008 /* PBXTextBookmark */ = 191437BF156E9390004AB008 /* PBXTextBookmark */;
-			191437C1156E9390004AB008 /* PBXTextBookmark */ = 191437C1156E9390004AB008 /* PBXTextBookmark */;
-			191437C5156E9839004AB008 /* PBXTextBookmark */ = 191437C5156E9839004AB008 /* PBXTextBookmark */;
-			1953EF96155C22B400BC7C6D /* PBXTextBookmark */ = 1953EF96155C22B400BC7C6D /* PBXTextBookmark */;
-			19E6A71A156FF71400A7DE40 /* PBXTextBookmark */ = 19E6A71A156FF71400A7DE40 /* PBXTextBookmark */;
-			19E6A71B156FF71400A7DE40 /* PBXTextBookmark */ = 19E6A71B156FF71400A7DE40 /* PBXTextBookmark */;
-			19E6A71F156FF71400A7DE40 /* PBXTextBookmark */ = 19E6A71F156FF71400A7DE40 /* PBXTextBookmark */;
+			1914373E156D281A004AB008 = 1914373E156D281A004AB008 /* PBXTextBookmark */;
+			1914376B156E829D004AB008 = 1914376B156E829D004AB008 /* PBXTextBookmark */;
+			1914376D156E829D004AB008 = 1914376D156E829D004AB008 /* PBXTextBookmark */;
+			1914376E156E829D004AB008 = 1914376E156E829D004AB008 /* PBXTextBookmark */;
+			191437BF156E9390004AB008 = 191437BF156E9390004AB008 /* PBXTextBookmark */;
+			191437C1156E9390004AB008 = 191437C1156E9390004AB008 /* PBXTextBookmark */;
+			191437C5156E9839004AB008 = 191437C5156E9839004AB008 /* PBXTextBookmark */;
+			1925D370156FF8930098FF95 /* XCBuildMessageTextBookmark */ = 1925D370156FF8930098FF95 /* XCBuildMessageTextBookmark */;
+			1925D371156FF8930098FF95 /* PBXTextBookmark */ = 1925D371156FF8930098FF95 /* PBXTextBookmark */;
+			1925D375156FF8A90098FF95 /* PBXTextBookmark */ = 1925D375156FF8A90098FF95 /* PBXTextBookmark */;
+			1925D376156FF8A90098FF95 /* PBXTextBookmark */ = 1925D376156FF8A90098FF95 /* PBXTextBookmark */;
+			1925D377156FF8A90098FF95 /* PBXTextBookmark */ = 1925D377156FF8A90098FF95 /* PBXTextBookmark */;
+			1925D378156FF8A90098FF95 /* XCBuildMessageTextBookmark */ = 1925D378156FF8A90098FF95 /* XCBuildMessageTextBookmark */;
+			1925D379156FF8A90098FF95 /* PBXTextBookmark */ = 1925D379156FF8A90098FF95 /* PBXTextBookmark */;
+			1953EF96155C22B400BC7C6D = 1953EF96155C22B400BC7C6D /* PBXTextBookmark */;
+			19E6A71A156FF71400A7DE40 = 19E6A71A156FF71400A7DE40 /* PBXTextBookmark */;
+			19E6A71B156FF71400A7DE40 = 19E6A71B156FF71400A7DE40 /* PBXTextBookmark */;
+			19E6A71F156FF71400A7DE40 = 19E6A71F156FF71400A7DE40 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
 		userBuildSettings = {
@@ -172,7 +179,7 @@
 		fRef = 1925864314D2E95000778EA7 /* dmArticulation.cpp */;
 		name = "dmArticulation.cpp: 1076";
 		rLen = 0;
-		rLoc = 33957;
+		rLoc = 33956;
 		rType = 0;
 		vrLen = 6784;
 		vrLoc = 27790;
@@ -265,18 +272,17 @@
 	};
 	1925864314D2E95000778EA7 /* dmArticulation.cpp */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{25967, 1702}\";\n            s = 0;\n        },\n                {\n            r = \"{27847, 2161}\";\n            s = 0;\n        },\n                {\n            r = \"{30141, 2577}\";\n            s = 0;\n        },\n                {\n            r = \"{32762, 611}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 38134}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1068, 11092}}";
-			sepNavSelRange = "{26910, 0}";
-			sepNavVisRange = "{26089, 1438}";
+			sepNavIntBoundsRect = "{{0, 0}, {1068, 13981}}";
+			sepNavSelRange = "{25725, 0}";
+			sepNavVisRange = "{24654, 1447}";
 			sepNavWindowFrame = "{{-1050, 0}, {1188, 800}}";
 		};
 	};
 	1925864414D2E95000778EA7 /* dmArticulation.hpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {630, 3861}}";
-			sepNavSelRange = "{10408, 0}";
-			sepNavVisRange = "{9694, 1110}";
+			sepNavIntBoundsRect = "{{0, 0}, {949, 3872}}";
+			sepNavSelRange = "{10570, 0}";
+			sepNavVisRange = "{10007, 1307}";
 		};
 	};
 	1925864514D2E95000778EA7 /* dmClosedArticulation.cpp */ = {
@@ -736,6 +742,74 @@
 		startupPath = /Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/src/testdm;
 		variableFormatDictionary = {
 		};
+	};
+	1925D370156FF8930098FF95 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'CandG' was not declared in this scope";
+		fRef = 199A31F3156FF587008E1165 /* TaskSpaceController.cpp */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 252;
+		rType = 1;
+	};
+	1925D371156FF8930098FF95 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 199A31F3156FF587008E1165 /* TaskSpaceController.cpp */;
+		name = "TaskSpaceController.cpp: 253";
+		rLen = 0;
+		rLoc = 6263;
+		rType = 0;
+		vrLen = 641;
+		vrLoc = 5776;
+	};
+	1925D375156FF8A90098FF95 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1925864414D2E95000778EA7 /* dmArticulation.hpp */;
+		name = "dmArticulation.hpp: 262";
+		rLen = 0;
+		rLoc = 10570;
+		rType = 0;
+		vrLen = 1307;
+		vrLoc = 10007;
+	};
+	1925D376156FF8A90098FF95 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1925864314D2E95000778EA7 /* dmArticulation.cpp */;
+		name = "dmArticulation.cpp: 757";
+		rLen = 0;
+		rLoc = 25725;
+		rType = 0;
+		vrLen = 1447;
+		vrLoc = 24654;
+	};
+	1925D377156FF8A90098FF95 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 199A31F4156FF587008E1165 /* TaskSpaceController.h */;
+		name = "TaskSpaceController.h: 46";
+		rLen = 0;
+		rLoc = 856;
+		rType = 0;
+		vrLen = 991;
+		vrLoc = 89;
+	};
+	1925D378156FF8A90098FF95 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'CandG' was not declared in this scope";
+		fRef = 199A31F3156FF587008E1165 /* TaskSpaceController.cpp */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 245;
+		rType = 1;
+	};
+	1925D379156FF8A90098FF95 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 199A31F3156FF587008E1165 /* TaskSpaceController.cpp */;
+		name = "TaskSpaceController.cpp: 254";
+		rLen = 0;
+		rLoc = 6311;
+		rType = 0;
+		vrLen = 1147;
+		vrLoc = 5476;
 	};
 	192D6698151BAEE900966570 /* catbot.cpp */ = {
 		uiCtxt = {
@@ -1428,16 +1502,16 @@
 	};
 	199A31F3156FF587008E1165 /* TaskSpaceController.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {949, 3927}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1576}";
+			sepNavIntBoundsRect = "{{0, 0}, {949, 4235}}";
+			sepNavSelRange = "{6311, 0}";
+			sepNavVisRange = "{5476, 1147}";
 		};
 	};
 	199A31F4156FF587008E1165 /* TaskSpaceController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {949, 649}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1015}";
+			sepNavIntBoundsRect = "{{0, 0}, {949, 627}}";
+			sepNavSelRange = "{856, 0}";
+			sepNavVisRange = "{89, 991}";
 		};
 	};
 	19E6A71A156FF71400A7DE40 /* PBXTextBookmark */ = {

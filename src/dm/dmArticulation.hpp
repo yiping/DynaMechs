@@ -28,7 +28,6 @@
 #include "dm.h"
 #include "dmLink.hpp"
 #include "dmSystem.hpp"
-
 #include <vector>
 
 // Now made public
@@ -253,10 +252,14 @@ public:
    //! DM v5.0 function, Inverse Dynamics (RNEA); For articulation tree only, 
    void inverseDynamics(bool ExtForceFlag = false);
 	
-	//! v5.0, CRB Inerta Algorithm
-	void computeH();
+
+
 	//! v5.0, compute the Center of Mass location in inertia coordinate system
 	Vector3F computeCoM_ICS();
+
+		//! v5.0, CRB Inerta Algorithm
+	MatrixXF computeH();
+	VectorXF computeCandG();
 
    // rendering function:
    ///
@@ -266,6 +269,7 @@ public:
    vector<LinkInfoStruct*> m_link_list;
 
 	MatrixXF H;
+	VectorXF CandG;
 	
 protected:
    // not implemented

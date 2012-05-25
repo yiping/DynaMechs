@@ -33,6 +33,9 @@
 #include "functions.h"
 #include "global_typedef.h"
 
+//#include "mosek.h" /* Include the MOSEK definition file. */
+#include "TaskSpaceController.h"
+
 //#define KURMET_DEBUG
 
 #define OUTPUT_DEBUG_INFO
@@ -77,16 +80,49 @@ void myinit (void)
    glLightfv (GL_LIGHT0, GL_AMBIENT, light_ambient);
    glLightfv (GL_LIGHT0, GL_DIFFUSE, light_diffuse);
    glLightfv (GL_LIGHT0, GL_SPECULAR, light_specular);
-   glLightfv (GL_LIGHT0, GL_POSITION, light_position);
+   //glLightfv (GL_LIGHT0, GL_POSITION, light_position);
 
+//	glLightfv (GL_LIGHT1, GL_AMBIENT, light_ambient);
+//	glLightfv (GL_LIGHT1, GL_DIFFUSE, light_diffuse);
+//	glLightfv (GL_LIGHT1, GL_SPECULAR, light_specular);
+	//glLightfv (GL_LIGHT1, GL_POSITION, light_position);
+	
+	glLightfv (GL_LIGHT2, GL_AMBIENT, light_ambient);
+	glLightfv (GL_LIGHT2, GL_DIFFUSE, light_diffuse);
+	glLightfv (GL_LIGHT2, GL_SPECULAR, light_specular);
+	//glLightfv (GL_LIGHT2, GL_POSITION, light_position);
+	
+//	glLightfv (GL_LIGHT3, GL_AMBIENT, light_ambient);
+//	glLightfv (GL_LIGHT3, GL_DIFFUSE, light_diffuse);
+//	glLightfv (GL_LIGHT3, GL_SPECULAR, light_specular);
+	//glLightfv (GL_LIGHT3, GL_POSITION, light_position);
+	
    glEnable (GL_LIGHTING);
    glEnable (GL_LIGHT0);
+//	   glEnable (GL_LIGHT1);
+	   glEnable (GL_LIGHT2);
+//	   glEnable (GL_LIGHT3);
+	
    glDepthFunc(GL_LESS);
    glEnable(GL_DEPTH_TEST);
 
-   glShadeModel(GL_FLAT);
+   /*glShadeModel(GL_FLAT);
    glEnable(GL_CULL_FACE);
-   glCullFace(GL_BACK);
+   glCullFace(GL_BACK);*/
+	
+	// ****
+	//glShadeModel(GL_FLAT);
+	glShadeModel(GL_SMOOTH);
+	
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	
+	// ****
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);//!!
+	// The above two lines mean that glMaterial will control the polygon's specular and emission colors
+	// and the ambient and diffuse will both be set using glColor. - yiping
+	
 }
 
 //----------------------------------------------------------------------------
@@ -142,7 +178,7 @@ void display (void)
 
    glPopMatrix ();
 
- //// Write some information on the viewport
+	//// Write some information on the viewport
     // we are currently in MODEL_VIEW
 	glPushMatrix ();
 	glLoadIdentity ();
@@ -155,6 +191,8 @@ void display (void)
 	gluOrtho2D (0,viewport[2], viewport[3], 0);
 	// build a orthographic projection matrix using width and height of view port
 
+	
+	glDisable (GL_LIGHTING);// ****
 	glDepthFunc (GL_ALWAYS);
 	glColor3f (0,0,0);
 	glRasterPos2f(10, 20);
@@ -173,11 +211,11 @@ void display (void)
 	glPopMatrix ();
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix ();
-
+	glEnable (GL_LIGHTING);// ****
 
 
     //  When lighting is enabled, the primary color is calculated from the lighting equation instead of being taken from glColor and equivalent functions
-	glEnable (GL_LIGHTING);
+	//glEnable (GL_LIGHTING);
 
 
 
@@ -259,11 +297,29 @@ void updateSim()
     	sim_time += idt;
       }
    }
+	
+	IntVector SupportIndicies;
+	XformVector XformIndices;
 
 
+	TaskSpaceController tsc(G_robot, SupportIndicies,XformIndices);
+	tsc.InitializeProblem();
+	tsc.Optimize();
+	exit(-1);
    camera->update(mouse);
    camera->applyView();
 
+	// ****
+	// if you want the GL light to move with the camera, comment the following two lines - yiping
+	const GLfloat light_position0[] = { 1.0, 1.0, 1.0, 0.0 };
+	//const GLfloat light_position1[] = { -1.0, 1.0, 1.0, 0.0 };
+	const GLfloat light_position2[] = { -1.0, -1.0, 1.0, 0.0 };
+	//const GLfloat light_position3[] = { 1.0, -1.0, 1.0, 0.0 };
+	glLightfv (GL_LIGHT0, GL_POSITION, light_position0);
+	//glLightfv (GL_LIGHT0, GL_POSITION, light_position1);
+	glLightfv (GL_LIGHT0, GL_POSITION, light_position2);
+	//glLightfv (GL_LIGHT0, GL_POSITION, light_position3);
+	
    display();
 
    // compute render rate

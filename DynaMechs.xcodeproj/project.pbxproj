@@ -260,6 +260,7 @@
 		195224F714D35B010042EA6D /* dmGLPolarCamera_yup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869714D2E9A800778EA7 /* dmGLPolarCamera_yup.cpp */; };
 		195224F814D35B010042EA6D /* dmGLPolarCamera_zup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869914D2E9A800778EA7 /* dmGLPolarCamera_zup.cpp */; };
 		195224F914D35B010042EA6D /* dmGLPolarCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869B14D2E9A800778EA7 /* dmGLPolarCamera.cpp */; };
+		19577E8C1541A61200B991DF /* libmosek64.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19577E8B1541A61200B991DF /* libmosek64.dylib */; };
 		197B842D15070B530064753B /* dmGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869114D2E9A800778EA7 /* dmGLCamera.cpp */; };
 		197B842E15070B530064753B /* dmGLFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869314D2E9A800778EA7 /* dmGLFlyCamera.cpp */; };
 		197B842F15070B530064753B /* dmGLMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869514D2E9A800778EA7 /* dmGLMouse.cpp */; };
@@ -310,6 +311,10 @@
 		197B845E15070B530064753B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876B14D2EDF400778EA7 /* OpenGL.framework */; };
 		197B846415070B6C0064753B /* functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 197B842715070B450064753B /* functions.cpp */; };
 		197B846515070B6C0064753B /* kurmet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 197B842A15070B450064753B /* kurmet.cpp */; };
+		199A31F5156FF587008E1165 /* TaskSpaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 199A31F3156FF587008E1165 /* TaskSpaceController.cpp */; };
+		19EE12EF1545EE7200164D03 /* qo1.c in Sources */ = {isa = PBXBuildFile; fileRef = 19EE12EE1545EE7200164D03 /* qo1.c */; };
+		19EE130F1545F46E00164D03 /* mosek.h in Sources */ = {isa = PBXBuildFile; fileRef = 19EE12F21545EEAE00164D03 /* mosek.h */; };
+		19EE13231545F4E000164D03 /* libmosek64.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19577E8B1541A61200B991DF /* libmosek64.dylib */; };
 		19EE3469153C526D0029D664 /* dmGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869114D2E9A800778EA7 /* dmGLCamera.cpp */; };
 		19EE346A153C526D0029D664 /* dmGLFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869314D2E9A800778EA7 /* dmGLFlyCamera.cpp */; };
 		19EE346B153C526D0029D664 /* dmGLMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869514D2E9A800778EA7 /* dmGLMouse.cpp */; };
@@ -487,11 +492,17 @@
 		1940A4D51507C75B00CD4386 /* humanoid */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = humanoid; sourceTree = BUILT_PRODUCTS_DIR; };
 		1952236614D34FB30042EA6D /* doublePendulum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = doublePendulum.cpp; path = src/doublePendulum/doublePendulum.cpp; sourceTree = "<group>"; };
 		1952236C14D34FF10042EA6D /* doublePendulum */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = doublePendulum; sourceTree = BUILT_PRODUCTS_DIR; };
+		19577E2B1541A01000B991DF /* mosekTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mosekTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		19577E8B1541A61200B991DF /* libmosek64.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmosek64.dylib; path = /usr/local/lib/libmosek64.dylib; sourceTree = "<absolute>"; };
 		197B842715070B450064753B /* functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = functions.cpp; path = src/kurmet/functions.cpp; sourceTree = "<group>"; };
 		197B842815070B450064753B /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = src/kurmet/functions.h; sourceTree = "<group>"; };
 		197B842915070B450064753B /* global_typedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global_typedef.h; path = src/kurmet/global_typedef.h; sourceTree = "<group>"; };
 		197B842A15070B450064753B /* kurmet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kurmet.cpp; path = src/kurmet/kurmet.cpp; sourceTree = "<group>"; };
 		197B846215070B530064753B /* kurmet */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kurmet; sourceTree = BUILT_PRODUCTS_DIR; };
+		199A31F3156FF587008E1165 /* TaskSpaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TaskSpaceController.cpp; path = src/humanoid/TaskSpaceController.cpp; sourceTree = "<group>"; };
+		199A31F4156FF587008E1165 /* TaskSpaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskSpaceController.h; path = src/humanoid/TaskSpaceController.h; sourceTree = "<group>"; };
+		19EE12EE1545EE7200164D03 /* qo1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = qo1.c; path = src/mosek/6/tools/examples/c/qo1.c; sourceTree = "<group>"; };
+		19EE12F21545EEAE00164D03 /* mosek.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mosek.h; path = src/mosek/6/tools/platform/osx64x86/h/mosek.h; sourceTree = "<group>"; };
 		19EE345B153C52670029D664 /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = src/windmill/functions.h; sourceTree = "<group>"; };
 		19EE345C153C52670029D664 /* global_typedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global_typedef.h; path = src/windmill/global_typedef.h; sourceTree = "<group>"; };
 		19EE345D153C52670029D664 /* functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = functions.cpp; path = src/windmill/functions.cpp; sourceTree = "<group>"; };
@@ -565,6 +576,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19EE13231545F4E000164D03 /* libmosek64.dylib in Frameworks */,
 				1940A4D01507C75B00CD4386 /* GLUT.framework in Frameworks */,
 				1940A4D11507C75B00CD4386 /* OpenGL.framework in Frameworks */,
 			);
@@ -576,6 +588,14 @@
 			files = (
 				1952239B14D3505B0042EA6D /* GLUT.framework in Frameworks */,
 				1952239C14D3505B0042EA6D /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		19577E291541A01000B991DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19577E8C1541A61200B991DF /* libmosek64.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +628,7 @@
 				1AB674ADFE9D54B511CA2CBB /* Products */,
 				1925876914D2EDF400778EA7 /* GLUT.framework */,
 				1925876B14D2EDF400778EA7 /* OpenGL.framework */,
+				19577E8B1541A61200B991DF /* libmosek64.dylib */,
 			);
 			name = DynaMechs;
 			sourceTree = "<group>";
@@ -615,6 +636,7 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				19577E1D15419FC800B991DF /* mosekTest */,
 				192D668C151BAE8F00966570 /* catbot */,
 				1940A4981507C5FE00CD4386 /* humanoid */,
 				197B842615070B1E0064753B /* kurmet */,
@@ -794,6 +816,8 @@
 		1940A4981507C5FE00CD4386 /* humanoid */ = {
 			isa = PBXGroup;
 			children = (
+				199A31F3156FF587008E1165 /* TaskSpaceController.cpp */,
+				199A31F4156FF587008E1165 /* TaskSpaceController.h */,
 				1940A49C1507C62100CD4386 /* humanoid.cpp */,
 			);
 			name = humanoid;
@@ -805,6 +829,15 @@
 				1952236614D34FB30042EA6D /* doublePendulum.cpp */,
 			);
 			name = doublePendulum;
+			sourceTree = "<group>";
+		};
+		19577E1D15419FC800B991DF /* mosekTest */ = {
+			isa = PBXGroup;
+			children = (
+				19EE12F21545EEAE00164D03 /* mosek.h */,
+				19EE12EE1545EE7200164D03 /* qo1.c */,
+			);
+			name = mosekTest;
 			sourceTree = "<group>";
 		};
 		197B842615070B1E0064753B /* kurmet */ = {
@@ -842,6 +875,7 @@
 				1940A4D51507C75B00CD4386 /* humanoid */,
 				192D66D4151BAEEC00966570 /* catbot */,
 				19EE349F153C526D0029D664 /* windmill */,
+				19577E2B1541A01000B991DF /* mosekTest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1052,6 +1086,22 @@
 			productReference = 1952236C14D34FF10042EA6D /* doublePendulum */;
 			productType = "com.apple.product-type.tool";
 		};
+		19577E2A1541A01000B991DF /* mosekTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 19577E371541A02800B991DF /* Build configuration list for PBXNativeTarget "mosekTest" */;
+			buildPhases = (
+				19577E281541A01000B991DF /* Sources */,
+				19577E291541A01000B991DF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = mosekTest;
+			productName = mosekTest;
+			productReference = 19577E2B1541A01000B991DF /* mosekTest */;
+			productType = "com.apple.product-type.tool";
+		};
 		197B842B15070B530064753B /* kurmet */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 197B845F15070B530064753B /* Build configuration list for PBXNativeTarget "kurmet" */;
@@ -1113,6 +1163,7 @@
 				1940A49D1507C75B00CD4386 /* humanoid */,
 				192D669D151BAEEC00966570 /* catbot */,
 				19EE3465153C526D0029D664 /* windmill */,
+				19577E2A1541A01000B991DF /* mosekTest */,
 			);
 		};
 /* End PBXProject section */
@@ -1306,6 +1357,7 @@
 				1940A4CC1507C75B00CD4386 /* dmZScrewTxLink.cpp in Sources */,
 				1940A4CD1507C75B00CD4386 /* gldraw.cpp in Sources */,
 				1940A4CE1507C75B00CD4386 /* svd_linpack.cpp in Sources */,
+				199A31F5156FF587008E1165 /* TaskSpaceController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1360,6 +1412,15 @@
 				195224E914D35AF20042EA6D /* gldraw.cpp in Sources */,
 				195224EA14D35AF20042EA6D /* svd_linpack.cpp in Sources */,
 				1952237414D350540042EA6D /* doublePendulum.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		19577E281541A01000B991DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19EE130F1545F46E00164D03 /* mosek.h in Sources */,
+				19EE12EF1545EE7200164D03 /* qo1.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1800,6 +1861,38 @@
 			};
 			name = Release;
 		};
+		19577E2D1541A01000B991DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = mosekTest;
+			};
+			name = Debug;
+		};
+		19577E2E1541A01000B991DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = mosekTest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		197B846015070B530064753B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1989,6 +2082,15 @@
 			buildConfigurations = (
 				1952236E14D34FF20042EA6D /* Debug */,
 				1952236F14D34FF20042EA6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		19577E371541A02800B991DF /* Build configuration list for PBXNativeTarget "mosekTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19577E2D1541A01000B991DF /* Debug */,
+				19577E2E1541A01000B991DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

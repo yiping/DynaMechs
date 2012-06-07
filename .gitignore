@@ -3,3 +3,5 @@ src/testdm/crank
 src/testdm/carts
 src/kurmet/sim_data.txt
 src/mosek/6
+.DS_Store
+*/.DS_Store

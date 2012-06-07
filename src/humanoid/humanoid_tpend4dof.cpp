@@ -67,12 +67,10 @@ int render_rate;
 int render_count = 0;
 int timer_count = 0;
 
-void HumanoidControl();
-void initControl();
-
 
 //----------------------------------------------------------------------------
-void myinit (void) {
+void myinit (void)
+{
    GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
    GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -130,7 +128,8 @@ void myinit (void) {
 //----------------------------------------------------------------------------
 
 
-void display (void) {
+void display (void)
+{
    glClearColor (0.49, 0.62, 0.75,1.0); /* background colour */ //lyp
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -229,7 +228,8 @@ void display (void) {
 // Parameters:
 //    Returns:
 //----------------------------------------------------------------------------
-void myReshape(int w, int h) {
+void myReshape(int w, int h)
+{
    glViewport (0, 0, w, h);
    mouse->win_size_x = w;
    mouse->win_size_y = h;
@@ -245,7 +245,8 @@ void myReshape(int w, int h) {
 // Parameters:
 //    Returns:
 //----------------------------------------------------------------------------
-void processKeyboard(unsigned char key, int, int) {
+void processKeyboard(unsigned char key, int, int)
+{
    switch (key)
    {
       case 27:
@@ -265,7 +266,8 @@ void processKeyboard(unsigned char key, int, int) {
 // Parameters:
 //    Returns:
 //----------------------------------------------------------------------------
-void processSpecialKeys(int key, int, int) {
+void processSpecialKeys(int key, int, int)
+{
    switch (key)
    {
       case GLUT_KEY_LEFT:
@@ -284,9 +286,9 @@ void processSpecialKeys(int key, int, int) {
 }
 
 
-int patFlag = 0;
 //----------------------------------------------------------------------------
-void updateSim() {
+void updateSim()
+{
    if (!paused_flag)
    {
       for (int i=0; i<render_rate; i++)
@@ -295,12 +297,122 @@ void updateSim() {
     	sim_time += idt;
       }
    }
-	if (patFlag == 0) {
-		HumanoidControl();
-		patFlag=1;
-	}
+	
+	VectorXF q, qd;
+	q.resize(11);
+	qd.resize(11);
+	q << 0,0,0,1, 1,2,3, .2,-.4,.1,.3;
+	qd << 0,1,2,  -3,-5,4,  0, 2.3,.9,.1,-.2;
+	
+	G_robot->setState(q.data(),qd.data());
 	
 	
+	
+	IntVector SupportIndicies(1);
+	SupportIndicies[0] = 2;
+	
+	// Spatial Velocity Transform from body 2 to support frame
+	XformVector Xforms(1);
+	Xforms[0].resize(6,6);
+	Xforms[0] << 0,0,-1,0,0,0, 
+				 0,1, 0,0,0,0,
+				 1,0, 0,0,0,0,
+				 0,3, 0,0,0,-1,
+			     0,0,3,0,1,0,
+				 0,0,0,1,0,0;
+
+
+	TaskSpaceController tsc(G_robot);
+	tsc.SupportIndices =  SupportIndicies;
+	tsc.SupportXforms = Xforms;
+	
+	tsc.ObtainArticulationData();
+	
+	MatrixXF Jac;
+	// Calculate Task Jacobian
+	G_robot->calculateJacobian(2, Xforms[0], Jac);
+	
+	//tsc.TaskJacobian.resize(3,8);
+	tsc.TaskJacobian = Jac.block(3,0,3,10);
+	
+	// Compute Task Bias from RNEA Fw Kin
+	tsc.TaskBias.resize(6);
+	Vector6F SpatBias, ClassBias,SpatV;
+	
+	SpatBias = Xforms[0]*G_robot->m_link_list[2]->link_val2.a;
+	SpatV = Xforms[0]*G_robot->m_link_list[2]->link_val2.v;
+	
+	ClassicAcceleration(SpatBias,SpatV,ClassBias);
+	tsc.TaskBias = -ClassBias.segment(3,3);
+	
+	tsc.TaskBias(0) += 1;
+	tsc.TaskBias(1) +=-2;
+	tsc.TaskBias(2) +=6;
+	
+	
+	
+	
+	
+	tsc.InitializeProblem();
+	tsc.Optimize();
+	VectorXF tau = tsc.xx.segment(0,4);
+	VectorXF qdd = tsc.xx.segment(2+2,8+2);
+	VectorXF fs = tsc.xx.segment(10+4,6);
+	VectorXF lambda = tsc.xx.segment(16+4,4);
+	
+	cout << "tau = " << tau.transpose() << endl;
+	cout << "qdd = " << qdd.transpose() << endl;
+	cout << "fs = "  << fs.transpose()  << endl;
+	cout << "lambda = "  << lambda.transpose()  << endl;
+	
+	
+	VectorXF a = tsc.TaskJacobian * qdd;
+	cout << "a" << endl;
+	
+	VectorXF e = tsc.TaskJacobian * qdd - tsc.TaskBias;
+	cout << "e = " << e.transpose() << endl;
+	
+	MatrixXF H = G_robot->H;
+	VectorXF CandG = G_robot->CandG;
+	
+	MatrixXF S = MatrixXF::Zero(2+2,8+2);
+	S.block(0,6,2+2,2+2) = MatrixXF::Identity(2+2,2+2);
+	
+	VectorXF qdd2 = H.inverse()*(S.transpose() * tau + tsc.SupportJacobians[0].transpose()*fs- CandG);
+	cout << "qdd2 = " << qdd2.transpose() << endl;
+	
+	VectorXF qdd3 = H.inverse()*(S.transpose() * tau - CandG);
+	cout << "qdd3 = " << qdd3.transpose() << endl;
+	
+	VectorXF state = VectorXF::Zero(18+4);
+	state.segment(0,9+2) = q;
+	state.segment(9+2,9+2) = qd;
+	
+	VectorXF stateDot = VectorXF::Zero(18+4);
+	
+	// Form Joint Input and simulate
+	VectorXF jointInput = VectorXF::Zero(9+2);
+	jointInput.segment(7,2+2) = tau;
+	G_robot->setJointInput(jointInput.data());
+	
+
+	// Process qdds
+	G_robot->dynamics(state.data(),stateDot.data());
+
+	
+	VectorXF qdds = VectorXF::Zero(8+2);
+	qdds.segment(0,6) = stateDot.segment(9+2,6);
+	
+	//cout << "w x v " << cr3(qd.segment(0,3))*qd.segment(3,3) << endl;
+	
+	qdds.segment(3,3) -= cr3(qd.segment(0,3))*qd.segment(3,3);
+	qdds.segment(6,2+2) = stateDot.segment(16+2,2+2);
+	qdds(5)+=9.81;
+	
+	cout << "qdds = " << qdds.transpose()  << endl;
+	
+	
+	exit(-1);
     camera->update(mouse);
     camera->applyView();
 
@@ -344,13 +456,14 @@ void updateSim() {
 // Parameters:
 //    Returns:
 //----------------------------------------------------------------------------
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
    int i, j;
 
    glutInit(&argc, argv);
 
    //
-   char *filename = "humanoid.cfg";
+   char *filename = "pendulum.cfg";
    if (argc > 1)
    {
       filename = argv[1];
@@ -427,12 +540,6 @@ int main(int argc, char** argv) {
 
    cout<<"kurmet has "<<G_robot->getNumLinks()<<" links."<<endl;
    cout<<"link 0 has "<<G_robot->getLink(0)->getNumDOFs()<<" DOFs."<<endl;
-	initControl();
-	
-	for (int i=0; i<G_robot->getNumLinks(); i++) {
-		cout << "link " <<i<<" is named " << G_robot->getLink(i)->getName() << endl;
-	}
-	
    cout << "               p - toggles dynamic simulation" << endl;
 
    glutMainLoop();

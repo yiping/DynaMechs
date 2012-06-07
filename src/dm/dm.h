@@ -100,6 +100,11 @@ a[0]+=b[0]; \
 a[1]+=b[1]; \
 a[2]+=b[2];
 
+#define APPLY_CARTESIAN_TENSOR(A,b,Ab) \
+Ab[0] = A[0][0]*b[0]+A[0][1]*b[1]+A[0][2]*b[2]; \
+Ab[1] = A[1][0]*b[0]+A[1][1]*b[1]+A[1][2]*b[2]; \
+Ab[2] = A[2][0]*b[0]+A[2][1]*b[1]+A[2][2]*b[2];
+
 using namespace std;
 using namespace Eigen;
 
@@ -435,7 +440,7 @@ inline Matrix6F crf(Vector6F &v)
 \return the 3x3 matrix (Eigen matrix)
 \sa crm()
 */
-inline Matrix3F cr3(Vector3F &v)
+inline Matrix3F cr3(const Vector3F &v)
 {
 	Matrix3F vcross;  
 	vcross <<   0,    -v(2),  v(1),    
@@ -443,6 +448,22 @@ inline Matrix3F cr3(Vector3F &v)
 		-v(1),     v(0),    0;
 	return vcross;
 }
+
+/*!
+ cr3  cross-product extractor for 3x3 Matrix.
+ */
+//! DM 5.0 function 
+/**
+ \param m  3x3 cross-product matrix.
+ \return the 3d vector that the product represents 
+ \sa crm()
+ */
+inline void crossExtract(Matrix3F &m, Vector3F &v)
+{
+	v << m(2,1) , m(0,2) , m(1,0);
+	//return v;
+}
+
 
 //! DM v5.0 typedef: a struct containing intermediate variables used for recursive NE algorithm calculation.
 struct dmRNEAStruct
@@ -456,6 +477,16 @@ struct dmRNEAStruct
    CartesianVector  p_ICS;  // link position w.r.t ICS
    RotationMatrix  R_ICS;  // link orientation w.r.t. ICS
 };
+
+inline void ClassicAcceleration(const Vector6F &aSpat, const Vector6F &vSpat, Vector6F &aClass) {
+	aClass(0) = aSpat(0);
+	aClass(1) = aSpat(1);
+	aClass(2) = aSpat(2);
+	
+	// aclass = w \cross rdot + a_spat
+	aClass.segment(3,3) = cr3(vSpat.segment(0,3))*vSpat.segment(3,3);
+	aClass.segment(3,3) += aSpat.segment(3,3);
+}
 
 //! DM 5.0 function
 inline void CrbAdd(CrbInertia & a, const CrbInertia & b) {

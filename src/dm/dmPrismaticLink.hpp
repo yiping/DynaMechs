@@ -60,7 +60,7 @@ public:
 
    ///
    void scongtxToInboardIrefl(const SpatialTensor N, SpatialTensor I) const;
-   Matrix6XF jcalc();
+   void jcalc(Matrix6XF &);
 // Rendering functions:
    ///
    void draw() const;

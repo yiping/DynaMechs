@@ -1,0 +1,73 @@
+# DynaMechs V 3.0 ascii
+# pendulum parameter file
+
+Articulation {
+    Name 		""
+    Graphics_Model	"obj_plate_z.xan"
+    Position	 	 10.0   10.0   10.7
+    Orientation_Quat 	 0.0 0 0.0 1
+
+    Branch {
+	MobileBaseLink {
+	    Name "link1"
+	    Graphics_Model	"obj_cylinder_x.xan"
+
+	    Mass			 0.5
+	    Inertia			 0.1   0.0  0.0
+					 0.0   1.7  0.0
+					 0.0   0.0  1.7
+	    Center_of_Gravity		 1.5 0.0 0.0
+
+	    Number_of_Contact_Points	 0
+
+	    Position 0 .6 0
+		Orientation_Quat  0 0 0 1
+		Velocity 0 0 0 0 0 0
+	}
+
+	SphericalLink {
+	    Name "link2"
+	    Graphics_Model	"obj_cylinder_x.xan"
+
+	    Mass			 0.35
+	    Inertia			 0.1   0.0  0.0
+					 0.0   1.7  0.0
+					 0.0   0.0  1.7
+	    Center_of_Gravity		 1.5 0.0 0.0
+
+	    Number_of_Contact_Points	 0
+
+	    Position_From_Inboard_Link 0 0 -.09
+		Initial_Joint_Angles	0 0 0
+		Initial_Angular_Velocity	0 0 0
+		Axes_Limits			0	0  0
+		Joint_Limit_Spring_Constant	0
+		Joint_Limit_Damper_Constant	0
+		Joint_Friction		0
+	}
+	
+	RevoluteLink {
+	    Name "link3"
+	    Graphics_Model	"obj_mace.xan"
+
+	    Mass			 0.25
+	    Inertia			 0.1   0.0  0.0
+					 0.0   1.7  0.0
+					 0.0   0.0  1.7
+	    Center_of_Gravity		 1.5 0.0 0.0
+
+	    Number_of_Contact_Points	 1
+	    Contact_Locations		 3.0  0.0  1.0
+
+	    MDH_Parameters		 3.0 0.0 0.0 0.0
+	    Initial_Joint_Velocity	 0.0
+	    Joint_Limits		-1000.172 1000.172 
+	    Joint_Limit_Spring_Constant  50.0
+	    Joint_Limit_Damper_Constant  5.0
+
+	    Actuator_Type		 0
+	    Joint_Friction		 0.0
+	}
+
+    }
+}

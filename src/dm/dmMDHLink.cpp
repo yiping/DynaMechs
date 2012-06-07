@@ -1024,15 +1024,21 @@ void dmMDHLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr,
 
 	Float q[1], qd[1];
 	getState(q,qd);
-	Vector6F vJ = jcalc() * qd[0];
-	Matrix6F X = get_X_FromParent_Motion();
-	link_val2_curr.v = X * link_val2_inboard.v + vJ;
-	link_val2_curr.a = X * link_val2_inboard.a 
-			 + jcalc() * link_val2_curr.qdd
-			 + crm( link_val2_curr.v ) * vJ;	
+	Matrix6XF Phi;
+	jcalc(Phi);
+	Vector6F vJ = Phi * qd[0];
+	
+	// v_i = v_pi + Phi qdot
+	stxFromInboard(link_val2_inboard.v.data(), link_val2_curr.v.data());
+	link_val2_curr.v += vJ;			   
+	
+	// a_i = a_pi + phi qddot + v x phi qdot
+	stxFromInboard(link_val2_inboard.a.data(), link_val2_curr.a.data());
+	link_val2_curr.a += Phi * link_val2_curr.qdd + crm( link_val2_curr.v ) * vJ;
+	
+	
 	Matrix6F I = getSpatialInertiaMatrix();
 	link_val2_curr.f = I *  link_val2_curr.a  + crf(link_val2_curr.v) * I * link_val2_curr.v;
-
 
 	if (ExtForceFlag != false)
 	{
@@ -1055,8 +1061,8 @@ void dmMDHLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr,
 void dmMDHLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
                                        CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
                                        RotationMatrix  R_ref_ICS,  
-                                          Vector6F a_ini, 
-                                          Vector6F v_ini,
+                                          const Vector6F& a_ini, 
+                                          const Vector6F& v_ini,
                                        bool ExtForceFlag)
 {
 	// compute R_ICS and p_ICS)

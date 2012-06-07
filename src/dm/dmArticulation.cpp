@@ -693,6 +693,7 @@ void dmArticulation::ABForwardAccelerations(SpatialVector a_ref,
 //---------------------------------------------------------
 void dmArticulation::computeH()
 {
+	//cout << "Inside Compute H " << endl;
 	CrbInertia Itmp;
 	unsigned int jjoint_index_offset = 0;
 	
@@ -711,6 +712,7 @@ void dmArticulation::computeH()
 	//cout << "H is square of size " << N << endl;
 	
 	H.resize(N,N);
+	H = MatrixXF::Zero(N,N);
 	
 	//cout << "H = [" << endl << H << "]" << endl;
 	
@@ -720,7 +722,7 @@ void dmArticulation::computeH()
 		//cout << m_link_list.size() << endl;
 		LinkInfoStruct * bodyj = m_link_list[j];
 		
-		Matrix6XF phij = bodyj->link->jcalc();
+		Matrix6XF phij; bodyj->link->jcalc(phij);
 		MatrixX6F phiiT = phij.transpose();
 		
 		if(bodyj->dof>0) {
@@ -728,21 +730,23 @@ void dmArticulation::computeH()
 			CrbToMat(bodyj->I_C, I_C);
 			Matrix6XF F = I_C * phij, Ftmp;
 			
-			
 			H.DOFBLOCK(bodyj,bodyj) = phiiT * F;
 			
 			LinkInfoStruct * bodyi = bodyj;
 			while (bodyi->parent) {
 				bodyi->link->stxToInboardMat(F,Ftmp);
-				F = Ftmp;
+				F.swap(Ftmp);
+				
 				bodyi = bodyi->parent;
-				Matrix6XF phii = bodyi->link->jcalc();
+				Matrix6XF phii;
+				bodyi->link->jcalc(phii);
 				
 				//cout << "Body (i,j) " << bodyi->index << "," << bodyj->index << " size " << H.DOFBLOCK(bodyi,bodyj).rows() << " x " << H.DOFBLOCK(bodyi,bodyj).cols() << endl;
 				//cout << "F = [" << F << "]" << endl;
 				//cout << "Phii Cols " << phii.cols() << " Phij Cols " << phij.cols() << endl;
 				
 				if (bodyi->dof > 0) {
+					
 					H.DOFBLOCK(bodyi,bodyj) =  phii.transpose()* F;
 					H.DOFBLOCK(bodyj,bodyi) = H.DOFBLOCK(bodyi,bodyj).transpose();
 				}				
@@ -754,6 +758,7 @@ void dmArticulation::computeH()
 			CrbAdd(bodyj->parent->I_C,Itmp);
 		}
 	}
+	//cout << "Total Dofs " << getNumDOFs() << endl;
 	return;// H;
 	//cout << " H = [" << endl;
 	//cout << H  << "]"<< endl;
@@ -805,6 +810,51 @@ Vector3F dmArticulation::computeCoM_ICS()
 }
 
 //------------------------------------------------------------
+void dmArticulation::calculateJacobian(unsigned int target_idx, const MatrixX6F& X_target, MatrixXF& Jacobian)
+{
+	
+	if ((target_idx >= m_link_list.size() ) || (target_idx < 0) ) {
+		cerr << "dmArticulation::calculateJacobian() error: target link index out of range"<< endl;
+		exit (1);
+	}
+
+	unsigned int jjoint_index_offset = 0;
+	
+	for (int j=0; j<m_link_list.size(); j++) {
+		LinkInfoStruct * curr = m_link_list[j];
+		curr->index_ext = jjoint_index_offset;
+		curr->dof = curr->link->getNumDOFs();
+		if (curr->dof == 7) {
+			curr->dof =6;
+		}
+		jjoint_index_offset += curr->dof;
+	}
+	
+	int N = jjoint_index_offset;
+	Jacobian.resize(X_target.rows(),N);
+	Jacobian = MatrixXF::Zero(X_target.rows(),N);
+	
+	Matrix6XF XT = X_target.transpose(), tmp;
+	unsigned int idx = target_idx;
+	LinkInfoStruct * linki  = m_link_list[idx];
+	
+	Matrix6XF phii;
+	while (linki) // while not at the root level)
+	{
+		if (linki->dof > 0) {
+			linki->link->jcalc(phii); 
+			Jacobian.block(0,linki->index_ext,6,linki->dof) = (phii.transpose()*XT).transpose();
+		}
+		
+		if(linki->parent) {
+			linki->link->stxToInboardMat(XT,tmp);
+			XT.swap(tmp);
+		}
+			
+		linki = linki->parent;
+	}
+}
+
 Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & X_target, unsigned int ini_idx)
 {
 	//trace back all the way to the root. 
@@ -813,11 +863,11 @@ Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & 
 	if ((target_idx < m_link_list.size() ) && (target_idx >= 0) )
    	{
 		unsigned int idx = target_idx;
-                indices.push_back(target_idx);
-      		while (m_link_list[idx]->parent) // if the parent is not null (i.e., at the root level)
-         	{
+		indices.push_back(target_idx);
+		while (m_link_list[idx]->parent) // if the parent is not null (i.e., at the root level)
+		{
 			idx = m_link_list[idx]->parent->index;
-                        indices.push_back(idx);
+			indices.push_back(idx);
 		}
    	}
 	else
@@ -825,7 +875,7 @@ Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & 
 		cerr << "dmArticulation::calculateJacobian() error: target link index out of range"<< endl;
 		exit (1);
 	}
-
+	
 	// 
 	if (ini_idx != 0)
 	{
@@ -849,7 +899,7 @@ Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & 
 			indices.resize(x+1);
 		}
 	}
-
+	
 	// outward iteration
 	vector<int>::iterator it;
 	Matrix6XF Jacobian;  // 6 x 0
@@ -873,21 +923,21 @@ Matrix6XF dmArticulation::calculateJacobian(unsigned int target_idx, Matrix6F & 
 		}
 		else
 		{
-
+			
 			X = link->get_X_FromParent_Motion(); // {}^i X_{i-1}, comes with Link i
-
+			
 			Jacobian = X*Jacobian; // this is ok 		
 			Jacobian.conservativeResize(6, c + ndof);
 			if (ndof > 0)
 			{
 				Jacobian.block(0,c, 6, ndof) = S;
 			}
-
+			
 		}
 	}
-
+	
 	return X_target* Jacobian;
-
+	
 }
 
 

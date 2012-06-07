@@ -5,7 +5,7 @@ Articulation {
 	Name		"Articulation"
 	Graphics_Model	""
 
-	Position		0	0	0
+	Position		3	3	3
 	# Orientation_Quat	0.5	0.5	0.5	0.5
     Orientation_Quat	0 0 0 1
 	
@@ -21,11 +21,9 @@ Articulation {
 		Center_of_Gravity	0.038	0.0008	0.0849	
 		Number_of_Contact_Points	0
 
-		Position 2 2 .52
+		Position 0 .6 0
 		#Orientation_Quat  .707 .707 0 0
-		#Orientation_Quat  0 0 0 1
-		Orientation_Quat  -.707 0 -.707 0
-		#Orientation_Quat  .707 0 0 .707
+		Orientation_Quat  0 0 0 1
 		Velocity 0 0 0 0 0 0
 	}
 	# End Mobile Base
@@ -75,7 +73,7 @@ Articulation {
 					Contact_Locations	 0.2500         0         0
 	
 	
-				MDH_Parameters		0.25	0	0	0	
+				MDH_Parameters		0.25	0	0	0.0	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -120,7 +118,7 @@ Articulation {
 										 0.01         -.05         -.05
 	
 	
-				MDH_Parameters		0	1.5708	0	0
+				MDH_Parameters		0	1.5708	0	0.0
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -168,7 +166,7 @@ Articulation {
 				Center_of_Gravity	0.0964	-0.0003	-0.0002	
 				Number_of_Contact_Points	0
 	
-				MDH_Parameters		0.25	0	0	0
+				MDH_Parameters		0.25	0	0	0	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -188,7 +186,7 @@ Articulation {
 				Center_of_Gravity	0 	0	0	
 				Number_of_Contact_Points	0	
 	
-				MDH_Parameters		0.25	0	0	0
+				MDH_Parameters		0.25	0	0	0	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -212,7 +210,7 @@ Articulation {
 										 0.01         -.05         .1
 										 0.01         -.05         -.05
 	
-				MDH_Parameters		0	1.5708	0	0
+				MDH_Parameters		0	1.5708	0	0.0
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -223,7 +221,7 @@ Articulation {
 			
 			# End Left Shank
 		}
-		# End Left leg
+		# End Left leg	
 	}
 	#End Lower Body
 	
@@ -246,9 +244,7 @@ Articulation {
 				Contact_Locations	0.25	0	0	
 	
 				Position_From_Inboard_Link .4 0 0
-				#Initial_Joint_Angles	0 .5 2
-				#Initial_Joint_Angles	2 .8 2.8
-				Initial_Joint_Angles	0 2.5 -1.57
+				Initial_Joint_Angles	0 .5 2
 				Initial_Angular_Velocity	0 0 0
 				Axes_Limits			0	0  0
 				Joint_Limit_Spring_Constant	0
@@ -269,7 +265,7 @@ Articulation {
 					Contact_Locations	 0.2500         0         0
 	
 	
-				MDH_Parameters		0.25	0	0	0.5	
+				MDH_Parameters		0.25	0	0	-0.5	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -297,7 +293,7 @@ Articulation {
 				Contact_Locations	0.25	0	0	
 	
 				Position_From_Inboard_Link .4 0 .18
-					Initial_Joint_Angles	0 -2.4 -1.57
+					Initial_Joint_Angles	0 -.5 2
 					Initial_Angular_Velocity	0 0 0
 					Axes_Limits			0	0  0
 					Joint_Limit_Spring_Constant	0
@@ -317,7 +313,7 @@ Articulation {
 				Number_of_Contact_Points	1
 				Contact_Locations	 0.2500         0         0
 	
-				MDH_Parameters		0.25	0	0	.5	
+				MDH_Parameters		0.25	0	0	-.5	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0

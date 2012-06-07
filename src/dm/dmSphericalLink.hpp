@@ -217,6 +217,24 @@ public:
                                SpatialVector a_curr,
                                Float qd[],
                                Float qdd[]);
+	
+	
+	//! DM v5.0 Function, 
+	void RNEAOutwardFKID(dmRNEAStruct &link_val2_curr, 
+						 dmRNEAStruct &link_val2_inboard,
+						 bool ExtForceFlag = false); // should make the second param const
+	
+	//! DM v5.0 Function,  for the first link. 
+	void RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
+							  CartesianVector p_ref_ICS,  
+							  RotationMatrix  R_ref_ICS, 
+							  const Vector6F& a_ini,
+							  const Vector6F& v_ini = Vector6F::Zero(), 
+							  bool ExtForceFlag = false
+							  );
+	
+	void jcalc(Matrix6XF &);
+	
 
 // Rendering functions:
    ///

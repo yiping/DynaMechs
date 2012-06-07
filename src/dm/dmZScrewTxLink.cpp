@@ -53,6 +53,11 @@ dmZScrewTxLink::dmZScrewTxLink(Float d, Float theta) :
 // for hip equations
    m_zeta[0] = m_zeta[1] = m_zeta[2] = 0.0;  // not used
    m_zeta[3] = m_zeta[4] = m_zeta[5] = 0.0;  // used
+	
+// for correctness dm 5.0 Bug Fix from Previous Versions
+	m_p[0]=0;
+	m_p[1]=0;
+	m_p[2]=m_dMDH;
 }
 
 //----------------------------------------------------------------------------
@@ -721,8 +726,8 @@ void dmZScrewTxLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr,
 void dmZScrewTxLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
                                        CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
                                        RotationMatrix  R_ref_ICS,
-                                          Vector6F a_ini,
-                                          Vector6F v_ini,
+                                          const Vector6F& a_ini,
+                                          const Vector6F& v_ini,
                                        bool ExtForceFlag)
 {
 	// compute R_ICS and p_ICS)

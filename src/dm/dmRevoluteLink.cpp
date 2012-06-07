@@ -272,10 +272,7 @@ void dmRevoluteLink::scongtxToInboardIrefl(const SpatialTensor N,
 
 
 //---------------------------------------------------
-Matrix6XF dmRevoluteLink::jcalc()
-{
-    
-    Matrix6XF  S(6,1);
+void dmRevoluteLink::jcalc(Matrix6XF& S) {
+	S.resize(6,1);
     S << 0, 0, 1, 0, 0, 0;
-    return S;
 }

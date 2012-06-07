@@ -8,39 +8,18 @@
  */
 
 #include "TaskSpaceController.h"
+#include "dmContactModel.hpp"
+#include "dmRigidBody.hpp"
 #include "mosek.h"
 
-//#define NUMCON 1   /* Number of constraints.             */
-//#define NUMVAR 3   /* Number of variables.               */
-//#define NUMANZ 3   /* Number of non-zeros in A.           */
-//#define NUMQNZ 4   /* Number of non-zeros in Q.           */
+#define MAXSUBTASKS 2
 
-#define NJ  30
-#define NF  4
-#define NS  2
-#define NP  4
-#define MU .9
-
-#define MAXSUBTASKS 20
-
-#define MAXNUMCON (NJ+6 + 2*NS + MAXSUBTASKS)              /* Number of constraints.             */
-#define NUMVAR (NJ + NJ+6+2*NS+NS*NP*NF)  /* Number of variables.               */
+#define MAXNUMCON (NJ+6 + 6*NS + MAXSUBTASKS)              /* Number of constraints.             */
+#define NUMVAR (NJ + NJ+6+6*NS+NS*NP*NF)  /* Number of variables.               */
 #define MAXNUMANZ (4*NJ*NJ)					  /* Number of non-zeros in A.           */
 #define MAXNUMQNZ ((NJ+6)*(NJ+6))            /* Max Number of non-zeros in Q.           */
 
-const int tauStart    = 0;
-const int tauEnd      = NJ-1;
-const int qddStart    = NJ;
-const int qddEnd      = 2*NJ+5;
-const int fStart      = 2*NJ+6;
-const int fEnd        = 2*NJ+5 + 6*NS;
-const int lambdaStart = 2*NJ+6 + 6*NS;
-const int lambdaEnd   = 2*NJ+5 + 6*NS + NS*NP*NF;
 
-const int dynConstrStart = 0;
-const int dynConstrEnd   = NJ+5;
-const int fConstrStart   = NJ+6;
-const int fConstrEnd     = NJ+5+6*NS;
 
 static void MSKAPI printstr(void *handle,
                             char str[])
@@ -49,25 +28,27 @@ static void MSKAPI printstr(void *handle,
 } /* printstr */
 
 
-TaskSpaceController::TaskSpaceController(dmArticulation * art, IntVector & suppIndices, XformVector & suppXforms) {
-	
+TaskSpaceController::TaskSpaceController(dmArticulation * art) {
 	artic = art;
-	SupportIndices = suppIndices;
-	SupportXforms  = suppXforms;
 	
 	// Create Linearized Friction Cone Basis
 	FrictionBasis = MatrixXF::Zero(6,NF);
 	for (int j=0; j<NF; j++) {
+		//printf("Fricion cone side %d\n",j);
 		double angle = (j * 2 * M_PI) / NF;
 		FrictionBasis(3,j) = MU*cos(angle);
 		FrictionBasis(4,j) = MU*sin(angle);
 		FrictionBasis(5,j) = 1;
 	}
+	//printf("Here\n");
+	
+	SupportJacobians.resize(NS);
 	
 	// Initialize Support Jacobians
 	for (int i=0; i<NS; i++) {
-		SupportJacobians[i] = MatrixXF::Zero(6,NJ+6);
+		SupportJacobians[i] = MatrixXF::Zero(6,NP+6);;
 	}
+	
 	
 	/* Create the mosek environment. */
 	r = MSK_makeenv(&env,NULL,NULL,NULL,NULL);
@@ -121,6 +102,43 @@ TaskSpaceController::TaskSpaceController(dmArticulation * art, IntVector & suppI
 		}
 	}
 	
+	cout << "LambdaEnd " << lambdaEnd << " NUMVAR " << NUMVAR << endl;
+	
+	int k=0;
+	for (int i=tauStart; i<tauEnd; i++) {
+		stringstream ss;
+		ss << "t" << k++;
+		MSK_putname(task, MSK_PI_VAR, i, (char *) ss.str().c_str());
+	}
+	
+	k=0;
+	for (int i=qddStart; i<qddEnd; i++) {
+		stringstream ss;
+		ss << "q" << k++;
+		MSK_putname(task, MSK_PI_VAR, i, (char *) ss.str().c_str());
+	}
+	k=0;
+	for (int i=lambdaStart; i<lambdaEnd; i++) {
+		stringstream ss;
+		ss << "l" << k++;
+		MSK_putname(task, MSK_PI_VAR, i, (char*) ss.str().c_str());
+	}
+	
+
+	k=0;
+	for (int i=dynConstrStart; i<dynConstrEnd; i++) {
+		stringstream ss;
+		ss << "dyn" << k++;
+		MSK_putname(task, MSK_PI_CON, i, (char*) ss.str().c_str());
+	}
+	
+	k=0;
+	for (int i=fConstrStart; i<fConstrEnd; i++) {
+		stringstream ss;
+		ss << "f" << k++;
+		MSK_putname(task, MSK_PI_CON, i, (char*) ss.str().c_str());
+	}
+	
 }
 
 //----------------------------------------------------------------------------
@@ -133,24 +151,85 @@ TaskSpaceController::~TaskSpaceController() {
 void TaskSpaceController::ObtainArticulationData() {
 	artic->computeH();
 	artic->computeCandG();
-	
+		
 	for (int i=0; i<NS; i++) {
-		SupportJacobians[i] = artic->calculateJacobian(SupportIndices[i], SupportXforms[i]);
+		artic->calculateJacobian(SupportIndices[i], SupportXforms[i],SupportJacobians[i]);
 	}
-	
-	
-	
-	
 }
 
 //----------------------------------------------------------------------------
 void TaskSpaceController::InitializeProblem()
 {
-	ObtainArticulationData();
 	UpdateVariableBounds();
 	UpdateConstraintMatrix();
 	UpdateConstraintBounds();
 	UpdateObjective();
+	
+	//cout << "NUMVAR = " << NUMVAR << endl;
+	//cout << "tauStart = " << tauStart << endl;
+	//cout << "qddStart = " << qddStart << endl;
+	//cout << "fStart   = " << fStart << endl;
+	//cout << "lambdaStart = " << lambdaStart << endl;
+	cout << "A Sparsity " << endl;
+	
+	//cout << "H " << artic->H << endl;
+	/*MatrixXF A;
+	A.resize(numCon,NUMVAR);
+	
+	for (int i=0; i<numCon; i++) {
+		if (i==fConstrStart) {
+			cout << endl;
+		}
+		
+		
+		for (int j=0; j<NUMVAR; j++) {
+			if (j==qddStart || j==fStart || j==lambdaStart) {
+				cout << "|";
+			}
+			double aij;
+			MSK_getaij (task,i,j,&aij);
+			A(i,j) = aij;
+			if (abs(aij) > 10e-10) {
+				cout << "X";
+			}
+			else {
+				cout <<" ";
+			}
+		}
+		cout << endl;
+	}*/
+	//exit(-1);
+	//Slice to debug the friction cone basis
+	//cout << "Aslice " << endl;
+	//cout << A.block(fConstrStart,lambdaStart,6,NF) << endl;
+	
+}
+
+void TaskSpaceController::UpdateTauObjective() {
+	MSKidxt       qsubi[NJ];
+	MSKidxt       qsubj[NJ];
+	double		  qval[NJ];
+	
+	// Zero out the linear and constant part of the objective
+	if ( r ==MSK_RES_OK ) {
+		r = MSK_putcfix(task,0);
+	}
+	
+	for(int j=0; j<NUMVAR && r == MSK_RES_OK; ++j) {
+		// Set the linear term c_j in the objective.
+		if(r == MSK_RES_OK) {
+			r = MSK_putcj(task,j,0);
+		}
+	}
+	
+	for (int i=0; i<NJ; i++) {
+		qsubi[i]=i+tauStart;
+		qsubj[i]=i+tauStart;
+		qval[i] =1;
+	}
+	if(r == MSK_RES_OK) {
+		r=MSK_putqobj(task, NJ, qsubi, qsubj, qval);
+	}
 }
 
 void TaskSpaceController::UpdateObjective() {
@@ -164,7 +243,9 @@ void TaskSpaceController::UpdateObjective() {
 	MatrixXd JtT = TaskJacobian.transpose();
 	
 	MatrixXd Q = JtT*TaskJacobian;
-	VectorXd c = -JtT*TaskBias;
+	VectorXd c = VectorXF::Zero(NUMVAR);
+	c.segment(qddStart,NJ+6) = -JtT*TaskBias;
+	
 	
 	// Add a constant Term to the Objective
 	if ( r ==MSK_RES_OK ) {
@@ -173,13 +254,16 @@ void TaskSpaceController::UpdateObjective() {
 	
 	for(j=0; j<NUMVAR && r == MSK_RES_OK; ++j) {
 		// Set the linear term c_j in the objective.
-		if(r == MSK_RES_OK)
+		if(r == MSK_RES_OK) {
 			r = MSK_putcj(task,j,c[j]);
+		}
 	}
 	
 	if ( r==MSK_RES_OK )
 	{
-		MSKidxt k;
+		//cout << "qddStart = " << qddStart;
+		
+		MSKidxt k=0;
 		for (i = 0; i<(NJ+6); i++) {
 			for (j = 0; j<=i; j++) {
 				if (Q(i,j) != 0) {
@@ -192,7 +276,13 @@ void TaskSpaceController::UpdateObjective() {
 			printf("PROBLEM WITH Q MATRIX, MORE NONZERO ELEMENTS THAN EXPECTED!\n");
 			exit(-1);
 		}
-		r = MSK_putqobj(task,k,qsubi,qsubj,qval);
+		//for (int cnt =0; cnt < k; cnt++) {
+		//	cout << "Q(" << qsubi[cnt] << "," << qsubj[cnt] << ") = " << qval[cnt] <<endl;
+		//}
+		
+		if(r == MSK_RES_OK) {
+			r = MSK_putqobj(task,k,qsubi,qsubj,qval);
+		}
 	}
 }
 
@@ -240,6 +330,7 @@ void TaskSpaceController::UpdateConstraintBounds() {
 	MSKboundkeye  bkc[MAXNUMCON];
 	double        blc[MAXNUMCON], buc[MAXNUMCON]; 
 	
+	cout << "Loading Dynamics Constraints Bounds " << endl;
 	//Bounds on Dynamics Constraints
 	for (i = dynConstrStart; i<=dynConstrEnd; i++) {
 		bkc[i] = MSK_BK_FX;
@@ -247,54 +338,186 @@ void TaskSpaceController::UpdateConstraintBounds() {
 		buc[i] = -artic->CandG(i);
 	}
 	
+	cout << "Loading Force Constraints Bounds " << endl;
 	//Bounds on Force
 	for (i = fConstrStart; i<=fConstrEnd; i++) {
 		bkc[i] = MSK_BK_FX;
-		blc[i] = -artic->CandG(i);
-		buc[i] = -artic->CandG(i);
+		blc[i] = 0;
+		buc[i] = 0;
 	}
 	
+	cout << "Loading Hpt Constraints Bounds " << endl;
+	int k = 0;
+	// Bounds on Constraints
+	for (i=hptConstrStart; i<hptConstrStart+ConstraintBias.rows(); i++) {
+		bkc[i]=MSK_BK_FX;
+		blc[i]=ConstraintBias(k);
+		buc[i]=ConstraintBias(k++);
+	}
 	
-	
+	cout << "Putting Bounds " << endl;
 	for(i=0; i<numCon && r==MSK_RES_OK; ++i) {
 		r = MSK_putbound(task, MSK_ACC_CON, i, bkc[i], blc[i], buc[i]);
 	}
-	
 }
 
 void TaskSpaceController::UpdateConstraintMatrix() {
 	
+	MSKidxt       asub[NUMVAR],asubtmp[NUMVAR];
+	double		  aval[NUMVAR];
+	cout << setprecision(2);
+	//cout << "H= " << endl << artic->H << endl;
+	
 	// Load rows for dynamics Constraints
-	
-	// Load rows for Force Constraints
-	
-	// Load rows for Additional Constraints
-	
-	
-	//
-	/*
-	
-	
-	for(j=0; j<NUMVAR && r == MSK_RES_OK; ++j) {
+	for(MSKidxt i=dynConstrStart; i<=dynConstrEnd && r == MSK_RES_OK; ++i) {
+		MSKidxt k=0;
+		for (MSKidxt j=0; j<NJ+6; j++) {
+			if (artic->H(i,j) != 0) {
+				asub[k]=j+qddStart;
+				aval[k]=artic->H(i,j);
+				k++;
+			}
+		}
+		if (i>=6) {
+			asub[k] = (i-6)+tauStart;
+			aval[k] = -1;
+			k++;
+		}
 		
-		// Input column j of A   
-		if(r == MSK_RES_OK)
-			r = MSK_putavec(task,
-							MSK_ACC_VAR,       // Input columns of A.
-							j,                 // Variable (column) index.
-							aptre[j]-aptrb[j], // Number of non-zeros in column j.
-							asub+aptrb[j],     // Pointer to row indexes of column j.
-							aval+aptrb[j]);    // Pointer to Values of column j.
+		for (MSKidxt js=0; js<NS; js++) {
+			MSKidxt fsub = 6*js + fStart;
+			for (MSKidxt j=0; j<6; j++) {
+				if (SupportJacobians[js](j,i) != 0) {
+					asub[k] = fsub+j;
+					aval[k] = -SupportJacobians[js](j,i);
+					k++;
+				}
+			}
+		}
+		
+		//cout << "Loading Constraint " << i << " k=" << endl;
+		if(r == MSK_RES_OK) {
+			r = MSK_putavec(task, MSK_ACC_CON,i,k,asub,aval);
+		}
+		//cout << "d" << i << " = ";
+		//for (int j=0; j<k; j++) {
+		//	cout << aval[j] << " ";
+		//}
+		//cout << endl;
 	}
 	
-	 */
+	
+	// Load rows for Force Constraints
+	MSKidxt fSub = fStart;
+	
+	
+	// Loop though support bodies
+	for (MSKidxt i = 0; i<NS; i++) {
+		//cout << "Building for support body " << i << endl;
+		
+		Matrix<Float, 6, NP*NF, RowMajor> LocalFrictionBases;
+		
+		MSKidxt k=0;
+		Matrix6F PointXForm, TotalXForm;
+		
+		//cout << "Assigning PointXform blocks " << endl;
+		//cout << "Block size " << PointXForm.block(0,0,3,3).size() << endl;
+		//cout << "Assign size " << Matrix3F::Identity().size() << endl;
+		PointXForm.block(0,0,3,3) = Matrix3F::Identity();
+		PointXForm.block(3,3,3,3) = Matrix3F::Identity();
+		PointXForm.block(0,3,3,3) = Matrix3F::Zero();
+		
+		//cout << "Getting forces for link " << SupportIndices[i] << endl;
+		dmRigidBody * linki = (dmRigidBody*) artic->m_link_list[SupportIndices[i]]->link;
+		dmContactModel * dmContactLattice = (dmContactModel *) linki->getForce(0); 
+		
+		//cout << "Assigning Temporary Matricies" << endl;
+		Matrix3F RSup = SupportXforms[i].block(0,0,3,3);
+		Matrix3F tmpMat = SupportXforms[i].block(3,0,3,3)*RSup.transpose();
+		Vector3F piRelSup;
+		crossExtract(tmpMat,piRelSup);
+		
+		//cout << "pirelsup " << endl << piRelSup << endl;
+		
+		//Loop thought points for support i
+		for (MSKidxt jp =0; jp<NP; jp++) {
+			
+			//cout << "Looping through support point " << jp << endl;
+			MSKidxt lambdaSub = lambdaStart + NP*NF*i + NF*jp;
+			Vector3F pRel, tmp;
+			
+			//Tmp is now the contact point location relative to the body coordinate
+			dmContactLattice->getContactPoint(jp,tmp.data());
+			
+			// Point of contact (relative to support origin) in support coordinates
+			pRel = RSup*tmp + piRelSup;
+			
+			//cout << "Point of contact in body coordinates" << endl << tmp << endl;
+			//cout << "Relative Point of contact in Support Coordinates " << endl << pRel << endl;
+			
+			PointXForm.block(0,3,3,3) = cr3(pRel);
+			
+			LocalFrictionBases.block(0,NF*jp,6,NF) = PointXForm*FrictionBasis;
+			for (MSKidxt jf=0; jf<NF; jf++) {
+				asubtmp[k++] = lambdaSub++;
+			}
+		}
+		//cout << "Local Friction Basis Size " << LocalFrictionBases.rows() << " by " << LocalFrictionBases.cols() << endl;
+		
+		// Process Sparsity of Local Friction basis
+		for (int j=0; j<6 ; j++) {
+			
+			int kact = 0;
+			for (int cnt=0; cnt <NP*NF; cnt++) {
+				if(abs(LocalFrictionBases(j,cnt)) > 10e-10) {
+					asub[kact]=asubtmp[cnt];
+					aval[kact++]=LocalFrictionBases(j,cnt); 
+				}
+			}
+									  
+			asub[kact]   = fSub;
+			aval[kact++] = -1;
+			
+			//cout << "f" << j << endl;
+			//for (int cnt =0; cnt<kact; cnt++) {
+			//	cout << aval[cnt] << ", "; 
+			//}
+			//cout <<endl;
+			
+			if(r == MSK_RES_OK) {
+				r = MSK_putavec(task, MSK_ACC_CON,fConstrStart+6*i+j,kact,asub,aval);
+			}
+			
+			fSub++;
+		}
+		//cout << "Constraints Added " << endl;
+		
+	}
+	
+	// Load rows for Additional Constraints	
+	int row=0;
+	MSKidxt k=0;
+	for (MSKidxt i =hptConstrStart; i< hptConstrStart + ConstraintBias.rows(); i++) {
+		
+		for (MSKidxt jj = 0; jj<(NJ+6); jj++) {
+			if (ConstraintJacobian(row,jj) !=0) {
+				aval[k]=ConstraintJacobian(row,jj);
+				asub[k]=qddStart+jj;
+				k++;
+			}
+		}
+		if(r == MSK_RES_OK) {
+			r = MSK_putavec(task, MSK_ACC_CON,i,k,asub,aval);
+		}
+		row++;
+	}
+	cout << "additional Constraints added" << endl;
+
 }
 
-void TaskSpaceController::Optimize()
-{
-	double        xx[NUMVAR];
-	if ( r==MSK_RES_OK )
-	{
+void TaskSpaceController::Optimize() {
+	xx.resize(NUMVAR);
+	if ( r==MSK_RES_OK ) {
 		MSKrescodee trmcode;
 		
 		/* Run optimizer */
@@ -304,8 +527,7 @@ void TaskSpaceController::Optimize()
 		 about the solution for debugging purposes*/
 		MSK_solutionsummary (task,MSK_STREAM_LOG);
 		
-		if ( r==MSK_RES_OK )
-		{
+		if ( r==MSK_RES_OK ) {
 			MSKsolstae solsta;
 			int j;
 			
@@ -323,11 +545,11 @@ void TaskSpaceController::Optimize()
 										 MSK_SOL_ITEM_XX,/* Which part of solution.     */
 										 0,              /* Index of first variable.    */
 										 NUMVAR,         /* Index of last variable+1.   */
-										 xx);
+										 xx.data());
 					
-					printf("Optimal primal solution\n");
-					for(j=0; j<NUMVAR; ++j)
-						printf("x[%d]: %e\n",j,xx[j]);
+					//printf("Optimal primal solution\n");
+					//for(j=0; j<NUMVAR; ++j)
+					//	printf("x[%d]: %e\n",j,xx[j]);
 					
 					break;
 				case MSK_SOL_STA_DUAL_INFEAS_CER:
@@ -345,14 +567,12 @@ void TaskSpaceController::Optimize()
 					break;
 			}
 		}
-		else
-		{
+		else {
 			printf("Error while optimizing.\n");
 		}
 	}
 	
-	if (r != MSK_RES_OK)
-	{
+	if (r != MSK_RES_OK) {
 		/* In case of an error print error code and description. */      
 		char symname[MSK_MAX_STR_LEN];
 		char desc[MSK_MAX_STR_LEN];

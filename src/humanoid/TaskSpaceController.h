@@ -11,13 +11,35 @@
 #include <Eigen/Core>
 #include "dmArticulation.hpp"
 
+#define NJ  20
+#define NF  4
+#define NS  2
+#define NP  4
+#define MU .5
+
+const int tauStart    = 0;
+const int tauEnd      = NJ-1;
+const int qddStart    = NJ;
+const int qddEnd      = 2*NJ+5;
+const int fStart      = 2*NJ+6;
+const int fEnd        = 2*NJ+5 + 6*NS;
+const int lambdaStart = 2*NJ+6 + 6*NS;
+const int lambdaEnd   = 2*NJ+5 + 6*NS + NS*NP*NF;
+
+const int dynConstrStart = 0;
+const int dynConstrEnd   = NJ+5;
+const int fConstrStart   = NJ+6;
+const int fConstrEnd     = NJ+5+6*NS;
+const int hptConstrStart = fConstrEnd +1;
+
+
 typedef vector<int> IntVector;
-typedef vector<Matrix6F> XformVector;
+typedef vector<MatrixX6F> XformVector;
 
 class TaskSpaceController
 {
 public:
-	TaskSpaceController(dmArticulation * art, IntVector & suppIndices, XformVector & suppXforms);
+	TaskSpaceController(dmArticulation * art);
 	
 	// This function initilizes the entire optimization problem.
 	void InitializeProblem();
@@ -27,6 +49,8 @@ public:
 	
 	
 	void UpdateObjective();
+	void UpdateTauObjective();
+	
 	void UpdateVariableBounds();
 	
 	void UpdateConstraintMatrix();
@@ -35,6 +59,19 @@ public:
 	void Optimize();
 	
 	~TaskSpaceController();
+	MatrixXF ConstraintJacobian;
+	MatrixXF TaskJacobian;
+	
+	VectorXF TaskBias;
+	VectorXF ConstraintBias;
+	
+	
+	XformVector SupportXforms;
+	IntVector SupportIndices;
+	
+	VectorXF xx;
+	vector<MatrixXF > SupportJacobians;
+	
 private:
 	
 	dmArticulation * artic;
@@ -44,14 +81,6 @@ private:
 	MSKrescodee   r;
 	int numCon;
 	
-	MatrixXF TaskJacobian;
-	MatrixXF ConstraintJacobian;
-	VectorXF TaskBias;
-	VectorXF ConstraintBias;
-	
 	MatrixXF FrictionBasis;
 	
-	vector<MatrixXF > SupportJacobians;
-	XformVector SupportXforms;
-	IntVector SupportIndices;
 };

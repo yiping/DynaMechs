@@ -163,8 +163,8 @@ public:
    void RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
 				CartesianVector p_ref_ICS,  
                                 RotationMatrix  R_ref_ICS, 
-                                Vector6F a_ini,
-                                Vector6F v_ini = Vector6F::Zero(), 
+                                const Vector6F& a_ini,
+                                const Vector6F& v_ini = Vector6F::Zero(), 
                                       bool ExtForceFlag = false
                                 );
    /*//! DM v5.0 Function, 

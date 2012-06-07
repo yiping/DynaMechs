@@ -721,11 +721,8 @@ void dmMobileBaseLink::ABForwardAccelerations(SpatialVector a_inboard,
 
 
 //---------------------------------------------------
-Matrix6XF dmMobileBaseLink::jcalc()
-{
-    Matrix6XF  S(6,6);
+void dmMobileBaseLink::jcalc(Matrix6XF & S) {
     S = Matrix6XF::Identity(6,6);
-    return S;
 }
 
 
@@ -747,10 +744,11 @@ void dmMobileBaseLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr,
 void dmMobileBaseLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
 									 CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
 									 RotationMatrix  R_ref_ICS,  
-									 Vector6F a_ini, 
-									 Vector6F v_ini,
+									 const Vector6F &a_ini, 
+									 const Vector6F &v_ini,
 									 bool ExtForceFlag)
 {
+	//cout << "a_ini = " << a_ini.transpose() << endl;
 	// compute R_ICS and p_ICS)
 	for (int i = 0; i < 3; i++)
 	{
@@ -767,18 +765,20 @@ void dmMobileBaseLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
 	Float q[7], qd[7];
 	getState(q,qd);
 	
-	Vector6F vJ;;
+	Vector6F vJ;
 	rtxFromInboard( qd, vJ.data() );
 	rtxFromInboard( qd+3, vJ.data()+3);
 	
+	
 	// qd for Floating Base contains a rogue zero as the last element
-	
-	
-	Matrix6F X = get_X_FromParent_Motion();
 	link_val2_curr.v = vJ;
 	
+	
 	// Spatial acceleration here my friends
-	link_val2_curr.a = X * a_ini + link_val2_curr.qdd;
+	stxFromInboard(a_ini.data(), link_val2_curr.a.data());
+	
+	link_val2_curr.a += link_val2_curr.qdd;
+	//cout << "Curr a " << link_val2_curr.a.transpose() << endl;
 	
 	Matrix6F I = getSpatialInertiaMatrix();
 	

@@ -106,7 +106,7 @@ public:
                    Float **Xik, int cols_Xik) const;
 
    //! v5.0 function
-   Matrix6XF jcalc();
+   void jcalc(Matrix6XF &);
 
 
 // Articulated-Body (AB) algorithm functions:
@@ -151,8 +151,8 @@ public:
 	void RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
 												CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
 												RotationMatrix  R_ref_ICS,  
-												Vector6F a_ini, 
-												Vector6F v_ini,
+												const Vector6F &a_ini, 
+												const Vector6F &v_ini,
 							  bool ExtForceFlag);
 	
 	/*void RNEAInwardID(dmRNEAStruct &link_val2_curr,

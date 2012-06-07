@@ -293,7 +293,7 @@ void dmLink::scongxToInboardIcomp(const CrbInertia & IC_curr, CrbInertia & IC_pr
 		//cout << RTh[i] << "\t" <<  cur.m * X.pi_p_i[i] << endl;
 		IC_prev.h[i] = RTh[i] + IC_curr.m * m_p[i];
 	}
-	
+		
 	doubleCrossProdMat(m_p, RTh, C1);
 	doubleCrossProdMat(m_p, m_p, C2);
 	
@@ -342,10 +342,16 @@ Matrix6F dmLink::get_X_FromParent_Motion()
 
 Matrix6XF dmLink::jcalc()
 {
-    //dummy implementation
+    
     Matrix6XF  m(6,1);
-    m << 0, 0, 1, 0, 0, 0;
+    jcalc(m);
     return m;
+}
+
+void dmLink::jcalc(Matrix6XF & S)
+{
+	S.resize(6,1);
+	S << 0,0,1,0,0,0;
 }
 
 //-------------------------------------------------------------
@@ -361,7 +367,7 @@ void dmLink::RNEAOutwardFKID(dmRNEAStruct &link_val2_curr,
 void dmLink::RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
 					  CartesianVector  p_ref_ICS,  
                                           RotationMatrix  R_ref_ICS, 
-                                          Vector6F a_ini, Vector6F v_ini,
+                                          const Vector6F &a_ini, const Vector6F &v_ini,
                                                      bool ExtForceFlag)
 {
 	//dummy

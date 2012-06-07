@@ -274,9 +274,7 @@ void dmPrismaticLink::scongtxToInboardIrefl(const SpatialTensor N,
 
 
 //-------------------------------------------------------
-Matrix6XF dmPrismaticLink::jcalc()
-{
-    Matrix6XF  S(6,1);
+void dmPrismaticLink::jcalc(Matrix6XF &S) {
+	S.resize(6,1);
     S << 0, 0, 0, 0, 0, 1;
-    return S;
 }

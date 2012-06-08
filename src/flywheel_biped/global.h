@@ -57,6 +57,7 @@ struct DataRecord{
 	Float p_Rf_ICS[3];
 	Float p_Lf_ICS[3];
 	Float CoMx_ICS;
+	Float p_tx_ICS;
 };
 
 typedef vector<DataRecord *> DataRecVector; 

@@ -45,6 +45,8 @@ void SaveToDataRecord(DataRecord *Rec)
 
 	Rec->CoMx_ICS = CoM_pos_ICS(0);
 
+	Rec->p_tx_ICS = p_t_ICS[0];
+
 }
 
 
@@ -69,7 +71,7 @@ void simDataOutput(const DataRecVector & MyVec)
 			Writer<<setw(15)<<MyVec[u]->sim_time;
 			//Writer<<setw(15)<<MyVec[u]->q[0];
 			//Writer<<setw(15)<<MyVec[u]->q[1];
-			//Writer<<setw(15)<<MyVec[u]->q[2];
+			Writer<<setw(15)<<MyVec[u]->q[2];
 			//Writer<<setw(15)<<MyVec[u]->q[5];
 			//Writer<<setw(15)<<MyVec[u]->q[6];
 			//Writer<<setw(15)<<MyVec[u]->q[7];
@@ -93,7 +95,8 @@ void simDataOutput(const DataRecVector & MyVec)
 			Writer<<setw(15)<<MyVec[u]->CoMx_ICS;
 			Writer<<setw(15)<<MyVec[u]->p_Rf_ICS[0];
 			Writer<<setw(15)<<MyVec[u]->p_Lf_ICS[0];
-			Writer<<setw(15)<<MyVec[u]->actual_ZMPx_ICS<<endl;
+			Writer<<setw(15)<<MyVec[u]->actual_ZMPx_ICS;
+			Writer<<setw(15)<<MyVec[u]->p_tx_ICS<<endl;
 		}
 		Writer.close();
 		cout<<"done."<<endl<<endl;

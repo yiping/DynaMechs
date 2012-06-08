@@ -86,3 +86,4 @@ vector<Matrix3F> tRotVec;
 vector<Vector3F> tpVec;
 
 bool doubleSupportOn = false;
+

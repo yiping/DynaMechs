@@ -69,7 +69,10 @@ void wxDMGLPolarCamera_zup::applyView()
    m_up[1] =-m_cos_az*m_sin_el;
    m_up[2] = m_cos_el;
 
-   cout<<"zup - gluLookAt()"<<endl;
+   //cout<<"zup - gluLookAt()"<<endl;
+   //cout<<"look from: ["<<m_look_from[0]<<" "<<m_look_from[1]<<" "<<m_look_from[2]<<"]"<<endl;
+   //cout<<"      up: ["<<m_up[0]<<" "<<m_up[1]<<" "<<m_up[2]<<"]"<<endl;
+   //cout<<"p_coi: ["<<m_pos_coi[0]<<" "<<m_pos_coi[1]<<" "<<m_pos_coi[2]<<"]"<<endl;
    gluLookAt(m_look_from[0], m_look_from[1], m_look_from[2],
              m_pos_coi[0], m_pos_coi[1], m_pos_coi[2],
              m_up[0], m_up[1], m_up[2]);

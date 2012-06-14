@@ -7,7 +7,7 @@ find_package(wxWidgets COMPONENTS core base gl REQUIRED)
 
 include( "${wxWidgets_USE_FILE}" )
 
-SET(SRCS global.cpp main.cpp )
+SET(SRCS global.cpp main.cpp userControl.cpp)
 ADD_EXECUTABLE(DMViewer ${SRCS})
 
 

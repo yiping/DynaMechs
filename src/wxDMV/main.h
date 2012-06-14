@@ -23,6 +23,8 @@ public:
 	void prepare2DViewport(int topleft_x, int topleft_y, int bottomrigth_x, int bottomrigth_y);
     
 	void extractMouseInfo(wxMouseEvent& event);
+	void display (void);
+	void updateSim(wxIdleEvent& event);
 	// events
 	void mouseMoved(wxMouseEvent& event);
 	void mouseLeftDown(wxMouseEvent& event);

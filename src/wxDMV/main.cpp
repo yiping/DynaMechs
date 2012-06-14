@@ -14,7 +14,7 @@
 #endif
  
 void myInit (void); 
-void display (void);
+
 class MyApp: public wxApp
 {
     virtual bool OnInit();
@@ -48,7 +48,7 @@ bool MyApp::OnInit()
 		}
 		view_mat[i][i] = 1.0;
 	}
-	camera = new wxDMGLPolarCamera_zup(); 
+	camera = new wxDMGLPolarCamera_zup();
 	camera->setRadius(8.0);
 	camera->setCOI(3.0, 3.0, 0.0);
 	camera->setTranslationScale(0.02f);
@@ -99,6 +99,7 @@ BEGIN_EVENT_TABLE(BasicGLPane, wxGLCanvas)
 	EVT_KEY_UP(BasicGLPane::keyReleased)
 	EVT_MOUSEWHEEL(BasicGLPane::mouseWheelMoved)
 	EVT_PAINT(BasicGLPane::render)
+	EVT_IDLE(BasicGLPane::updateSim)
 END_EVENT_TABLE()
  
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
@@ -135,6 +136,7 @@ void BasicGLPane::mouseLeftDown(wxMouseEvent& event)
 	//cout << "left button pressed" << endl;
 
 	extractMouseInfo(event);
+	SetFocus();
 }
 
 void BasicGLPane::mouseLeftUp(wxMouseEvent& event) 
@@ -176,7 +178,21 @@ void BasicGLPane::mouseEnteredWindow(wxMouseEvent& event)
 	//cout << "mouse entered window" << endl;
 }
 void BasicGLPane::keyPressed(wxKeyEvent& event) {}
-void BasicGLPane::keyReleased(wxKeyEvent& event) {}
+void BasicGLPane::keyReleased(wxKeyEvent& event)
+{
+	//normally wxWidgets sends key events to the window that has the focus
+	cout<<"key pressed"<<endl;
+	cout<<event.GetUnicodeKey()<<endl;
+    switch ( event.GetUnicodeKey() )
+    {
+        case 80:
+			cout<<"P matched!"<<endl;
+			paused_flag = !paused_flag;
+            break;
+
+    }
+
+}
  
 
 
@@ -218,16 +234,17 @@ void BasicGLPane::resized(wxSizeEvent& evt)
 {
 //	wxGLCanvas::OnSize(evt);
 	
+	cout<<"resize event"<<endl;
 	wxSize size = evt.GetSize();
 	glViewport (0, 0, size.GetWidth(), size.GetHeight());
 	mouse->win_size_x = size.GetWidth();
 	mouse->win_size_y = size.GetHeight();
-	//cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
+	cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
 
 	camera->setPerspective(45.0, (GLfloat)size.GetWidth()/(GLfloat)size.GetHeight(), 1.0, 200.0);
 
-	camera->setViewMat(view_mat);
-	camera->applyView();
+	//camera->setViewMat(view_mat);
+	//camera->applyView();
 
     Refresh();
 
@@ -289,7 +306,7 @@ int BasicGLPane::getHeight()
  
 void BasicGLPane::render( wxPaintEvent& evt )
 {
-	cout<<"rendering event"<<endl;
+	//cout<<"rendering event"<<endl;
     if(!IsShown()) return;
     
     wxGLCanvas::SetCurrent(*m_context);
@@ -299,7 +316,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
 	// initialization has to be put here somehow.
 	if (runOnce == true)
 	{
-
+		cout<<"initilize scene..."<<endl;
 		myInit();
 
 		// load robot stuff
@@ -350,7 +367,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
 		// -----------------------
 	}
 
-	cout<<"entering display()"<<endl;
+	//cout<<"entering display()"<<endl;
 	display();
 
  	glFlush ();
@@ -424,7 +441,7 @@ void myInit (void)
 
 
 
-void display (void)
+void BasicGLPane::display (void)
 {
 	glClearColor (0.49, 0.62, 0.75,1.0); /* background colour */ //lyp
 	//glClearColor (1.0, 1.0, 1.0,1.0);
@@ -451,9 +468,6 @@ void display (void)
 	glPopAttrib();
 	// ------------------------------------------
 
-	cout<<"set light position"<<endl;
-	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
-	glLightfv (GL_LIGHT0, GL_POSITION, light_position);
 	glPopMatrix ();
 
 
@@ -467,4 +481,5 @@ void display (void)
 
 
 }
+
 

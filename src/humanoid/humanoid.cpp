@@ -30,11 +30,14 @@
 #include <dmMDHLink.hpp>
 #include <dmMobileBaseLink.hpp>
 
-#include "functions.h"
-#include "global_typedef.h"
+#include "GlobalDefines.h"
+
+//#include "functions.h"
+//#include "global_typedef.h"
 
 //#include "mosek.h" /* Include the MOSEK definition file. */
 #include "TaskSpaceController.h"
+#include "humanoidControl.h"
 
 //#define KURMET_DEBUG
 
@@ -50,13 +53,12 @@ dmGLPolarCamera_zup *camera;
 GLfloat view_mat[4][4];
 
 Float idt;
-Float sim_time=0.0;
 Float rtime=0.0;
 
 bool IsWireframe = false;
 bool paused_flag = true;
 
-dmArticulation *G_robot;
+
 dmIntegEuler *G_integrator;
 
 vector<LinkInfoStruct*> G_robot_linkinfo_list;
@@ -67,9 +69,10 @@ int render_rate;
 int render_count = 0;
 int timer_count = 0;
 
-void HumanoidControl();
-void initControl();
 
+
+
+GLUquadricObj *quadratic;
 
 //----------------------------------------------------------------------------
 void myinit (void) {
@@ -125,6 +128,12 @@ void myinit (void) {
 	// The above two lines mean that glMaterial will control the polygon's specular and emission colors
 	// and the ambient and diffuse will both be set using glColor. - yiping
 	
+	
+	quadratic=gluNewQuadric();          // Create A Pointer To The Quadric Object ( NEW )
+	gluQuadricNormals(quadratic, GLU_SMOOTH);   // Create Smooth Normals ( NEW )
+	gluQuadricTexture(quadratic, GL_TRUE);      // Create Texture Coords ( NEW )
+	
+	grfInfo.localContacts = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -140,6 +149,57 @@ void display (void) {
    // ===============================================================
    (dmEnvironment::getEnvironment())->draw();
 
+	// =========
+	glEnable(GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	
+	// Draw COM Info
+	glBegin(GL_LINES);
+	glColor4f(0.0, 0.0, 1.0,1.0);
+	glVertex3f(ComDes[0], ComDes[1], ComDes[2]);
+	glVertex3f(ComDes[0], ComDes[1], 0      );
+	glEnd();
+	
+	glBegin(GL_LINES);
+	glColor4f(1.0, 0.0, 0.0,1.0);
+	glVertex3f(ComPos[0], ComPos[1], ComPos[2]);
+	glVertex3f(ComPos[0], ComPos[1], 0      );
+	glEnd();
+	
+	
+	glTranslatef(ComPos[0],ComPos[1],ComPos[2]); 
+	gluSphere(quadratic,.03f,32,32);
+	glTranslatef(-ComPos[0],-ComPos[1],-ComPos[2]); 
+	
+	const Float forceScale = 250;
+	// Draw GRF Info
+	for (int i=0; i< grfInfo.localContacts; i++) {
+		Vector3F footPoint = grfInfo.pCoPs[i];
+		Vector3F grfPoint = grfInfo.pCoPs[i]+grfInfo.fCoPs[i]/forceScale;
+		glBegin(GL_LINES);
+		glColor4f(0.0, 0.0, 0.0,1.0);
+		glVertex3f(footPoint(0), footPoint(1), footPoint(2));
+		glVertex3f(grfPoint(0), grfPoint(1), grfPoint(2));
+		glEnd();
+	}
+	
+	//Draw ZMPInfo
+	Vector3F footPoint = grfInfo.pZMP;
+	Vector3F grfPoint = grfInfo.pZMP+grfInfo.fZMP/forceScale;
+	glBegin(GL_LINES);
+	glColor4f(0.0, 0.0, 0.0,1.0);
+	glVertex3f(footPoint(0), footPoint(1), footPoint(2));
+	glVertex3f(grfPoint(0), grfPoint(1), grfPoint(2));
+	glEnd();
+	
+	
+	
+	glDisable(GL_BLEND);
+	// =========
+
+	
+	
    glPushAttrib(GL_ALL_ATTRIB_BITS);
    if (IsWireframe == false )
    {
@@ -151,9 +211,12 @@ void display (void) {
    }
    G_robot->draw();
    glPopAttrib();
+	
    // ===============================================================
 
    glDisable (GL_LIGHTING);
+	
+		
 
    glBegin(GL_LINES);
    glColor3f(1.0, 0.0, 0.0);
@@ -289,16 +352,22 @@ int patFlag = 0;
 void updateSim() {
    if (!paused_flag)
    {
+	   if (sim_time > .2) {
+		   
+		   ControlInfo ci;
+		   HumanoidControl(ci); 
+		   
+		   cout << ci.totalTime << "\t" << ci.calcTime << "\t" << ci.setupTime << "\t" << ci.optimTime << "\t" << ci.iter << endl;
+	   }
+	   
+	   //exit(-1);
       for (int i=0; i<render_rate; i++)
       {
+		 
 		G_integrator->simulate(idt);
     	sim_time += idt;
       }
    }
-	if (patFlag == 0) {
-		HumanoidControl();
-		patFlag=1;
-	}
 	
 	
     camera->update(mouse);

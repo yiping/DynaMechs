@@ -199,13 +199,16 @@ void executeGL_xan(ifstream &data_ptr)
 //    glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 //    data_ptr >> alpha;
 
+	glEnable(GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+	
     // ****
     //since I have switched to use glColorMaterial - yiping
-    GLfloat color[4] = {0.0, 0.0, 0.0, 1.0};
+    GLfloat color[4] = {0.0, 0.0, 0.0, 0.7};
     data_ptr >> color[0] >> color[1] >> color[2];  // emission color
     //
     data_ptr >> color[0] >> color[1] >> color[2];  // ambient color
-    glColor3f(color[0], color[1], color[2]);
+    glColor4f(color[0], color[1], color[2],color[3]);
     data_ptr >> color[0] >> color[1] >> color[2];  // diffuse color
     //
     data_ptr >> color[0] >> color[1] >> color[2];  // specular color
@@ -289,6 +292,7 @@ void executeGL_xan(ifstream &data_ptr)
       }
       glEnd();
    }
+	glDisable(GL_BLEND);
 }
 
 //----------------------------------------------------------------------------

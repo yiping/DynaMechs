@@ -1,4 +1,15 @@
 /*
+ *  TaskSpaceController2.cpp
+ *  DynaMechs
+ *
+ *  Created by Patrick Wensing on 6/12/12.
+ *  Copyright 2012 __MyCompanyName__. All rights reserved.
+ *
+ */
+
+#include "TaskSpaceController2.h"
+
+/*
  *  TaskSpaceController.cpp
  *  DynaMechs
  *
@@ -127,7 +138,7 @@ TaskSpaceController::TaskSpaceController(dmArticulation * art) {
 		MSK_putname(task, MSK_PI_VAR, i, (char*) ss.str().c_str());
 	}
 	
-
+	
 	k=0;
 	for (int i=dynConstrStart; i<dynConstrEnd; i++) {
 		stringstream ss;
@@ -154,7 +165,7 @@ TaskSpaceController::~TaskSpaceController() {
 void TaskSpaceController::ObtainArticulationData() {
 	artic->computeH();
 	artic->computeCandG();
-		
+	
 	for (int i=0; i<NS; i++) {
 		artic->computeJacobian(SupportIndices[i], SupportXforms[i],SupportJacobians[i]);
 	}
@@ -177,30 +188,30 @@ void TaskSpaceController::InitializeProblem()
 	
 	//cout << "H " << artic->H << endl;
 	/*MatrixXF A;
-	A.resize(numCon,NUMVAR);
-	
-	for (int i=0; i<numCon; i++) {
-		if (i==fConstrStart) {
-			cout << endl;
-		}
-		
-		
-		for (int j=0; j<NUMVAR; j++) {
-			if (j==qddStart || j==fStart || j==lambdaStart) {
-				cout << "|";
-			}
-			double aij;
-			MSK_getaij (task,i,j,&aij);
-			A(i,j) = aij;
-			if (abs(aij) > 10e-10) {
-				cout << "X";
-			}
-			else {
-				cout <<" ";
-			}
-		}
-		cout << endl;
-	}*/
+	 A.resize(numCon,NUMVAR);
+	 
+	 for (int i=0; i<numCon; i++) {
+	 if (i==fConstrStart) {
+	 cout << endl;
+	 }
+	 
+	 
+	 for (int j=0; j<NUMVAR; j++) {
+	 if (j==qddStart || j==fStart || j==lambdaStart) {
+	 cout << "|";
+	 }
+	 double aij;
+	 MSK_getaij (task,i,j,&aij);
+	 A(i,j) = aij;
+	 if (abs(aij) > 10e-10) {
+	 cout << "X";
+	 }
+	 else {
+	 cout <<" ";
+	 }
+	 }
+	 cout << endl;
+	 }*/
 	//exit(-1);
 	//Slice to debug the friction cone basis
 	//cout << "Aslice " << endl;
@@ -318,10 +329,10 @@ void TaskSpaceController::UpdateVariableBounds() {
 		bkx[i] = MSK_BK_FR;
 		blx[i] = -MSK_INFINITY;
 		bux[i] = +MSK_INFINITY;
-
+		
 		/*bkx[i] = MSK_BK_FX;
-		blx[i] = 0;
-		bux[i] = 0;*/
+		 blx[i] = 0;
+		 bux[i] = 0;*/
 		
 	}
 	
@@ -332,8 +343,8 @@ void TaskSpaceController::UpdateVariableBounds() {
 		bux[i] = +MSK_INFINITY;
 		
 		/*bkx[i] = MSK_BK_FX;
-		blx[i] = 0;
-		bux[i] = 0;*/
+		 blx[i] = 0;
+		 bux[i] = 0;*/
 		
 	}
 	
@@ -490,7 +501,7 @@ void TaskSpaceController::UpdateConstraintMatrix() {
 					aval[kact++]=LocalFrictionBases(j,cnt); 
 				}
 			}
-									  
+			
 			asub[kact]   = fSub;
 			aval[kact++] = -1;
 			
@@ -528,7 +539,7 @@ void TaskSpaceController::UpdateConstraintMatrix() {
 		row++;
 	}
 	//cout << "additional Constraints added" << endl;
-
+	
 }
 
 void TaskSpaceController::Optimize() {
@@ -541,9 +552,9 @@ void TaskSpaceController::Optimize() {
 		
 		/* Print a summary containing information
 		 about the solution for debugging purposes*/
-		#ifdef OPTIM_DEBUG
-			MSK_solutionsummary (task,MSK_STREAM_LOG);
-		#endif
+#ifdef OPTIM_DEBUG
+		MSK_solutionsummary (task,MSK_STREAM_LOG);
+#endif
 		
 		if ( r==MSK_RES_OK ) {
 			MSKsolstae solsta;

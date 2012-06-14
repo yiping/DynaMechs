@@ -810,7 +810,7 @@ Vector3F dmArticulation::computeCoM_ICS()
 }
 
 //------------------------------------------------------------
-void dmArticulation::calculateJacobian(unsigned int target_idx, const MatrixX6F& X_target, MatrixXF& Jacobian)
+void dmArticulation::computeJacobian(unsigned int target_idx, const MatrixX6F& X_target, MatrixXF& Jacobian)
 {
 	
 	if ((target_idx >= m_link_list.size() ) || (target_idx < 0) ) {
@@ -1140,12 +1140,28 @@ void dmArticulation::computeCandG()
 	
 	inverseDynamics(false);
 	
+	// Update PW - initial acceleration provided by the acceleration reference in the env file
+	CartesianVector g_ICS;
+	dmEnvironment::getEnvironment()->getGravity(g_ICS);
+	
+	for (int j=0; j<m_link_list.size(); j++) {
+		LinkInfoStruct * const link = m_link_list[j];
+		link->link_val2.ag.setZero();
+		for (int k1=0; k1<3; k1++) {
+			const int ka = k1+3;
+			for (int k2=0; k2<3; k2++) {
+				link->link_val2.ag(ka) += link->link_val2.R_ICS[k2][k1]*g_ICS[k2];
+			}
+		}
+	}
+	
 	CandG.resize(N);
 	
 	for (int j=0; j<m_link_list.size(); j++) {
 		LinkInfoStruct * bodyj = m_link_list[j];
 		if(bodyj->dof > 0)
 			CandG.DOFSEGMENT(bodyj) = bodyj->link_val2.tau;
+		
 	}
 	return;// CandG;
 }

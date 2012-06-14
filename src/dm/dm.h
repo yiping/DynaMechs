@@ -76,6 +76,7 @@
 
 // ----------------------------------------
 // v5.0
+//#define EIGEN_NO_DEBUG
 #include <Eigen/Core>
 #include <Eigen/LU>
 #include <Eigen/Dense>
@@ -332,15 +333,15 @@ Spatial cross product for forces.
 \param F2   the derivative of F1 (output)
 \sa CrossSpV()
 */
-inline void CrossSpF(Vector6F &v, Vector6F &F1, Vector6F &F2) {
-	Float * f1 = F1.data();
+inline void CrossSpF(const Vector6F &v, const Vector6F &F1, Vector6F &F2) {
+	const Float * const f1 = F1.data();
 	Float * f2 = F2.data();
-	Float * vOf = v.data();
-	Float * vv  = vOf + 3;
+	const Float * const vOf = v.data();
+	const Float * const vv  = vOf + 3;
 	
 	CartesianVector tmp; //type def in dm.h
 
-	Float * f12 = f1+3;
+	const Float * f12 = f1+3;
 	
 	CROSS_PRODUCT(vOf,f1,tmp);
 	CROSS_PRODUCT(vv,f12,f2);
@@ -364,17 +365,17 @@ Spatial cross product for motions.
 \param M2  the derivative of M1 (output)
 \sa CrossSpF()
 */
-inline void CrossSpV(Vector6F &v, Vector6F & M1, Vector6F &M2) {
-	Float * m1 = M1.data();
+inline void CrossSpV(const Vector6F &v, const Vector6F & M1, Vector6F &M2) {
+	const Float * const m1 = M1.data();
 	Float * m2 = M2.data();
-	Float * vOm = v.data();
-	Float * vv  = vOm + 3;
+	const Float * const vOm = v.data();
+	const Float * const vv  = vOm + 3;
 	
 	CartesianVector tmp;
 	
 	CROSS_PRODUCT(vOm,m1,m2);
 	m2+=3;
-	Float * m12 = m1+3;
+	const Float * m12 = m1+3;
 	
 	CROSS_PRODUCT(vv,m1,tmp);
 	CROSS_PRODUCT(vOm,m12,m2);
@@ -471,6 +472,7 @@ struct dmRNEAStruct
    Vector6F  v;     // spatial velocity of link wrt to i.
    Vector6F  a;     // spatial acceleration wrt to i
    Vector6F  f;     // spatial force
+   Vector6F  ag; 	// gravity vector in link i coordinates
    VectorXF  qdd;   // joint acc
    VectorXF  tau;   //
    //--------------------
@@ -483,8 +485,10 @@ inline void ClassicAcceleration(const Vector6F &aSpat, const Vector6F &vSpat, Ve
 	aClass(1) = aSpat(1);
 	aClass(2) = aSpat(2);
 	
+	const Float * omega = vSpat.data(), * v = omega+3;
+	Float * omegaCrossV = aClass.data()+3;
 	// aclass = w \cross rdot + a_spat
-	aClass.segment(3,3) = cr3(vSpat.segment(0,3))*vSpat.segment(3,3);
+	CROSS_PRODUCT(omega,v,omegaCrossV);
 	aClass.segment(3,3) += aSpat.segment(3,3);
 }
 

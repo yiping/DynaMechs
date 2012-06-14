@@ -301,6 +301,7 @@ void dmEnvironment::drawInit()
 //----------------------------------------------------------------------------
 void dmArticulation::draw() const
 {
+	
    glPushMatrix();
 
    glTranslatef(m_p_ICS[0], m_p_ICS[1], m_p_ICS[2]);

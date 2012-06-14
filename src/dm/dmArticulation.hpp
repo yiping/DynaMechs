@@ -197,7 +197,7 @@ public:
    Matrix6XF calculateJacobian(unsigned int target_idx, Matrix6F & X_target, unsigned int ini_idx = 0);
 
 	
-   void calculateJacobian(unsigned int target_idx, const MatrixX6F & X_target, MatrixXF & J);
+   void computeJacobian(unsigned int target_idx, const MatrixX6F & X_target, MatrixXF & J);
 	
 	
    //! calculates \f$ \dot{J}\dot{q}\f$

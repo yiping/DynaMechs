@@ -1,4 +1,13 @@
 /*
+ *  TaskSpaceController2.h
+ *  DynaMechs
+ *
+ *  Created by Patrick Wensing on 6/12/12.
+ *  Copyright 2012 __MyCompanyName__. All rights reserved.
+ *
+ */
+
+/*
  *  TaskSpaceController.h
  *  DynaMechs
  *
@@ -10,7 +19,6 @@
 #include "mosek.h"
 #include <Eigen/Core>
 #include "dmArticulation.hpp"
-#include "GlobalTypes.h"
 
 #define NJ  20
 #define NF  4
@@ -18,25 +26,26 @@
 #define NP  4
 #define MU .5
 
+#define NUMTASKS 26
 const int tauStart    = 0;
 const int tauEnd      = NJ-1;
-const int qddStart    = NJ;
-const int qddEnd      = 2*NJ+5;
-const int fStart      = 2*NJ+6;
-const int fEnd        = 2*NJ+5 + 6*NS;
-const int lambdaStart = 2*NJ+6 + 6*NS;
-const int lambdaEnd   = 2*NJ+5 + 6*NS + NS*NP*NF;
+const int fStart      = tauEnd+1;
+const int fEnd        = fStart+ (3*NS*NP-1);
+const int fzStart     = fEnd+1;
+const int fzEnd       = fzStart + (NS*NP-1);
+const int zStart      = fzEnd + 1;
+const int eStart      = zStart + 1;
 
-const int dynConstrStart = 0;
-const int dynConstrEnd   = NJ+5;
-const int fConstrStart   = NJ+6;
-const int fConstrEnd     = NJ+5+6*NS;
+const int eConstrStart = 0;
+const int eConstrEnd   = eConstrStart + NUMTASKS;
+
 const int hptConstrStart = fConstrEnd +1;
 
 
+typedef vector<int> IntVector;
+typedef vector<MatrixX6F> XformVector;
 
-
-class TaskSpaceController
+class TaskSpaceController2
 {
 public:
 	TaskSpaceController(dmArticulation * art);

@@ -34,11 +34,38 @@ void wxDMGLPolarCamera::reset()
 {
    wxDMGLCamera::reset();//?
 
-   m_pos_coi[0] = m_pos_coi[1] = m_pos_coi[2] = 0.0;
-   setAzimuth(0.0);
-   setElevation(0.0);
-   setRadius(0.5);
-   m_trans_scale = 1.0;
+	ifstream reader;
+	string inputFile = "view.txt";
+	reader.open(inputFile.c_str(),ios::in);
+	float x, y, z, r, elev, azim;
+    if( !reader.is_open())
+	{
+		cout<<"Not finding any view file, use default values"<<endl<<endl;
+
+	   	m_pos_coi[0] = m_pos_coi[1] = m_pos_coi[2] = 0.0;
+   		setAzimuth(0.0);
+   		setElevation(0.0);
+   		setRadius(0.5);
+   		m_trans_scale = 1.0;
+	}
+	else
+	{
+		while (reader>>x>>y>>z>>r>>elev>>azim)
+		{
+			
+		}
+		cout<<"Load view ... "<<endl;
+	   	m_pos_coi[0] = x;
+		m_pos_coi[1] = y;
+		m_pos_coi[2] = z;
+   		setAzimuth(azim);
+   		setElevation(elev);
+   		setRadius(r);
+   		m_trans_scale = 1.0;
+		cout<<"View loaded from file is: [ "<<x<<" "<<y<<" "<<z<<" "<<r<<" "<<elev<<" "<<azim<<" ]"<<endl;
+	}
+    reader.close();
+
 }
 
 
@@ -91,6 +118,11 @@ void wxDMGLPolarCamera::setAzimuth(float new_azimuth)
    m_cos_az = cos(tmp);
 }
 
+void wxDMGLPolarCamera::getAzimuth(float &azim)
+{
+	azim = m_azimuth;
+}
+
 //----------------------------------------------------------------------------
 //   Function: updateElevation
 //    Summary: Change the elevation angle of the camera 
@@ -121,6 +153,11 @@ void wxDMGLPolarCamera::setElevation(float new_elevation)
    m_cos_el = cos(tmp);
 }
 
+void wxDMGLPolarCamera::getElevation(float &elev)
+{
+	elev = m_elevation;
+}
+
 //----------------------------------------------------------------------------
 //   Function: updateRadius
 //    Summary: Change the distance of the camera from the center of
@@ -147,6 +184,11 @@ void wxDMGLPolarCamera::setRadius(float new_radius)
    {
       m_radius = 0.001f;
    }
+}
+
+void wxDMGLPolarCamera::getRadius(float &r)
+{
+	r = m_radius;
 }
 
 //----------------------------------------------------------------------------
@@ -192,6 +234,12 @@ void wxDMGLPolarCamera::setCOI(float x, float y, float z)
 }
 
 
+void wxDMGLPolarCamera::getCOI(float &x, float &y, float &z)
+{
+   x = m_pos_coi[0] ;
+   y = m_pos_coi[1] ;
+   z = m_pos_coi[2] ;
+}
 
 
 void wxDMGLPolarCamera::update(wxDMGLMouse *mouse)

@@ -35,6 +35,10 @@ public:
    void setCOI(float pos_coi[3]);
    void setCOI(float x, float y, float z);
 
+   void getCOI(float &x, float &y, float &z);
+   void getAzimuth(float &azim);
+   void getElevation(float &elev);
+   void getRadius(float &r);
 
    //   update(mouse *) 
    //   changes the camera position and orientation
@@ -56,6 +60,7 @@ public:
    virtual void spinScene(int delta[2], int button_flags) = 0;
    virtual void update(wxDMGLMouse *mouse);
    virtual void applyView() {};
+
 
 protected:
    float m_pos_coi[3];  // lookat position for center of interest

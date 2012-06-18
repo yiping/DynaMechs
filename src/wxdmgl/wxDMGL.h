@@ -32,9 +32,11 @@
 #if defined(WIN32) || (defined(sgi) && defined(_STANDARD_C_PLUS_PLUS)) || (defined(__GNUC__) && (__GNUC__>=2) && (__GNUC_MINOR__>=91))
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 #else
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 #endif
 
 #if defined(__APPLE__)

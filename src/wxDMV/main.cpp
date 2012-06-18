@@ -22,6 +22,8 @@ class MyApp: public wxApp
     wxFrame *frame;
     BasicGLPane * glPane;
 	wxButton *welcomebutton;
+	wxButton *saveViewbutton;
+	wxButton *applyViewbutton;
 	wxPanel *toolpanel;
 public:
     
@@ -39,7 +41,19 @@ bool MyApp::OnInit()
 
 
 	mouse = new wxDMGLMouse(); // has to be put in the front
-
+	int i, j;
+	for (i=0; i<4; i++)
+	{
+		for (j=0; j<4; j++)
+		{
+			view_mat[i][j] = 0.0;
+		}
+		view_mat[i][i] = 1.0;
+	}
+	camera = new wxDMGLPolarCamera_zup();
+	camera->setRadius(8.0);
+	camera->setCOI(3.0, 3.0, 0.0);
+	camera->setTranslationScale(0.02f);
 
 	//---------------------------------------------------
 
@@ -57,22 +71,14 @@ bool MyApp::OnInit()
 	//cout << "Pane " << endl;
     glPane = new BasicGLPane( (wxFrame*) frame, args, wxSize(400,400));
 	
-	int i, j;
-	for (i=0; i<4; i++)
-	{
-		for (j=0; j<4; j++)
-		{
-			view_mat[i][j] = 0.0;
-		}
-		view_mat[i][i] = 1.0;
-	}
-	camera = new wxDMGLPolarCamera_zup();
-	camera->setRadius(8.0);
-	camera->setCOI(3.0, 3.0, 0.0);
-	camera->setTranslationScale(0.02f);
+
 	
 	welcomebutton = new wxButton( toolpanel, wxID_OK, wxT("Welcome"));
+	saveViewbutton = new wxButton( toolpanel, BUTTON_SaveView, wxT("Save View"));
+	applyViewbutton = new wxButton( toolpanel, BUTTON_ApplyView, wxT("Apply View"));
 	toolpanel_sizer->Add(welcomebutton, 0 );
+	toolpanel_sizer->Add(saveViewbutton, 0 );
+	toolpanel_sizer->Add(applyViewbutton, 0 );
 	toolpanel->SetSizer(toolpanel_sizer);
 	
     
@@ -108,6 +114,8 @@ END_EVENT_TABLE()
  
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_BUTTON  (wxID_OK,   MainFrame::OnAbout)
+	EVT_BUTTON  (BUTTON_SaveView,   MainFrame::OnSaveView)
+	EVT_BUTTON  (BUTTON_ApplyView,   MainFrame::OnApplyView)
 END_EVENT_TABLE()
 
  
@@ -202,28 +210,12 @@ void BasicGLPane::keyReleased(wxKeyEvent& event)
 
 
 
-
-// Vertices and faces of a simple cube to demonstrate 3D render
-// source: 
-GLfloat v[8][3];
-GLint faces[6][4] = {  /* Vertex indices for the 6 faces of a cube. */
-    {0, 1, 2, 3}, {3, 2, 6, 7}, {7, 6, 5, 4},
-    {4, 5, 1, 0}, {5, 6, 2, 1}, {7, 4, 0, 3} };
- 
  
  
 BasicGLPane::BasicGLPane(wxFrame* parent, int* args, const wxSize &size) :
     wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,wxT("GLWindow"),args)
 {
 	//m_context = new wxGLContext(this);
-    // prepare a simple cube to demonstrate 3D render
-    // source: 
-    v[0][0] = v[1][0] = v[2][0] = v[3][0] = -1;
-    v[4][0] = v[5][0] = v[6][0] = v[7][0] = 1;
-    v[0][1] = v[1][1] = v[4][1] = v[5][1] = -1;
-    v[2][1] = v[3][1] = v[6][1] = v[7][1] = 1;
-    v[0][2] = v[3][2] = v[4][2] = v[7][2] = 1;
-    v[1][2] = v[2][2] = v[5][2] = v[6][2] = -1;    
  
     // To avoid flashing on MSW
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
@@ -396,6 +388,77 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
                   wxOK | wxICON_INFORMATION, this );
 }
 
+
+void MainFrame::OnSaveView(wxCommandEvent& WXUNUSED(event))
+{
+	float x, y, z;
+	camera->getCOI(x, y, z);
+	cout<<"current COI is: [ "<<x<<" "<<y<<" "<<z<<" ]"<<endl;
+	float r;
+	camera->getRadius(r);
+	cout<<"current Radius is: " <<r<<endl;
+	float elev;
+	camera->getElevation(elev);
+	cout<<"current elevation is: " <<elev<<endl;
+	float azim;
+	camera->getAzimuth(azim);
+	cout<<"current azimuth is: " <<azim<<endl;	
+
+	cout<<"Saving current view to file..."<<endl;
+
+	ofstream Writer;
+	string OutputFile = "view.txt";
+	Writer.open(OutputFile.c_str(),ios::out|ios::trunc);  
+    if( !Writer.is_open())
+	{
+		cerr<<"View file not opened! - OnSaveView Error"<<endl<<endl; 
+	}
+	else
+	{ 
+		Writer<<setw(15)<<x;
+		Writer<<setw(15)<<y;
+		Writer<<setw(15)<<z;
+		Writer<<setw(15)<<r;
+		Writer<<setw(15)<<elev;
+		Writer<<setw(15)<<azim<<endl;
+	}
+	Writer.close();
+	cout<<"Saved."<<endl<<endl;
+
+}
+
+
+void MainFrame::OnApplyView(wxCommandEvent& WXUNUSED(event))
+{
+	cout<<"read..."<<endl;
+	ifstream reader;
+	string inputFile = "view.txt";
+	reader.open(inputFile.c_str(),ios::in);
+	float x, y, z, r, elev, azim;
+    if( !reader.is_open())
+	{
+
+		cerr<<"View file not open! - OnApplyView Error"<<endl<<endl;
+	}
+	else
+	{
+
+		while (reader>>x>>y>>z>>r>>elev>>azim)
+		{
+			
+		}
+		cout<<"View loaded from file is: [ "<<x<<" "<<y<<" "<<z<<" "<<r<<" "<<elev<<" "<<azim<<" ]"<<endl;
+	}
+    reader.close();
+
+	cout<<"Apply view ..."<<endl;
+	camera->setRadius(r);
+	camera->setCOI(x, y, z);
+	camera->setElevation(elev);
+	camera->setAzimuth(azim);
+	
+	Refresh();	
+}
 
 void myInit (void)
 {

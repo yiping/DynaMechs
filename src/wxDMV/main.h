@@ -1,8 +1,8 @@
 #ifndef _glpane_
 #define _glpane_
 
-#include "wx/wx.h"
-#include "wx/glcanvas.h"
+#include <wx/wx.h>
+#include <wx/glcanvas.h>
 #include "global.h"
  
 class BasicGLPane : public wxGLCanvas

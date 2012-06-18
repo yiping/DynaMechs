@@ -32,13 +32,31 @@ IMPLEMENT_APP(MyApp)
  
 bool MyApp::OnInit()
 {
-
+	//cout << "Init " << endl;
 
 
     //---------------------------------------------------
 
 
 	mouse = new wxDMGLMouse(); // has to be put in the front
+
+
+	//---------------------------------------------------
+
+    wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer *toolpanel_sizer = new wxBoxSizer( wxVERTICAL);
+	
+	//cout << "Frame" << endl;
+    frame = new MainFrame(wxT("Hello GL World"), wxPoint(50,50), wxSize(600,400));
+	
+	toolpanel = new wxPanel((wxFrame*) frame, -1, wxPoint(-1,-1), wxSize(200,400));
+
+
+    int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0};
+   
+	//cout << "Pane " << endl;
+    glPane = new BasicGLPane( (wxFrame*) frame, args, wxSize(400,400));
+	
 	int i, j;
 	for (i=0; i<4; i++)
 	{
@@ -52,21 +70,7 @@ bool MyApp::OnInit()
 	camera->setRadius(8.0);
 	camera->setCOI(3.0, 3.0, 0.0);
 	camera->setTranslationScale(0.02f);
-
-	//---------------------------------------------------
-
-    wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer *toolpanel_sizer = new wxBoxSizer( wxVERTICAL);
 	
-
-    frame = new MainFrame(wxT("Hello GL World"), wxPoint(50,50), wxSize(600,400));
-	
-	toolpanel = new wxPanel((wxFrame*) frame, -1, wxPoint(-1,-1), wxSize(200,400));
-
-
-    int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0};
-   
-    glPane = new BasicGLPane( (wxFrame*) frame, args, wxSize(400,400));
 	welcomebutton = new wxButton( toolpanel, wxID_OK, wxT("Welcome"));
 	toolpanel_sizer->Add(welcomebutton, 0 );
 	toolpanel->SetSizer(toolpanel_sizer);
@@ -181,12 +185,13 @@ void BasicGLPane::keyPressed(wxKeyEvent& event) {}
 void BasicGLPane::keyReleased(wxKeyEvent& event)
 {
 	//normally wxWidgets sends key events to the window that has the focus
-	cout<<"key pressed"<<endl;
-	cout<<event.GetUnicodeKey()<<endl;
+	//cout<<"key pressed " << event.GetUnicodeKey()<<endl;
+	//cout<<event.GetUnicodeKey()<<endl;
     switch ( event.GetUnicodeKey() )
     {
         case 80:
-			cout<<"P matched!"<<endl;
+		case 112:
+			//cout<<"P matched!"<<endl;
 			paused_flag = !paused_flag;
             break;
 
@@ -208,9 +213,9 @@ GLint faces[6][4] = {  /* Vertex indices for the 6 faces of a cube. */
  
  
 BasicGLPane::BasicGLPane(wxFrame* parent, int* args, const wxSize &size) :
-    wxGLCanvas(parent, wxID_ANY, args, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE)
+    wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,wxT("GLWindow"),args)
 {
-	m_context = new wxGLContext(this);
+	//m_context = new wxGLContext(this);
     // prepare a simple cube to demonstrate 3D render
     // source: 
     v[0][0] = v[1][0] = v[2][0] = v[3][0] = -1;
@@ -227,7 +232,7 @@ BasicGLPane::BasicGLPane(wxFrame* parent, int* args, const wxSize &size) :
  
 BasicGLPane::~BasicGLPane()
 {
-	delete m_context;
+	//delete m_context;
 }
  
 void BasicGLPane::resized(wxSizeEvent& evt)
@@ -309,9 +314,9 @@ void BasicGLPane::render( wxPaintEvent& evt )
 	//cout<<"rendering event"<<endl;
     if(!IsShown()) return;
     
-    wxGLCanvas::SetCurrent(*m_context);
+    //wxGLCanvas::SetCurrent(*m_context);
     wxPaintDC(this); // only to be used in paint events. use wxClientDC to paint outside the paint event
-
+	SetCurrent();
 
 	// initialization has to be put here somehow.
 	if (runOnce == true)
@@ -320,7 +325,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
 		myInit();
 
 		// load robot stuff
-		char *filename = "flywheel_biped.cfg";
+		char *filename = (char *) "flywheel_biped.cfg";
 		ifstream cfg_ptr;
 		cfg_ptr.open(filename);
 
@@ -398,7 +403,7 @@ void myInit (void)
 	GLfloat light_diffuse[] = { 0.7, 0.7, 0.7, 1.0 };
 	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	// light_position is NOT default value
-	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+	//GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
 
 	glLightfv (GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glLightfv (GL_LIGHT0, GL_DIFFUSE, light_diffuse);

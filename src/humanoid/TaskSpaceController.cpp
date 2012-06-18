@@ -341,7 +341,7 @@ void TaskSpaceController::UpdateVariableBounds() {
 }
 
 void TaskSpaceController::UpdateConstraintBounds() {
-	MSKidxt       i,j;
+	MSKidxt       i;//,j;
 	
 	MSKboundkeye  bkc[MAXNUMCON];
 	double        blc[MAXNUMCON], buc[MAXNUMCON]; 
@@ -547,7 +547,7 @@ void TaskSpaceController::Optimize() {
 		
 		if ( r==MSK_RES_OK ) {
 			MSKsolstae solsta;
-			int j;
+			//int j;
 			
 			
 			MSK_getsolutionstatus (task,

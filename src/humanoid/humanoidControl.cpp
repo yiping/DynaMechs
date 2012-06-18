@@ -578,7 +578,7 @@ void ComputeGrfInfo(GRFInfo & grf) {
 		for (int k2 = 0; k2 < body->getNumForces(); k2++) {
 			body->getForce(k2)->computeForce(listruct->link_val2,localForce);
 			
-			Float * p = localForce;
+			//Float * p = localForce;
 			//cout << "Local Force " << tsc->SupportIndices[k1];
 			//cout << " = " << localForce[0] << " , " << localForce[1] << " , " << localForce[2] << " , ";
 			//cout << localForce[3] << " , " << localForce[4] << " , " << localForce[5] << endl;

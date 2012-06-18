@@ -623,7 +623,7 @@ void BasicGLPane::display (void) {
 	glDepthFunc (GL_ALWAYS);
 	glColor3f (0,0,0);
 	glRasterPos2f(10, 20);
-	char * displaytext = "Humanoid Model";
+	char * displaytext = (char *) "Humanoid Model";
 	int len = (int) strlen(displaytext);
 	for (int i = 0; i<len; ++i)
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, displaytext[i]);
@@ -706,16 +706,23 @@ void BasicGLPane::updateSim(wxIdleEvent& event) {
 void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, double headWidth, double headLength) {
 	Vector3F zup; zup << 0,0,1;
 	
-	Vector3F normedGRF = direction.normalized();
+	Vector3F normedDirection = direction.normalized();
 	
-	const double cosTheta = zup.dot(normedGRF);
+	// Note: We need to create a rotation such that the z-axis points in the direction of the 'direction' argument
+	//       Thus, we can realize the rotation with a pure x-y axial rotation
+	//       The rotation matrix of the rotated frame 'r' to the current frame 'c' (c_R_r) has special form.
+	//       It's 3-rd column in particular has form: [ wy*sin(theta) -wx*sin(theta) (1- cos(theta))]'
+	//       where theta , [wx wy 0] is the angle, axis of rotation
+	
+	// Find the rotation angle by comparing the z-axis of the current and rotated frame
+	const double cosTheta = zup.dot(normedDirection);
 	const double theta = acos(cosTheta);
-	//cout << "grf " << direction.transpose();
-	//cout << " theta = " << theta;
 	const double sinTheta = sin(theta);
 	
-	const double rX = - normedGRF(1)/sinTheta;
-	const double rY =   normedGRF(0)/sinTheta;
+	
+	// Exploit the special form of the rotation matrix (explained above) for find the axis of rotation
+	const double rX = - normedDirection(1)/sinTheta;
+	const double rY =   normedDirection(0)/sinTheta;
 	const double rZ = 0;
 	
 	glPushMatrix();

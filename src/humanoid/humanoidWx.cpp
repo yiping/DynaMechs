@@ -92,6 +92,9 @@ class MyApp: public wxApp
     BasicGLPane * glPane;
 	wxButton *welcomebutton;
 	wxPanel *toolpanel;
+	wxButton *saveViewbutton;
+	wxButton *applyViewbutton;
+	
 public:
     
 };
@@ -109,6 +112,7 @@ bool MyApp::OnInit()
 
 	mouse = new wxDMGLMouse(); // has to be put in the front
 
+	
 
 	//---------------------------------------------------
 
@@ -126,6 +130,7 @@ bool MyApp::OnInit()
 	//cout << "Pane " << endl;
     glPane = new BasicGLPane( (wxFrame*) frame, args, wxSize(400,400));
 	
+	
 	int i, j;
 	for (i=0; i<4; i++)
 	{
@@ -140,8 +145,13 @@ bool MyApp::OnInit()
 	camera->setCOI(3.0, 3.0, 0.0);
 	camera->setTranslationScale(0.02f);
 	
+	
 	welcomebutton = new wxButton( toolpanel, wxID_OK, wxT("Welcome"));
+	saveViewbutton = new wxButton( toolpanel, BUTTON_SaveView, wxT("Save View"));
+	applyViewbutton = new wxButton( toolpanel, BUTTON_ApplyView, wxT("Apply View"));
 	toolpanel_sizer->Add(welcomebutton, 0 );
+	toolpanel_sizer->Add(saveViewbutton, 0 );
+	toolpanel_sizer->Add(applyViewbutton, 0 );
 	toolpanel->SetSizer(toolpanel_sizer);
 	
     
@@ -180,6 +190,8 @@ END_EVENT_TABLE()
  
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_BUTTON  (wxID_OK,   MainFrame::OnAbout)
+	EVT_BUTTON  (BUTTON_SaveView,   MainFrame::OnSaveView)
+	EVT_BUTTON  (BUTTON_ApplyView,   MainFrame::OnApplyView)
 END_EVENT_TABLE()
 
  
@@ -435,6 +447,77 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     CreateStatusBar();
     SetStatusText( _("Welcome to DynaMechs wxViewr!") );
 }
+
+void MainFrame::OnSaveView(wxCommandEvent& WXUNUSED(event))
+{
+	float x, y, z;
+	camera->getCOI(x, y, z);
+	cout<<"current COI is: [ "<<x<<" "<<y<<" "<<z<<" ]"<<endl;
+	float r;
+	camera->getRadius(r);
+	cout<<"current Radius is: " <<r<<endl;
+	float elev;
+	camera->getElevation(elev);
+	cout<<"current elevation is: " <<elev<<endl;
+	float azim;
+	camera->getAzimuth(azim);
+	cout<<"current azimuth is: " <<azim<<endl;	
+	
+	cout<<"Saving current view to file..."<<endl;
+	
+	ofstream Writer;
+	string OutputFile = "view.txt";
+	Writer.open(OutputFile.c_str(),ios::out|ios::trunc);  
+    if( !Writer.is_open())
+	{
+		cerr<<"View file not opened! - OnSaveView Error"<<endl<<endl; 
+	}
+	else
+	{ 
+		Writer<<setw(15)<<x;
+		Writer<<setw(15)<<y;
+		Writer<<setw(15)<<z;
+		Writer<<setw(15)<<r;
+		Writer<<setw(15)<<elev;
+		Writer<<setw(15)<<azim<<endl;
+	}
+	Writer.close();
+	cout<<"Saved."<<endl<<endl;
+	
+}
+
+void MainFrame::OnApplyView(wxCommandEvent& WXUNUSED(event))
+{
+	cout<<"read..."<<endl;
+	ifstream reader;
+	string inputFile = "view.txt";
+	reader.open(inputFile.c_str(),ios::in);
+	float x, y, z, r, elev, azim;
+    if( !reader.is_open())
+	{
+		
+		cerr<<"View file not open! - OnApplyView Error"<<endl<<endl;
+	}
+	else
+	{
+		
+		while (reader>>x>>y>>z>>r>>elev>>azim)
+		{
+			
+		}
+		cout<<"View loaded from file is: [ "<<x<<" "<<y<<" "<<z<<" "<<r<<" "<<elev<<" "<<azim<<" ]"<<endl;
+	}
+    reader.close();
+	
+	cout<<"Apply view ..."<<endl;
+	camera->setRadius(r);
+	camera->setCOI(x, y, z);
+	camera->setElevation(elev);
+	camera->setAzimuth(azim);
+	
+	Refresh();	
+}
+
 
 
 void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
@@ -721,9 +804,17 @@ void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, doubl
 	
 	
 	// Exploit the special form of the rotation matrix (explained above) for find the axis of rotation
-	const double rX = - normedDirection(1)/sinTheta;
-	const double rY =   normedDirection(0)/sinTheta;
-	const double rZ = 0;
+	double rX, rY, rZ;
+	if(theta > 0) {	
+		rX = - normedDirection(1)/sinTheta;
+		rY =   normedDirection(0)/sinTheta;
+		rZ = 0;
+	}
+	else {
+		rX = 0;
+		rY = 0;
+		rZ = 1;
+	}
 	
 	glPushMatrix();
 	glTranslatef(location(0), location(1), location(2));
@@ -734,6 +825,11 @@ void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, doubl
 	if (cylinderLength > headLength) {
 		cylinderLength -= headLength;
 	}
+	else {
+		headLength = cylinderLength ;
+		cylinderLength = 0;
+	}
+
 	
 	//Draw Cylinder
 	gluCylinder(quadratic,lineWidth,lineWidth,cylinderLength,32,32);

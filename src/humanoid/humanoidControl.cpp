@@ -67,7 +67,7 @@ void initControl() {
 	
 		
 	ComTrajectory.setSize(3);
-	initializeDataLogging();
+	//initializeDataLogging();
 }
 
 void HumanoidControl(ControlInfo & ci) {

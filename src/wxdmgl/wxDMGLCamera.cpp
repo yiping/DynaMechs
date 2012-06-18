@@ -40,7 +40,6 @@ void wxDMGLCamera::reset()
       }
       m_view_mat[i][i] = 1.0;
    }
-
    setPerspective(45.0, 1.0, 1.0, 100.0);
 }
 
@@ -67,7 +66,7 @@ void wxDMGLCamera::setPerspective(GLfloat fov, GLfloat aspect,
 void wxDMGLCamera::applyPerspective()
 {
    glMatrixMode (GL_PROJECTION);
-   glLoadIdentity ();
+	glLoadIdentity ();
    //set up perspective projection matrix
    gluPerspective(m_fov, m_aspect, m_near_clip, m_far_clip);
 }

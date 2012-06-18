@@ -33,7 +33,7 @@ class DataLogger {
 		void setMaxItems(int);
 		void declareGroup(int groupCode, IntVector & itemCodes);
 		void setItemName(int itemCode, string &);
-	
+		void setItemName(int itemCode, const char *);
 	private:
 		FloatVector * curr;
 		deque<FloatVector *> data;

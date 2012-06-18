@@ -88,7 +88,7 @@ void dmEnvironment::drawInit()
 {
    register int i, j;
 
-   GLfloat vertex[3][3], normal[3];
+  // GLfloat vertex[3][3], normal[3];
 
    GLfloat vtex[4][3];//lyp
 
@@ -121,7 +121,7 @@ void dmEnvironment::drawInit()
 	int tw;
 	int th;
 	unsigned char* data;
-	GLubyte **pixelArray;
+	//GLubyte **pixelArray;
 
 	if (f != NULL)
 	{
@@ -158,7 +158,7 @@ void dmEnvironment::drawInit()
 	}
 	else
 	{
-		cerr<<"Texture file not opened. "<<endl;
+		cout<<"Texture file not opened. "<<endl;
 
 	}
 

@@ -4,7 +4,13 @@
 #include <wx/wx.h>
 #include <wx/glcanvas.h>
 #include "global.h"
- 
+
+enum
+{
+	BUTTON_SaveView = wxID_HIGHEST + 1, // declares an id which will be used to call button
+	BUTTON_ApplyView = wxID_HIGHEST + 2
+};
+
 class BasicGLPane : public wxGLCanvas
 {
     wxGLContext*	m_context;
@@ -50,7 +56,8 @@ public:
     MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 
     void OnAbout(wxCommandEvent& event);
-
+	void OnSaveView(wxCommandEvent& event);
+	void OnApplyView(wxCommandEvent& event);
     DECLARE_EVENT_TABLE()
 };
 

@@ -1,6 +1,6 @@
-#include "wx/wx.h"
-#include "wx/sizer.h"
-#include "wx/glcanvas.h"
+#include <wx/wx.h>
+#include <wx/sizer.h>
+#include <wx/glcanvas.h>
 #include "main.h"
 
  

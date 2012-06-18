@@ -30,6 +30,7 @@ void copyRtoMat(const CartesianTensor R, Matrix3F & Rmat);
 double timeDiff(const dmTimespec & t1, const dmTimespec & t2);
 void transformToZMP(Vector6F & fZMP, Vector3F & pZMP) ;
 void ComputeGrfInfo(GRFInfo & grf);
+void initializeDataLogging();
 
 CubicSplineTrajectory ComTrajectory;
 DataLogger dataLog;
@@ -66,6 +67,7 @@ void initControl() {
 	
 		
 	ComTrajectory.setSize(3);
+	initializeDataLogging();
 }
 
 void HumanoidControl(ControlInfo & ci) {
@@ -679,6 +681,151 @@ void transformToZMP(Vector6F & fZMP, Vector3F & pZMP) {
 
 void initializeDataLogging() {
 	
+	// Angles
+	dataLog.setItemName(BASE_QUAT0,		"Base Quaternion0");
+	dataLog.setItemName(BASE_QUAT1,		"Base Quaternion1");
+	dataLog.setItemName(BASE_QUAT2,		"Base Quaternion2");
+	dataLog.setItemName(BASE_QUAT3,		"Base Quaternion3");
+	dataLog.setItemName(BASE_P_X,		"Base Position X");
+	dataLog.setItemName(BASE_P_Y,		"Base Position Y");
+	dataLog.setItemName(BASE_P_Z,		"Base Position Z");
+	dataLog.setItemName(RHIP_PHI,		"R Hip Phi");
+	dataLog.setItemName(RHIP_PSI,		"R Hip Psi");
+	dataLog.setItemName(RHIP_GAMMA,		"R Hip Gamma");
+	dataLog.setItemName(RKNEE,			"R Knee Angle");
+	dataLog.setItemName(RANK1,			"R Ank 1 Angle");
+	dataLog.setItemName(RANK2,			"R Ank 2 Angle");
+	dataLog.setItemName(LHIP_PHI,		"L Hip Phi");
+	dataLog.setItemName(LHIP_PSI,		"L Hip Psi");
+	dataLog.setItemName(LHIP_GAMMA,		"L Hip Gamma");
+	dataLog.setItemName(LKNEE,			"L Knee Angle");
+	dataLog.setItemName(LANK1,			"L Ank 1 Angle");
+	dataLog.setItemName(LANK2,			"L Ank 2 Angle");
+	dataLog.setItemName(RSHOULD_PHI,	"R Shoulder Phi");
+	dataLog.setItemName(RSHOULD_PSI,	"R Shoulder Psi");
+	dataLog.setItemName(RSHOULD_GAMMA,	"R Shoulder Gamma");
+	dataLog.setItemName(RELBOW,			"R Elbow Angle");
+	dataLog.setItemName(LSHOULD_PHI,	"L Shoulder Phi");
+	dataLog.setItemName(LSHOULD_PSI,	"L Shoulder Psi");
+	dataLog.setItemName(LSHOULD_GAMMA,	"L Shoulder Gamma");
+	dataLog.setItemName(LELBOW,			"L Elbow Angle");
+	
+	int angleItems[] = {BASE_QUAT0,BASE_QUAT1,BASE_QUAT2,BASE_QUAT3,
+					BASE_P_X,BASE_P_Y,BASE_P_Z,RHIP_PHI,RHIP_PSI, RHIP_GAMMA,
+					RKNEE,RANK1,RANK2,LHIP_PHI,LHIP_PSI,LHIP_GAMMA,LKNEE,LANK1,LANK2,
+					RSHOULD_PHI,RSHOULD_PSI,RSHOULD_GAMMA,RELBOW,LSHOULD_PHI,
+					LSHOULD_PSI,LSHOULD_GAMMA,LELBOW};
+	IntVector angleGroup(angleItems,angleItems+sizeof(angleItems)/sizeof(int));
+	dataLog.declareGroup(JOINT_ANGLES,angleGroup);
+	
+	dataLog.setItemName(BASE_OMEGA_X,	"Base Omega X");
+	dataLog.setItemName(BASE_OMEGA_Y,	"Base Omega Y");
+	dataLog.setItemName(BASE_OMEGA_Z,	"Base Omega Z");
+	dataLog.setItemName(BASE_V_X,		"Base Vel. X");
+	dataLog.setItemName(BASE_V_Y,		"Base Vel. Y");
+	dataLog.setItemName(BASE_V_Z,		"Base Vel. Z");
+	dataLog.setItemName(RHIP_OMEGA_X,	"R Hip Omega X");
+	dataLog.setItemName(RHIP_OMEGA_Y,   "R Hip Omega Y");
+	dataLog.setItemName(RHIP_OMEGA_Z,	"R Hip Omega Z");
+	dataLog.setItemName(RKNEE_RATE,		"R Knee Rate");
+	dataLog.setItemName(RANK1_RATE,		"R Ank 1 Rate");
+	dataLog.setItemName(RANK2_RATE,		"R Ank 2 Rate");
+	dataLog.setItemName(LHIP_OMEGA_X,	"L Hip Omega X");
+	dataLog.setItemName(LHIP_OMEGA_Y,   "L Hip Omega Y");
+	dataLog.setItemName(LHIP_OMEGA_Z,	"L Hip Omega Z");
+	dataLog.setItemName(LKNEE_RATE,		"L Knee Rate");
+	dataLog.setItemName(LANK1_RATE,		"L Ank 1 Rate");
+	dataLog.setItemName(LANK2_RATE,		"L Ank 2 Rate");
+	dataLog.setItemName(RSHOULD_OMEGA_X,"R Shoulder Omega X");
+	dataLog.setItemName(RSHOULD_OMEGA_Y,"R Shoulder Omega Y");
+	dataLog.setItemName(RSHOULD_OMEGA_Z,"R Shoulder Omega Z");
+	dataLog.setItemName(RELBOW_RATE,	"R Elbow Rate");
+	dataLog.setItemName(LSHOULD_OMEGA_X,"L Shoulder Omega X");
+	dataLog.setItemName(LSHOULD_OMEGA_Y,"L Shoulder Omega Y");
+	dataLog.setItemName(LSHOULD_OMEGA_Z,"L Shoulder Omega Z");
+	dataLog.setItemName(LELBOW_RATE,	"L Elbow Rate");
+	
+	int rateItems[] = {BASE_OMEGA_X,BASE_OMEGA_Y,BASE_OMEGA_Z,BASE_V_X,BASE_V_Y,BASE_V_Z,
+						RHIP_OMEGA_X,RHIP_OMEGA_Y,RHIP_OMEGA_Z,RKNEE_RATE,RANK1_RATE,RANK2_RATE,
+						LHIP_OMEGA_X,LHIP_OMEGA_Y,LHIP_OMEGA_Z,LKNEE_RATE,LANK1_RATE,LANK2_RATE,
+						RSHOULD_OMEGA_X,RSHOULD_OMEGA_Y,RSHOULD_OMEGA_Z,RELBOW_RATE,
+						LSHOULD_OMEGA_X,LSHOULD_OMEGA_Y,LSHOULD_OMEGA_Z,LELBOW_RATE};
+	
+	IntVector rateGroup(angleItems,rateItems+sizeof(rateItems)/sizeof(int));
+	dataLog.declareGroup(JOINT_RATES,rateGroup);
+	
+	dataLog.setItemName(RHIP_TAU_X,		"R Hip Tau X");
+	dataLog.setItemName(RHIP_TAU_Y,		"R Hip Tau Y");
+	dataLog.setItemName(RHIP_TAU_Z,		"R Hip Tau Z");
+	dataLog.setItemName(RKNEE_TAU,		"R Knee Tau");
+	dataLog.setItemName(RANK1_TAU,		"R Ank 1 Tau");
+	dataLog.setItemName(RANK2_TAU,		"R Ank 2 Tau");
+	dataLog.setItemName(LHIP_TAU_X,		"L Hip Tau X");
+	dataLog.setItemName(LHIP_TAU_Y,		"L Hip Tau Y");
+	dataLog.setItemName(LHIP_TAU_Z,		"L Hip Tau Z");
+	dataLog.setItemName(LKNEE_TAU,		"L Knee Tau");
+	dataLog.setItemName(LANK1_TAU,		"L Ank 1 Tau");
+	dataLog.setItemName(LANK2_TAU,		"L Ank 2 Tau");
+	dataLog.setItemName(RSHOULD_TAU_X,	"R Shoulder Tau X");
+	dataLog.setItemName(RSHOULD_TAU_Y,	"R Shoulder Tau Y");
+	dataLog.setItemName(RSHOULD_TAU_Z,	"R Shoulder Tau Z");
+	dataLog.setItemName(RELBOW_TAU,		"R Knee Tau");
+	dataLog.setItemName(RSHOULD_TAU_X,	"L Shoulder Tau X");
+	dataLog.setItemName(RSHOULD_TAU_Y,	"L Shoulder Tau Y");
+	dataLog.setItemName(RSHOULD_TAU_Z,	"L Shoulder Tau Z");
+	dataLog.setItemName(RELBOW_TAU,		"L Knee Tau");
+	
+
+	dataLog.setItemName(COM_P_X,		"CoM Pos X");
+	dataLog.setItemName(COM_P_Y,		"CoM Pos Y");
+	dataLog.setItemName(COM_P_Z,		"CoM Pos Z");
+	dataLog.setItemName(COM_V_X,		"CoM Vel X");
+	dataLog.setItemName(COM_V_Y,		"CoM Vel Y");
+	dataLog.setItemName(COM_V_Z,		"CoM Vel Z");
+	
+	dataLog.setItemName(CM_K_X,			"Cent Ang Mom X");
+	dataLog.setItemName(CM_K_Y,			"Cent Ang Mom Y");
+	dataLog.setItemName(CM_K_Z,			"Cent Ang Mom Z");
+	dataLog.setItemName(CM_L_X,			"Cent Lin Mom X");
+	dataLog.setItemName(CM_L_Y,			"Cent Lin Mom Y");
+	dataLog.setItemName(CM_L_Z,			"Cent Lin Mom Z");
+	
+	dataLog.setItemName(LCOP_F_X,		"L CoP Force X");
+	dataLog.setItemName(LCOP_F_Y,		"L CoP Force Y");
+	dataLog.setItemName(LCOP_F_Z,		"L CoP Force Z");
+	dataLog.setItemName(LCOP_P_X,		"L CoP Pos X");
+	dataLog.setItemName(LCOP_P_Y,		"L CoP Pos Y");
+	dataLog.setItemName(LCOP_N_Z,		"L CoP Mom Z");
+	
+	dataLog.setItemName(RCOP_F_X,		"R CoP Force X");
+	dataLog.setItemName(RCOP_F_Y,		"R CoP Force Y");
+	dataLog.setItemName(RCOP_F_Z,		"R CoP Force Z");
+	dataLog.setItemName(RCOP_P_X,		"R CoP Pos X");
+	dataLog.setItemName(RCOP_P_Y,		"R CoP Pos Y");
+	dataLog.setItemName(RCOP_N_Z,		"R CoP Mom Z");
+	
+	dataLog.setItemName(ZMP_F_X,		"ZMP Force X");
+	dataLog.setItemName(ZMP_F_Y,		"ZMP Force Y");
+	dataLog.setItemName(ZMP_F_Z,		"ZMP Force Z");
+	dataLog.setItemName(ZMP_P_X,		"ZMP Pos X");
+	dataLog.setItemName(ZMP_P_Y,		"ZMP Pos Y");
+	dataLog.setItemName(ZMP_N_Z,		"ZMP Mom Z");
+	
+	
+	
+	/*DataLogger();
+	void newRecord();
+	
+	void assignItem(int code, Float value);
+	void assignGroup(int groupCode, const VectorXF & value);
+	
+	void writeRecords();
+	void setFile(const string & fName);
+	
+	void setMaxGroups(int);
+	void setMaxItems(int);
+	void declareGroup(int groupCode, IntVector & itemCodes);
+	void setItemName(int itemCode, string &);*/
 	
 }
 

@@ -40,7 +40,8 @@ void wxDMGLCamera::reset()
       }
       m_view_mat[i][i] = 1.0;
    }
-   setPerspective(45.0, 1.0, 1.0, 100.0);
+   // Tip: Don't do anything OpenGL in contstructors!
+   //setPerspective(45.0, 1.0, 1.0, 100.0);
 }
 
 

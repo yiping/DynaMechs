@@ -85,3 +85,6 @@ void DataLogger::declareGroup(int groupCode, IntVector & itemCodes) {
 void DataLogger::setItemName(int itemCode, string & s) {
 	itemNames[itemCode] = s;
 }
+void DataLogger::setItemName(int itemCode, const char * s) {
+	//itemNames[itemCode] = s;
+}

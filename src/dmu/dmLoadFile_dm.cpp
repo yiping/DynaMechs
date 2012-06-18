@@ -111,7 +111,7 @@ dmSystem *dmuLoadFile_dm(char *filename)
 
    // WIN32 and GCC 2.91.66 (RedHat 6 - Mandrake) have a problem with
    // initializing strtok.  So the following is necessary
-   strtok("","");
+   strtok((char *)"",(char *)"");
 
    if (strcmp(line, "# DynaMechs V 4.0 ascii") == 0)
    {

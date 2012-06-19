@@ -3,7 +3,7 @@
 #include "wx/glcanvas.h"
 #include "BasicGLPane.h"
 
-
+#include "wxBoxSlider.h"
 #include <dm.h>            // DynaMechs typedefs, globals, etc.
 #include <dmu.h>
 #include <dmGL.h>
@@ -95,6 +95,7 @@ class MyApp: public wxApp
 	wxButton *saveViewbutton;
 	wxButton *applyViewbutton;
 	
+	
 public:
     
 };
@@ -112,7 +113,7 @@ bool MyApp::OnInit()
 
 	mouse = new wxDMGLMouse(); // has to be put in the front
 
-	
+	//wxSpinCtrlDouble * test;
 
 	//---------------------------------------------------
 
@@ -149,9 +150,39 @@ bool MyApp::OnInit()
 	welcomebutton = new wxButton( toolpanel, wxID_OK, wxT("Welcome"));
 	saveViewbutton = new wxButton( toolpanel, BUTTON_SaveView, wxT("Save View"));
 	applyViewbutton = new wxButton( toolpanel, BUTTON_ApplyView, wxT("Apply View"));
-	toolpanel_sizer->Add(welcomebutton, 0 );
-	toolpanel_sizer->Add(saveViewbutton, 0 );
-	toolpanel_sizer->Add(applyViewbutton, 0 );
+	showCoM = new wxCheckBox(toolpanel,CHECKBOX_ShowCoM,wxT("Show CoM"));
+	showGRF = new wxCheckBox(toolpanel,CHECKBOX_ShowGRF,wxT("Show GRF"));
+	showNetForceAtGround = new wxCheckBox(toolpanel,CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
+	showNetForceAtCoM	 = new wxCheckBox(toolpanel,CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
+	
+	toolpanel_sizer->Add(welcomebutton, 0 ,wxALL | wxALIGN_CENTER,2);
+	
+	
+	toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Camera Options")),0,wxALL,2);
+	toolpanel_sizer->Add(saveViewbutton, 0 ,wxALL | wxALIGN_CENTER,2);
+	toolpanel_sizer->Add(applyViewbutton, 0 ,wxALL | wxALIGN_CENTER,2);
+	
+	toolpanel_sizer->AddSpacer(15);
+	toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("View Options")),0,wxALL,2);
+	toolpanel_sizer->Add(showCoM, 0 ,wxALL  ,2);
+	toolpanel_sizer->Add(showGRF, 0 ,wxALL ,2);
+	toolpanel_sizer->Add(showNetForceAtGround, 0,wxALL,2 );
+	toolpanel_sizer->Add(showNetForceAtCoM, 0,wxALL,2 );
+	
+	toolpanel_sizer->AddSpacer(15);					 
+	toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Control Options")),0,wxALL,2);	
+	
+	wxBoxSlider * CoMControlSlider = new wxBoxSlider(toolpanel,-1,5,15,10);
+	
+	
+	
+	
+	toolpanel_sizer->Add(CoMControlSlider,0);
+	
+	showCoM->SetValue(true);
+	showGRF->SetValue(true);
+	
+	
 	toolpanel->SetSizer(toolpanel_sizer);
 	
     
@@ -529,6 +560,7 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
 
 
 void myInit (void) {
+	
 	GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 	GLfloat light_diffuse[] = { 0.7, 0.7, 0.7, 1.0 };
 	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -602,46 +634,52 @@ void BasicGLPane::display (void) {
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	
-	// Draw COM Info
-	glBegin(GL_LINES);
-	glColor4f(0.0, 0.0, 1.0,1.0);
-	glVertex3f(ComDes[0], ComDes[1], ComDes[2]);
-	glVertex3f(ComDes[0], ComDes[1], 0      );
-	glEnd();
-	
-	glBegin(GL_LINES);
-	glColor4f(1.0, 0.0, 0.0,1.0);
-	glVertex3f(ComPos[0], ComPos[1], ComPos[2]);
-	glVertex3f(ComPos[0], ComPos[1], 0      );
-	glEnd();
-	
-	glPushMatrix();
-	glTranslatef(ComPos[0],ComPos[1],ComPos[2]); 
-	gluSphere(quadratic,.03f,32,32);
-	glPopMatrix();
-	//glTranslatef(-ComPos[0],-ComPos[1],-ComPos[2]); 
+	if (showCoM->IsChecked()) {
+		// Draw COM Info
+		glBegin(GL_LINES);
+		glColor4f(0.0, 0.0, 1.0,1.0);
+		glVertex3f(ComDes[0], ComDes[1], ComDes[2]);
+		glVertex3f(ComDes[0], ComDes[1], 0      );
+		glEnd();
+		
+		glBegin(GL_LINES);
+		glColor4f(1.0, 0.0, 0.0,1.0);
+		glVertex3f(ComPos[0], ComPos[1], ComPos[2]);
+		glVertex3f(ComPos[0], ComPos[1], 0      );
+		glEnd();
+		
+		glPushMatrix();
+		glTranslatef(ComPos[0],ComPos[1],ComPos[2]); 
+		gluSphere(quadratic,.03f,32,32);
+		glPopMatrix();
+		//glTranslatef(-ComPos[0],-ComPos[1],-ComPos[2]);
+	}
+	 
 	
 	const Float forceScale = 250;
 	glColor4f(0.0, 0.0, 0.0,0.75);
 	
-	// Draw GRF Info
-	for (int i=0; i< grfInfo.localContacts; i++) {
-		Vector3F footPoint = grfInfo.pCoPs[i];
-		Vector3F grf = grfInfo.fCoPs[i]/forceScale;
-		
+	if (showGRF->IsChecked()) {
+		// Draw GRF Info
+		for (int i=0; i< grfInfo.localContacts; i++) {
+			Vector3F footPoint = grfInfo.pCoPs[i];
+			Vector3F grf = grfInfo.fCoPs[i]/forceScale;
+			
+			drawArrow(footPoint, grf, .005, .01, .03);
+			
+		}
+	}
+
+	if (showNetForceAtGround->IsChecked()) {
+		//Draw ZMPInfo
+		Vector3F footPoint = grfInfo.pZMP;
+		Vector3F grf = grfInfo.fZMP/forceScale;
 		drawArrow(footPoint, grf, .005, .01, .03);
-		
 	}
 	
-	//Draw ZMPInfo
-	Vector3F footPoint = grfInfo.pZMP;
-	Vector3F grf = grfInfo.fZMP/forceScale;
-	drawArrow(footPoint, grf, .005, .01, .03);
 	
 	
-	
-	
-	glDisable(GL_BLEND);
+	//glDisable(GL_BLEND);
 	// =========
 	
 	

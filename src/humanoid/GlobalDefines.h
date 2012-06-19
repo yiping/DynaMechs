@@ -13,6 +13,7 @@
 #include <dm.h>
 #include <dmArticulation.hpp>
 #include <vector>
+#include "wx/wx.h"
 
 #include "GlobalTypes.h"
 
@@ -25,6 +26,7 @@ extern volatile Float sim_time;
 extern volatile Float ComPos[3];
 extern volatile Float ComDes[3];
 extern GRFInfo grfInfo;
+extern wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
 
 #define GROUP_FLAG 0x0800
 

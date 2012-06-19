@@ -80,6 +80,7 @@ void DataLogger::setMaxItems(int maxI) {
 	itemNames.resize(maxItems);
 }
 void DataLogger::declareGroup(int groupCode, IntVector & itemCodes) {
+	
 	groups[groupCode] = itemCodes;
 }
 void DataLogger::setItemName(int itemCode, string & s) {

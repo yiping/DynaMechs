@@ -67,7 +67,7 @@ void initControl() {
 	
 		
 	ComTrajectory.setSize(3);
-	//initializeDataLogging();
+	initializeDataLogging();
 }
 
 void HumanoidControl(ControlInfo & ci) {
@@ -680,6 +680,9 @@ void transformToZMP(Vector6F & fZMP, Vector3F & pZMP) {
 }
 
 void initializeDataLogging() {
+	
+	dataLog.setMaxItems(MAX_NUM_ITEMS);
+	dataLog.setMaxGroups(MAX_NUM_GROUPS);
 	
 	// Angles
 	dataLog.setItemName(BASE_QUAT0,		"Base Quaternion0");

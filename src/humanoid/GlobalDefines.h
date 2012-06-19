@@ -10,6 +10,9 @@
 #ifndef __GLOBAL_DEFINES__
 #define __GLOBAL_DEFINES__
 
+//This is a dirty workaround
+#undef Success
+
 #include <dm.h>
 #include <dmArticulation.hpp>
 #include <vector>

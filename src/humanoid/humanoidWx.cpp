@@ -2,8 +2,11 @@
 #include "wx/sizer.h"
 #include "wx/glcanvas.h"
 #include "BasicGLPane.h"
-
 #include "wxBoxSlider.h"
+
+//This is a dirty workaround
+#undef Success
+
 #include <dm.h>            // DynaMechs typedefs, globals, etc.
 #include <dmu.h>
 #include <dmGL.h>
@@ -335,6 +338,9 @@ BasicGLPane::BasicGLPane(wxFrame* parent, int* args, const wxSize &size) :
     // To avoid flashing on MSW
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 
+    int argc = 1;
+    char* argv[1] = { wxString((wxTheApp->argv)[0]).char_str()};
+	glutInit(&argc, argv);
 }
   
 void BasicGLPane::resized(wxSizeEvent& evt) {
@@ -585,12 +591,13 @@ void myInit (void) {
 
 	// ****
 	glEnable(GL_LINE_SMOOTH);
-	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+
 	// Enable Blending
 	glEnable(GL_BLEND);
 	// Specifies pixel arithmetic
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	glLineWidth (1.5);
 	// ****
 	//glShadeModel(GL_FLAT);
 	glShadeModel(GL_SMOOTH);

@@ -259,6 +259,7 @@
 		195224F714D35B010042EA6D /* dmGLPolarCamera_yup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869714D2E9A800778EA7 /* dmGLPolarCamera_yup.cpp */; };
 		195224F814D35B010042EA6D /* dmGLPolarCamera_zup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869914D2E9A800778EA7 /* dmGLPolarCamera_zup.cpp */; };
 		195224F914D35B010042EA6D /* dmGLPolarCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869B14D2E9A800778EA7 /* dmGLPolarCamera.cpp */; };
+		19566DA31590EE570014E039 /* wxNumericTextCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19566DA21590EE570014E039 /* wxNumericTextCtrl.cpp */; };
 		19577E8C1541A61200B991DF /* libmosek64.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19577E8B1541A61200B991DF /* libmosek64.dylib */; };
 		197B842D15070B530064753B /* dmGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869114D2E9A800778EA7 /* dmGLCamera.cpp */; };
 		197B842E15070B530064753B /* dmGLFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869314D2E9A800778EA7 /* dmGLFlyCamera.cpp */; };
@@ -380,6 +381,7 @@
 		19B8624C158F85CD00788BE5 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3F4158BB30E00BC4671 /* IOKit.framework */; };
 		19B86261158F85E800788BE5 /* libwx_base_carbonu-2.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3E1158BB2D000BC4671 /* libwx_base_carbonu-2.8.a */; };
 		19B86314158FACE600788BE5 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876914D2EDF400778EA7 /* GLUT.framework */; };
+		19B864781590D9B200788BE5 /* wxBoxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B864761590D9B200788BE5 /* wxBoxSlider.cpp */; };
 		19BA5C5B158A403400BC26DA /* GlobalDefines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C58158A403400BC26DA /* GlobalDefines.cpp */; };
 		19BA5C63158A405100BC26DA /* CubicSplineTrajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C5F158A405100BC26DA /* CubicSplineTrajectory.cpp */; };
 		19BA5C64158A405100BC26DA /* DataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C61158A405100BC26DA /* DataLogger.cpp */; };
@@ -781,6 +783,8 @@
 		1940A4D51507C75B00CD4386 /* humanoid */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = humanoid; sourceTree = BUILT_PRODUCTS_DIR; };
 		1952236614D34FB30042EA6D /* doublePendulum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = doublePendulum.cpp; path = src/doublePendulum/doublePendulum.cpp; sourceTree = "<group>"; };
 		1952236C14D34FF10042EA6D /* doublePendulum */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = doublePendulum; sourceTree = BUILT_PRODUCTS_DIR; };
+		19566DA11590EE570014E039 /* wxNumericTextCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxNumericTextCtrl.h; sourceTree = "<group>"; };
+		19566DA21590EE570014E039 /* wxNumericTextCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxNumericTextCtrl.cpp; sourceTree = "<group>"; };
 		19577E2B1541A01000B991DF /* mosekTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mosekTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		19577E8B1541A61200B991DF /* libmosek64.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmosek64.dylib; path = /usr/local/lib/libmosek64.dylib; sourceTree = "<absolute>"; };
 		197B842715070B450064753B /* functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = functions.cpp; path = src/kurmet/functions.cpp; sourceTree = "<group>"; };
@@ -799,6 +803,8 @@
 		19B85EB9158F7DA200788BE5 /* userControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = userControl.cpp; path = src/wxDMV/userControl.cpp; sourceTree = "<group>"; };
 		19B85F10158F7E2F00788BE5 /* humanoidWx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = humanoidWx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19B85F12158F7E2F00788BE5 /* wxDMVapp-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wxDMVapp-Info copy.plist"; sourceTree = "<group>"; };
+		19B864761590D9B200788BE5 /* wxBoxSlider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxBoxSlider.cpp; path = src/humanoid/wxBoxSlider.cpp; sourceTree = "<group>"; };
+		19B864771590D9B200788BE5 /* wxBoxSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxBoxSlider.h; path = src/humanoid/wxBoxSlider.h; sourceTree = "<group>"; };
 		19BA5C58158A403400BC26DA /* GlobalDefines.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GlobalDefines.cpp; path = src/humanoid/GlobalDefines.cpp; sourceTree = "<group>"; };
 		19BA5C59158A403400BC26DA /* GlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalDefines.h; path = src/humanoid/GlobalDefines.h; sourceTree = "<group>"; };
 		19BA5C5A158A403400BC26DA /* GlobalTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalTypes.h; path = src/humanoid/GlobalTypes.h; sourceTree = "<group>"; };
@@ -2338,6 +2344,7 @@
 		1940A4981507C5FE00CD4386 /* humanoid */ = {
 			isa = PBXGroup;
 			children = (
+				19B864721590D99800788BE5 /* wxExtensions */,
 				19C6AB7E15890F8D00298257 /* Global */,
 				19C6AAC21588ED1100298257 /* Optimization */,
 				19C6AABF1588ED0600298257 /* Utilities */,
@@ -2467,6 +2474,17 @@
 				1925864814D2E95000778EA7 /* dmContactModel.hpp */,
 			);
 			name = Contact;
+			sourceTree = "<group>";
+		};
+		19B864721590D99800788BE5 /* wxExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				19566DA11590EE570014E039 /* wxNumericTextCtrl.h */,
+				19566DA21590EE570014E039 /* wxNumericTextCtrl.cpp */,
+				19B864761590D9B200788BE5 /* wxBoxSlider.cpp */,
+				19B864771590D9B200788BE5 /* wxBoxSlider.h */,
+			);
+			name = wxExtensions;
 			sourceTree = "<group>";
 		};
 		19BA5C7F158A42D700BC26DA /* wxDMV */ = {
@@ -4684,6 +4702,8 @@
 				19B85EEF158F7E2F00788BE5 /* dmSecondaryPrismaticJoint.cpp in Sources */,
 				19B85EF0158F7E2F00788BE5 /* dmSecondaryRevoluteJoint.cpp in Sources */,
 				19B85EF1158F7E2F00788BE5 /* dmSecondarySphericalJoint.cpp in Sources */,
+				19B864781590D9B200788BE5 /* wxBoxSlider.cpp in Sources */,
+				19566DA31590EE570014E039 /* wxNumericTextCtrl.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

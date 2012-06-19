@@ -37,6 +37,7 @@ ADD_SUBDIRECTORY(src/wxdmgl bin_wxdmgl)
 #ADD_SUBDIRECTORY(src/windmill bin_windmill)
 #ADD_SUBDIRECTORY(src/flywheel_biped bin_flywheel_biped)
 ADD_SUBDIRECTORY(src/wxDMV bin_wxDMV)
+ADD_SUBDIRECTORY(src/humanoid bin_humanoid)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX is: " ${CMAKE_INSTALL_PREFIX})
 

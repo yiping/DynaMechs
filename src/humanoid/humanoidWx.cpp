@@ -175,7 +175,7 @@ bool MyApp::OnInit()
 	toolpanel_sizer->AddSpacer(15);					 
 	toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Control Options")),0,wxALL,2);	
 	
-	wxBoxSlider * CoMControlSlider = new wxBoxSlider(toolpanel,-1,5,15,10);
+	wxBoxSlider * CoMControlSlider = new wxBoxSlider(toolpanel,-1,5,15,100);
 	
 	
 	
@@ -251,14 +251,14 @@ void BasicGLPane::mouseMoved(wxMouseEvent& event) {
 }
 void BasicGLPane::mouseLeftDown(wxMouseEvent& event) {
 	mouse->button_flags |= MOUSE_L_DN;
-	//cout << "left button pressed" << endl;
+	cout << "left button pressed" << endl;
 
 	extractMouseInfo(event);
 	SetFocus();
 }
 void BasicGLPane::mouseLeftUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_L_DN;
-	//cout << "left button released" << endl;
+	cout << "left button released" << endl;
 	//cout << "left button released  "<< mouse->button_flags << endl;
 	extractMouseInfo(event);
 	camera->update(mouse);

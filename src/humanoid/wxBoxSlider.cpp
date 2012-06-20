@@ -29,7 +29,7 @@ wxBoxSlider::wxBoxSlider(wxWindow * parent, wxWindowID id,double minVal, double 
 	
 	sizer->Add(numericCtrl,0,wxALL,4);
 	
-	slider = new wxSlider((wxPanel*)this ,wxBoxSlider::SLIDER_ID,0,0,divs);
+	slider = new wxSlider((wxPanel*)this ,wxBoxSlider::SLIDER_ID,0,0,divs,wxDefaultPosition,wxSize(100, -1));
 	sizer->Add(slider,0,wxALL,4);
 		
 	this->SetSizer(sizer);

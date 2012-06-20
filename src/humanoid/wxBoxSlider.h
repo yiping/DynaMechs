@@ -12,6 +12,7 @@
 #include "wx/wx.h"
 #include "wx/control.h"
 #include "wx/sizer.h"
+#include "wx/slider.h"
 #include "wxNumericTextCtrl.h"
 
 

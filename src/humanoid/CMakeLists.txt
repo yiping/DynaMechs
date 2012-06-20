@@ -13,7 +13,9 @@ SET(SRCS  humanoidWx.cpp
           CubicSplineTrajectory.cpp
           DataLogger.cpp
           GlobalDefines.cpp
-          TaskSpaceController.cpp)
+          TaskSpaceController.cpp
+		  wxBoxSlider.cpp
+          wxNumericTextCtrl.cpp)
 ADD_EXECUTABLE(humanoid ${SRCS})
 
 

@@ -175,7 +175,7 @@ bool MyApp::OnInit()
 	toolpanel_sizer->AddSpacer(15);					 
 	toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Control Options")),0,wxALL,2);	
 	
-	wxBoxSlider * CoMControlSlider = new wxBoxSlider(toolpanel,-1,5,15,10);
+	wxBoxSlider * CoMControlSlider = new wxBoxSlider(toolpanel,-1,5,15,100);
 	
 	
 	
@@ -268,14 +268,14 @@ void BasicGLPane::mouseLeftUp(wxMouseEvent& event)  {
 
 void BasicGLPane::mouseMiddleDown(wxMouseEvent& event) {
 	mouse->button_flags |= MOUSE_M_DN;
-	cout << "mid button pressed" << endl;
+	//cout << "mid button pressed" << endl;
 	
 	extractMouseInfo(event);
 	SetFocus();
 }
 void BasicGLPane::mouseMiddleUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_M_DN;
-	cout << "Mid button released" << endl;
+	//cout << "Mid button released" << endl;
 	
 	extractMouseInfo(event);
 	camera->update(mouse);
@@ -286,12 +286,12 @@ void BasicGLPane::mouseMiddleUp(wxMouseEvent& event)  {
 
 void BasicGLPane::mouseRightDown(wxMouseEvent& event) {
 	mouse->button_flags |= MOUSE_R_DN;
-    //cout << "right button pressed" << endl;
+    cout << "right button pressed" << endl;
 	extractMouseInfo(event);
 }
 void BasicGLPane::mouseRightUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_R_DN;
-	//cout << "right button released" << endl;
+	cout << "right button released" << endl;
 	extractMouseInfo(event);
 	camera->update(mouse);
 	camera->applyView();
@@ -875,19 +875,19 @@ void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, doubl
 		cylinderLength = 0;
 	}
 
-	
+	const int detail = 32;
 	//Draw Cylinder
-	gluCylinder(quadratic,lineWidth,lineWidth,cylinderLength,32,32);
+	gluCylinder(quadratic,lineWidth,lineWidth,cylinderLength,detail,detail);
 	
 	//Draw Cylinder Base
-	gluDisk(quadratic,0,lineWidth,32,32);
+	gluDisk(quadratic,0,lineWidth,detail,detail);
 	
 	glTranslatef(0, 0, cylinderLength);
 	//Draw Arrowhead
-	gluCylinder(quadratic,headWidth,0.0f,headLength,32,32);
+	gluCylinder(quadratic,headWidth,0.0f,headLength,detail,detail);
 	
 	//Draw Arrowhead Base
-	gluDisk(quadratic,lineWidth,headWidth,32,32);
+	gluDisk(quadratic,lineWidth,headWidth,detail,detail);
 	
 	glEnd();
 	glPopMatrix();

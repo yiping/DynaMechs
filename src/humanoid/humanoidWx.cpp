@@ -251,14 +251,14 @@ void BasicGLPane::mouseMoved(wxMouseEvent& event) {
 }
 void BasicGLPane::mouseLeftDown(wxMouseEvent& event) {
 	mouse->button_flags |= MOUSE_L_DN;
-	//cout << "left button pressed" << endl;
+	cout << "left button pressed" << endl;
 
 	extractMouseInfo(event);
 	SetFocus();
 }
 void BasicGLPane::mouseLeftUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_L_DN;
-	//cout << "left button released" << endl;
+	cout << "left button released" << endl;
 	//cout << "left button released  "<< mouse->button_flags << endl;
 	extractMouseInfo(event);
 	camera->update(mouse);

@@ -2,21 +2,28 @@
 #define _glpane_
 
 #include <wx/wx.h>
+#include "wx/timer.h"
 #include <wx/glcanvas.h>
 
-enum
-{
-	BUTTON_SaveView = wxID_HIGHEST + 1, // declares an id which will be used to call button
-	BUTTON_ApplyView,
-	CHECKBOX_ShowCoM,
-	CHECKBOX_ShowGRF,
-	CHECKBOX_ShowNetForceAtGround,
-	CHECKBOX_ShowNetForceAtCoM
-};
+#ifdef __WXMAC__
+#include "OpenGL/glu.h"
+#include "OpenGL/gl.h"
+#else
+#include <GL/glu.h>
+#include <GL/gl.h>
+#endif
+
+
+
  
 class BasicGLPane : public wxGLCanvas
 {
 public:
+	
+	enum GLPaneIDS {
+		TIMER_ID = wxID_HIGHEST+1
+	};
+	
 	BasicGLPane(wxFrame* parent, int* args, const wxSize &size);
     
 	void resized(wxSizeEvent& evt);
@@ -29,8 +36,11 @@ public:
 	void prepare2DViewport(int topleft_x, int topleft_y, int bottomrigth_x, int bottomrigth_y);
     
 	void extractMouseInfo(wxMouseEvent& event);
-	void display (void);
-	void updateSim(wxIdleEvent& event);
+	//void display (void);
+	void updateSim(wxTimerEvent& event);
+	void userGraphics();
+	void glInit();
+	
 	// events
 	void mouseMoved(wxMouseEvent& event);
 	void mouseLeftDown(wxMouseEvent& event);
@@ -47,22 +57,19 @@ public:
 	void mouseEnteredWindow(wxMouseEvent& event);
 	void keyPressed(wxKeyEvent& event);
 	void keyReleased(wxKeyEvent& event);
-    
-	DECLARE_EVENT_TABLE()
-};
-
-
-class MainFrame: public wxFrame
-{
-public:
-
-    MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
-
-    void OnAbout(wxCommandEvent& event);
-	void OnSaveView(wxCommandEvent& event);
-	void OnApplyView(wxCommandEvent& event);
 	
-    DECLARE_EVENT_TABLE()
+	void restartTimer(double freq);
+    GLUquadricObj *quadratic;
+	
+	DECLARE_EVENT_TABLE()
+	
+	
+private:
+	wxTimer * timer;
+	
 };
+
+
+
 
 #endif 

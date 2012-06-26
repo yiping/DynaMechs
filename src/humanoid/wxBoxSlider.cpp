@@ -59,7 +59,6 @@ void wxBoxSlider::setValue(double v) {
 
 void wxBoxSlider::OnTextChange(wxCommandEvent & event)
 {
-	double v;
 	wxString str = numericCtrl->GetValue();
 	if(str.ToDouble(&value)) {
 		UpdateSlider();

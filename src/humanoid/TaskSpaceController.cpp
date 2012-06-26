@@ -340,6 +340,19 @@ void TaskSpaceController::UpdateVariableBounds() {
 	MSK_putboundslice(task, MSK_ACC_VAR, 0, NUMVAR-1, bkx, blx, bux);
 }
 
+void TaskSpaceController::AssignFootMaxLoad(int index, double maxLoad) {
+	
+	r =  MSK_putbound(task, MSK_ACC_VAR, fStart+6*index+5, MSK_BK_UP, -MSK_INFINITY, maxLoad);	
+	/*if (r!= MSK_RES_OK) {
+		cout << "Porblem putting Bound" << endl;
+	}
+	else {
+		cout << "Bound for index " << fStart+6*index+5 << " = " << maxLoad << endl;
+	}*/
+}
+
+
+
 void TaskSpaceController::UpdateConstraintBounds() {
 	MSKidxt       i;//,j;
 	

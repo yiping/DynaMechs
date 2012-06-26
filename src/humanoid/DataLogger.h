@@ -31,15 +31,23 @@ class DataLogger {
 	
 		void setMaxGroups(int);
 		void setMaxItems(int);
-		void declareGroup(int groupCode, IntVector & itemCodes);
-		void setItemName(int itemCode, string &);
-		void setItemName(int itemCode, const char *);
+	
+		void declareGroup(int groupCode, const string & displayName, IntVector & itemCodes);
+	
+		int	 addGroup(const string & displayName, const string & matlabName, int size);
+		int  addMatrixGroup(const string & displayName, const string & matlabName, int rowSize, int colSize);
+	
+		void setItemName(int itemCode, const string & displayName, const string & matlabName);
+
 	private:
 		FloatVector * curr;
 		deque<FloatVector *> data;
 		string fileName;
 		vector<string> itemNames;
+		vector<string> matlabItemNames;
 		vector<IntVector> groups; 
+		vector<string> groupNames;
+	
 		int maxItems, maxGroups;
 };
 

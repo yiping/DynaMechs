@@ -6,6 +6,8 @@
  *  Copyright 2012 __MyCompanyName__. All rights reserved.
  *
  */
+#ifndef __TASK_SPACE_CONTROLLER_H__
+#define __TASK_SPACE_CONTROLLER_H__
 
 #include "mosek.h"
 #include <Eigen/Core>
@@ -47,6 +49,8 @@ public:
 	// This function 
 	void ObtainArticulationData();
 	
+	void AssignFootMaxLoad(int index, double maxLoad);
+	
 	
 	void UpdateObjective();
 	void UpdateTauObjective();
@@ -73,16 +77,19 @@ public:
 	vector<MatrixXF > SupportJacobians;
 	
 	int iter;
+	MSKtask_t     task;
 	
 private:
 	
 	dmArticulation * artic;
 	
 	MSKenv_t      env;
-	MSKtask_t     task;
+	
 	MSKrescodee   r;
 	int numCon;
 	
 	MatrixXF FrictionBasis;
 	
 };
+
+#endif

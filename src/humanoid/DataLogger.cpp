@@ -71,21 +71,68 @@ void DataLogger::setFile(const string & fName) {
 	
 }
 
+int DataLogger::addMatrixGroup(const string & displayName, const string & matlabName, int rowSize, int colSize) {
+	IntVector itemCodes(rowSize*colSize);
+	int k=0;
+	for (int i=0; i<rowSize; i++) {
+		for (int j=0; j<colSize; j++) {
+			stringstream ss;
+			ss << displayName << "[" << i << ", " << j << "]"; 
+			itemNames.push_back(ss.str());
+			
+			ss.clear();
+			ss << matlabName << "(" << i+1 << ", " << j+1 << ")"; 
+			matlabItemNames.push_back(ss.str());
+			itemCodes[k++] = itemNames.size();
+			maxItems++;
+		}
+	}
+	
+	groups.push_back(itemCodes);
+	groupNames.push_back(displayName);
+	maxGroups++;
+	return maxGroups;
+}
+
+int DataLogger::addGroup(const string & displayName, const string & matlabName, int size) {
+	IntVector itemCodes(size);
+	for (int i=0; i<size; i++) {
+		stringstream ss;
+		ss << displayName << "[" << i << "]"; 
+		itemNames.push_back(ss.str());
+		
+		ss.clear();
+		ss << matlabName << "(" << i+1 << ")"; 
+		matlabItemNames.push_back(ss.str());
+		
+		itemCodes[i] = itemNames.size();
+		maxItems++;
+	}
+	
+	groups.push_back(itemCodes);
+	groupNames.push_back(displayName);
+	maxGroups++;
+	return maxGroups;
+}
+
 void DataLogger::setMaxGroups(int maxG) {
 	maxGroups = maxG;
 	groups.resize(maxGroups);
+	groupNames.resize(maxGroups);
 }
+
 void DataLogger::setMaxItems(int maxI) {
 	maxItems = maxI;
 	itemNames.resize(maxItems);
+	matlabItemNames.resize(maxItems);
 }
-void DataLogger::declareGroup(int groupCode, IntVector & itemCodes) {
-	
+
+void DataLogger::declareGroup(int groupCode, const string & name, IntVector & itemCodes) {
 	groups[groupCode] = itemCodes;
+	groupNames[groupCode] = name;
 }
-void DataLogger::setItemName(int itemCode, string & s) {
+
+void DataLogger::setItemName(int itemCode, const string & s, const string & s2) {
 	itemNames[itemCode] = s;
-}
-void DataLogger::setItemName(int itemCode, const char * s) {
-	//itemNames[itemCode] = s;
+	matlabItemNames[itemCode] = s2;
 }

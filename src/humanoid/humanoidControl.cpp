@@ -16,24 +16,27 @@
 #include "dmContactModel.hpp"
 #include "dmRigidBody.hpp"
 #include "CubicSplineTrajectory.h"
-VectorXF q, qdDm, qd;
-TaskSpaceController * tsc;
-Matrix3F RSup;
+#include "humanoidDataLogging.h"
 #include "DataLogger.h"
+//#define CONTROL_DEBUG
 
-void ComputeComInfo(Matrix6XF & Cmm, Vector6F & bias, Vector3F & pCom, Float & m);
-void matrixExpOmegaCross(const Vector3F & omega,Matrix3F & R);
-void matrixLogRot(const Matrix3F & R, Vector3F & omega);
-void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector6F & a);
 
-void copyRtoMat(const CartesianTensor R, Matrix3F & Rmat);
-double timeDiff(const dmTimespec & t1, const dmTimespec & t2);
-void transformToZMP(Vector6F & fZMP, Vector3F & pZMP) ;
+
+Matrix3F RSup;
+
+TaskSpaceController * tsc;
+Matrix6XF CentMomMat;
+Vector3F pCom, vCom;
+Vector6F cmBias,centMom, hDotDes, hDotOpt;
+VectorXF q, qdDm, qd,tau, qdd, fs, lambda;
+VectorXF pComDes(3), vComDes(3);
+
+Float totalMass;
+
 void ComputeGrfInfo(GRFInfo & grf);
 void initializeDataLogging();
 
 CubicSplineTrajectory ComTrajectory;
-DataLogger dataLog;
 
 void initControl() {
 	q.resize(NJ+7);
@@ -72,12 +75,7 @@ void initControl() {
 
 void HumanoidControl(ControlInfo & ci) {
 	dmTimespec tv1, tv2, tv3, tv4;
-	Matrix6XF CentMomMat;
-	Vector3F pCom;
-	Vector6F cmBias,centMom;
-	Float totalMass;
 	Float discountFactor = 1.;
-	VectorXF pComDes(3);
 	static bool splineFlag =true, splineFlag2 = true;
 	int taskRow = 0;
 	
@@ -119,8 +117,9 @@ void HumanoidControl(ControlInfo & ci) {
 		ComputeGrfInfo(grfInfo);
 		
 		centMom = CentMomMat*qd;
+		vCom = centMom.tail(3)/totalMass;
+		
 		Float kp, kd;
-		VectorXF vComDes(3);
 		VectorXF aComDes(3);
 		
 		
@@ -183,6 +182,8 @@ void HumanoidControl(ControlInfo & ci) {
 		
 		Vector3F linMomDotDes = totalMass*aComDes + totalMass*kp*(pComDes - pCom) + kd*(vComDes*totalMass - centMom.tail(3));
 		Vector3F angMomDotDes = -kd*centMom.head(3);
+		hDotDes.head(3) = angMomDotDes;
+		hDotDes.tail(3) = linMomDotDes;
 		
 		//cout << "eCom " << (pComDes - pCom).transpose() << endl;
 		//cout << "veCom " << (vComDes - centMom.tail(3) / totalMass) << endl;
@@ -286,6 +287,9 @@ void HumanoidControl(ControlInfo & ci) {
 		vector<MatrixXF > footJacs(NS);
 		vector<Vector6F > footBias(NS);
 		
+		static bool footSplineInit = false;
+		CubicSplineTrajectory footSpline;
+		footSpline.setSize(3);
 		
 		MatrixX6F X;
 		X.resize(6,6);  X.block(0,3,3,3).setZero(); X.block(3,0,3,3).setZero();
@@ -297,14 +301,17 @@ void HumanoidControl(ControlInfo & ci) {
 				 0, 0, -1,
 				-1, 0,  0;
 		Vector3F eOmega, pDes, pAct;
-		Vector6F aCom, vAct;
-		
+		Vector6F aCom, vAct, vDes, aDes;
+		vDes.setZero();
+		aDes.setZero();
 		//pDes << 2,2,1.25;
 		pDes << 2,2,.01;
 		
-		int kp = 50*0, kd = 150*0;
+		
 		
 		for (int i=0; i<NS; i++) {
+			int kp = 50*0, kd = 150*0;
+			
 			int jointIndex = tsc->SupportIndices[i];
 			LinkInfoStruct * link = G_robot->m_link_list[jointIndex];
 			copyRtoMat(link->link_val2.R_ICS, R);
@@ -318,10 +325,53 @@ void HumanoidControl(ControlInfo & ci) {
 			vAct.head(3) = R * link->link_val2.v.head(3);
 			vAct.tail(3) = R * link->link_val2.v.tail(3);
 			
+			VectorXF pFootEnd(3),vDes3(3), aDes3(3);
+			pFootEnd << 2.18,2,.1;
+			
+			if (sim_time > 7) {
+				if (i==1) {
+					if (!footSplineInit) {
+						
+						VectorXF vFootEnd(3);
+						vFootEnd.setZero();
+						
+						footSpline.init(pAct, vAct.tail(3), pFootEnd, vFootEnd,1);
+					}
+					kp = 50;
+					kd = 150;
+					VectorXF pDes3(3);
+					footSpline.eval(sim_time-7, pDes3, vDes3, aDes3);
+					pDes = pDes3;
+					vDes.tail(3) = vDes3;
+					aDes.tail(3) = aDes3;
+				}
+			}
+			if (sim_time>8 && i==1) {
+				kp = 50;
+				kd = 150;
+				Float om = 10;
+				Float ampz = .05, ampy = .05;
+				Float som = sin(om*(sim_time-8));
+				Float com = cos(om*(sim_time-8));
+				
+				pDes << 0 , ampy*som, -ampz*com+ampz;
+				pDes+=pFootEnd;
+				
+				vDes3 << 0,ampy*com,ampz*som;
+				vDes3 *=om;
+				
+				aDes3 << 0,-ampy*som,ampz*com;
+				aDes3 *= om*om;
+				
+				vDes.tail(3) = vDes3;
+				aDes.tail(3) = aDes3;
+			}
+			
+			
 			// Use a PD to create a desired acceleration
 			aCom.head(3) = kp * eOmega;
 			aCom.tail(3) = kp * (pDes - pAct);
-			aCom -= kd * vAct;
+			aCom += aDes + kd * (vDes - vAct);
 			
 			// Compute Task Information
 			X.block(0,0,3,3) = R; 
@@ -351,7 +401,6 @@ void HumanoidControl(ControlInfo & ci) {
 			taskRow+=6;
 			pDes(0)+=.18;
 		}
-		
 	}
 	
 	//Update Graphics Variables
@@ -371,12 +420,32 @@ void HumanoidControl(ControlInfo & ci) {
 	{
 		dmGetSysTime(&tv2);
 		tsc->InitializeProblem();
+		if (sim_time > 6.) {
+			if (sim_time < 7) {
+				static bool footInit =false;
+				static double maxLoad;
+				if(!footInit)
+				{
+					maxLoad = grfInfo.fCoPs[1](2);
+					footInit = true;
+				}
+				//maxLoad = 0;
+				tsc->AssignFootMaxLoad(1,maxLoad*(7-sim_time));
+			}
+			else {
+				tsc->AssignFootMaxLoad(1,0);
+			}
+			
+		}
 		dmGetSysTime(&tv3);
 		tsc->Optimize();
-		VectorXF tau = tsc->xx.segment(tauStart,NJ);
-		VectorXF qdd = tsc->xx.segment(qddStart,NJ+6);
-		VectorXF fs = tsc->xx.segment(fStart,6*NS);
-		VectorXF lambda = tsc->xx.segment(lambdaStart,NS*NP*NF);
+		tau = tsc->xx.segment(tauStart,NJ);
+		qdd = tsc->xx.segment(qddStart,NJ+6);
+		fs = tsc->xx.segment(fStart,6*NS);
+		lambda = tsc->xx.segment(lambdaStart,NS*NP*NF);
+		
+		// Extract Results
+		hDotOpt = CentMomMat*qdd + cmBias;
 		
 		// Form Joint Input and simulate
 		VectorXF jointInput = VectorXF::Zero(NJ+7);
@@ -398,8 +467,33 @@ void HumanoidControl(ControlInfo & ci) {
 	#ifdef CONTROL_DEBUG
 	// Debug Code
 	{
+		if (sim_time > 6) {
+			
 		cout << setprecision(5);
-		
+			
+			MSKboundkeye key;
+			double bl,bu;
+			
+			MSK_getbound(tsc->task, MSK_ACC_VAR, 57, &key, &bl, &bu);
+			cout << "Lower " << bl << endl;
+			cout << "Upper " << bu << endl;
+			switch (key) {
+				case MSK_BK_FR:
+					cout << " Free " << endl;
+					break;
+				case MSK_BK_LO:
+					cout << " Lower Bound " << endl;
+					break;
+				case MSK_BK_UP:
+					cout << "Upper Bound " << endl;
+					break;
+				case MSK_BK_FX:
+					cout << "Fixed" << endl;
+					break;
+				default:
+					break;
+			}
+		cout << "x(57) = " << tsc->xx(57) << endl;
 		cout << "tau = " << tau.transpose() << endl;
 		cout << "qdd = " << qdd.transpose() << endl;
 		cout << "fs = "  << fs.transpose()  << endl;
@@ -506,6 +600,7 @@ void HumanoidControl(ControlInfo & ci) {
 			//cout << "I_0^C = " << endl << G_robot->H.block(0,0,6,6) << endl;
 			//exit(-1);
 		}
+		}
 	}
 	#endif
 	//exit(-1);
@@ -606,234 +701,4 @@ void ComputeGrfInfo(GRFInfo & grf) {
 	transformToZMP(fZMP,grf.pZMP);
 	grf.fZMP = fZMP.tail(3);
 	grf.nZMP = fZMP(2);
-}
-
-void matrixExpOmegaCross(const Vector3F & omega,Matrix3F & R) {
-	Float theta = omega.norm();
-	Matrix3F omegaHat = cr3(omega/theta);
-	
-	//R = I + omegaHat sin(theta) + omegaHat^2 (1-cos(theta))
-	R.setIdentity();
-	R+=omegaHat*(sin(theta)*Matrix3F::Identity() + omegaHat*(1-cos(theta)));
-}
-
-void matrixLogRot(const Matrix3F & R, Vector3F & omega) {
-	// theta = acos( (Trace(R) - 1)/2 )
-	Float theta;
-	Float tmp = (R(0,0) + R(1,1) + R(2,2) - 1) / 2;
-	if (tmp >=1.) {
-		theta = 0;
-	}
-	else if (tmp <=-1.) {
-		theta = M_PI;
-	}
-	else {
-		theta = acos(tmp);
-	}
-	
-	//Matrix3F omegaHat = (R-R.transpose())/(2 * sin(theta));
-	//crossExtract(omegaHat,omega);
-	omega << R(2,1)-R(1,2) , R(0,2)-R(2,0),R(1,0)-R(0,1);
-	if (theta > 10e-5) {
-		omega*=theta / (2*sin(theta));
-	}
-	else {
-		omega/=2;
-	}
-}
-
-
-void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector6F & a) {
-	Vector6F tmp;
-	tmp = infoStruct.a + infoStruct.ag;
-	ClassicAcceleration(tmp,infoStruct.v, a);
-	a.swap(tmp);
-	Float * pa = a.data();
-	Float * ptmp = tmp.data();
-	APPLY_CARTESIAN_TENSOR(infoStruct.R_ICS,ptmp,pa);
-	ptmp+=3;
-	pa+=3;
-	APPLY_CARTESIAN_TENSOR(infoStruct.R_ICS,ptmp,pa);
-}
-
-void copyRtoMat(const CartesianTensor R, Matrix3F & Rmat) {
-	Rmat << R[0][0] , R[0][1], R[0][2] , 
-			R[1][0] , R[1][1], R[1][2] ,
-			R[2][0] , R[2][1], R[2][2] ;
-}
-
-
-double timeDiff(const dmTimespec & t1, const dmTimespec & t2) {
-	return ((double) t2.tv_sec - t1.tv_sec) + (1.0e-9*((double) t2.tv_nsec - t1.tv_nsec));
-}
-
-void transformToZMP(Vector6F & fZMP, Vector3F & pZMP) {
-	 const Float nx = fZMP(0), ny = fZMP(1), fz = fZMP(5);
-	 
-	 pZMP(0) = - ny/fz;
-	 pZMP(1) =   nx/fz;
-	 pZMP(2) = 0;
-	 
-	 fZMP(0) = 0;
-	 fZMP(1) = 0;
-	 fZMP(2)+= fZMP(4)*pZMP(0) - fZMP(3)*pZMP(1);
-}
-
-void initializeDataLogging() {
-	
-	dataLog.setMaxItems(MAX_NUM_ITEMS);
-	dataLog.setMaxGroups(MAX_NUM_GROUPS);
-	
-	// Angles
-	dataLog.setItemName(BASE_QUAT0,		"Base Quaternion0");
-	dataLog.setItemName(BASE_QUAT1,		"Base Quaternion1");
-	dataLog.setItemName(BASE_QUAT2,		"Base Quaternion2");
-	dataLog.setItemName(BASE_QUAT3,		"Base Quaternion3");
-	dataLog.setItemName(BASE_P_X,		"Base Position X");
-	dataLog.setItemName(BASE_P_Y,		"Base Position Y");
-	dataLog.setItemName(BASE_P_Z,		"Base Position Z");
-	dataLog.setItemName(RHIP_PHI,		"R Hip Phi");
-	dataLog.setItemName(RHIP_PSI,		"R Hip Psi");
-	dataLog.setItemName(RHIP_GAMMA,		"R Hip Gamma");
-	dataLog.setItemName(RKNEE,			"R Knee Angle");
-	dataLog.setItemName(RANK1,			"R Ank 1 Angle");
-	dataLog.setItemName(RANK2,			"R Ank 2 Angle");
-	dataLog.setItemName(LHIP_PHI,		"L Hip Phi");
-	dataLog.setItemName(LHIP_PSI,		"L Hip Psi");
-	dataLog.setItemName(LHIP_GAMMA,		"L Hip Gamma");
-	dataLog.setItemName(LKNEE,			"L Knee Angle");
-	dataLog.setItemName(LANK1,			"L Ank 1 Angle");
-	dataLog.setItemName(LANK2,			"L Ank 2 Angle");
-	dataLog.setItemName(RSHOULD_PHI,	"R Shoulder Phi");
-	dataLog.setItemName(RSHOULD_PSI,	"R Shoulder Psi");
-	dataLog.setItemName(RSHOULD_GAMMA,	"R Shoulder Gamma");
-	dataLog.setItemName(RELBOW,			"R Elbow Angle");
-	dataLog.setItemName(LSHOULD_PHI,	"L Shoulder Phi");
-	dataLog.setItemName(LSHOULD_PSI,	"L Shoulder Psi");
-	dataLog.setItemName(LSHOULD_GAMMA,	"L Shoulder Gamma");
-	dataLog.setItemName(LELBOW,			"L Elbow Angle");
-	
-	int angleItems[] = {BASE_QUAT0,BASE_QUAT1,BASE_QUAT2,BASE_QUAT3,
-					BASE_P_X,BASE_P_Y,BASE_P_Z,RHIP_PHI,RHIP_PSI, RHIP_GAMMA,
-					RKNEE,RANK1,RANK2,LHIP_PHI,LHIP_PSI,LHIP_GAMMA,LKNEE,LANK1,LANK2,
-					RSHOULD_PHI,RSHOULD_PSI,RSHOULD_GAMMA,RELBOW,LSHOULD_PHI,
-					LSHOULD_PSI,LSHOULD_GAMMA,LELBOW};
-	IntVector angleGroup(angleItems,angleItems+sizeof(angleItems)/sizeof(int));
-	dataLog.declareGroup(JOINT_ANGLES,angleGroup);
-	
-	dataLog.setItemName(BASE_OMEGA_X,	"Base Omega X");
-	dataLog.setItemName(BASE_OMEGA_Y,	"Base Omega Y");
-	dataLog.setItemName(BASE_OMEGA_Z,	"Base Omega Z");
-	dataLog.setItemName(BASE_V_X,		"Base Vel. X");
-	dataLog.setItemName(BASE_V_Y,		"Base Vel. Y");
-	dataLog.setItemName(BASE_V_Z,		"Base Vel. Z");
-	dataLog.setItemName(RHIP_OMEGA_X,	"R Hip Omega X");
-	dataLog.setItemName(RHIP_OMEGA_Y,   "R Hip Omega Y");
-	dataLog.setItemName(RHIP_OMEGA_Z,	"R Hip Omega Z");
-	dataLog.setItemName(RKNEE_RATE,		"R Knee Rate");
-	dataLog.setItemName(RANK1_RATE,		"R Ank 1 Rate");
-	dataLog.setItemName(RANK2_RATE,		"R Ank 2 Rate");
-	dataLog.setItemName(LHIP_OMEGA_X,	"L Hip Omega X");
-	dataLog.setItemName(LHIP_OMEGA_Y,   "L Hip Omega Y");
-	dataLog.setItemName(LHIP_OMEGA_Z,	"L Hip Omega Z");
-	dataLog.setItemName(LKNEE_RATE,		"L Knee Rate");
-	dataLog.setItemName(LANK1_RATE,		"L Ank 1 Rate");
-	dataLog.setItemName(LANK2_RATE,		"L Ank 2 Rate");
-	dataLog.setItemName(RSHOULD_OMEGA_X,"R Shoulder Omega X");
-	dataLog.setItemName(RSHOULD_OMEGA_Y,"R Shoulder Omega Y");
-	dataLog.setItemName(RSHOULD_OMEGA_Z,"R Shoulder Omega Z");
-	dataLog.setItemName(RELBOW_RATE,	"R Elbow Rate");
-	dataLog.setItemName(LSHOULD_OMEGA_X,"L Shoulder Omega X");
-	dataLog.setItemName(LSHOULD_OMEGA_Y,"L Shoulder Omega Y");
-	dataLog.setItemName(LSHOULD_OMEGA_Z,"L Shoulder Omega Z");
-	dataLog.setItemName(LELBOW_RATE,	"L Elbow Rate");
-	
-	int rateItems[] = {BASE_OMEGA_X,BASE_OMEGA_Y,BASE_OMEGA_Z,BASE_V_X,BASE_V_Y,BASE_V_Z,
-						RHIP_OMEGA_X,RHIP_OMEGA_Y,RHIP_OMEGA_Z,RKNEE_RATE,RANK1_RATE,RANK2_RATE,
-						LHIP_OMEGA_X,LHIP_OMEGA_Y,LHIP_OMEGA_Z,LKNEE_RATE,LANK1_RATE,LANK2_RATE,
-						RSHOULD_OMEGA_X,RSHOULD_OMEGA_Y,RSHOULD_OMEGA_Z,RELBOW_RATE,
-						LSHOULD_OMEGA_X,LSHOULD_OMEGA_Y,LSHOULD_OMEGA_Z,LELBOW_RATE};
-	
-	IntVector rateGroup(angleItems,rateItems+sizeof(rateItems)/sizeof(int));
-	dataLog.declareGroup(JOINT_RATES,rateGroup);
-	
-	dataLog.setItemName(RHIP_TAU_X,		"R Hip Tau X");
-	dataLog.setItemName(RHIP_TAU_Y,		"R Hip Tau Y");
-	dataLog.setItemName(RHIP_TAU_Z,		"R Hip Tau Z");
-	dataLog.setItemName(RKNEE_TAU,		"R Knee Tau");
-	dataLog.setItemName(RANK1_TAU,		"R Ank 1 Tau");
-	dataLog.setItemName(RANK2_TAU,		"R Ank 2 Tau");
-	dataLog.setItemName(LHIP_TAU_X,		"L Hip Tau X");
-	dataLog.setItemName(LHIP_TAU_Y,		"L Hip Tau Y");
-	dataLog.setItemName(LHIP_TAU_Z,		"L Hip Tau Z");
-	dataLog.setItemName(LKNEE_TAU,		"L Knee Tau");
-	dataLog.setItemName(LANK1_TAU,		"L Ank 1 Tau");
-	dataLog.setItemName(LANK2_TAU,		"L Ank 2 Tau");
-	dataLog.setItemName(RSHOULD_TAU_X,	"R Shoulder Tau X");
-	dataLog.setItemName(RSHOULD_TAU_Y,	"R Shoulder Tau Y");
-	dataLog.setItemName(RSHOULD_TAU_Z,	"R Shoulder Tau Z");
-	dataLog.setItemName(RELBOW_TAU,		"R Knee Tau");
-	dataLog.setItemName(RSHOULD_TAU_X,	"L Shoulder Tau X");
-	dataLog.setItemName(RSHOULD_TAU_Y,	"L Shoulder Tau Y");
-	dataLog.setItemName(RSHOULD_TAU_Z,	"L Shoulder Tau Z");
-	dataLog.setItemName(RELBOW_TAU,		"L Knee Tau");
-	
-
-	dataLog.setItemName(COM_P_X,		"CoM Pos X");
-	dataLog.setItemName(COM_P_Y,		"CoM Pos Y");
-	dataLog.setItemName(COM_P_Z,		"CoM Pos Z");
-	dataLog.setItemName(COM_V_X,		"CoM Vel X");
-	dataLog.setItemName(COM_V_Y,		"CoM Vel Y");
-	dataLog.setItemName(COM_V_Z,		"CoM Vel Z");
-	
-	dataLog.setItemName(CM_K_X,			"Cent Ang Mom X");
-	dataLog.setItemName(CM_K_Y,			"Cent Ang Mom Y");
-	dataLog.setItemName(CM_K_Z,			"Cent Ang Mom Z");
-	dataLog.setItemName(CM_L_X,			"Cent Lin Mom X");
-	dataLog.setItemName(CM_L_Y,			"Cent Lin Mom Y");
-	dataLog.setItemName(CM_L_Z,			"Cent Lin Mom Z");
-	
-	dataLog.setItemName(LCOP_F_X,		"L CoP Force X");
-	dataLog.setItemName(LCOP_F_Y,		"L CoP Force Y");
-	dataLog.setItemName(LCOP_F_Z,		"L CoP Force Z");
-	dataLog.setItemName(LCOP_P_X,		"L CoP Pos X");
-	dataLog.setItemName(LCOP_P_Y,		"L CoP Pos Y");
-	dataLog.setItemName(LCOP_N_Z,		"L CoP Mom Z");
-	
-	dataLog.setItemName(RCOP_F_X,		"R CoP Force X");
-	dataLog.setItemName(RCOP_F_Y,		"R CoP Force Y");
-	dataLog.setItemName(RCOP_F_Z,		"R CoP Force Z");
-	dataLog.setItemName(RCOP_P_X,		"R CoP Pos X");
-	dataLog.setItemName(RCOP_P_Y,		"R CoP Pos Y");
-	dataLog.setItemName(RCOP_N_Z,		"R CoP Mom Z");
-	
-	dataLog.setItemName(ZMP_F_X,		"ZMP Force X");
-	dataLog.setItemName(ZMP_F_Y,		"ZMP Force Y");
-	dataLog.setItemName(ZMP_F_Z,		"ZMP Force Z");
-	dataLog.setItemName(ZMP_P_X,		"ZMP Pos X");
-	dataLog.setItemName(ZMP_P_Y,		"ZMP Pos Y");
-	dataLog.setItemName(ZMP_N_Z,		"ZMP Mom Z");
-	
-	
-	
-	/*DataLogger();
-	void newRecord();
-	
-	void assignItem(int code, Float value);
-	void assignGroup(int groupCode, const VectorXF & value);
-	
-	void writeRecords();
-	void setFile(const string & fName);
-	
-	void setMaxGroups(int);
-	void setMaxItems(int);
-	void declareGroup(int groupCode, IntVector & itemCodes);
-	void setItemName(int itemCode, string &);*/
-	
-}
-
-void logData() {
-	dataLog.newRecord();
-	
-
 }

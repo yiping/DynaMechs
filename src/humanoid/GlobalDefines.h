@@ -19,6 +19,11 @@
 #include "wx/wx.h"
 
 #include "GlobalTypes.h"
+#include <dmIntegEuler.hpp>
+#include <dmTime.h>
+#include <wxDMGLMouse.hpp>
+#include <wxDMGLPolarCamera_zup.hpp>
+#include "BasicGLPane.h"
 
 //#define EIGEN_NO_DEBUG
 //#define OPTIM_DEBUG
@@ -30,11 +35,26 @@ extern volatile Float ComPos[3];
 extern volatile Float ComDes[3];
 extern GRFInfo grfInfo;
 extern wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
+extern wxStaticText * realTimeRatioDisplay;
+extern BasicGLPane * glPane;
+
+extern wxDMGLMouse *mouse;
+extern wxDMGLPolarCamera_zup *camera;
+
+extern Float idt, cdt, last_control_time, last_render_time, real_time_ratio;
+extern Float rtime;
+extern dmTimespec last_draw_tv;
+extern dmIntegEuler *G_integrator;
+
+extern bool IsWireframe;
+extern bool paused_flag;
 
 #define GROUP_FLAG 0x0800
 
 
+
 enum DataItems {
+	TIME,
 	// POSITIONS
 	BASE_QUAT0,
 	BASE_QUAT1,
@@ -112,7 +132,7 @@ enum DataItems {
 	LSHOULD_TAU_Z,
 	LELBOW_TAU,
 	// Centroial quantities
-	COM_P_X,
+/*	COM_P_X,
 	COM_P_Y,
 	COM_P_Z,
 	COM_V_X,
@@ -123,7 +143,7 @@ enum DataItems {
 	CM_K_Z,
 	CM_L_X,
 	CM_L_Y,
-	CM_L_Z,
+	CM_L_Z,*/
 	// GRF Quantities
 	LCOP_F_X,
 	LCOP_F_Y,
@@ -143,27 +163,26 @@ enum DataItems {
 	ZMP_P_X,
 	ZMP_P_Y,
 	ZMP_N_Z,
-	MAX_NUM_ITEMS
+	MAX_STATIC_ITEMS
 };
 
 enum DataGroups {
 	JOINT_ANGLES,
 	JOINT_RATES,
 	JOINT_TORQUES,
-	COM_POS,
-	COM_VEL,
-	CENTROIDAL_MOMENTUM,
 	LEFT_FOOT_WRENCH,
-	LEFT_FOOT_COP_FORCE,
-	LEFT_FOOT_COP_LOC,
+	//LEFT_FOOT_COP_FORCE,
+	//LEFT_FOOT_COP_LOC,
 	RIGHT_FOOT_WRENCH,
-	RIGHT_FOOT_COP_FORCE,
-	RIGHT_FOOT_COP_POS,
+	//RIGHT_FOOT_COP_FORCE,
+	//RIGHT_FOOT_COP_POS,
 	ZMP_WRENCH,
-	ZMP_FORCE,
-	ZMP_POS,
-	MAX_NUM_GROUPS
+	//ZMP_FORCE,
+	//ZMP_POS,
+	MAX_STATIC_GROUPS
 };
 
+
+#include "GlobalFunctions.h"
 
 #endif

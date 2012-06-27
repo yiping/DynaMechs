@@ -51,11 +51,19 @@ wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,w
 	timer = new wxTimer(this, TIMER_ID);
 }
 
+BasicGLPane::~BasicGLPane()
+{
+	timer->Stop();
+	delete timer;
+}
 void BasicGLPane::restartTimer(double freq) {
 	if (timer->IsRunning()) {
 		timer->Stop();
 	}
 	timer->Start(1000./freq);
+}
+void BasicGLPane::stopTimer() {
+	timer->Stop();
 }
 
 // some useful events to use
@@ -140,15 +148,17 @@ void BasicGLPane::keyReleased(wxKeyEvent& event) {
 	//normally wxWidgets sends key events to the window that has the focus
 	//cout<<"key pressed " << event.GetUnicodeKey()<<endl;
 	//cout<<event.GetUnicodeKey()<<endl;
-    switch ( event.GetUnicodeKey() )
+    /*switch ( event.GetUnicodeKey() )
     {
         case 80:
 		case 112:
 			//cout<<"P matched!"<<endl;
 			paused_flag = !paused_flag;
+			if (!paused_flag) {
+				simThread->unPause();
+			}			
             break;
-			
-    }
+    }*/
 	
 }
 
@@ -386,4 +396,9 @@ void BasicGLPane::glInit()
 		quadratic=gluNewQuadric();          // Create A Pointer To The Quadric Object ( NEW )
 		gluQuadricNormals(quadratic, GLU_SMOOTH);   // Create Smooth Normals ( NEW )
 		gluQuadricTexture(quadratic, GL_TRUE);      // Create Texture Coords ( NEW )
+}
+
+ void BasicGLPane::OnExit()
+{
+	cout << "Exiting GL Pane" << endl;
 }

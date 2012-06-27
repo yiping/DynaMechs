@@ -25,7 +25,8 @@ class DataLogger {
 	
 		void assignItem(int code, Float value);
 		void assignGroup(int groupCode, const VectorXF & value);
-		
+	void assignMatrixGroup(int groupCode, const MatrixXF & value);
+	
 		void writeRecords();
 		void setFile(const string & fName);
 	

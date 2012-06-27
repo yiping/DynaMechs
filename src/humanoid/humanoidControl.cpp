@@ -603,6 +603,8 @@ void HumanoidControl(ControlInfo & ci) {
 		}
 	}
 	#endif
+	
+	logData();
 	//exit(-1);
 }
 

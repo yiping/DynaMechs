@@ -24,6 +24,10 @@ END_EVENT_TABLE()
 
 
 void wxNumericTextCtrl::OnChar(wxKeyEvent & event) {
+	if (event.CmdDown() ) {
+		event.Skip();
+		return;
+	}
 	if (!isdigit(event.KeyCode())) {
 		if (!(	 event.KeyCode() == 46 // period
 			  || event.KeyCode() == 45 // dash

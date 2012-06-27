@@ -25,6 +25,9 @@ public:
 	};
 	
 	BasicGLPane(wxFrame* parent, int* args, const wxSize &size);
+	~BasicGLPane();
+	
+	virtual void OnExit();
     
 	void resized(wxSizeEvent& evt);
     
@@ -59,6 +62,7 @@ public:
 	void keyReleased(wxKeyEvent& event);
 	
 	void restartTimer(double freq);
+	void stopTimer();
     GLUquadricObj *quadratic;
 	
 	DECLARE_EVENT_TABLE()

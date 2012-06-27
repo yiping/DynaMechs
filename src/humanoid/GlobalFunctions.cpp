@@ -8,6 +8,8 @@
  */
 
 #include "GlobalFunctions.h"
+#include <iostream>
+using namespace std;
 
 void matrixExpOmegaCross(const Vector3F & omega,Matrix3F & R) {
 	Float theta = omega.norm();
@@ -78,3 +80,10 @@ void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector6F & a) {
 	pa+=3;
 	APPLY_CARTESIAN_TENSOR(infoStruct.R_ICS,ptmp,pa);
 }
+
+// teach how wxString use streams (operator<<) 
+ostream & operator<<(ostream & out, const wxString & str) 
+{ 
+    out << str.c_str(); 
+    return out; 
+} 

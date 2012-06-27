@@ -9,10 +9,12 @@
 
 #include "humanoidDataLogging.h"
 #include "humanoidControl.h"
+#include <wx/filefn.h>
+#include "GlobalFunctions.h"
 
 DataLogger dataLog;
 // Dynamic Groups
-int COM_POSITION, COM_VELOCITY, CENTROIDAL_MOMENTUM, QDD_OPT, HMAT, HDOT_DES, HDOT_OPT;
+int COM_POSITION, COM_VELOCITY, COM_POSITION_DES, CENTROIDAL_MOMENTUM, QDD_OPT, HMAT, HDOT_DES, HDOT_OPT;
 
 
 void initializeDataLogging() {
@@ -20,7 +22,7 @@ void initializeDataLogging() {
 	dataLog.setMaxItems(MAX_STATIC_ITEMS);
 	dataLog.setMaxGroups(MAX_STATIC_GROUPS);
 	
-	dataLog.setItemName(BASE_QUAT0,		"Time",					"t");
+	dataLog.setItemName(TIME,			"Time",					"t");
 	
 	// Angles
 	dataLog.setItemName(BASE_QUAT0,		"Base Quaternion0",		"q(1)");
@@ -92,7 +94,7 @@ void initializeDataLogging() {
 		RSHOULD_OMEGA_X,RSHOULD_OMEGA_Y,RSHOULD_OMEGA_Z,RELBOW_RATE,
 		LSHOULD_OMEGA_X,LSHOULD_OMEGA_Y,LSHOULD_OMEGA_Z,LELBOW_RATE};
 	
-	IntVector rateGroup(angleItems,rateItems+sizeof(rateItems)/sizeof(int));
+	IntVector rateGroup(rateItems,rateItems+sizeof(rateItems)/sizeof(int));
 	dataLog.declareGroup(JOINT_RATES,"Joint Rates", rateGroup);
 	
 	dataLog.setItemName(RHIP_TAU_X,		"R Hip Tau X",			"tau(1)");
@@ -110,11 +112,11 @@ void initializeDataLogging() {
 	dataLog.setItemName(RSHOULD_TAU_X,	"R Shoulder Tau X",		"tau(13)");
 	dataLog.setItemName(RSHOULD_TAU_Y,	"R Shoulder Tau Y",		"tau(14)");
 	dataLog.setItemName(RSHOULD_TAU_Z,	"R Shoulder Tau Z",		"tau(15)");
-	dataLog.setItemName(RELBOW_TAU,		"R Knee Tau",			"tau(16)");
-	dataLog.setItemName(RSHOULD_TAU_X,	"L Shoulder Tau X",		"tau(17)");
-	dataLog.setItemName(RSHOULD_TAU_Y,	"L Shoulder Tau Y",		"tau(18)");
-	dataLog.setItemName(RSHOULD_TAU_Z,	"L Shoulder Tau Z",		"tau(19)");
-	dataLog.setItemName(RELBOW_TAU,		"L Knee Tau",			"tau(20)");
+	dataLog.setItemName(RELBOW_TAU,		"R Elbow Tau",			"tau(16)");
+	dataLog.setItemName(LSHOULD_TAU_X,	"L Shoulder Tau X",		"tau(17)");
+	dataLog.setItemName(LSHOULD_TAU_Y,	"L Shoulder Tau Y",		"tau(18)");
+	dataLog.setItemName(LSHOULD_TAU_Z,	"L Shoulder Tau Z",		"tau(19)");
+	dataLog.setItemName(LELBOW_TAU,		"L Elbow Tau",			"tau(20)");
 	
 	
 	int tauItems[] = {RHIP_TAU_X,RHIP_TAU_Y,RHIP_TAU_Z,RKNEE_TAU,RANK1_TAU,RANK2_TAU,
@@ -168,8 +170,9 @@ void initializeDataLogging() {
 	
 	
 	// Add Dynamic Groups
-	COM_POSITION = dataLog.addGroup("CoM Position", "comPos",3);
-	COM_VELOCITY = dataLog.addGroup("CoM Velocity", "comVel",3);
+	COM_POSITION = dataLog.addGroup("CoM Pos (Act)", "pCom",3);
+	COM_POSITION_DES = dataLog.addGroup("Com Pos (Des)", "pComDes", 3);
+	COM_VELOCITY = dataLog.addGroup("CoM Velocity", "vCom",3);
 	
 	CENTROIDAL_MOMENTUM = dataLog.addGroup("Centroidal Momentum",	"hCom",6);
 	HDOT_DES			= dataLog.addGroup("H Dot Des",				"hDotDes", 6);
@@ -185,29 +188,35 @@ void initializeDataLogging() {
 
 
 void logData() {
-	/*
+	if (!logDataCheckBox->IsChecked()) {
+		return;
+	}
+	
+	dataMutex.Lock();
 	dataLog.newRecord();
+	dataLog.assignItem(TIME, sim_time);
 	dataLog.assignGroup(JOINT_ANGLES, q);
 	dataLog.assignGroup(JOINT_RATES, qd);
 	dataLog.assignGroup(JOINT_TORQUES, tau);
 	Vector6F force;
 	
 	force.head(3) = grfInfo.fCoPs[0];
-	force.segment(3,2) = grfInfo.pCoPs[0];
+	force.segment(3,2) = grfInfo.pCoPs[0].head(2);
 	force(5)     = grfInfo.nCoPs[0];
 	dataLog.assignGroup(LEFT_FOOT_WRENCH, force);
 	
 	force.head(3) = grfInfo.fCoPs[1];
-	force.segment(3,2) = grfInfo.pCoPs[1];
+	force.segment(3,2) = grfInfo.pCoPs[1].head(2);
 	force(5)     = grfInfo.nCoPs[1];
 	dataLog.assignGroup(RIGHT_FOOT_WRENCH, force);
 	
 	force.head(3) = grfInfo.fZMP;
-	force.segment(3,2) = grfInfo.pZMP;
+	force.segment(3,2) = grfInfo.pZMP.head(2);
 	force(5)     = grfInfo.nZMP;
 	dataLog.assignGroup(ZMP_WRENCH, force);
 	
 	dataLog.assignGroup(COM_POSITION, pCom);
+	dataLog.assignGroup(COM_POSITION_DES, pComDes);
 	dataLog.assignGroup(COM_VELOCITY, vCom);
 	
 	dataLog.assignGroup(CENTROIDAL_MOMENTUM, centMom);
@@ -216,5 +225,34 @@ void logData() {
 	
 	dataLog.assignGroup(QDD_OPT, qdd);
 	
-	dataLog.assignGroup(HMAT,G_robot->H);*/
+	dataLog.assignMatrixGroup(HMAT,G_robot->H);
+	dataMutex.Unlock();
+}
+
+void saveData()
+{
+	const wxDateTime now = wxDateTime::UNow();
+	
+	wxString dataDirectory(dataSaveDirectory.c_str(),wxConvUTF8);
+	wxString curFilePath = dataDirectory + wxT("/recentData.dat");
+	
+	dataDirectory += now.FormatISODate();
+	wxString dataFile =  now.FormatISODate() + wxT("_") + now.FormatISOTime() + wxT(".dat");
+	dataFile.Replace(wxT(":"), wxT("-"));
+	
+	wxString dataPath = dataDirectory + wxT("/") + dataFile;
+	
+	if(! wxDirExists(dataDirectory))
+	{
+		wxMkdir(dataDirectory);	
+	}
+	
+	stringstream ss;
+	ss << dataPath.mb_str();
+	dataLog.setFile(ss.str());
+	dataLog.writeRecords();
+	
+	FILE * curFile = fopen(curFilePath.mb_str(),"w");
+	fprintf(curFile, "%s",ss.str().c_str());
+	fclose(curFile);
 }

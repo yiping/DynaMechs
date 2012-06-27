@@ -16,9 +16,16 @@ using namespace std;
 #include <stdio.h>
 #include <dmTime.h>
 
-SimulationThread::SimulationThread() : wxThread(wxTHREAD_JOINABLE)
+SimulationThread::SimulationThread() : wxThread(wxTHREAD_JOINABLE) 
 {
+	unPauseCondition  = new wxCondition(mutex);
+	
 
+}
+
+SimulationThread::~SimulationThread()
+{
+	delete unPauseCondition;
 }
 
 void *SimulationThread::Entry()
@@ -28,7 +35,11 @@ void *SimulationThread::Entry()
 	stopRequested = false;
 	
 	while (!stopRequested) {
-		
+		if (paused_flag) {
+			mutex.Lock();
+			unPauseCondition->Wait();
+			mutex.Unlock();
+		}
 		// Check if it's time for control
 		if ((sim_time - last_control_time) >= cdt) {
 			if (sim_time > .2) {
@@ -41,21 +52,23 @@ void *SimulationThread::Entry()
 		
 		// Simulate
 		//lockRobot();
-		G_integrator->simulate(idt);
+		Float dt = idt;
+		G_integrator->simulate(dt);
 		//unlockRobot();
 		sim_time += idt;
 		dmGetSysTime(&tv_now);
 	}
+	return NULL;
 }
-
+void SimulationThread::unPause()
+{
+	unPauseCondition->Broadcast();
+}
 void SimulationThread::requestStop()
 {
 	stopRequested = true;
-}
-
-void SimulationThread::OnExit()
-{
-
+	unPause();
+	Wait();
 }
 
 void SimulationThread::lockRobot() {

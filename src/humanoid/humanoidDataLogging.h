@@ -14,11 +14,13 @@
 #include "DataLogger.h"
 
 
-extern int COM_POSITION, COM_VELOCITY, CENTROIDAL_MOMENTUM, QDD_OPT, HMAT, HDOT_DES, HDOT_OPT;
+extern int COM_POSITION, COM_VELOCITY, COM_POSITION_DES, CENTROIDAL_MOMENTUM, QDD_OPT, HMAT, HDOT_DES, HDOT_OPT;
 
 
 void logData();
 void initializeDataLogging();
+void saveData();
+
 extern DataLogger dataLog;
 
 

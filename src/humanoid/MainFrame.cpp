@@ -9,12 +9,22 @@
 
 #include "MainFrame.h"
 #include "GlobalDefines.h"
+#include "humanoidDataLogging.h"
 
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_BUTTON  (wxID_OK,   MainFrame::OnAbout)
 EVT_BUTTON  (BUTTON_SaveView,   MainFrame::OnSaveView)
 EVT_BUTTON  (BUTTON_ApplyView,   MainFrame::OnApplyView)
+EVT_BUTTON  (BUTTON_SaveData,   MainFrame::OnSaveData)
+EVT_CLOSE   (MainFrame::OnClose)
+EVT_MENU	(MENU_Pause_Sim, MainFrame::OnPauseSim)
+EVT_MENU	(MENU_Log_Data, MainFrame::OnLogData)
+EVT_MENU	(MENU_Save_Data,MainFrame::OnSaveData)
+EVT_MENU    (MENU_Save_Directory, MainFrame::OnSaveDirectory)
+EVT_MENU	(MENU_Control_Step, MainFrame::OnControlStep)
+EVT_MENU	(MENU_Display_Freq, MainFrame::OnDisplayFreq)
+EVT_MENU	(MENU_Integration_Step, MainFrame::OnIntegrationStep)
 END_EVENT_TABLE()
 
 
@@ -22,7 +32,112 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 : wxFrame(NULL, -1, title, pos, size) {
     CreateStatusBar();
     SetStatusText( _("Welcome to DynaMechs wxViewr!") );
+	
+	wxMenu * editMenu = new wxMenu();
+	
+	editMenu->AppendCheckItem(MENU_Pause_Sim,_T("&Pause Simulation\tCtrl-P"));
+	
+	editMenu->Append(MENU_Control_Step, _T("&Control Step\tCtrl-C"),
+					 _T("Change the simulation control step size."), true);
+	editMenu->Append(MENU_Integration_Step, _T("&Integration Step\tCtrl-I"),
+					 _T("Change the integration step size."), true);
+	editMenu->AppendSeparator();
+	editMenu->Append(MENU_Display_Freq, _T("&Display Frequency\tCtrl-D"),
+					 _T("Change the display frequency."), true);
+	
+	wxMenu * dataMenu = new wxMenu;
+	
+	dataMenu->AppendCheckItem(MENU_Log_Data,_T("&Log Data\tCtrl-L"));
+	dataMenu->Append(MENU_Save_Data, _T("&Save Data\tCtrl-S"));						  
+	dataMenu->Append(MENU_Save_Directory, _T("Data Directory"), _T("Modify the data save directory"));
+	
+	
+    // now append the freshly created menu to the menu bar...
+    menuBar = new wxMenuBar;
+    menuBar->Append(editMenu, _T("&Simulation"));
+    menuBar->Append(dataMenu, _T("&Data"));
+
+    menuBar->Check(MENU_Pause_Sim, true);
+	
+	SetMenuBar(menuBar);
 }
+
+void MainFrame::OnClose(wxCloseEvent & event)
+{
+	simThread->requestStop();
+	delete simThread;
+	delete glPane;
+	event.Skip();
+}
+void MainFrame::OnSaveData(wxCommandEvent & event)
+{
+	saveData();
+}
+
+
+void MainFrame::OnPauseSim(wxCommandEvent &event) {
+	paused_flag = !paused_flag;
+	menuBar->Check(MENU_Pause_Sim, paused_flag);
+	if (!paused_flag) {
+		simThread->unPause();
+	}
+	
+}
+void MainFrame::OnLogData(wxCommandEvent &event) {
+	bool logState = logDataCheckBox->IsChecked();
+	logState = !logState;
+	cout << "Changed Log state to " << logState << endl;
+	logDataCheckBox->SetValue(logState);
+	menuBar->Check(MENU_Log_Data, logState);
+}
+void MainFrame::OnControlStep(wxCommandEvent &event)
+{
+	wxTextEntryDialog dialog(this,wxT("Control Step Size"),
+							 wxT("Please enter the control step size"),wxString::Format(wxT("%.5lf"), cdt));
+	if(dialog.ShowModal() == wxID_OK) {
+		double newcdt = 0;
+		if(dialog.GetValue().ToDouble(&newcdt)) {
+			if(newcdt > 0) {
+				cdt = newcdt;
+			}
+		}
+	}
+}
+void MainFrame::OnDisplayFreq(wxCommandEvent &event)
+{
+	wxTextEntryDialog dialog(this,wxT("Display Frequency"),
+							 wxT("Please enter the display freuency (Hz)"),wxString::Format(wxT("%.2lf"), render_rate));
+	if(dialog.ShowModal() == wxID_OK) {
+		double newfreq = 0;
+		if(dialog.GetValue().ToDouble(&newfreq)) {
+			if(newfreq > 0) {
+				render_rate = newfreq;
+				glPane->restartTimer(newfreq);
+			}
+		}
+	}
+}
+void MainFrame::OnIntegrationStep(wxCommandEvent &event)
+{
+	wxTextEntryDialog dialog(this,wxT("Integration Step Size"),
+							 wxT("Please enter the integration step size"),wxString::Format(wxT("%.5lf"), idt));
+	
+	if(dialog.ShowModal() == wxID_OK) {
+		double newidt = 0;
+		if(dialog.GetValue().ToDouble(&newidt)) {
+			if(newidt > 0) {
+				idt = newidt;
+			}
+		}
+	}
+}
+void MainFrame::OnSaveDirectory(wxCommandEvent &event)
+{
+	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(dataSaveDirectory.c_str(),wxConvUTF8));
+	dataSaveDirectory = dir.mb_str();
+	cout << "Data Directory Changed to " << dataSaveDirectory << endl;
+}
+
 
 void MainFrame::OnSaveView(wxCommandEvent& WXUNUSED(event))
 {

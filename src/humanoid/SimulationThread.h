@@ -8,22 +8,27 @@
  */
 
 #ifndef __SIMULATION_THREAD_H__
-#define __SIMUlATION_THREAD_H__
+#define __SIMULATION_THREAD_H__
 
 #include "wx/thread.h"
 
 class SimulationThread : public wxThread {
 public:	
 	SimulationThread();
+	~SimulationThread();
 	virtual void *Entry();
-    virtual void OnExit();
+	
+	void unPause();
 	void lockRobot();
 	void unlockRobot();
 	void requestStop();
 	
 private:
 	wxMutex mutex;
+	wxCondition * unPauseCondition;
+	
 	volatile bool stopRequested;
+	
 };
 
 

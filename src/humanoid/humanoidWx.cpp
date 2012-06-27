@@ -59,7 +59,7 @@ vector<LinkInfoStruct*> G_robot_linkinfo_list;
 
 dmTimespec tv, last_tv;
 
-int render_rate;
+
 int render_count = 0;
 int timer_count = 0;
 bool runOnce = true;
@@ -67,7 +67,7 @@ bool runOnce = true;
 
 
 
-SimulationThread * simThread;
+
 
 void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, double headWidth, double headLength);
 
@@ -79,11 +79,13 @@ class MyApp: public wxApp
     virtual bool OnInit();
 	virtual int OnExit();
     
-    wxFrame *frame;
+    
 	wxButton *welcomebutton;
 	wxPanel *toolpanel;
 	wxButton *saveViewbutton;
 	wxButton *applyViewbutton;
+	
+	wxButton *saveDataButton;
 	
 	
 public:
@@ -125,20 +127,21 @@ bool MyApp::OnInit()
 		
 		
 		welcomebutton = new wxButton( toolpanel, wxID_OK, wxT("Welcome"));
-		saveViewbutton = new wxButton( toolpanel, BUTTON_SaveView, wxT("Save View"));
-		applyViewbutton = new wxButton( toolpanel, BUTTON_ApplyView, wxT("Apply View"));
-		showCoM = new wxCheckBox(toolpanel,CHECKBOX_ShowCoM,wxT("Show CoM"));
-		showGRF = new wxCheckBox(toolpanel,CHECKBOX_ShowGRF,wxT("Show GRF"));
-		showNetForceAtGround = new wxCheckBox(toolpanel,CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
-		showNetForceAtCoM	 = new wxCheckBox(toolpanel,CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
+		saveViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_SaveView, wxT("Save View"));
+		applyViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_ApplyView, wxT("Apply View"));
+		showCoM = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowCoM,wxT("Show CoM"));
+		showGRF = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowGRF,wxT("Show GRF"));
+		showNetForceAtGround = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
+		showNetForceAtCoM	 = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
 		
 		toolpanel_sizer->Add(welcomebutton, 0 ,wxALL | wxALIGN_CENTER,2);
 		
-		
+		// Camera Options
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Camera Options")),0,wxALL,2);
 		toolpanel_sizer->Add(saveViewbutton, 0 ,wxALL | wxALIGN_CENTER,2);
 		toolpanel_sizer->Add(applyViewbutton, 0 ,wxALL | wxALIGN_CENTER,2);
 		
+		// View Options
 		toolpanel_sizer->AddSpacer(15);
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("View Options")),0,wxALL,2);
 		toolpanel_sizer->Add(showCoM, 0 ,wxALL  ,2);
@@ -152,8 +155,19 @@ bool MyApp::OnInit()
 		wxBoxSlider * CoMControlSlider = new wxBoxSlider(toolpanel,-1,5,15,100);
 		toolpanel_sizer->Add(CoMControlSlider,0,wxALL,2);
 		
+		// Data Logging
 		toolpanel_sizer->AddSpacer(15);					 
-		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Data")),0,wxALL,2);
+		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Data Logging")),0,wxALL,2);
+		
+		logDataCheckBox = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_LogData,wxT("Log Data"));
+		saveDataButton = new wxButton(toolpanel,MainFrame::BUTTON_SaveData,wxT("Save Data"));
+		toolpanel_sizer->Add(logDataCheckBox,0,wxALL,2);
+		toolpanel_sizer->Add(saveDataButton,0,wxALL,2);
+		
+		
+		// Indicators
+		toolpanel_sizer->AddSpacer(15);					 
+		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Indicators")),0,wxALL,2);
 		
 		realTimeRatioDisplay = new wxStaticText(toolpanel,-1,wxT("RT Ratio: "));
 		toolpanel_sizer->Add(realTimeRatioDisplay,0,wxALL,2);
@@ -179,9 +193,11 @@ bool MyApp::OnInit()
 		ifstream cfg_ptr;
 		cfg_ptr.open(filename);
 		
+		Float tmp;
 		// Read simulation timing information.
 		readConfigParameterLabel(cfg_ptr,"Integration_Stepsize");
-		cfg_ptr >> idt;
+		cfg_ptr >> tmp;
+		idt = tmp;
 		if (idt <= 0.0)
 		{
 			cerr << "main error: invalid integration stepsize: " << idt << endl;
@@ -189,7 +205,8 @@ bool MyApp::OnInit()
 		}
 		
 		readConfigParameterLabel(cfg_ptr,"Control_Stepsize");
-		cfg_ptr >> cdt;
+		cfg_ptr >> tmp;
+		cdt = tmp;
 		last_control_time = -2*cdt;
 		if (cdt <= 0.0)
 		{
@@ -217,6 +234,14 @@ bool MyApp::OnInit()
 		readConfigParameterLabel(cfg_ptr,"Robot_Parameter_File");
 		readFilename(cfg_ptr, robot_flname);
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
+		
+		// --------
+		// Read in data directory
+		char data_dir[FILENAME_SIZE];
+		readConfigParameterLabel(cfg_ptr, "Data_Save_Directory");
+		readFilename(cfg_ptr, data_dir);
+		dataSaveDirectory = std::string(data_dir);
+		
 		
 		//G_integrator = new dmIntegRK4();
 		G_integrator = new dmIntegEuler();
@@ -260,8 +285,7 @@ bool MyApp::OnInit()
 } 
 
 int MyApp::OnExit() {
-	simThread->requestStop();
-	simThread->Wait();
+	//simThread->requestStop();
 	return 1;
 }
  

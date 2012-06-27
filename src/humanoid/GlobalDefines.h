@@ -24,6 +24,7 @@
 #include <wxDMGLMouse.hpp>
 #include <wxDMGLPolarCamera_zup.hpp>
 #include "BasicGLPane.h"
+#include "SimulationThread.h"
 
 //#define EIGEN_NO_DEBUG
 //#define OPTIM_DEBUG
@@ -34,21 +35,25 @@ extern volatile Float sim_time;
 extern volatile Float ComPos[3];
 extern volatile Float ComDes[3];
 extern GRFInfo grfInfo;
-extern wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
+extern wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM, * logDataCheckBox;
 extern wxStaticText * realTimeRatioDisplay;
 extern BasicGLPane * glPane;
+extern wxFrame *frame;
 
 extern wxDMGLMouse *mouse;
 extern wxDMGLPolarCamera_zup *camera;
 
-extern Float idt, cdt, last_control_time, last_render_time, real_time_ratio;
+extern volatile Float idt, cdt, last_control_time, last_render_time, real_time_ratio;
 extern Float rtime;
 extern dmTimespec last_draw_tv;
 extern dmIntegEuler *G_integrator;
-
+extern SimulationThread * simThread;
 extern bool IsWireframe;
-extern bool paused_flag;
+extern volatile bool paused_flag;
+extern string dataSaveDirectory;
+extern double render_rate;
 
+extern wxMutex dataMutex;
 #define GROUP_FLAG 0x0800
 
 

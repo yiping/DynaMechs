@@ -40,6 +40,7 @@
 #include <wxDMGLPolarCamera_zup.hpp>
 
 #include "GlobalDefines.h"
+#include "wx/cmdline.h"
 
 //#include "mosek.h" /* Include the MOSEK definition file. */
 #include "TaskSpaceController.h"
@@ -79,8 +80,6 @@ class MyApp: public wxApp
     virtual bool OnInit();
 	virtual int OnExit();
     
-    
-	wxButton *welcomebutton;
 	wxPanel *toolpanel;
 	wxButton *saveViewbutton;
 	wxButton *applyViewbutton;
@@ -97,6 +96,10 @@ IMPLEMENT_APP(MyApp)
  
 bool MyApp::OnInit()
 {
+	wxCmdLineParser parser(argc,argv);
+	parser.AddOption(wxT("c"), wxT("Config File"));
+	parser.Parse();
+	
 	simThread = new SimulationThread();
 	simThread->Create();
 	simThread->SetPriority(100);
@@ -131,8 +134,6 @@ bool MyApp::OnInit()
 		showGRF = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowGRF,wxT("Show GRF"));
 		showNetForceAtGround = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
 		showNetForceAtCoM	 = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
-		
-		toolpanel_sizer->Add(welcomebutton, 0 ,wxALL | wxALIGN_CENTER,2);
 		
 		// Camera Options
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Camera Options")),0,wxALL,2);
@@ -187,7 +188,17 @@ bool MyApp::OnInit()
 	// Load DM File
 	{
 		// load robot stuff
-		char *filename = (char *) "humanoid.cfg";
+		const char *filename;
+		wxString configFileName;
+		if(parser.Found(wxT("c"), &configFileName))
+		{
+			filename = configFileName.mb_str();
+		}
+		else {
+			filename = (char *) "config.cfg";
+		}
+
+		
 		ifstream cfg_ptr;
 		cfg_ptr.open(filename);
 		

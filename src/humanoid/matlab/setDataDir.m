@@ -1,0 +1,1 @@
+dataDir = '/Users/pwensing/Documents/MATLAB/humanoid/data'

@@ -192,12 +192,12 @@ bool MyApp::OnInit()
 		wxString configFileName;
 		if(parser.Found(wxT("c"), &configFileName))
 		{
-			filename = configFileName.mb_str();
+			filename = "humanoid.cfg";//configFileName.mb_str();
 		}
 		else {
 			filename = (char *) "config.cfg";
 		}
-
+		cout<<filename<<endl;
 		
 		ifstream cfg_ptr;
 		cfg_ptr.open(filename);

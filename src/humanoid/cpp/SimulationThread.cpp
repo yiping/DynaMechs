@@ -7,8 +7,8 @@
  *
  */
 
-#include "SimulationThread.h"
 #include "GlobalDefines.h"
+#include "SimulationThread.h"
 #include "humanoidControl.h"
 
 #include <iostream>

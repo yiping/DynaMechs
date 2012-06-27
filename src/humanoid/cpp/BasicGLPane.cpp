@@ -6,8 +6,9 @@
  *  Copyright 2012 __MyCompanyName__. All rights reserved.
  *
  */
-#include "BasicGLPane.h"
 #include "GlobalDefines.h"
+
+#include "BasicGLPane.h"
 #include <dmEnvironment.hpp>
 
 BEGIN_EVENT_TABLE(BasicGLPane, wxGLCanvas)

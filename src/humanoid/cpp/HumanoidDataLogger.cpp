@@ -7,6 +7,7 @@
  *
  */
 
+#include "GlobalDefines.h"
 #include "HumanoidDataLogger.h"
 #include "humanoidControl.h"
 #include <wx/filefn.h>

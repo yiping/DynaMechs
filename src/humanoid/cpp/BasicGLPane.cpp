@@ -22,8 +22,8 @@ EVT_RIGHT_UP(BasicGLPane::mouseRightUp)
 EVT_LEAVE_WINDOW(BasicGLPane::mouseLeftWindow)
 EVT_ENTER_WINDOW(BasicGLPane::mouseEnteredWindow)
 EVT_SIZE(BasicGLPane::resized)
-EVT_KEY_DOWN(BasicGLPane::keyPressed)
-EVT_KEY_UP(BasicGLPane::keyReleased)
+//EVT_KEY_DOWN(BasicGLPane::keyPressed)
+//EVT_KEY_UP(BasicGLPane::keyReleased)
 EVT_MOUSEWHEEL(BasicGLPane::mouseWheelMoved)
 EVT_PAINT(BasicGLPane::render)
 //EVT_IDLE(BasicGLPane::updateSim)
@@ -34,6 +34,8 @@ END_EVENT_TABLE()
 BasicGLPane::BasicGLPane(wxFrame* parent, int* args, const wxSize &size) :
 wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,wxT("GLWindow"),args)
 {
+	mouse = new wxDMGLMouse(); // has to be put in the front
+	camera = new wxDMGLPolarCamera_zup();
 	
 	glViewport (0, 0, size.GetWidth(), size.GetHeight());
 	mouse->win_size_x = size.GetWidth();
@@ -49,6 +51,13 @@ wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,w
 	glutInit(&argc, argv);
 	
 	timer = new wxTimer(this, TIMER_ID);
+	
+	dmGetSysTime(&last_draw_tv);
+	dmGetSysTime(&update_tv);
+	dmGetSysTime(&first_tv);
+	model_loaded = false;
+	timer_count = 0;
+	SetCurrent();
 }
 
 BasicGLPane::~BasicGLPane()
@@ -56,11 +65,11 @@ BasicGLPane::~BasicGLPane()
 	timer->Stop();
 	delete timer;
 }
-void BasicGLPane::restartTimer(double freq) {
+void BasicGLPane::restartTimer() {
 	if (timer->IsRunning()) {
 		timer->Stop();
 	}
-	timer->Start(1000./freq);
+	timer->Start(1000./render_rate);
 }
 void BasicGLPane::stopTimer() {
 	timer->Stop();
@@ -88,14 +97,14 @@ void BasicGLPane::mouseMoved(wxMouseEvent& event) {
 }
 void BasicGLPane::mouseLeftDown(wxMouseEvent& event) {
 	mouse->button_flags |= MOUSE_L_DN;
-	cout << "left button pressed" << endl;
+	//cout << "left button pressed" << endl;
 	
 	extractMouseInfo(event);
 	SetFocus();
 }
 void BasicGLPane::mouseLeftUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_L_DN;
-	cout << "left button released" << endl;
+	//cout << "left button released" << endl;
 	//cout << "left button released  "<< mouse->button_flags << endl;
 	extractMouseInfo(event);
 	camera->update(mouse);
@@ -123,12 +132,12 @@ void BasicGLPane::mouseMiddleUp(wxMouseEvent& event)  {
 
 void BasicGLPane::mouseRightDown(wxMouseEvent& event) {
 	mouse->button_flags |= MOUSE_R_DN;
-    cout << "right button pressed" << endl;
+    //cout << "right button pressed" << endl;
 	extractMouseInfo(event);
 }
 void BasicGLPane::mouseRightUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_R_DN;
-	cout << "right button released" << endl;
+	//cout << "right button released" << endl;
 	extractMouseInfo(event);
 	camera->update(mouse);
 	camera->applyView();
@@ -165,12 +174,12 @@ void BasicGLPane::keyReleased(wxKeyEvent& event) {
 void BasicGLPane::resized(wxSizeEvent& evt) {
 	//	wxGLCanvas::OnSize(evt);
 	
-	cout<<"resize event"<<endl;
+	//cout<<"resize event"<<endl;
 	wxSize size = evt.GetSize();
 	glViewport (0, 0, size.GetWidth(), size.GetHeight());
 	mouse->win_size_x = size.GetWidth();
 	mouse->win_size_y = size.GetHeight();
-	cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
+	//cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
 	
 	//camera->setPerspective(45.0, (GLfloat)size.GetWidth()/(GLfloat)size.GetHeight(), 1.0, 200.0);
 	
@@ -232,10 +241,27 @@ int BasicGLPane::getHeight() {
 void BasicGLPane::render( wxPaintEvent& evt ) {
 	//cout<<"rendering event"<<endl;
     if(!IsShown()) return;
-    
-    //wxGLCanvas::SetCurrent(*m_context);
+	if(!model_loaded) return;
+	
+	//wxGLCanvas::SetCurrent(*m_context);
     wxPaintDC(this); // only to be used in paint events. use wxClientDC to paint outside the paint event
 	SetCurrent();
+	
+	static bool runOnce =true;
+	if (runOnce) {
+		cout<<"initilize scene..."<<endl;
+		
+		camera->setRadius(8.0);
+		camera->setCOI(3.0, 3.0, 0.0);
+		camera->setTranslationScale(0.02f);
+		
+		
+		glInit();
+		dmEnvironment::getEnvironment()->drawInit();
+		runOnce = false;
+	}
+    
+    
 	
 	// When lighting is enabled, the primary color is calculated from the lighting equation instead of being taken from glColor and equivalent functions
 	//glEnable (GL_LIGHTING);*/
@@ -327,7 +353,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glColor3f (1,1,1);
 		glRasterPos2f(10, 40);
 		char buffer [50];
-		sprintf (buffer, "%.2f", sim_time);
+		sprintf (buffer, "%.2f", simThread->sim_time);
 		len = (int) strlen(buffer);
 		for (int i = 0; i<len; ++i)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);

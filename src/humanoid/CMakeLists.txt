@@ -11,7 +11,7 @@ SET(SRCS  cpp/humanoidWx.cpp
 		  cpp/BasicGLPane.cpp
 		  cpp/MainFrame.cpp
           cpp/humanoidControl.cpp 
-		  cpp/humanoidDataLogging.cpp
+		  cpp/HumanoidDataLogger.cpp
 		  cpp/SimulationThread.cpp
           cpp/CubicSpline.cpp
           cpp/CubicSplineTrajectory.cpp

@@ -152,6 +152,7 @@ bool MyApp::OnInit()
 		readConfigParameterLabel(cfg_ptr,"Robot_Parameter_File");
 		readFilename(cfg_ptr, robot_flname);
 		wxClientDC * client = new wxClientDC(frame->glPane);
+		frame->glPane->SetCurrent();
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
 		delete client;
 		

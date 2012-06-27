@@ -7,8 +7,8 @@
  *
  */
 
-#include "MainFrame.h"
 #include "GlobalDefines.h"
+#include "MainFrame.h"
 #include "HumanoidDataLogger.h"
 #include "wxBoxSlider.h"
 

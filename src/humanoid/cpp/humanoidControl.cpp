@@ -16,7 +16,7 @@
 #include "dmContactModel.hpp"
 #include "dmRigidBody.hpp"
 #include "CubicSplineTrajectory.h"
-#include "humanoidDataLogging.h"
+#include "HumanoidDataLogger.h"
 #include "DataLogger.h"
 //#define CONTROL_DEBUG
 
@@ -70,7 +70,7 @@ void initControl() {
 	
 		
 	ComTrajectory.setSize(3);
-	initializeDataLogging();
+	dataLogger->initializeDataLogging();
 }
 
 void HumanoidControl(ControlInfo & ci) {
@@ -604,7 +604,11 @@ void HumanoidControl(ControlInfo & ci) {
 	}
 	#endif
 	
-	logData();
+	if (!frame->logDataCheckBox->IsChecked()) {
+		dataLogger->logData();
+	}
+	
+	
 	//exit(-1);
 }
 

@@ -26,6 +26,7 @@
 #include "BasicGLPane.h"
 #include "SimulationThread.h"
 #include "MainFrame.h"
+#include "HumanoidDataLogger.h"
 
 //#define EIGEN_NO_DEBUG
 //#define OPTIM_DEBUG
@@ -39,8 +40,7 @@ extern GRFInfo grfInfo;
 extern dmArticulation *G_robot;
 extern MainFrame *frame;
 extern SimulationThread * simThread;
-
-extern string dataSaveDirectory;
+extern HumanoidDataLogger * dataLogger;
 
 extern wxMutex dataMutex;
 #define GROUP_FLAG 0x0800

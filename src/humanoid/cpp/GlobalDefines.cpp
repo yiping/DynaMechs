@@ -17,9 +17,9 @@
 #include "BasicGLPane.h"
 #include "SimulationThread.h"
 #include "MainFrame.h"
+#include "HumanoidDataLogger.h"
 
 dmArticulation *G_robot;
-volatile Float sim_time=0.0;
 volatile Float ComPos[3];
 volatile Float ComDes[3];
 GRFInfo grfInfo;
@@ -27,15 +27,6 @@ GRFInfo grfInfo;
 
 SimulationThread * simThread;
 MainFrame *frame;
-
-dmTimespec last_draw_tv;
-dmIntegEuler *G_integrator;
-
-bool IsWireframe = false;
-volatile bool model_loaded = false;
-volatile bool paused_flag = true;
-double render_rate;
+HumanoidDataLogger * dataLogger;
 
 wxMutex dataMutex;
-
-string dataSaveDirectory;

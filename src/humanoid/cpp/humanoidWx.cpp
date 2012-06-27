@@ -77,6 +77,8 @@ bool MyApp::OnInit()
 	parser.AddOption(wxT("c"), wxT("Config File"));
 	parser.Parse();
 	
+	dataLogger = new HumanoidDataLogger();
+	
 	simThread = new SimulationThread();
 	simThread->Create();
 	simThread->SetPriority(100);
@@ -155,13 +157,14 @@ bool MyApp::OnInit()
 		char data_dir[FILENAME_SIZE];
 		readConfigParameterLabel(cfg_ptr, "Data_Save_Directory");
 		readFilename(cfg_ptr, data_dir);
-		dataSaveDirectory = std::string(data_dir);
+		dataLogger->dataSaveDirectory = std::string(data_dir);
 		
 		
 		simThread->G_integrator->addSystem(G_robot);
 		
 		grfInfo.localContacts = 0;
 	}
+	
 	
 	// -- Project specific -- 
 	initControl();

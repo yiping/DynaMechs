@@ -1122,16 +1122,16 @@
 	19801738159955E500DB8AD5 /* MainFrame.cpp */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1275, 1296}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 9388}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {786, 2784}}";
-			sepNavSelRange = "{1680, 0}";
-			sepNavVisRange = "{1048, 2413}";
+			sepNavIntBoundsRect = "{{0, 0}, {786, 2762}}";
+			sepNavSelRange = "{4517, 0}";
+			sepNavVisRange = "{3373, 1461}";
 		};
 	};
 	1980177315995A8500DB8AD5 /* SimulationThread.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {834, 880}}";
-			sepNavSelRange = "{494, 0}";
-			sepNavVisRange = "{302, 1122}";
+			sepNavIntBoundsRect = "{{0, 0}, {834, 891}}";
+			sepNavSelRange = "{848, 0}";
+			sepNavVisRange = "{393, 1127}";
 		};
 	};
 	19801DB1159B621A00DB8AD5 /* humanoid.cfg */ = {
@@ -1143,23 +1143,23 @@
 	};
 	19801DB3159B623A00DB8AD5 /* BasicGLPane.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {863, 4609}}";
-			sepNavSelRange = "{1608, 8}";
-			sepNavVisRange = "{784, 308}";
+			sepNavIntBoundsRect = "{{0, 0}, {924, 4609}}";
+			sepNavSelRange = "{7156, 0}";
+			sepNavVisRange = "{5990, 1607}";
 		};
 	};
 	19801DB5159B624000DB8AD5 /* BasicGLPane.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {642, 1012}}";
-			sepNavSelRange = "{1157, 0}";
-			sepNavVisRange = "{486, 1389}";
+			sepNavSelRange = "{1624, 0}";
+			sepNavVisRange = "{534, 1364}";
 		};
 	};
-	19801DB8159B626700DB8AD5 /* humanoidDataLogging.cpp */ = {
+	19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1055, 3003}}";
+			sepNavIntBoundsRect = "{{0, 0}, {642, 2860}}";
 			sepNavSelRange = "{9191, 0}";
-			sepNavVisRange = "{8589, 691}";
+			sepNavVisRange = "{0, 2364}";
 		};
 	};
 	19801DBA159B627A00DB8AD5 /* humanoidControl.h */ = {
@@ -1169,17 +1169,17 @@
 			sepNavVisRange = "{0, 625}";
 		};
 	};
-	19801DBB159B627A00DB8AD5 /* humanoidDataLogging.h */ = {
+	19801DBB159B627A00DB8AD5 /* HumanoidDataLogger.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {684, 1705}}";
-			sepNavSelRange = "{433, 0}";
-			sepNavVisRange = "{1467, 697}";
+			sepNavIntBoundsRect = "{{0, 0}, {666, 1727}}";
+			sepNavSelRange = "{579, 0}";
+			sepNavVisRange = "{0, 929}";
 		};
 	};
 	19801DBC159B627A00DB8AD5 /* SimulationThread.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {642, 598}}";
-			sepNavSelRange = "{284, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {642, 617}}";
+			sepNavSelRange = "{619, 5}";
 			sepNavVisRange = "{0, 704}";
 		};
 	};
@@ -1254,10 +1254,10 @@
 	};
 	19801F3A159B8F0900DB8AD5 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = 19801DBB159B627A00DB8AD5 /* humanoidDataLogging.h */;
+		fRef = 19801DBB159B627A00DB8AD5 /* HumanoidDataLogger.h */;
 		name = "humanoidDataLogging.h: 21";
 		rLen = 0;
-		rLoc = 433;
+		rLoc = 2324;
 		rType = 0;
 		vrLen = 697;
 		vrLoc = 1467;
@@ -1287,7 +1287,7 @@
 		fRef = 19801DB3159B623A00DB8AD5 /* BasicGLPane.cpp */;
 		name = "BasicGLPane.cpp: 56";
 		rLen = 0;
-		rLoc = 1713;
+		rLoc = 1796;
 		rType = 0;
 		vrLen = 1495;
 		vrLoc = 9809;
@@ -1317,7 +1317,7 @@
 		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
 		name = "humanoidWx.cpp: 284";
 		rLen = 0;
-		rLoc = 6796;
+		rLoc = 6754;
 		rType = 0;
 		vrLen = 2027;
 		vrLoc = 5868;
@@ -1345,16 +1345,16 @@
 	19A6F44B157E4EFD00ED6631 /* humanoidControl.cpp */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{2550, 108}\";\n            s = 0;\n        },\n                {\n            r = \"{5491, 1813}\";\n            s = 0;\n        },\n                {\n            r = \"{10470, 155}\";\n            s = 0;\n        },\n                {\n            r = \"{11559, 173}\";\n            s = 0;\n        },\n                {\n            r = \"{11777, 3944}\";\n            s = 0;\n        },\n                {\n            r = \"{15844, 1036}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 18438}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1055, 4731}}";
+			sepNavIntBoundsRect = "{{0, 0}, {642, 4998}}";
 			sepNavSelRange = "{8922, 0}";
-			sepNavVisRange = "{8583, 568}";
+			sepNavVisRange = "{8162, 1327}";
 		};
 	};
 	19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1055, 3806}}";
-			sepNavSelRange = "{2818, 0}";
-			sepNavVisRange = "{2491, 915}";
+			sepNavIntBoundsRect = "{{0, 0}, {696, 3542}}";
+			sepNavSelRange = "{6155, 0}";
+			sepNavVisRange = "{4451, 1330}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
@@ -1444,9 +1444,9 @@
 	};
 	19BA5C59158A403400BC26DA /* GlobalDefines.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {642, 616}}";
-			sepNavSelRange = "{898, 0}";
-			sepNavVisRange = "{3, 935}";
+			sepNavIntBoundsRect = "{{0, 0}, {642, 617}}";
+			sepNavSelRange = "{797, 9}";
+			sepNavVisRange = "{0, 938}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};

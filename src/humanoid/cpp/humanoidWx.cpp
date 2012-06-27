@@ -1,12 +1,13 @@
 #include "wx/wx.h"
 #include "wx/sizer.h"
 #include "wx/glcanvas.h"
-#include "BasicGLPane.h"
-#include "MainFrame.h"
 #include "wxBoxSlider.h"
 
 //This is a dirty workaround
 #undef Success
+
+#include "BasicGLPane.h"
+#include "MainFrame.h"
 
 #include <dm.h>            // DynaMechs typedefs, globals, etc.
 #include <dmu.h>
@@ -38,9 +39,9 @@
 #include <dmMobileBaseLink.hpp>
 #include <wxDMGLMouse.hpp>
 #include <wxDMGLPolarCamera_zup.hpp>
+#include "wx/cmdline.h"
 
 #include "GlobalDefines.h"
-#include "wx/cmdline.h"
 
 //#include "mosek.h" /* Include the MOSEK definition file. */
 #include "TaskSpaceController.h"

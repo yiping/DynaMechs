@@ -248,19 +248,6 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
     wxPaintDC(this); // only to be used in paint events. use wxClientDC to paint outside the paint event
 	SetCurrent();
 	
-	static bool runOnce =true;
-	if (runOnce) {
-		cout<<"initilize scene..."<<endl;
-		
-		camera->setRadius(8.0);
-		camera->setCOI(3.0, 3.0, 0.0);
-		camera->setTranslationScale(0.02f);
-		
-		
-		glInit();
-		dmEnvironment::getEnvironment()->drawInit();
-		runOnce = false;
-	}
     
     
 	

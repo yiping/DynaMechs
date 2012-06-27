@@ -94,6 +94,10 @@ bool MyApp::OnInit()
 	
 	frame->Show();
 	
+	wxClientDC(frame->glPane);
+	frame->glPane->SetCurrent();
+	
+	
 	// Load DM File
 	{
 		// load robot stuff
@@ -101,12 +105,12 @@ bool MyApp::OnInit()
 		wxString configFileName;
 		if(parser.Found(wxT("c"), &configFileName))
 		{
-			filename = configFileName.mb_str();
+			filename = "humanoid.cfg";//configFileName.mb_str();
 		}
 		else {
 			filename = (char *) "config.cfg";
 		}
-
+		cout<<filename<<endl;
 		
 		ifstream cfg_ptr;
 		cfg_ptr.open(filename);
@@ -151,6 +155,8 @@ bool MyApp::OnInit()
 		char robot_flname[FILENAME_SIZE];
 		readConfigParameterLabel(cfg_ptr,"Robot_Parameter_File");
 		readFilename(cfg_ptr, robot_flname);
+
+		
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
 		
 		// --------
@@ -171,7 +177,17 @@ bool MyApp::OnInit()
 	initControl();
 	// -----------------------
 	{
-		frame->glPane->model_loaded =true;
+		cout<<"initilize scene..."<<endl;
+		
+		frame->glPane->camera->setRadius(8.0);
+		frame->glPane->camera->setCOI(3.0, 3.0, 0.0);
+		frame->glPane->camera->setTranslationScale(0.02f);
+		
+		frame->glPane->glInit();
+		
+		dmEnvironment::getEnvironment()->drawInit();
+		
+		frame->glPane->model_loaded = true;
 	}
 	frame->glPane->restartTimer();
 	simThread->Run();

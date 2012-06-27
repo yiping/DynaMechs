@@ -57,6 +57,7 @@ wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,w
 	dmGetSysTime(&first_tv);
 	model_loaded = false;
 	timer_count = 0;
+	SetCurrent();
 }
 
 BasicGLPane::~BasicGLPane()

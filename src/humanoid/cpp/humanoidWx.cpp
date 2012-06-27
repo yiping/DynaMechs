@@ -54,7 +54,7 @@
 const float RADTODEG = (float)(180.0/M_PI);    // M_PI is defined in math.h
 const float DEGTORAD = (float)(M_PI/180.0);
 
-GLfloat view_mat[4][4];
+
 
 vector<LinkInfoStruct*> G_robot_linkinfo_list;
 
@@ -113,6 +113,7 @@ bool MyApp::OnInit()
 	//---------------------------------------------------
 
 	// Populate GUI
+	
 	{
 		wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 		wxBoxSizer *toolpanel_sizer = new wxBoxSizer( wxVERTICAL);
@@ -185,111 +186,25 @@ bool MyApp::OnInit()
 		frame->SetAutoLayout(true);
 	}
 	
-	// Load DM File
-	{
-		// load robot stuff
-		const char *filename;
-		wxString configFileName;
-		if(parser.Found(wxT("c"), &configFileName))
-		{
-			filename = "humanoid.cfg";//configFileName.mb_str();
-		}
-		else {
-			filename = (char *) "config.cfg";
-		}
-		cout<<filename<<endl;
-		
-		ifstream cfg_ptr;
-		cfg_ptr.open(filename);
-		
-		Float tmp;
-		// Read simulation timing information.
-		readConfigParameterLabel(cfg_ptr,"Integration_Stepsize");
-		cfg_ptr >> tmp;
-		idt = tmp;
-		if (idt <= 0.0)
-		{
-			cerr << "main error: invalid integration stepsize: " << idt << endl;
-			exit(3);
-		}
-		
-		readConfigParameterLabel(cfg_ptr,"Control_Stepsize");
-		cfg_ptr >> tmp;
-		cdt = tmp;
-		last_control_time = -2*cdt;
-		if (cdt <= 0.0)
-		{
-			cerr << "main error: invalid control stepsize: " << idt << endl;
-			exit(3);
-		}
-		
-		readConfigParameterLabel(cfg_ptr,"Display_Update_Rate");
-		cfg_ptr >> render_rate;
-		dmGetSysTime(&last_draw_tv);
-		
-		if (render_rate < 1) render_rate = 1;
-		
-		// ------------------------------------------------------------------
-		// Initialize DynaMechs environment - must occur before any linkage systems
-		char env_flname[FILENAME_SIZE];
-		readConfigParameterLabel(cfg_ptr,"Environment_Parameter_File");
-		readFilename(cfg_ptr, env_flname);
-		dmEnvironment *environment = dmuLoadFile_env(env_flname);
-		dmEnvironment::setEnvironment(environment);
-		
-		// ------------------------------------------------------------------
-		// Initialize a DynaMechs linkage system
-		char robot_flname[FILENAME_SIZE];
-		readConfigParameterLabel(cfg_ptr,"Robot_Parameter_File");
-		readFilename(cfg_ptr, robot_flname);
-		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
-		
-		// --------
-		// Read in data directory
-		char data_dir[FILENAME_SIZE];
-		readConfigParameterLabel(cfg_ptr, "Data_Save_Directory");
-		readFilename(cfg_ptr, data_dir);
-		dataSaveDirectory = std::string(data_dir);
-		
-		
-		//G_integrator = new dmIntegRK4();
-		G_integrator = new dmIntegEuler();
-		G_integrator->addSystem(G_robot);
-		
-		grfInfo.localContacts = 0;
-	}
+
 	
 	// -- Project specific -- 
-	initControl();
+	
 	// -----------------------
 	
 	
 	// Scene Init
 	{
-		cout<<"initilize scene..."<<endl;
-		int i, j;
-		for (i=0; i<4; i++)
-		{
-			for (j=0; j<4; j++)
-			{
-				view_mat[i][j] = 0.0;
-			}
-			view_mat[i][i] = 1.0;
-		}
-		camera = new wxDMGLPolarCamera_zup();
-		camera->setRadius(8.0);
-		camera->setCOI(3.0, 3.0, 0.0);
-		camera->setTranslationScale(0.02f);
 		
 		
-		glPane->glInit();
-		dmEnvironment::getEnvironment()->drawInit();
+		
+		
 		
 		frame->Show();
 	}
 
-	glPane->restartTimer(render_rate);
-	simThread->Run();
+
+	cout<<"done onInit"<<endl;
     return true;
 } 
 
@@ -302,6 +217,7 @@ int MyApp::OnExit() {
 void BasicGLPane::userGraphics()
 {
 	// Plot User Stuff
+
 	{
 		if (showCoM->IsChecked()) {
 			// Draw COM Info
@@ -324,7 +240,7 @@ void BasicGLPane::userGraphics()
 			//glTranslatef(-ComPos[0],-ComPos[1],-ComPos[2]);
 		}
 		
-		
+			
 		const Float forceScale = 250;
 		glColor4f(0.0, 0.0, 0.0,0.75);
 		

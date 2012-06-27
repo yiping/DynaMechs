@@ -125,8 +125,6 @@ bool MyApp::OnInit()
 		//cout << "Pane " << endl;
 		glPane = new BasicGLPane( (wxFrame*) frame, args, wxSize(400,400));
 		
-		
-		welcomebutton = new wxButton( toolpanel, wxID_OK, wxT("Welcome"));
 		saveViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_SaveView, wxT("Save View"));
 		applyViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_ApplyView, wxT("Apply View"));
 		showCoM = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowCoM,wxT("Show CoM"));

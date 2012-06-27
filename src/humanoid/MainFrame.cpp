@@ -13,10 +13,15 @@
 
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-EVT_BUTTON  (wxID_OK,   MainFrame::OnAbout)
+//EVT_BUTTON  (wxID_OK,   MainFrame::OnAbout)
 EVT_BUTTON  (BUTTON_SaveView,   MainFrame::OnSaveView)
 EVT_BUTTON  (BUTTON_ApplyView,   MainFrame::OnApplyView)
 EVT_BUTTON  (BUTTON_SaveData,   MainFrame::OnSaveData)
+
+EVT_MENU  (MENU_Apply_View,   MainFrame::OnApplyView)
+EVT_MENU  (MENU_Save_View,   MainFrame::OnSaveView)
+
+
 EVT_CLOSE   (MainFrame::OnClose)
 EVT_MENU	(MENU_Pause_Sim, MainFrame::OnPauseSim)
 EVT_MENU	(MENU_Log_Data, MainFrame::OnLogData)
@@ -42,8 +47,14 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	editMenu->Append(MENU_Integration_Step, _T("&Integration Step\tCtrl-I"),
 					 _T("Change the integration step size."), true);
 	editMenu->AppendSeparator();
-	editMenu->Append(MENU_Display_Freq, _T("&Display Frequency\tCtrl-D"),
+	
+	wxMenu * graphicsMenu = new wxMenu;
+	
+	graphicsMenu->Append(MENU_Display_Freq, _T("&Display Frequency\tCtrl-D"),
 					 _T("Change the display frequency."), true);
+	graphicsMenu->Append(MENU_Save_View, _T("Save View\tCtrl-Shift-S"));
+	graphicsMenu->Append(MENU_Apply_View, _T("Apply View\tCtrl-Shift-A"));
+						 
 	
 	wxMenu * dataMenu = new wxMenu;
 	
@@ -55,6 +66,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     // now append the freshly created menu to the menu bar...
     menuBar = new wxMenuBar;
     menuBar->Append(editMenu, _T("&Simulation"));
+	menuBar->Append(graphicsMenu, _T("&Graphics"));
     menuBar->Append(dataMenu, _T("&Data"));
 
     menuBar->Check(MENU_Pause_Sim, true);

@@ -30,7 +30,9 @@ public:
 		MENU_Pause_Sim,
 		MENU_Log_Data,
 		MENU_Save_Data,
-		MENU_Save_Directory
+		MENU_Save_Directory,
+		MENU_Apply_View,
+		MENU_Save_View
 	};
 	
     MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);

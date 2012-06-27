@@ -1,1 +1,1 @@
-dataDir = '/Users/pwensing/Documents/MATLAB/humanoid/data'
+dataDir = '/Users/pwensing/Documents/MATLAB/humanoid/data';

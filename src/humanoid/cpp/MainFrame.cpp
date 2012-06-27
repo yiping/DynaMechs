@@ -43,15 +43,15 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	editMenu->AppendCheckItem(MENU_Pause_Sim,_T("&Pause Simulation\tCtrl-P"));
 	
 	editMenu->Append(MENU_Control_Step, _T("&Control Step\tCtrl-C"),
-					 _T("Change the simulation control step size."), true);
+					 _T("Change the simulation control step size."));
 	editMenu->Append(MENU_Integration_Step, _T("&Integration Step\tCtrl-I"),
-					 _T("Change the integration step size."), true);
+					 _T("Change the integration step size."));
 	editMenu->AppendSeparator();
 	
 	wxMenu * graphicsMenu = new wxMenu;
 	
 	graphicsMenu->Append(MENU_Display_Freq, _T("&Display Frequency\tCtrl-D"),
-					 _T("Change the display frequency."), true);
+					 _T("Change the display frequency."));
 	graphicsMenu->Append(MENU_Save_View, _T("Save View\tCtrl-Shift-S"));
 	graphicsMenu->Append(MENU_Apply_View, _T("Apply View\tCtrl-Shift-A"));
 						 

@@ -309,7 +309,7 @@
 							<real>260</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>-1678 56 904 982 -1680 0 1680 1050 </string>
+						<string>-1678 56 1022 982 -1680 0 1680 1050 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -339,19 +339,19 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>19801E5D159B7E8D00DB8AD5</string>
+										<string>19801E6C159B7FF100DB8AD5</string>
 										<key>history</key>
 										<array>
 											<string>19801DFE159B714C00DB8AD5</string>
-											<string>19801E27159B7C8500DB8AD5</string>
 											<string>19801E43159B7DBB00DB8AD5</string>
 											<string>19801E44159B7DBB00DB8AD5</string>
 											<string>19801E45159B7DBB00DB8AD5</string>
-											<string>19801E57159B7E8D00DB8AD5</string>
 											<string>19801E58159B7E8D00DB8AD5</string>
-											<string>19801E5A159B7E8D00DB8AD5</string>
-											<string>19801E5B159B7E8D00DB8AD5</string>
-											<string>19801E5C159B7E8D00DB8AD5</string>
+											<string>19801E62159B7F1100DB8AD5</string>
+											<string>19801E63159B7F1100DB8AD5</string>
+											<string>19801E64159B7F1100DB8AD5</string>
+											<string>19801E6A159B7FF100DB8AD5</string>
+											<string>19801E6B159B7FF100DB8AD5</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -363,9 +363,9 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {622, 655}}</string>
+								<string>{{0, 0}, {740, 655}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-1678 56 904 982 -1680 0 1680 1050 </string>
+								<string>-1678 56 1022 982 -1680 0 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -383,9 +383,9 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 660}, {622, 281}}</string>
+								<string>{{0, 660}, {740, 281}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-1678 56 904 982 -1680 0 1680 1050 </string>
+								<string>-1678 56 1022 982 -1680 0 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -394,7 +394,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>622pt</string>
+					<string>740pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -549,17 +549,16 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>19801E5E159B7E8D00DB8AD5</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>19801DEB159B63F700DB8AD5</string>
 		<string>19801DEC159B63F700DB8AD5</string>
 		<string>1925863714D2E86400778EA7</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
+		<string>1C78EAAD065D492600B07095</string>
 	</array>
 	<key>WindowString</key>
-	<string>-1678 56 904 982 -1680 0 1680 1050 </string>
+	<string>-1678 56 1022 982 -1680 0 1680 1050 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

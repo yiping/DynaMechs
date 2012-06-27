@@ -264,12 +264,18 @@ bool MyApp::OnInit()
 	// -- Project specific -- 
 	initControl();
 	// -----------------------
-	
-	
-	// Scene Init
 	{
-		model_loaded =true;
+		cout<<"initilize scene..."<<endl;
 		
+		camera = new wxDMGLPolarCamera_zup();
+		camera->setRadius(8.0);
+		camera->setCOI(3.0, 3.0, 0.0);
+		camera->setTranslationScale(0.02f);
+		
+		
+		glPane->glInit();
+		dmEnvironment::getEnvironment()->drawInit();
+		model_loaded =true;
 	}
 
 	dmGetSysTime(&last_tv);

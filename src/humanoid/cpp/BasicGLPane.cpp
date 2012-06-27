@@ -234,20 +234,10 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
     if(!IsShown()) return;
 	if(!model_loaded) return;
 	
-	static bool runOnce =true;
+	/*static bool runOnce =true;
 	if (runOnce) {
-		cout<<"initilize scene..."<<endl;
 		
-		camera = new wxDMGLPolarCamera_zup();
-		camera->setRadius(8.0);
-		camera->setCOI(3.0, 3.0, 0.0);
-		camera->setTranslationScale(0.02f);
-		
-		
-		glPane->glInit();
-		dmEnvironment::getEnvironment()->drawInit();
-		runOnce = false;
-	}
+	}*/
     
     //wxGLCanvas::SetCurrent(*m_context);
     wxPaintDC(this); // only to be used in paint events. use wxClientDC to paint outside the paint event

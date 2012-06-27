@@ -40,7 +40,7 @@
 #include <wxDMGLMouse.hpp>
 #include <wxDMGLPolarCamera_zup.hpp>
 #include "wx/cmdline.h"
-
+#include "wx/dcclient.h"
 #include "GlobalDefines.h"
 
 //#include "mosek.h" /* Include the MOSEK definition file. */
@@ -151,7 +151,9 @@ bool MyApp::OnInit()
 		char robot_flname[FILENAME_SIZE];
 		readConfigParameterLabel(cfg_ptr,"Robot_Parameter_File");
 		readFilename(cfg_ptr, robot_flname);
+		wxClientDC * client = new wxClientDC(frame->glPane);
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
+		delete client;
 		
 		// --------
 		// Read in data directory

@@ -39,6 +39,7 @@ dmTimespec last_draw_tv;
 dmIntegEuler *G_integrator;
 
 bool IsWireframe = false;
+volatile bool model_loaded = false;
 volatile bool paused_flag = true;
 double render_rate;
 

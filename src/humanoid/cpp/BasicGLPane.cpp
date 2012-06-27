@@ -22,8 +22,8 @@ EVT_RIGHT_UP(BasicGLPane::mouseRightUp)
 EVT_LEAVE_WINDOW(BasicGLPane::mouseLeftWindow)
 EVT_ENTER_WINDOW(BasicGLPane::mouseEnteredWindow)
 EVT_SIZE(BasicGLPane::resized)
-EVT_KEY_DOWN(BasicGLPane::keyPressed)
-EVT_KEY_UP(BasicGLPane::keyReleased)
+//EVT_KEY_DOWN(BasicGLPane::keyPressed)
+//EVT_KEY_UP(BasicGLPane::keyReleased)
 EVT_MOUSEWHEEL(BasicGLPane::mouseWheelMoved)
 EVT_PAINT(BasicGLPane::render)
 //EVT_IDLE(BasicGLPane::updateSim)
@@ -88,14 +88,14 @@ void BasicGLPane::mouseMoved(wxMouseEvent& event) {
 }
 void BasicGLPane::mouseLeftDown(wxMouseEvent& event) {
 	mouse->button_flags |= MOUSE_L_DN;
-	cout << "left button pressed" << endl;
+	//cout << "left button pressed" << endl;
 	
 	extractMouseInfo(event);
 	SetFocus();
 }
 void BasicGLPane::mouseLeftUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_L_DN;
-	cout << "left button released" << endl;
+	//cout << "left button released" << endl;
 	//cout << "left button released  "<< mouse->button_flags << endl;
 	extractMouseInfo(event);
 	camera->update(mouse);
@@ -123,12 +123,12 @@ void BasicGLPane::mouseMiddleUp(wxMouseEvent& event)  {
 
 void BasicGLPane::mouseRightDown(wxMouseEvent& event) {
 	mouse->button_flags |= MOUSE_R_DN;
-    cout << "right button pressed" << endl;
+    //cout << "right button pressed" << endl;
 	extractMouseInfo(event);
 }
 void BasicGLPane::mouseRightUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_R_DN;
-	cout << "right button released" << endl;
+	//cout << "right button released" << endl;
 	extractMouseInfo(event);
 	camera->update(mouse);
 	camera->applyView();
@@ -165,12 +165,12 @@ void BasicGLPane::keyReleased(wxKeyEvent& event) {
 void BasicGLPane::resized(wxSizeEvent& evt) {
 	//	wxGLCanvas::OnSize(evt);
 	
-	cout<<"resize event"<<endl;
+	//cout<<"resize event"<<endl;
 	wxSize size = evt.GetSize();
 	glViewport (0, 0, size.GetWidth(), size.GetHeight());
 	mouse->win_size_x = size.GetWidth();
 	mouse->win_size_y = size.GetHeight();
-	cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
+	//cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
 	
 	//camera->setPerspective(45.0, (GLfloat)size.GetWidth()/(GLfloat)size.GetHeight(), 1.0, 200.0);
 	
@@ -232,6 +232,22 @@ int BasicGLPane::getHeight() {
 void BasicGLPane::render( wxPaintEvent& evt ) {
 	//cout<<"rendering event"<<endl;
     if(!IsShown()) return;
+	if(!model_loaded) return;
+	
+	static bool runOnce =true;
+	if (runOnce) {
+		cout<<"initilize scene..."<<endl;
+		
+		camera = new wxDMGLPolarCamera_zup();
+		camera->setRadius(8.0);
+		camera->setCOI(3.0, 3.0, 0.0);
+		camera->setTranslationScale(0.02f);
+		
+		
+		glPane->glInit();
+		dmEnvironment::getEnvironment()->drawInit();
+		runOnce = false;
+	}
     
     //wxGLCanvas::SetCurrent(*m_context);
     wxPaintDC(this); // only to be used in paint events. use wxClientDC to paint outside the paint event

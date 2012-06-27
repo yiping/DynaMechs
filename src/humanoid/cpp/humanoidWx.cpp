@@ -95,7 +95,7 @@ IMPLEMENT_APP(MyApp)
  
  
 bool MyApp::OnInit()
-{
+{	
 	wxCmdLineParser parser(argc,argv);
 	parser.AddOption(wxT("c"), wxT("Config File"));
 	parser.Parse();
@@ -185,6 +185,8 @@ bool MyApp::OnInit()
 		frame->SetAutoLayout(true);
 	}
 	
+	frame->Show();
+	
 	// Load DM File
 	{
 		// load robot stuff
@@ -266,28 +268,11 @@ bool MyApp::OnInit()
 	
 	// Scene Init
 	{
-		cout<<"initilize scene..."<<endl;
-		int i, j;
-		for (i=0; i<4; i++)
-		{
-			for (j=0; j<4; j++)
-			{
-				view_mat[i][j] = 0.0;
-			}
-			view_mat[i][i] = 1.0;
-		}
-		camera = new wxDMGLPolarCamera_zup();
-		camera->setRadius(8.0);
-		camera->setCOI(3.0, 3.0, 0.0);
-		camera->setTranslationScale(0.02f);
+		model_loaded =true;
 		
-		
-		glPane->glInit();
-		dmEnvironment::getEnvironment()->drawInit();
-		
-		frame->Show();
 	}
 
+	dmGetSysTime(&last_tv);
 	glPane->restartTimer(render_rate);
 	simThread->Run();
     return true;

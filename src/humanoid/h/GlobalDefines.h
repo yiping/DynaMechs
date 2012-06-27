@@ -52,6 +52,7 @@ extern bool IsWireframe;
 extern volatile bool paused_flag;
 extern string dataSaveDirectory;
 extern double render_rate;
+extern volatile bool model_loaded;
 
 extern wxMutex dataMutex;
 #define GROUP_FLAG 0x0800

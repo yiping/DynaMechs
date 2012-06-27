@@ -7,8 +7,12 @@
  *
  */
 
+#ifndef __MAINFRAME_H__
+#define __MAINFRAME_H__
+
 #include "wx/wx.h"
 #include "wx/menu.h"
+#include "BasicGLPane.h"
 
 
 class MainFrame: public wxFrame
@@ -50,8 +54,19 @@ public:
 	void OnIntegrationStep(wxCommandEvent &event);
 	void OnSaveDirectory(wxCommandEvent &event);
 	
+	wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM, *logDataCheckBox;
+	wxStaticText * realTimeRatioDisplay;
+	BasicGLPane * glPane;
+	
 private:
 	wxMenuBar * menuBar;
+	wxPanel *toolpanel;
+	wxButton *saveViewbutton;
+	wxButton *applyViewbutton;
+	wxButton *saveDataButton;
+	
     DECLARE_EVENT_TABLE()
 
 };
+
+#endif

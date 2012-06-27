@@ -13,8 +13,11 @@
 #include <GL/gl.h>
 #endif
 
+#include <dm.h>
 
-
+#include <wxDMGLMouse.hpp>
+#include <wxDMGLPolarCamera_zup.hpp>
+#include <dmTime.h>
  
 class BasicGLPane : public wxGLCanvas
 {
@@ -61,15 +64,24 @@ public:
 	void keyPressed(wxKeyEvent& event);
 	void keyReleased(wxKeyEvent& event);
 	
-	void restartTimer(double freq);
+	void restartTimer();
 	void stopTimer();
     GLUquadricObj *quadratic;
+	wxDMGLMouse *mouse;
+	wxDMGLPolarCamera_zup *camera;
+	
+	volatile bool model_loaded;
+	bool IsWireframe;
+	double render_rate;
+	
+	Float real_time_ratio;
 	
 	DECLARE_EVENT_TABLE()
-	
-	
 private:
 	wxTimer * timer;
+	int timer_count;
+	volatile Float last_render_time, rtime;
+	dmTimespec last_draw_tv, first_tv , update_tv;
 	
 };
 

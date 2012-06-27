@@ -34,6 +34,8 @@ END_EVENT_TABLE()
 BasicGLPane::BasicGLPane(wxFrame* parent, int* args, const wxSize &size) :
 wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,wxT("GLWindow"),args)
 {
+	mouse = new wxDMGLMouse(); // has to be put in the front
+	camera = new wxDMGLPolarCamera_zup();
 	
 	glViewport (0, 0, size.GetWidth(), size.GetHeight());
 	mouse->win_size_x = size.GetWidth();
@@ -49,6 +51,12 @@ wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,w
 	glutInit(&argc, argv);
 	
 	timer = new wxTimer(this, TIMER_ID);
+	
+	dmGetSysTime(&last_draw_tv);
+	dmGetSysTime(&update_tv);
+	dmGetSysTime(&first_tv);
+	model_loaded = false;
+	timer_count = 0;
 }
 
 BasicGLPane::~BasicGLPane()
@@ -56,11 +64,11 @@ BasicGLPane::~BasicGLPane()
 	timer->Stop();
 	delete timer;
 }
-void BasicGLPane::restartTimer(double freq) {
+void BasicGLPane::restartTimer() {
 	if (timer->IsRunning()) {
 		timer->Stop();
 	}
-	timer->Start(1000./freq);
+	timer->Start(1000./render_rate);
 }
 void BasicGLPane::stopTimer() {
 	timer->Stop();
@@ -234,14 +242,25 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
     if(!IsShown()) return;
 	if(!model_loaded) return;
 	
-	/*static bool runOnce =true;
-	if (runOnce) {
-		
-	}*/
-    
-    //wxGLCanvas::SetCurrent(*m_context);
+	//wxGLCanvas::SetCurrent(*m_context);
     wxPaintDC(this); // only to be used in paint events. use wxClientDC to paint outside the paint event
 	SetCurrent();
+	
+	static bool runOnce =true;
+	if (runOnce) {
+		cout<<"initilize scene..."<<endl;
+		
+		camera->setRadius(8.0);
+		camera->setCOI(3.0, 3.0, 0.0);
+		camera->setTranslationScale(0.02f);
+		
+		
+		glInit();
+		dmEnvironment::getEnvironment()->drawInit();
+		runOnce = false;
+	}
+    
+    
 	
 	// When lighting is enabled, the primary color is calculated from the lighting equation instead of being taken from glColor and equivalent functions
 	//glEnable (GL_LIGHTING);*/
@@ -333,7 +352,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glColor3f (1,1,1);
 		glRasterPos2f(10, 40);
 		char buffer [50];
-		sprintf (buffer, "%.2f", sim_time);
+		sprintf (buffer, "%.2f", simThread->sim_time);
 		len = (int) strlen(buffer);
 		for (int i = 0; i<len; ++i)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);

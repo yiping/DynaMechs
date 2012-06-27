@@ -322,6 +322,7 @@
 		19801DCA159B62DE00DB8AD5 /* CubicSpline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC7159B62DE00DB8AD5 /* CubicSpline.cpp */; };
 		19801DCB159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC8159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp */; };
 		19801DCC159B62DE00DB8AD5 /* DataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC9159B62DE00DB8AD5 /* DataLogger.cpp */; };
+		19801E71159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801E70159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp */; };
 		19A6F42C157E4D0400ED6631 /* humanoidGlut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1940A49C1507C62100CD4386 /* humanoidGlut.cpp */; };
 		19A6F44C157E4EFD00ED6631 /* humanoidControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F44B157E4EFD00ED6631 /* humanoidControl.cpp */; };
 		19B85EBA158F7DA200788BE5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B85EB7158F7DA200788BE5 /* main.cpp */; };
@@ -821,6 +822,8 @@
 		19801DD9159B62EE00DB8AD5 /* CubicSpline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubicSpline.h; path = src/humanoid/h/CubicSpline.h; sourceTree = "<group>"; };
 		19801DDA159B62EE00DB8AD5 /* CubicSplineTrajectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubicSplineTrajectory.h; path = src/humanoid/h/CubicSplineTrajectory.h; sourceTree = "<group>"; };
 		19801DDB159B62EE00DB8AD5 /* DataLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataLogger.h; path = src/humanoid/h/DataLogger.h; sourceTree = "<group>"; };
+		19801E6F159B812F00DB8AD5 /* BalanceDemoStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BalanceDemoStateMachine.h; sourceTree = "<group>"; };
+		19801E70159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BalanceDemoStateMachine.cpp; sourceTree = "<group>"; };
 		19A6F44B157E4EFD00ED6631 /* humanoidControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidControl.cpp; path = src/humanoid/cpp/humanoidControl.cpp; sourceTree = "<group>"; };
 		19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidWx.cpp; path = src/humanoid/cpp/humanoidWx.cpp; sourceTree = "<group>"; };
 		19B85EB7158F7DA200788BE5 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxDMV/main.cpp; sourceTree = "<group>"; };
@@ -2397,6 +2400,8 @@
 		198016D215994F9F00DB8AD5 /* humanoid Utils */ = {
 			isa = PBXGroup;
 			children = (
+				19801E6F159B812F00DB8AD5 /* BalanceDemoStateMachine.h */,
+				19801E70159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp */,
 				19801DBA159B627A00DB8AD5 /* humanoidControl.h */,
 				19801DBB159B627A00DB8AD5 /* humanoidDataLogging.h */,
 				19801DBC159B627A00DB8AD5 /* SimulationThread.h */,
@@ -4766,6 +4771,7 @@
 				19801DCA159B62DE00DB8AD5 /* CubicSpline.cpp in Sources */,
 				19801DCB159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp in Sources */,
 				19801DCC159B62DE00DB8AD5 /* DataLogger.cpp in Sources */,
+				19801E71159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -124,14 +124,14 @@ void HumanoidControl(ControlInfo & ci) {
 		
 		
 		
-		if (sim_time<2) {
+		if (simThread->sim_time<2) {
 			kp = 15;
 			kd = 25;
 			pComDes << 2.09, 2-.07, .40;
 			vComDes.setZero();
 			aComDes.setZero();
 		}
-		else if (sim_time < 4) {
+		else if (simThread->sim_time < 4) {
 			double splineTime = .8;
 			if (splineFlag) {
 				
@@ -146,7 +146,7 @@ void HumanoidControl(ControlInfo & ci) {
 				splineFlag = false;
 			}
 			
-			ComTrajectory.eval(sim_time-2, pComDes, vComDes, aComDes);
+			ComTrajectory.eval(simThread->sim_time-2, pComDes, vComDes, aComDes);
 			kp = 90/5;
 			//kd = 25*6*4;
 			kd = 2*sqrt(kp)/5;
@@ -165,7 +165,7 @@ void HumanoidControl(ControlInfo & ci) {
 				ComTrajectory.init(pComInit, vComInit, pComEnd, vComEnd,splineTime);
 				splineFlag2 = false;
 			}
-			ComTrajectory.eval(sim_time-4, pComDes, vComDes, aComDes);
+			ComTrajectory.eval(simThread->sim_time-4, pComDes, vComDes, aComDes);
 			kp = 90/5;
 			//kd = 25*6*4;
 			kd = 2*sqrt(kp)/5;
@@ -328,7 +328,7 @@ void HumanoidControl(ControlInfo & ci) {
 			VectorXF pFootEnd(3),vDes3(3), aDes3(3);
 			pFootEnd << 2.18,2,.1;
 			
-			if (sim_time > 7) {
+			if (simThread->sim_time > 7) {
 				if (i==1) {
 					if (!footSplineInit) {
 						
@@ -340,19 +340,19 @@ void HumanoidControl(ControlInfo & ci) {
 					kp = 50;
 					kd = 150;
 					VectorXF pDes3(3);
-					footSpline.eval(sim_time-7, pDes3, vDes3, aDes3);
+					footSpline.eval(simThread->sim_time-7, pDes3, vDes3, aDes3);
 					pDes = pDes3;
 					vDes.tail(3) = vDes3;
 					aDes.tail(3) = aDes3;
 				}
 			}
-			if (sim_time>8 && i==1) {
+			if (simThread->sim_time>8 && i==1) {
 				kp = 50;
 				kd = 150;
 				Float om = 10;
 				Float ampz = .05, ampy = .05;
-				Float som = sin(om*(sim_time-8));
-				Float com = cos(om*(sim_time-8));
+				Float som = sin(om*(simThread->sim_time-8));
+				Float com = cos(om*(simThread->sim_time-8));
 				
 				pDes << 0 , ampy*som, -ampz*com+ampz;
 				pDes+=pFootEnd;
@@ -420,8 +420,8 @@ void HumanoidControl(ControlInfo & ci) {
 	{
 		dmGetSysTime(&tv2);
 		tsc->InitializeProblem();
-		if (sim_time > 6.) {
-			if (sim_time < 7) {
+		if (simThread->sim_time > 6.) {
+			if (simThread->sim_time < 7) {
 				static bool footInit =false;
 				static double maxLoad;
 				if(!footInit)
@@ -430,7 +430,7 @@ void HumanoidControl(ControlInfo & ci) {
 					footInit = true;
 				}
 				//maxLoad = 0;
-				tsc->AssignFootMaxLoad(1,maxLoad*(7-sim_time));
+				tsc->AssignFootMaxLoad(1,maxLoad*(7-simThread->sim_time));
 			}
 			else {
 				tsc->AssignFootMaxLoad(1,0);

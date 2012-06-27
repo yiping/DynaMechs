@@ -188,13 +188,13 @@ void initializeDataLogging() {
 
 
 void logData() {
-	if (!logDataCheckBox->IsChecked()) {
+	if (!frame->logDataCheckBox->IsChecked()) {
 		return;
 	}
 	
 	dataMutex.Lock();
 	dataLog.newRecord();
-	dataLog.assignItem(TIME, sim_time);
+	dataLog.assignItem(TIME, simThread->sim_time);
 	dataLog.assignGroup(JOINT_ANGLES, q);
 	dataLog.assignGroup(JOINT_RATES, qd);
 	dataLog.assignGroup(JOINT_TORQUES, tau);

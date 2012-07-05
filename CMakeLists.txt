@@ -20,6 +20,7 @@ MESSAGE(STATUS "OpenGL library path: " ${OPENGL_LIBRARIES})
 MESSAGE(STATUS "GLUT library path: " ${GLUT_LIBRARIES})
 MESSAGE(STATUS "OpenGL headers path: " ${OPENGL_INCLUDE_DIR})
 MESSAGE(STATUS "GLUT headers path: " ${GLUT_INCLUDE_DIR})
+MESSAGE(STATUS "CMake build type: " ${CMAKE_BUILD_TYPE})
 
 find_package(Eigen REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})

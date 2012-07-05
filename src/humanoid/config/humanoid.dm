@@ -24,7 +24,7 @@ Articulation {
 		Position 2 2 .62
 		#Orientation_Quat  .707 .707 0 0
 		#Orientation_Quat  0 0 0 1
-		Orientation_Quat  -.707 0 -.707 0
+		Orientation_Quat  0 0 0 1
 		#Orientation_Quat  .707 0 0 .707
 		#Orientation_Quat  .2 .3 -.2 .4
 		Velocity 0 0 0 0 0 0
@@ -36,7 +36,7 @@ Articulation {
 	Branch {
 		ZScrewTxLink {
 			Name			"ZScrewTorso"
-			ZScrew_Parameters	0.09	-3.14159265
+			ZScrew_Parameters	0	0
 		}
 	
 		# Right Leg
@@ -54,8 +54,9 @@ Articulation {
 				Number_of_Contact_Points	1
 				Contact_Locations	0.25	0	0	
 	
-				Position_From_Inboard_Link 0 0 -.09
-				Initial_Joint_Angles	0 0 -.2
+				Position_From_Inboard_Link 0 -.09 0
+				#Initial_Joint_Angles	0 0 -.2
+				Initial_Joint_Angles	0 1.57079633 1.57079633
 				Initial_Angular_Velocity	0 0 0
 				Axes_Limits			0	0  0
 				Joint_Limit_Spring_Constant	0
@@ -149,8 +150,9 @@ Articulation {
 				Number_of_Contact_Points	1
 				Contact_Locations	0.25	0	0	
 	
-				Position_From_Inboard_Link 0 0 .09
-					Initial_Joint_Angles	0 0 -.2
+				Position_From_Inboard_Link 0 .09 0
+					#Initial_Joint_Angles	0 0 -.2
+					Initial_Joint_Angles	0 0 0
 					Initial_Angular_Velocity	0 0 0
 					Axes_Limits			0	0  0
 					Joint_Limit_Spring_Constant	0
@@ -246,12 +248,13 @@ Articulation {
 				Number_of_Contact_Points	1
 				Contact_Locations	0.25	0	0	
 	
-				Position_From_Inboard_Link .4 0 0
+				Position_From_Inboard_Link 0 -.09 .4 
 				#Initial_Joint_Angles	0 .5 2
 				#Initial_Joint_Angles	2 .8 2.8
-				Initial_Joint_Angles	0 2.5 -1.57
+				##Initial_Joint_Angles	0 2.5 -1.57
 				#Initial_Joint_Angles	0 0 -1.57
 				#Initial_Joint_Angles	0 -2.4 -1.57
+				Initial_Joint_Angles	0 0 0
 				
 				Initial_Angular_Velocity	0 0 0
 				Axes_Limits			0	0  0
@@ -300,9 +303,10 @@ Articulation {
 				Number_of_Contact_Points	1
 				Contact_Locations	0.25	0	0	
 	
-				Position_From_Inboard_Link .4 0 .18
-					Initial_Joint_Angles	0 -2.4 -1.57
+				Position_From_Inboard_Link 0 .09 .4
+					#Initial_Joint_Angles	0 -2.4 -1.57
 					#Initial_Joint_Angles	0 0 -1.57
+					Initial_Joint_Angles	0 0 0
 					Initial_Angular_Velocity	0 0 0
 					Axes_Limits			0	0  0
 					Joint_Limit_Spring_Constant	0

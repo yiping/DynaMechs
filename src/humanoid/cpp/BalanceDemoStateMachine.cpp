@@ -64,7 +64,8 @@ BalanceDemoStateMachine::BalanceDemoStateMachine(dmArticulation * robot)
 	pFootEnd.resize(3);
 	pWalkPrep.resize(3);
 	
-	pMiddleCom << 2.09, 2-.07, .40;
+	pMiddleCom << 2.0-.07, 2.08, .40;
+	
 	pLeftCom   << 2.14, 2-.07, .50;
 	pFootEnd << 2.18,2,.1;
 	
@@ -121,11 +122,11 @@ void BalanceDemoStateMachine::Drop() {
 	transitionFlag = false;
 }
 void BalanceDemoStateMachine::BalanceMiddle() {
-	if (stateTime > 1.8) {
+	/*if (stateTime > 1.8) {
 		state = WALK_PREP;
 		transitionFlag = true;
 		return;
-	}
+	}*/
 	kpCM = 15;
 	kdCM = 25;
 	pComDes = pMiddleCom;

@@ -81,7 +81,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					498,
+					715,
 					20,
 					48,
 					43,
@@ -172,6 +172,10 @@
 			1908AC9415A3F968001F0075 = 1908AC9415A3F968001F0075 /* PBXTextBookmark */;
 			1908AC9B15A4AA3C001F0075 = 1908AC9B15A4AA3C001F0075 /* PBXTextBookmark */;
 			192003DB15A5DF1F0006A823 /* PBXTextBookmark */ = 192003DB15A5DF1F0006A823 /* PBXTextBookmark */;
+			192003EF15A5FB2F0006A823 /* PBXTextBookmark */ = 192003EF15A5FB2F0006A823 /* PBXTextBookmark */;
+			192003F115A5FB2F0006A823 /* PBXTextBookmark */ = 192003F115A5FB2F0006A823 /* PBXTextBookmark */;
+			192003F215A5FB2F0006A823 /* PBXTextBookmark */ = 192003F215A5FB2F0006A823 /* PBXTextBookmark */;
+			192003F315A5FB2F0006A823 /* PBXTextBookmark */ = 192003F315A5FB2F0006A823 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
 		userBuildSettings = {
@@ -427,9 +431,9 @@
 		path = /Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/src/humanoid/cpp/BalanceDemoStateMachine.cpp;
 		sourceTree = "<absolute>";
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {893, 8118}}";
-			sepNavSelRange = "{6750, 0}";
-			sepNavVisRange = "{6199, 1569}";
+			sepNavIntBoundsRect = "{{0, 0}, {893, 8140}}";
+			sepNavSelRange = "{6041, 0}";
+			sepNavVisRange = "{5820, 1545}";
 		};
 	};
 	192003DB15A5DF1F0006A823 /* PBXTextBookmark */ = {
@@ -441,6 +445,52 @@
 		rType = 0;
 		vrLen = 1629;
 		vrLoc = 5919;
+	};
+	192003EF15A5FB2F0006A823 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 192003F015A5FB2F0006A823 /* OffsetRectPrism.m */;
+		name = "OffsetRectPrism.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 412;
+		vrLoc = 0;
+	};
+	192003F015A5FB2F0006A823 /* OffsetRectPrism.m */ = {
+		isa = PBXFileReference;
+		name = OffsetRectPrism.m;
+		path = /Users/pwensing/Documents/MATLAB/xanutil/OffsetRectPrism.m;
+		sourceTree = "<absolute>";
+	};
+	192003F115A5FB2F0006A823 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DBB159B627A00DB8AD5 /* HumanoidDataLogger.h */;
+		name = "HumanoidDataLogger.h: 34";
+		rLen = 0;
+		rLoc = 920;
+		rType = 0;
+		vrLen = 1262;
+		vrLoc = 0;
+	};
+	192003F215A5FB2F0006A823 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 191CCD5B15A2411C00EDB32D /* BalanceDemoStateMachine.cpp */;
+		name = "BalanceDemoStateMachine.cpp: 307";
+		rLen = 0;
+		rLoc = 6750;
+		rType = 0;
+		vrLen = 1544;
+		vrLoc = 6199;
+	};
+	192003F315A5FB2F0006A823 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 191CCD5B15A2411C00EDB32D /* BalanceDemoStateMachine.cpp */;
+		name = "BalanceDemoStateMachine.cpp: 279";
+		rLen = 0;
+		rLoc = 6041;
+		rType = 0;
+		vrLen = 1545;
+		vrLoc = 5820;
 	};
 	1925863914D2E86400778EA7 /* Source Control */ = {
 		isa = PBXSourceControlManager;
@@ -1568,9 +1618,9 @@
 	};
 	19801DBB159B627A00DB8AD5 /* HumanoidDataLogger.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {774, 1617}}";
+			sepNavIntBoundsRect = "{{0, 0}, {893, 1617}}";
 			sepNavSelRange = "{920, 0}";
-			sepNavVisRange = "{0, 1283}";
+			sepNavVisRange = "{0, 1262}";
 		};
 	};
 	19801DBC159B627A00DB8AD5 /* SimulationThread.h */ = {

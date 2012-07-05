@@ -276,7 +276,7 @@ void BalanceDemoStateMachine::Cycle() {
 }
 
 const Float StepTime = .5;
-const Float SupportTime = .8/1.3;
+const Float SupportTime = .8*1.1;
 const Float StepHeight = .06;
 const Float CoMxSway = .05;
 const Float StepLength = .2;

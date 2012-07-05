@@ -30,32 +30,41 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 	setItemName(BASE_P_X,		"Base Position X" ,		"q(5)");
 	setItemName(BASE_P_Y,		"Base Position Y",		"q(6)");
 	setItemName(BASE_P_Z,		"Base Position Z",		"q(7)");
-	setItemName(RHIP_PHI,		"R Hip Phi",			"q(8)");
-	setItemName(RHIP_PSI,		"R Hip Psi",			"q(9)");
-	setItemName(RHIP_GAMMA,		"R Hip Gamma",			"q(10)");
-	setItemName(RKNEE,			"R Knee Angle",			"q(11)");
-	setItemName(RANK1,			"R Ank 1 Angle",		"q(12)");
-	setItemName(RANK2,			"R Ank 2 Angle",		"q(13)");
-	setItemName(LHIP_PHI,		"L Hip Phi",			"q(14)");
-	setItemName(LHIP_PSI,		"L Hip Psi",			"q(15)");
-	setItemName(LHIP_GAMMA,		"L Hip Gamma",			"q(16)");
-	setItemName(LKNEE,			"L Knee Angle",			"q(17)");
-	setItemName(LANK1,			"L Ank 1 Angle",		"q(18)");
-	setItemName(LANK2,			"L Ank 2 Angle",		"q(19)");
-	setItemName(RSHOULD_PHI,	"R Shoulder Phi",		"q(20)");
-	setItemName(RSHOULD_PSI,	"R Shoulder Psi",		"q(21)");
-	setItemName(RSHOULD_GAMMA,	"R Shoulder Gamma",		"q(22)");
-	setItemName(RELBOW,			"R Elbow Angle",		"q(23)");
-	setItemName(LSHOULD_PHI,	"L Shoulder Phi",		"q(24)");
-	setItemName(LSHOULD_PSI,	"L Shoulder Psi",		"q(25)");
-	setItemName(LSHOULD_GAMMA,	"L Shoulder Gamma",		"q(26)");
-	setItemName(LELBOW,			"L Elbow Angle",		"q(27)");
+	
+	setItemName(RHIP_QUAT0,		"R Hip q0",				"q(8)");
+	setItemName(RHIP_QUAT1,		"R Hip q1",				"q(9)");
+	setItemName(RHIP_QUAT2,		"R Hip q2",				"q(10)");
+	setItemName(RHIP_QUAT3,		"R Hip q3",				"q(11)");
+	setItemName(RKNEE,			"R Knee Angle",			"q(12)");
+	setItemName(RANK1,			"R Ank 1 Angle",		"q(13)");
+	setItemName(RANK2,			"R Ank 2 Angle",		"q(14)");
+	
+	setItemName(LHIP_QUAT0,		"L Hip q0",				"q(15)");
+	setItemName(LHIP_QUAT1,		"L Hip q1",				"q(16)");
+	setItemName(LHIP_QUAT2,		"L Hip q2",				"q(17)");
+	setItemName(LHIP_QUAT3,		"L Hip q3",				"q(18)");
+	setItemName(LKNEE,			"L Knee Angle",			"q(19)");
+	setItemName(LANK1,			"L Ank 1 Angle",		"q(20)");
+	setItemName(LANK2,			"L Ank 2 Angle",		"q(21)");
+	
+	setItemName(RSHOULD_QUAT0,	"R Shoulder Phi",		"q(22)");
+	setItemName(RSHOULD_QUAT1,	"R Shoulder Psi",		"q(23)");
+	setItemName(RSHOULD_QUAT2,	"R Shoulder Gamma",		"q(24)");
+	setItemName(RSHOULD_QUAT3,	"R Shoulder Gamma",		"q(25)");
+	setItemName(RELBOW,			"R Elbow Angle",		"q(26)");
+	
+	setItemName(LSHOULD_QUAT0,	"R Shoulder Phi",		"q(27)");
+	setItemName(LSHOULD_QUAT1,	"R Shoulder Psi",		"q(28)");
+	setItemName(LSHOULD_QUAT2,	"R Shoulder Gamma",		"q(29)");
+	setItemName(LSHOULD_QUAT3,	"R Shoulder Gamma",		"q(30)");
+	setItemName(LELBOW,			"L Elbow Angle",		"q(31)");
 	
 	int angleItems[] = {BASE_QUAT0,BASE_QUAT1,BASE_QUAT2,BASE_QUAT3,
-		BASE_P_X,BASE_P_Y,BASE_P_Z,RHIP_PHI,RHIP_PSI, RHIP_GAMMA,
-		RKNEE,RANK1,RANK2,LHIP_PHI,LHIP_PSI,LHIP_GAMMA,LKNEE,LANK1,LANK2,
-		RSHOULD_PHI,RSHOULD_PSI,RSHOULD_GAMMA,RELBOW,LSHOULD_PHI,
-		LSHOULD_PSI,LSHOULD_GAMMA,LELBOW};
+		BASE_P_X,BASE_P_Y,BASE_P_Z,
+		RHIP_QUAT0,RHIP_QUAT1, RHIP_QUAT2,RHIP_QUAT3, RKNEE,RANK1,RANK2,
+		LHIP_QUAT0,LHIP_QUAT1, LHIP_QUAT2,LHIP_QUAT3, LKNEE,LANK1,LANK2,
+		RSHOULD_QUAT0,RSHOULD_QUAT1,RSHOULD_QUAT2,RSHOULD_QUAT3,RELBOW,
+		LSHOULD_QUAT0,LSHOULD_QUAT1,LSHOULD_QUAT2,LSHOULD_QUAT3,LELBOW};
 	IntVector angleGroup(angleItems,angleItems+sizeof(angleItems)/sizeof(int));
 	declareGroup(JOINT_ANGLES,"Joint Angles", angleGroup);
 	

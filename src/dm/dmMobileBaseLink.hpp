@@ -53,7 +53,7 @@ See also:  dmRigidBody ,  dmLink , \b dmLoadFile_dm */
 class DM_DLL_API dmMobileBaseLink : public dmRigidBody
 {
 public:
-   enum {NUM_VARS = 7};
+   enum {NUM_TRUE_DOFS = 6, NUM_VARS = 7};
 
 public:
    ///
@@ -63,6 +63,8 @@ public:
 
    ///
    virtual int getNumDOFs() const { return NUM_VARS; }
+	inline int getTrueNumDOFs() const { return NUM_TRUE_DOFS; }
+	
    ///
    virtual void setState(Float q[], Float qd[]);
    ///

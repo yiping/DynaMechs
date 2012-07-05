@@ -690,25 +690,30 @@ void dmArticulation::ABForwardAccelerations(SpatialVector a_ref,
 #define DOFBLOCK(b1,b2) block(b1->index_ext,b2->index_ext,b1->dof,b2->dof)
 #define DOFSEGMENT(b1)  segment(b1->index_ext,b1->dof)
 
+unsigned int dmArticulation::getTrueNumDOFs() const {
+	unsigned int jjoint_index_offset = 0;
+	for (int j=0; j<m_link_list.size(); j++) {
+		LinkInfoStruct * curr = m_link_list[j];
+		curr->index_ext = jjoint_index_offset;
+		curr->dof = curr->link->getTrueNumDOFs();
+		jjoint_index_offset += curr->dof;
+	}
+	return jjoint_index_offset;
+}
+
 //---------------------------------------------------------
 void dmArticulation::computeH()
 {
 	//cout << "Inside Compute H " << endl;
 	CrbInertia Itmp;
-	unsigned int jjoint_index_offset = 0;
+	//unsigned int jjoint_index_offset = 0;
 	
 	for (int j=0; j<m_link_list.size(); j++) {
 		LinkInfoStruct * curr = m_link_list[j];
 		curr->link->initializeCrbInertia(curr->I_C);
-		curr->index_ext = jjoint_index_offset;
-		curr->dof = curr->link->getNumDOFs();
-		if (curr->dof == 7) {
-			curr->dof =6;
-		}
-		jjoint_index_offset += curr->dof;
 	}
 	
-	int N = jjoint_index_offset;
+	int N = this->getTrueNumDOFs();
 	//cout << "H is square of size " << N << endl;
 	
 	H.resize(N,N);
@@ -817,22 +822,10 @@ void dmArticulation::computeJacobian(unsigned int target_idx, const MatrixX6F& X
 		cerr << "dmArticulation::calculateJacobian() error: target link index out of range"<< endl;
 		exit (1);
 	}
-
-	unsigned int jjoint_index_offset = 0;
 	
-	for (int j=0; j<m_link_list.size(); j++) {
-		LinkInfoStruct * curr = m_link_list[j];
-		curr->index_ext = jjoint_index_offset;
-		curr->dof = curr->link->getNumDOFs();
-		if (curr->dof == 7) {
-			curr->dof =6;
-		}
-		jjoint_index_offset += curr->dof;
-	}
-	
-	int N = jjoint_index_offset;
-	Jacobian.resize(X_target.rows(),N);
-	Jacobian = MatrixXF::Zero(X_target.rows(),N);
+	int N = this->getTrueNumDOFs();
+	int M = X_target.rows();
+	Jacobian.setZero(M,N);
 	
 	Matrix6XF XT = X_target.transpose(), tmp;
 	unsigned int idx = target_idx;
@@ -843,7 +836,7 @@ void dmArticulation::computeJacobian(unsigned int target_idx, const MatrixX6F& X
 	{
 		if (linki->dof > 0) {
 			linki->link->jcalc(phii); 
-			Jacobian.block(0,linki->index_ext,6,linki->dof) = (phii.transpose()*XT).transpose();
+			Jacobian.block(0,linki->index_ext,M,linki->dof) = (phii.transpose()*XT).transpose();
 		}
 		
 		if(linki->parent) {
@@ -1106,7 +1099,7 @@ void dmArticulation::inverseDynamics(bool ExtForceFlag )
 	{
 		Vector6F fCurr = m_link_list[i]->link_val2.f;
 		
-		if (m_link_list[i]->link->getNumDOFs() > 0) {
+		if (m_link_list[i]->link->getTrueNumDOFs() > 0) {
 			// Future Optimization (Offload PhiT * ( ) to a link specific routine)
 			m_link_list[i]->link_val2.tau = m_link_list[i]->link->jcalc().transpose() * fCurr;
 		}
@@ -1123,20 +1116,10 @@ void dmArticulation::inverseDynamics(bool ExtForceFlag )
 
 void dmArticulation::computeCandG()
 {
-	unsigned int jjoint_index_offset = 0;
-	
+	int N = this->getTrueNumDOFs();
 	for (int j=0; j<m_link_list.size(); j++) {
-		LinkInfoStruct * bodyj = m_link_list[j];
-		bodyj->index_ext = jjoint_index_offset;
-		bodyj->dof = bodyj->link->getNumDOFs();
-		if (bodyj->dof == 7) {
-			bodyj->dof =6;
-		}
-		jjoint_index_offset += bodyj->dof;
-		bodyj->link_val2.qdd = VectorXF::Zero(bodyj->dof);
-	}
-	
-	int N = jjoint_index_offset;
+		m_link_list[j]->link_val2.qdd = VectorXF::Zero(m_link_list[j]->dof);
+	}	
 	
 	inverseDynamics(false);
 	

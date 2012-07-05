@@ -57,7 +57,7 @@ See also: {\tt dmRigidBody}, {\tt dmLink}, {\tt dmLoadFile\_dm}  */
 class DM_DLL_API dmQuaternionLink : public dmRigidBody
 {
 public:
-   enum {NUM_VARS = 4};
+   enum {NUM_TRUE_DOFS = 3, NUM_VARS = 4};
 
 public:
    ///
@@ -74,6 +74,8 @@ public:
 
    ///
    inline int getNumDOFs() const {return NUM_VARS;}
+   inline int getTrueNumDOFs() const { return NUM_TRUE_DOFS; }
+	
    ///
    void setState(Float q[], Float qd[]);
    ///
@@ -157,6 +159,23 @@ public:
                                SpatialVector a_curr,
                                Float qd[],
                                Float qdd[]);
+	
+	//! DM v5.0 Function, 
+	void RNEAOutwardFKID(dmRNEAStruct &link_val2_curr, 
+						 dmRNEAStruct &link_val2_inboard,
+						 bool ExtForceFlag = false); // should make the second param const
+	
+	//! DM v5.0 Function,  for the first link. 
+	void RNEAOutwardFKIDFirst(dmRNEAStruct &link_val2_curr, 
+							  CartesianVector p_ref_ICS,  
+							  RotationMatrix  R_ref_ICS, 
+							  const Vector6F& a_ini,
+							  const Vector6F& v_ini = Vector6F::Zero(), 
+							  bool ExtForceFlag = false
+							  );
+	
+	
+	void jcalc(Matrix6XF &);
 
 // Rendering functions:
    ///

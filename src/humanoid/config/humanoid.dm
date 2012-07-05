@@ -42,7 +42,7 @@ Articulation {
 		# Right Leg
 		Branch {
 			
-			SphericalLink {
+			QuaternionLink {
 				Name		"RightThigh"
 				Graphics_Model	"./humanoid_model/thigh.xan"
 	
@@ -56,11 +56,13 @@ Articulation {
 	
 				Position_From_Inboard_Link 0 -.09 0
 				#Initial_Joint_Angles	0 0 -.2
-				Initial_Joint_Angles	0 1.57079633 1.57079633
+				#Initial_Joint_Angles	0 1.57079633 1.57079633
+				
+				Orientation_Quat   -0.5474    0.4476    0.4476    0.5474
 				Initial_Angular_Velocity	0 0 0
-				Axes_Limits			0	0  0
-				Joint_Limit_Spring_Constant	0
-				Joint_Limit_Damper_Constant	0
+				#Axes_Limits			0	0  0
+				#Joint_Limit_Spring_Constant	0
+				#Joint_Limit_Damper_Constant	0
 				Joint_Friction		0
 			}
 	
@@ -138,7 +140,7 @@ Articulation {
 		# Left Leg
 		Branch {
 		
-			SphericalLink {
+			QuaternionLink {
 				Name		"LeftThigh"
 				Graphics_Model	"./humanoid_model/thigh.xan"
 	
@@ -151,13 +153,13 @@ Articulation {
 				Contact_Locations	0.25	0	0	
 	
 				Position_From_Inboard_Link 0 .09 0
-					#Initial_Joint_Angles	0 0 -.2
-					Initial_Joint_Angles	0 0 0
-					Initial_Angular_Velocity	0 0 0
-					Axes_Limits			0	0  0
-					Joint_Limit_Spring_Constant	0
-					Joint_Limit_Damper_Constant	0
-					Joint_Friction		0
+				#Initial_Joint_Angles	0 0 -.2
+				Orientation_Quat  -0.5474    0.4476    0.4476    0.5474
+				Initial_Angular_Velocity	0 0 0
+				#Axes_Limits			0	0  0
+				#Joint_Limit_Spring_Constant	0
+				#Joint_Limit_Damper_Constant	0
+				Joint_Friction		0
 			}
 	
 			RevoluteLink {
@@ -236,7 +238,7 @@ Articulation {
 		# Right Arm
 		Branch {
 			
-			SphericalLink {
+			QuaternionLink {
 				Name		"RightArm"
 				Graphics_Model	"./humanoid_model/thigh.xan"
 	
@@ -254,13 +256,15 @@ Articulation {
 				##Initial_Joint_Angles	0 2.5 -1.57
 				#Initial_Joint_Angles	0 0 -1.57
 				#Initial_Joint_Angles	0 -2.4 -1.57
-				Initial_Joint_Angles	0 0 0
+				#Initial_Joint_Angles	0 0 0
 				
+				Orientation_Quat  0.7071         0   -0.1405    0.6930
 				Initial_Angular_Velocity	0 0 0
-				Axes_Limits			0	0  0
-				Joint_Limit_Spring_Constant	0
-				Joint_Limit_Damper_Constant	0
+				#Axes_Limits			0	0  0
+				#Joint_Limit_Spring_Constant	0
+				#Joint_Limit_Damper_Constant	0
 				Joint_Friction		0
+				
 			}
 	
 			RevoluteLink {
@@ -291,7 +295,7 @@ Articulation {
 		# Left Arm
 		Branch {
 		
-			SphericalLink {
+			QuaternionLink {
 				Name		"LeftArm"
 				Graphics_Model	"./humanoid_model/thigh.xan"
 	
@@ -304,14 +308,15 @@ Articulation {
 				Contact_Locations	0.25	0	0	
 	
 				Position_From_Inboard_Link 0 .09 .4
-					#Initial_Joint_Angles	0 -2.4 -1.57
-					#Initial_Joint_Angles	0 0 -1.57
-					Initial_Joint_Angles	0 0 0
-					Initial_Angular_Velocity	0 0 0
-					Axes_Limits			0	0  0
-					Joint_Limit_Spring_Constant	0
-					Joint_Limit_Damper_Constant	0
-					Joint_Friction		0
+				#Initial_Joint_Angles	0 -2.4 -1.57
+				#Initial_Joint_Angles	0 0 -1.57
+				
+				Orientation_Quat  0.6930    0.1405         0    0.7071
+				Initial_Angular_Velocity	0 0 0
+				#Axes_Limits			0	0  0
+				#Joint_Limit_Spring_Constant	0
+				#Joint_Limit_Damper_Constant	0
+				Joint_Friction		0
 			}
 	
 			RevoluteLink {

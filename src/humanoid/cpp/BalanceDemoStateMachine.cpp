@@ -64,7 +64,7 @@ BalanceDemoStateMachine::BalanceDemoStateMachine(dmArticulation * robot)
 	pFootEnd.resize(3);
 	pWalkPrep.resize(3);
 	
-	pMiddleCom << 2.0-.07, 2.08, .40;
+	pMiddleCom << 2.03, 2.0, .48;
 	
 	pLeftCom   << 2.14, 2-.07, .50;
 	pFootEnd << 2.18,2,.1;
@@ -590,10 +590,23 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 			TaskJacobian.block(taskRow,6,NJ,NJ) = MatrixXF::Identity(NJ,NJ)*discountFactor;
 			
 			// Compute task bias based on PD on joint angles
-			VectorXF qDes = VectorXF::Zero(NJ); 					  
-			qDes << 0,0,0,0,0,0,0,0,0,0,0,0, 0,2.5,-1.57, 0, 0, -2.4, -1.57, 0;
+			VectorXF qDes = VectorXF::Zero(NJ+6); 					  
+			qDes << 0,0,0,0,0,0,  0,0,0,0,0,0   ,0,0,0,0,0,0,   0,2.5,-1.57, 0,    0, -2.4, -1.57, 0;
 			Float Kp = 20, Kd = 12;
-			TaskBias.segment(taskRow,NJ) = (Kp * (qDes - q.segment(7,NJ)) - Kd * qd.segment(6,NJ))*discountFactor;
+			
+			int k=6;
+			int kdm=7;
+			for (int i=1; i<artic->getNumLinks(); i++) {
+				LinkInfoStruct * bodyi = artic->m_link_list[i];
+				if (bodyi->dof) {
+					if (bodyi->dof == 1) {
+						TaskBias(taskRow+k-6) = (Kp * (qDes(k) - q(kdm)) - Kd * qd(k))*discountFactor;
+					}
+				}
+				kdm+=bodyi->link->getNumDOFs();
+				k+=bodyi->link->getTrueNumDOFs();
+			}
+			
 			
 			// Handle Orientation Error for Shoulder Joints
 			Matrix3F RAct;
@@ -601,15 +614,19 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 			Vector3F eOmega;
 			Vector3F om;
 			
-			om << 0 , -.9*M_PI, -.1*M_PI;
-			matrixExpOmegaCross(om, RDes[0]);
+			//om << 0 , M_PI/2, 0*M_PI/2;
+			//matrixExpOmegaCross(om, RDes[0]);
 			
-			om << 0 , .9*M_PI, .1*M_PI;
-			matrixExpOmegaCross(om, RDes[1]);
+			//om << 0 , M_PI/2, -M_PI/2*0;
+			//matrixExpOmegaCross(om, RDes[1]);
 			
 			
-			RDes[0].setIdentity();
-			RDes[1].setIdentity();
+			//RDes[0].setIdentity();
+			//RDes[1].setIdentity();
+			/*Matrix3F tmp;
+			tmp << 0,0,1,  1,0,0,  0,1,0;
+			RDes[0] = tmp;
+			RDes[1] = tmp;
 			
 			CartesianTensor RShoulder;
 			CartesianVector pShoulder;
@@ -625,8 +642,41 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 				matrixLogRot(RDes[i]*RAct.transpose(),eOmega);
 				eOmega *=-1;
 				
-				TaskBias.segment(taskRow+jointNum,3) = (Kp * eOmega - Kd * qd.segment(6+jointNum,3))*discountFactor;
+				Vector3F omega = qd.segment(6+jointNum,3);
+				
+				TaskBias.segment(taskRow+jointNum,3) = (Kp * eOmega - Kd * omega)*discountFactor - omega.cross(omega);
+			}*/
+			
+			Matrix3F tmpR;
+			tmpR << 0,0,1,  1,0,0,  0,1,0;
+			RDes[0] = tmpR.transpose();
+			RDes[1] = tmpR.transpose();
+			
+			CartesianTensor i_R_pi;
+			CartesianVector pShoulder;
+			
+			Matrix3F i_R_pi_mat;
+			
+			const int linkNums[] = {10,12};
+			const int jointNums[] = {12,16};
+			for (int i=0; i<2; i++) {
+				const int linkNum = linkNums[i];
+				const int jointNum = jointNums[i];
+				
+				G_robot->getLink(linkNum)->getPose(i_R_pi,pShoulder);
+				copyRtoMat(i_R_pi, i_R_pi_mat);
+				
+				RAct = i_R_pi_mat.transpose();
+				
+				matrixLogRot(RDes[i]*RAct.transpose(),eOmega);
+				//eOmega *=-1;
+				
+				Vector3F omega = qd.segment(6+jointNum,3);
+				
+				TaskBias.segment(taskRow+jointNum,3) = (i_R_pi_mat*(Kp *eOmega) - Kd * omega)*discountFactor - omega.cross(omega);
 			}
+			
+			
 			// Scale Rows Accordingly...
 			// Legs
 			TaskJacobian.block(taskRow,0,12,NJ+6) *= 0;

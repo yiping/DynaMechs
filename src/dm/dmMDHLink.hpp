@@ -143,6 +143,8 @@ public:
 
    ///
    inline int getNumDOFs() const {return NUM_DOFS;}
+	inline int getTrueNumDOFs() const {return NUM_DOFS;}
+	
    ///
    void setState(Float q[], Float qd[]);
    ///

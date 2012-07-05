@@ -180,6 +180,10 @@ public:
 
    ///
    virtual int getNumDOFs() const = 0;
+	
+	///
+	virtual int getTrueNumDOFs() const = 0;
+	
    ///
    virtual void setState(Float q[], Float qd[]) = 0;
    ///

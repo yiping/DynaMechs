@@ -671,6 +671,7 @@
 		192003E815A5F9FD0006A823 /* StateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StateMachine.cpp; path = src/humanoid/cpp/StateMachine.cpp; sourceTree = "<group>"; };
 		192003EB15A5FA0D0006A823 /* HumanoidStateMachineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HumanoidStateMachineController.h; path = src/humanoid/h/HumanoidStateMachineController.h; sourceTree = "<group>"; };
 		192003EC15A5FA0D0006A823 /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StateMachine.h; path = src/humanoid/h/StateMachine.h; sourceTree = "<group>"; };
+		1920046F15A61B830006A823 /* humanoid.dm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = humanoid.dm; path = src/humanoid/config/humanoid.dm; sourceTree = "<group>"; };
 		1925864014D2E95000778EA7 /* dm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dm.h; path = src/dm/dm.h; sourceTree = "<group>"; };
 		1925864114D2E95000778EA7 /* dmActuator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dmActuator.cpp; path = src/dm/dmActuator.cpp; sourceTree = "<group>"; };
 		1925864214D2E95000778EA7 /* dmActuator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dmActuator.hpp; path = src/dm/dmActuator.hpp; sourceTree = "<group>"; };
@@ -2462,6 +2463,7 @@
 		19801DB2159B621E00DB8AD5 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				1920046F15A61B830006A823 /* humanoid.dm */,
 				19801DB1159B621A00DB8AD5 /* humanoid.cfg */,
 			);
 			name = Config;

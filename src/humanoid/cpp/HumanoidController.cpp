@@ -38,8 +38,8 @@ Float totalMass;
 CubicSplineTrajectory ComTrajectory;*/
 
 HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceController(robot) {
-	q.resize(NJ+7);
-	qdDm.resize(NJ+7);
+	q.resize(NJ+7+4);
+	qdDm.resize(NJ+7+4);
 	qd.resize(NJ+6);
 	
 	SupportIndices.resize(NS);
@@ -81,6 +81,18 @@ void HumanoidController::ControlInit()
 	//Update State Variables for Control
 	{
 		G_robot->getState(q.data(),qdDm.data());
+		int N = G_robot->getTrueNumDOFs();
+		
+		int k = 0;
+		for (int i=0; i<artic->m_link_list.size(); i++) {
+			LinkInfoStruct * linki = artic->m_link_list[i];
+			if (linki->dof) {
+				//cout << "Link " << i << " dof = " << linki->dof << endl;
+				//cout << "qd = " << qdDm.segment(k,linki->dof).transpose() << endl;
+				qd.segment(linki->index_ext,linki->dof) = qdDm.segment(k,linki->dof);
+				k+=linki->link->getNumDOFs();
+			}
+		}
 		
 		// Test code for velocity initialization
 		{
@@ -92,7 +104,7 @@ void HumanoidController::ControlInit()
 			//G_robot->setState(q.data(),qdDm.data());
 		}
 		
-		qd.segment(6,NJ) = qdDm.segment(7,NJ);
+		
 		//Dynamechs expresses the velocity of the FB in the ICS coordinate
 		//We get it in the FB coord here to be consistent
 		//with our definition of H.
@@ -167,8 +179,24 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 		hDotOpt = CentMomMat*qdd + cmBias;
 		
 		// Form Joint Input and simulate
-		VectorXF jointInput = VectorXF::Zero(NJ+7);
-		jointInput.segment(7,NJ) = tau;
+		VectorXF jointInput = VectorXF::Zero(NJ+7+4);
+		
+		int k = 7;
+		// Skip over floating base (i=1 initially)
+		for (int i=1; i<artic->m_link_list.size(); i++) {
+			LinkInfoStruct * linki = artic->m_link_list[i];
+			if (linki->dof) {
+				//cout << "Link " << i << " dof = " << linki->dof << endl;
+				//cout << "qd = " << qdDm.segment(k,linki->dof).transpose() << endl;
+				jointInput.segment(k,linki->dof) = tau.segment(linki->index_ext-6,linki->dof);
+				k+=linki->link->getNumDOFs();
+			}
+		}
+		
+		//cout << "Tau = " << tau.transpose() << endl;
+		//cout << "Joint input = " << jointInput.transpose() << endl;
+		//exit(-1);
+		//jointInput.segment(7,NJ) = tau;
 		G_robot->setJointInput(jointInput.data());
 		dmGetSysTime(&tv4);
 	}
@@ -186,43 +214,58 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 	#ifdef CONTROL_DEBUG
 	// Debug Code
 	{
-		if (sim_time > 6) {
+		cout << "q " << q.transpose() << endl;
+		cout << "qd " << qdDm.transpose() << endl;
+		cout << "qd2 " << qd.transpose() << endl;
+		cout << "Task Bias " << TaskBias << endl;
+		
+		//cout << "H = " << endl << G_robot->H << endl;
+		cout << "CandG = " << endl << G_robot->CandG.transpose() << endl;
+		
+		if (simThread->sim_time > 0) {
 			
 		cout << setprecision(5);
 			
 			MSKboundkeye key;
 			double bl,bu;
-			
-			MSK_getbound(tsc->task, MSK_ACC_VAR, 57, &key, &bl, &bu);
-			cout << "Lower " << bl << endl;
-			cout << "Upper " << bu << endl;
-			switch (key) {
-				case MSK_BK_FR:
-					cout << " Free " << endl;
-					break;
-				case MSK_BK_LO:
-					cout << " Lower Bound " << endl;
-					break;
-				case MSK_BK_UP:
-					cout << "Upper Bound " << endl;
-					break;
-				case MSK_BK_FX:
-					cout << "Fixed" << endl;
-					break;
-				default:
-					break;
+			for (int i=0; i<numCon; i++) {
+				MSK_getbound(task, MSK_ACC_VAR, i, &key, &bl, &bu);
+				cout << "i = " << i;
+				
+				switch (key) {
+					case MSK_BK_FR:
+						cout << " Free " << endl;
+						break;
+					case MSK_BK_LO:
+						cout << " Lower Bound " << endl;
+						break;
+					case MSK_BK_UP:
+						cout << " Upper Bound " << endl;
+						break;
+					case MSK_BK_FX:
+						cout << " Fixed " << endl;
+						break;
+					case MSK_BK_RA:
+						cout << " Ranged " << endl;
+						break;
+					default:
+						cout << " Not sure(" << key <<  ")" << endl;
+						break;
+				}
+				cout << bl << " to " << bu << endl;
 			}
-		cout << "x(57) = " << tsc->xx(57) << endl;
+			
+		cout << "x(57) = " << xx(57) << endl;
 		cout << "tau = " << tau.transpose() << endl;
 		cout << "qdd = " << qdd.transpose() << endl;
 		cout << "fs = "  << fs.transpose()  << endl;
 		//cout << "lambda = "  << lambda.transpose()  << endl;
 		
 		
-		VectorXF a = tsc->TaskJacobian * qdd;
+		VectorXF a = TaskJacobian * qdd;
 		//cout << "a" << endl;
 		
-		VectorXF e = tsc->TaskJacobian * qdd - tsc->TaskBias;
+		VectorXF e = TaskJacobian * qdd - TaskBias;
 		cout << "e = " << e.transpose() << endl;
 		
 		MatrixXF H = G_robot->H;
@@ -233,7 +276,7 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 		
 		VectorXF generalizedContactForce = VectorXF::Zero(NJ+6);
 		for (int i=0; i<NS; i++) {
-			generalizedContactForce += tsc->SupportJacobians[i].transpose()*fs.segment(6*i,6);
+			generalizedContactForce += SupportJacobians[i].transpose()*fs.segment(6*i,6);
 		}
 		
 		VectorXF qdd2 = H.inverse()*(S.transpose() * tau + generalizedContactForce- CandG);
@@ -255,7 +298,7 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 		Vector3F g;
 		g << 0,0,-9.81;
 		cout <<"hdot - mg\t" << (CentMomMat*qdd + cmBias).segment(3,3).transpose() -  totalMass * g.transpose()<< endl;
-		//exit(-1);
+		exit(-1);
 		
 		
 		
@@ -269,7 +312,7 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 			X.setIdentity();
 			
 			for (int i=0; i<NS; i++) {
-				int linkIndex = tsc->SupportIndices[i];
+				int linkIndex = SupportIndices[i];
 				G_robot->computeJacobian(linkIndex,X,Jac);
 				dmRigidBody * link = (dmRigidBody *) G_robot->getLink(linkIndex);
 				

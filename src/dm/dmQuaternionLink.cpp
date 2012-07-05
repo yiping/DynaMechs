@@ -766,3 +766,122 @@ void dmQuaternionLink::xformZetak(Float *zetak,
       for (j = 0; j < 6; j++)
          zetak[i] -= Xik[j][i]*tmpVec[j];
 }
+
+//-------------------------------------------------------------------
+/* The following codes are mostly written in Pure Eigen style. 
+ Consider to gradually optimize the following code in the future 
+ by switching to those more efficient, DynaMechs-native functions, such as stxToInboard, stxFromInboard etc. */
+//! DM v5.0 function, 
+void dmQuaternionLink::RNEAOutwardFKID(  dmRNEAStruct &link_val2_curr, 
+									  dmRNEAStruct &link_val2_inboard,
+									  bool ExtForceFlag)
+{
+	// compute the position and orientation of the link in the inertial coordinate system (ICS)
+	// This part reuses the code snippet in dmLink::forwardKinematics() 
+	// R_ICS and p_ICS are only used to compute contact forces
+	// dmContactModel::computeForce() requires CartesianVector and RotationMatrix as inputs. 
+	for (int i = 0; i < 3; i++)
+	{
+		link_val2_curr.p_ICS[i] = link_val2_inboard.p_ICS[i];
+		for (int j = 0; j < 3; j++)
+		{
+	 		link_val2_curr.p_ICS[i] += link_val2_inboard.R_ICS[i][j] * m_p[j]; // position
+		}
+		rtxFromInboard(&(link_val2_inboard.R_ICS[i][0]),
+					   &(link_val2_curr.R_ICS[i][0])); //orientation
+	}
+	
+	Vector3F q, qd;
+	getState(q.data(),qd.data());
+	Matrix6XF Phi;
+	jcalc(Phi);
+	Vector6F vJ = Phi * qd;
+	
+	// v_i = v_pi + Phi qdot
+	stxFromInboard(link_val2_inboard.v.data(), link_val2_curr.v.data());
+	link_val2_curr.v += vJ;			   
+	
+	// a_i = a_pi + phi qddot + v x phi qdot
+	stxFromInboard(link_val2_inboard.a.data(), link_val2_curr.a.data());
+	link_val2_curr.a += Phi * link_val2_curr.qdd + crm( link_val2_curr.v ) * vJ;
+	
+	
+	Matrix6F I = getSpatialInertiaMatrix();
+	link_val2_curr.f = I *  link_val2_curr.a  + crf(link_val2_curr.v) * I * link_val2_curr.v;
+	
+	if (ExtForceFlag != false)
+	{
+		for (int i = 0; i < m_force.size(); i++)// if there are external forces
+		{
+			// currently there is only ground contact force.
+			SpatialVector ext_f;
+			m_force[i]->computeForce( link_val2_curr, ext_f );//ext_f is ALREADY with respect to the body's coordinate system
+			Vector6F Ext_f;
+			Ext_f<< ext_f[0], ext_f[1], ext_f[2], ext_f[3], ext_f[4], ext_f[5];
+			link_val2_curr.f -= Ext_f;
+		}
+	}
+	
+}
+
+
+//-------------------------------------------------------------------
+//! DM v5.0 function, 
+void dmQuaternionLink::RNEAOutwardFKIDFirst(  dmRNEAStruct &link_val2_curr,
+										   CartesianVector  p_ref_ICS,  // articulation w.r.t ICS
+										   RotationMatrix  R_ref_ICS,  
+										   const Vector6F& a_ini, 
+										   const Vector6F& v_ini,
+										   bool ExtForceFlag)
+{
+	// compute R_ICS and p_ICS)
+	for (int i = 0; i < 3; i++)
+	{
+		link_val2_curr.p_ICS[i] = p_ref_ICS[i];
+		for (int j = 0; j < 3; j++)
+		{
+			link_val2_curr.p_ICS[i] += R_ref_ICS[i][j] * m_p[j]; // position 
+			rtxFromInboard(&(R_ref_ICS[i][0]),
+						   &(link_val2_curr.R_ICS[i][0])); //orientation			
+		}
+	}
+	
+	Vector3F q, qd;
+	getState(q.data(),qd.data());
+	
+	Matrix6XF Phi;
+	jcalc(Phi);
+	
+	Vector6F vJ = Phi* qd;
+	
+	//Matrix6F X = get_X_FromParent_Motion();
+	link_val2_curr.v = vJ;
+	
+	//a_i = a_pi + phi qdd (v cross phi qdot is zero)
+	stxFromInboard(a_ini.data(), link_val2_curr.a.data());
+	link_val2_curr.a += Phi * link_val2_curr.qdd;
+	
+	
+	Matrix6F I = getSpatialInertiaMatrix();
+	link_val2_curr.f = I *  link_val2_curr.a  + crf(link_val2_curr.v) * I * link_val2_curr.v;	
+	
+	if (ExtForceFlag != false)
+	{
+		for (int i = 0; i < m_force.size(); i++)// if there are external forces
+		{
+			// currently there is only ground contact force.
+			SpatialVector ext_f;
+			m_force[i]->computeForce( link_val2_curr, ext_f );//ext_f is ALREADY with respect to the body's coordinate system
+			Vector6F Ext_f;
+			Ext_f<< ext_f[0], ext_f[1], ext_f[2], ext_f[3], ext_f[4], ext_f[5];
+			link_val2_curr.f -= Ext_f;
+		}	
+	}
+}
+
+
+//---------------------------------------------------
+void dmQuaternionLink::jcalc(Matrix6XF& S) {
+	S.resize(6,3);
+    S << 1,0,0, 0,1,0, 0,0,1, 0,0,0, 0,0,0, 0,0,0;
+}

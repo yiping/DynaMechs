@@ -176,6 +176,8 @@ public:
 
    ///
    unsigned int getNumDOFs() const { return m_num_state_vars; }
+	unsigned int getTrueNumDOFs() const;
+	
 
    ///
    void setJointInput(Float joint_input[]);

@@ -53,6 +53,8 @@ public:
 
    ///
    inline int getNumDOFs() const {return NUM_DOFS;}
+	inline int getTrueNumDOFs() const {return NUM_DOFS;}
+	
    ///
    inline void setState(Float [], Float []) {};
    ///

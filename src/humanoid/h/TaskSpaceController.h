@@ -75,6 +75,7 @@ public:
 	VectorXF xx;
 	vector<MatrixXF > SupportJacobians;
 	
+	int numCon;
 	int iter;
 	MSKtask_t     task;
 	
@@ -83,7 +84,7 @@ private:
 	MSKenv_t      env;
 	
 	MSKrescodee   r;
-	int numCon;
+	
 	
 	MatrixXF FrictionBasis;
 	

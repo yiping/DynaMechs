@@ -9,19 +9,18 @@
 
 #include "GlobalDefines.h"
 #include "HumanoidDataLogger.h"
-#include "humanoidControl.h"
+#include "HumanoidController.h"
 #include <wx/filefn.h>
 #include "GlobalFunctions.h"
 
+HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : HumanoidStateMachineController(robot,stateSize) {
 
-
-
-void HumanoidDataLogger::initializeDataLogging() {
 	
 	setMaxItems(MAX_STATIC_ITEMS);
 	setMaxGroups(MAX_STATIC_GROUPS);
 	
 	setItemName(TIME,			"Time",					"t");
+	setItemName(STATE_CODE,		"State",				"state");
 	
 	// Angles
 	setItemName(BASE_QUAT0,		"Base Quaternion0",		"q(1)");
@@ -166,12 +165,27 @@ void HumanoidDataLogger::initializeDataLogging() {
 	
 	IntVector zmpGroup(zmpItems,zmpItems+sizeof(zmpItems)/sizeof(int));
 	declareGroup(ZMP_WRENCH,"ZMP Wrench", zmpGroup);
-	
+
 	
 	// Add Dynamic Groups
 	COM_POSITION = addGroup("CoM Pos (Act)", "pCom",3);
 	COM_POSITION_DES = addGroup("Com Pos (Des)", "pComDes", 3);
+	
 	COM_VELOCITY = addGroup("CoM Velocity", "vCom",3);
+	COM_VELOCITY_DES = addGroup("CoM Velocity", "vCom",3);
+	
+	LEFT_FOOT_POS = addGroup("Left Foot Pos", "lFootPos", 3);
+	LEFT_FOOT_POS_DES = addGroup("Left Foot Pos (Des)", "lFootPosDes", 3);
+	
+	LEFT_FOOT_VEL = addGroup("Left Foot Vel", "lFootVel", 6);
+	LEFT_FOOT_VEL_DES = addGroup("Left Foot Vel (Des)", "lFootVelDes", 6);
+	
+	RIGHT_FOOT_POS = addGroup("Right Foot Pos", "rFootPos", 3);
+	RIGHT_FOOT_POS_DES = addGroup("Right Foot Pos (Des)", "rFootPosDes", 3);
+	
+	RIGHT_FOOT_VEL = addGroup("Right Foot Vel", "rFootVel", 6);
+	RIGHT_FOOT_VEL_DES = addGroup("Right Foot Vel (Des)", "rFootVelDes", 6);
+	
 	
 	CENTROIDAL_MOMENTUM = addGroup("Centroidal Momentum",	"hCom",6);
 	HDOT_DES			= addGroup("H Dot Des",				"hDotDes", 6);
@@ -185,12 +199,13 @@ void HumanoidDataLogger::initializeDataLogging() {
 }
 
 
-
 void HumanoidDataLogger::logData() {
 	
 	dataMutex.Lock();
 	newRecord();
 	assignItem(TIME, simThread->sim_time);
+	assignItem(STATE_CODE, state);
+	
 	assignGroup(JOINT_ANGLES, q);
 	assignGroup(JOINT_RATES, qd);
 	assignGroup(JOINT_TORQUES, tau);
@@ -199,12 +214,12 @@ void HumanoidDataLogger::logData() {
 	force.head(3) = grfInfo.fCoPs[0];
 	force.segment(3,2) = grfInfo.pCoPs[0].head(2);
 	force(5)     = grfInfo.nCoPs[0];
-	assignGroup(LEFT_FOOT_WRENCH, force);
+	assignGroup(RIGHT_FOOT_WRENCH, force);
 	
 	force.head(3) = grfInfo.fCoPs[1];
 	force.segment(3,2) = grfInfo.pCoPs[1].head(2);
 	force(5)     = grfInfo.nCoPs[1];
-	assignGroup(RIGHT_FOOT_WRENCH, force);
+	assignGroup(LEFT_FOOT_WRENCH, force);
 	
 	force.head(3) = grfInfo.fZMP;
 	force.segment(3,2) = grfInfo.pZMP.head(2);
@@ -214,12 +229,25 @@ void HumanoidDataLogger::logData() {
 	assignGroup(COM_POSITION, pCom);
 	assignGroup(COM_POSITION_DES, pComDes);
 	assignGroup(COM_VELOCITY, vCom);
+	assignGroup(COM_VELOCITY_DES, vComDes);
 	
 	assignGroup(CENTROIDAL_MOMENTUM, centMom);
 	assignGroup(HDOT_DES, hDotDes);
 	assignGroup(HDOT_OPT, hDotOpt);
 	
 	assignGroup(QDD_OPT, qdd);
+	
+	assignGroup(RIGHT_FOOT_POS, pFoot[0]);
+	assignGroup(RIGHT_FOOT_POS_DES, pDesFoot[0]);
+	
+	assignGroup(RIGHT_FOOT_VEL, vFoot[0]);
+	assignGroup(RIGHT_FOOT_VEL_DES, vDesFoot[0]);
+	
+	assignGroup(LEFT_FOOT_POS, pFoot[1]);
+	assignGroup(LEFT_FOOT_POS_DES, pDesFoot[1]);
+	
+	assignGroup(LEFT_FOOT_VEL, vFoot[1]);
+	assignGroup(LEFT_FOOT_VEL_DES, vDesFoot[1]);
 	
 	assignMatrixGroup(HMAT,G_robot->H);
 	dataMutex.Unlock();

@@ -45,8 +45,9 @@
 
 //#include "mosek.h" /* Include the MOSEK definition file. */
 #include "TaskSpaceController.h"
-#include "humanoidControl.h"
+#include "HumanoidController.h"
 #include "SimulationThread.h"
+#include "BalanceDemoStateMachine.h"
 //#define KURMET_DEBUG
 
 #define OUTPUT_DEBUG_INFO
@@ -78,7 +79,7 @@ bool MyApp::OnInit()
 	parser.AddOption(wxT("c"), wxT("Config File"));
 	parser.Parse();
 	
-	dataLogger = new HumanoidDataLogger();
+
 	
 	simThread = new SimulationThread();
 	simThread->Create();
@@ -158,13 +159,14 @@ bool MyApp::OnInit()
 
 		
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
+		humanoid = (HumanoidDataLogger *) new BalanceDemoStateMachine(G_robot);
 		
 		// --------
 		// Read in data directory
 		char data_dir[FILENAME_SIZE];
 		readConfigParameterLabel(cfg_ptr, "Data_Save_Directory");
 		readFilename(cfg_ptr, data_dir);
-		dataLogger->dataSaveDirectory = std::string(data_dir);
+		humanoid->dataSaveDirectory = std::string(data_dir);
 		
 		
 		simThread->G_integrator->addSystem(G_robot);
@@ -173,8 +175,9 @@ bool MyApp::OnInit()
 	}
 	
 	
+	
 	// -- Project specific -- 
-	initControl();
+	//initControl();
 	// -----------------------
 	{
 		cout<<"initilize scene..."<<endl;

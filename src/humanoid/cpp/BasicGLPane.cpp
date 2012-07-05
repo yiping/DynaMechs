@@ -363,6 +363,9 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 
 void BasicGLPane::glInit()
 {
+	//glEnable(GL_MULTISAMPLE);
+	//glHint(GL_MULTISAMPLE_FILTER_HINT_NV,GL_NICEST);
+	
 		GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 		GLfloat light_diffuse[] = { 0.7, 0.7, 0.7, 1.0 };
 		GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -387,12 +390,18 @@ void BasicGLPane::glInit()
 		
 		// ****
 		glEnable(GL_LINE_SMOOTH);
+		//glEnable(GL_POINT_SMOOTH);
+		
+		//glEnable(GL_POLYGON_SMOOTH);
 		
 		// Enable Blending
 		glEnable(GL_BLEND);
 		// Specifies pixel arithmetic
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+		//glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+		//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	
 		glLineWidth (1.5);
 		// ****
 		//glShadeModel(GL_FLAT);

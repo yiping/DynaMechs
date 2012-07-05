@@ -13,6 +13,9 @@
 #include <dm.h>
 #include <dmArticulation.hpp>
 #include <vector>
+//#include "BalanceDemoStateMachine.h"
+//#include "HumanoidDataLogger.h"
+
 
 typedef struct GRFInfoStruct {
 	Vector3F pZMP;
@@ -38,5 +41,13 @@ typedef struct ControlInfoStruct   {
 typedef vector<int> IntVector;
 typedef vector<MatrixX6F> XformVector;
 
+typedef vector<string > StringVector;
+
+class ArticulationSpecializer {
+protected:
+	dmArticulation * artic;	
+};
+
+//class FeaturedHumanoid : public HumanoidDataLogger, BalanceDemoStateMachine {};
 
 #endif

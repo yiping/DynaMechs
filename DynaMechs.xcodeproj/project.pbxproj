@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		192003E915A5F9FD0006A823 /* HumanoidStateMachineController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 192003E715A5F9FD0006A823 /* HumanoidStateMachineController.cpp */; };
+		192003EA15A5F9FD0006A823 /* StateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 192003E815A5F9FD0006A823 /* StateMachine.cpp */; };
 		192587F214D2F26600778EA7 /* dm.h in Headers */ = {isa = PBXBuildFile; fileRef = 1925864014D2E95000778EA7 /* dm.h */; };
 		192587F314D2F26600778EA7 /* dmActuator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1925864214D2E95000778EA7 /* dmActuator.hpp */; };
 		192587F414D2F26600778EA7 /* dmArticulation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1925864414D2E95000778EA7 /* dmArticulation.hpp */; };
@@ -210,6 +212,8 @@
 		1940A4CE1507C75B00CD4386 /* svd_linpack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867D14D2E95000778EA7 /* svd_linpack.cpp */; };
 		1940A4D01507C75B00CD4386 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876914D2EDF400778EA7 /* GLUT.framework */; };
 		1940A4D11507C75B00CD4386 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876B14D2EDF400778EA7 /* OpenGL.framework */; };
+		194A858315A1F924007CBCFE /* BalanceDemoStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 194A858115A1F924007CBCFE /* BalanceDemoStateMachine.cpp */; };
+		194A858415A1F924007CBCFE /* Humanoid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 194A858215A1F924007CBCFE /* Humanoid.cpp */; };
 		1952237414D350540042EA6D /* doublePendulum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1952236614D34FB30042EA6D /* doublePendulum.cpp */; };
 		1952239B14D3505B0042EA6D /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876914D2EDF400778EA7 /* GLUT.framework */; };
 		1952239C14D3505B0042EA6D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876B14D2EDF400778EA7 /* OpenGL.framework */; };
@@ -262,6 +266,7 @@
 		19566F0D159121870014E039 /* wxBoxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19566F09159121870014E039 /* wxBoxSlider.cpp */; };
 		19566F0E159121870014E039 /* wxNumericTextCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19566F0B159121870014E039 /* wxNumericTextCtrl.cpp */; };
 		19577E8C1541A61200B991DF /* libmosek64.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19577E8B1541A61200B991DF /* libmosek64.dylib */; };
+		195C3FF9159DD8B80073AA71 /* HumanoidDataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */; };
 		197B842D15070B530064753B /* dmGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869114D2E9A800778EA7 /* dmGLCamera.cpp */; };
 		197B842E15070B530064753B /* dmGLFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869314D2E9A800778EA7 /* dmGLFlyCamera.cpp */; };
 		197B842F15070B530064753B /* dmGLMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869514D2E9A800778EA7 /* dmGLMouse.cpp */; };
@@ -316,15 +321,13 @@
 		1980177515995A8500DB8AD5 /* SimulationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1980177315995A8500DB8AD5 /* SimulationThread.cpp */; };
 		19801C4B159B44AF00DB8AD5 /* R2D2.icns in Resources */ = {isa = PBXBuildFile; fileRef = 19801C4A159B44AF00DB8AD5 /* R2D2.icns */; };
 		19801DB4159B623A00DB8AD5 /* BasicGLPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB3159B623A00DB8AD5 /* BasicGLPane.cpp */; };
-		19801DB9159B626700DB8AD5 /* HumanoidDataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */; };
 		19801DC0159B629B00DB8AD5 /* GlobalFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DBD159B629B00DB8AD5 /* GlobalFunctions.cpp */; };
 		19801DC5159B62C100DB8AD5 /* TaskSpaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC1159B62C100DB8AD5 /* TaskSpaceController.cpp */; };
 		19801DCA159B62DE00DB8AD5 /* CubicSpline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC7159B62DE00DB8AD5 /* CubicSpline.cpp */; };
 		19801DCB159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC8159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp */; };
 		19801DCC159B62DE00DB8AD5 /* DataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC9159B62DE00DB8AD5 /* DataLogger.cpp */; };
-		19801E71159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801E70159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp */; };
 		19A6F42C157E4D0400ED6631 /* humanoidGlut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1940A49C1507C62100CD4386 /* humanoidGlut.cpp */; };
-		19A6F44C157E4EFD00ED6631 /* humanoidControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F44B157E4EFD00ED6631 /* humanoidControl.cpp */; };
+		19A6F44C157E4EFD00ED6631 /* HumanoidController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */; };
 		19B85EBA158F7DA200788BE5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B85EB7158F7DA200788BE5 /* main.cpp */; };
 		19B85EBB158F7DA200788BE5 /* userControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B85EB9158F7DA200788BE5 /* userControl.cpp */; };
 		19B85EC3158F7E2F00788BE5 /* wxDMGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C95158A436400BC26DA /* wxDMGLCamera.cpp */; };
@@ -380,7 +383,7 @@
 		19B85F07158F7E2F00788BE5 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3EE158BB30E00BC4671 /* AGL.framework */; };
 		19B85F08158F7E2F00788BE5 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3F0158BB30E00BC4671 /* Carbon.framework */; };
 		19B85F0C158F7E2F00788BE5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D61D158BB38400BC4671 /* AppKit.framework */; };
-		19B85F13158F7E5600788BE5 /* humanoidControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F44B157E4EFD00ED6631 /* humanoidControl.cpp */; };
+		19B85F13158F7E5600788BE5 /* HumanoidController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */; };
 		19B85F15158F7E5600788BE5 /* humanoidWx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */; };
 		19B85F40158F852700788BE5 /* GlobalDefines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C58158A403400BC26DA /* GlobalDefines.cpp */; };
 		19B85F48158F855E00788BE5 /* libmosek.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8CFA7158BADA500BC4671 /* libmosek.6.0.dylib */; };
@@ -436,6 +439,7 @@
 		19BA6129158A478500BC26DA /* dmLoadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868714D2E97C00778EA7 /* dmLoadFile.cpp */; };
 		19BA612A158A478500BC26DA /* dmUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868A14D2E97C00778EA7 /* dmUtils.cpp */; };
 		19BA612B158A478500BC26DA /* glLoadModels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868B14D2E97C00778EA7 /* glLoadModels.cpp */; };
+		19EAF03515A1F3F4007E4EC2 /* HumanoidDataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */; };
 		19EE12EF1545EE7200164D03 /* qo1.c in Sources */ = {isa = PBXBuildFile; fileRef = 19EE12EE1545EE7200164D03 /* qo1.c */; };
 		19EE130F1545F46E00164D03 /* mosek.h in Sources */ = {isa = PBXBuildFile; fileRef = 19EE12F21545EEAE00164D03 /* mosek.h */; };
 		19EE13231545F4E000164D03 /* libmosek64.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19577E8B1541A61200B991DF /* libmosek64.dylib */; };
@@ -662,6 +666,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1908ABA415A3201D001F0075 /* CommandLine Stuff */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommandLine Stuff"; sourceTree = "<group>"; };
+		192003E715A5F9FD0006A823 /* HumanoidStateMachineController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidStateMachineController.cpp; path = src/humanoid/cpp/HumanoidStateMachineController.cpp; sourceTree = "<group>"; };
+		192003E815A5F9FD0006A823 /* StateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StateMachine.cpp; path = src/humanoid/cpp/StateMachine.cpp; sourceTree = "<group>"; };
+		192003EB15A5FA0D0006A823 /* HumanoidStateMachineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HumanoidStateMachineController.h; path = src/humanoid/h/HumanoidStateMachineController.h; sourceTree = "<group>"; };
+		192003EC15A5FA0D0006A823 /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StateMachine.h; path = src/humanoid/h/StateMachine.h; sourceTree = "<group>"; };
 		1925864014D2E95000778EA7 /* dm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dm.h; path = src/dm/dm.h; sourceTree = "<group>"; };
 		1925864114D2E95000778EA7 /* dmActuator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dmActuator.cpp; path = src/dm/dmActuator.cpp; sourceTree = "<group>"; };
 		1925864214D2E95000778EA7 /* dmActuator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dmActuator.hpp; path = src/dm/dmActuator.hpp; sourceTree = "<group>"; };
@@ -784,6 +793,10 @@
 		192D66D4151BAEEC00966570 /* catbot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = catbot; sourceTree = BUILT_PRODUCTS_DIR; };
 		1940A49C1507C62100CD4386 /* humanoidGlut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidGlut.cpp; path = src/humanoid/humanoidGlut.cpp; sourceTree = "<group>"; };
 		1940A4D51507C75B00CD4386 /* humanoid */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = humanoid; sourceTree = BUILT_PRODUCTS_DIR; };
+		194A858115A1F924007CBCFE /* BalanceDemoStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BalanceDemoStateMachine.cpp; path = src/humanoid/cpp/BalanceDemoStateMachine.cpp; sourceTree = "<group>"; };
+		194A858215A1F924007CBCFE /* Humanoid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Humanoid.cpp; path = src/humanoid/cpp/Humanoid.cpp; sourceTree = "<group>"; };
+		194A858715A1F92A007CBCFE /* BalanceDemoStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BalanceDemoStateMachine.h; path = src/humanoid/h/BalanceDemoStateMachine.h; sourceTree = "<group>"; };
+		194A858815A1F92A007CBCFE /* Humanoid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Humanoid.h; path = src/humanoid/h/Humanoid.h; sourceTree = "<group>"; };
 		1952236614D34FB30042EA6D /* doublePendulum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = doublePendulum.cpp; path = src/doublePendulum/doublePendulum.cpp; sourceTree = "<group>"; };
 		1952236C14D34FF10042EA6D /* doublePendulum */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = doublePendulum; sourceTree = BUILT_PRODUCTS_DIR; };
 		19566F09159121870014E039 /* wxBoxSlider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxBoxSlider.cpp; path = src/humanoid/cpp/wxBoxSlider.cpp; sourceTree = "<group>"; };
@@ -806,7 +819,7 @@
 		19801DB6159B625000DB8AD5 /* wxBoxSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxBoxSlider.h; path = src/humanoid/h/wxBoxSlider.h; sourceTree = "<group>"; };
 		19801DB7159B625000DB8AD5 /* wxNumericTextCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxNumericTextCtrl.h; path = src/humanoid/h/wxNumericTextCtrl.h; sourceTree = "<group>"; };
 		19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidDataLogger.cpp; path = src/humanoid/cpp/HumanoidDataLogger.cpp; sourceTree = "<group>"; };
-		19801DBA159B627A00DB8AD5 /* humanoidControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = humanoidControl.h; path = src/humanoid/h/humanoidControl.h; sourceTree = "<group>"; };
+		19801DBA159B627A00DB8AD5 /* HumanoidController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HumanoidController.h; path = src/humanoid/h/HumanoidController.h; sourceTree = "<group>"; };
 		19801DBB159B627A00DB8AD5 /* HumanoidDataLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HumanoidDataLogger.h; path = src/humanoid/h/HumanoidDataLogger.h; sourceTree = "<group>"; };
 		19801DBC159B627A00DB8AD5 /* SimulationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimulationThread.h; path = src/humanoid/h/SimulationThread.h; sourceTree = "<group>"; };
 		19801DBD159B629B00DB8AD5 /* GlobalFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GlobalFunctions.cpp; path = src/humanoid/cpp/GlobalFunctions.cpp; sourceTree = "<group>"; };
@@ -822,9 +835,7 @@
 		19801DD9159B62EE00DB8AD5 /* CubicSpline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubicSpline.h; path = src/humanoid/h/CubicSpline.h; sourceTree = "<group>"; };
 		19801DDA159B62EE00DB8AD5 /* CubicSplineTrajectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubicSplineTrajectory.h; path = src/humanoid/h/CubicSplineTrajectory.h; sourceTree = "<group>"; };
 		19801DDB159B62EE00DB8AD5 /* DataLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataLogger.h; path = src/humanoid/h/DataLogger.h; sourceTree = "<group>"; };
-		19801E6F159B812F00DB8AD5 /* BalanceDemoStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BalanceDemoStateMachine.h; sourceTree = "<group>"; };
-		19801E70159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BalanceDemoStateMachine.cpp; sourceTree = "<group>"; };
-		19A6F44B157E4EFD00ED6631 /* humanoidControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidControl.cpp; path = src/humanoid/cpp/humanoidControl.cpp; sourceTree = "<group>"; };
+		19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidController.cpp; path = src/humanoid/cpp/HumanoidController.cpp; sourceTree = "<group>"; };
 		19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidWx.cpp; path = src/humanoid/cpp/humanoidWx.cpp; sourceTree = "<group>"; };
 		19B85EB7158F7DA200788BE5 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxDMV/main.cpp; sourceTree = "<group>"; };
 		19B85EB8158F7DA200788BE5 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = src/wxDMV/main.h; sourceTree = "<group>"; };
@@ -2216,6 +2227,7 @@
 		08FB7794FE84155DC02AAC07 /* DynaMechs */ = {
 			isa = PBXGroup;
 			children = (
+				1908ABA415A3201D001F0075 /* CommandLine Stuff */,
 				19801CE3159B56DF00DB8AD5 /* App Support */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				19F8D402158BB31400BC4671 /* Frameworks */,
@@ -2400,12 +2412,18 @@
 		198016D215994F9F00DB8AD5 /* humanoid Utils */ = {
 			isa = PBXGroup;
 			children = (
-				19801E6F159B812F00DB8AD5 /* BalanceDemoStateMachine.h */,
-				19801E70159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp */,
-				19801DBA159B627A00DB8AD5 /* humanoidControl.h */,
+				192003E715A5F9FD0006A823 /* HumanoidStateMachineController.cpp */,
+				192003E815A5F9FD0006A823 /* StateMachine.cpp */,
+				192003EB15A5FA0D0006A823 /* HumanoidStateMachineController.h */,
+				192003EC15A5FA0D0006A823 /* StateMachine.h */,
+				194A858715A1F92A007CBCFE /* BalanceDemoStateMachine.h */,
 				19801DBB159B627A00DB8AD5 /* HumanoidDataLogger.h */,
 				19801DBC159B627A00DB8AD5 /* SimulationThread.h */,
-				19A6F44B157E4EFD00ED6631 /* humanoidControl.cpp */,
+				194A858815A1F92A007CBCFE /* Humanoid.h */,
+				19801DBA159B627A00DB8AD5 /* HumanoidController.h */,
+				194A858115A1F924007CBCFE /* BalanceDemoStateMachine.cpp */,
+				194A858215A1F924007CBCFE /* Humanoid.cpp */,
+				19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */,
 				19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */,
 				1980177315995A8500DB8AD5 /* SimulationThread.cpp */,
 			);
@@ -4584,7 +4602,7 @@
 				1940A4CC1507C75B00CD4386 /* dmZScrewTxLink.cpp in Sources */,
 				1940A4CD1507C75B00CD4386 /* gldraw.cpp in Sources */,
 				1940A4CE1507C75B00CD4386 /* svd_linpack.cpp in Sources */,
-				19A6F44C157E4EFD00ED6631 /* humanoidControl.cpp in Sources */,
+				19A6F44C157E4EFD00ED6631 /* HumanoidController.cpp in Sources */,
 				19BA5C5B158A403400BC26DA /* GlobalDefines.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4712,7 +4730,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				19B85F40158F852700788BE5 /* GlobalDefines.cpp in Sources */,
-				19B85F13158F7E5600788BE5 /* humanoidControl.cpp in Sources */,
+				19801DCC159B62DE00DB8AD5 /* DataLogger.cpp in Sources */,
+				19801DC5159B62C100DB8AD5 /* TaskSpaceController.cpp in Sources */,
+				19801DCA159B62DE00DB8AD5 /* CubicSpline.cpp in Sources */,
+				19B85F13158F7E5600788BE5 /* HumanoidController.cpp in Sources */,
+				19EAF03515A1F3F4007E4EC2 /* HumanoidDataLogger.cpp in Sources */,
+				19801DCB159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp in Sources */,
 				19B85F15158F7E5600788BE5 /* humanoidWx.cpp in Sources */,
 				19B85EC3158F7E2F00788BE5 /* wxDMGLCamera.cpp in Sources */,
 				19B85EC4158F7E2F00788BE5 /* wxDMGLFlyCamera.cpp in Sources */,
@@ -4765,13 +4788,11 @@
 				19801739159955E500DB8AD5 /* MainFrame.cpp in Sources */,
 				1980177515995A8500DB8AD5 /* SimulationThread.cpp in Sources */,
 				19801DB4159B623A00DB8AD5 /* BasicGLPane.cpp in Sources */,
-				19801DB9159B626700DB8AD5 /* HumanoidDataLogger.cpp in Sources */,
 				19801DC0159B629B00DB8AD5 /* GlobalFunctions.cpp in Sources */,
-				19801DC5159B62C100DB8AD5 /* TaskSpaceController.cpp in Sources */,
-				19801DCA159B62DE00DB8AD5 /* CubicSpline.cpp in Sources */,
-				19801DCB159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp in Sources */,
-				19801DCC159B62DE00DB8AD5 /* DataLogger.cpp in Sources */,
-				19801E71159B812F00DB8AD5 /* BalanceDemoStateMachine.cpp in Sources */,
+				194A858315A1F924007CBCFE /* BalanceDemoStateMachine.cpp in Sources */,
+				194A858415A1F924007CBCFE /* Humanoid.cpp in Sources */,
+				192003E915A5F9FD0006A823 /* HumanoidStateMachineController.cpp in Sources */,
+				192003EA15A5F9FD0006A823 /* StateMachine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4914,6 +4935,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				195C3FF9159DD8B80073AA71 /* HumanoidDataLogger.cpp in Sources */,
 				19F8D90A158BDCC100BC4671 /* wxDMGLCamera.cpp in Sources */,
 				19F8D90B158BDCC100BC4671 /* wxDMGLFlyCamera.cpp in Sources */,
 				19F8D90C158BDCC100BC4671 /* wxDMGLMouse.cpp in Sources */,
@@ -5378,7 +5400,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5411,6 +5433,7 @@
 					"-DWX_PRECOMP",
 				);
 				OTHER_LDFLAGS = (
+					"-w",
 					"-framework",
 					Foundation,
 					"-framework",
@@ -5435,7 +5458,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -5467,6 +5490,7 @@
 					"-DWX_PRECOMP",
 				);
 				OTHER_LDFLAGS = (
+					"-w",
 					"-framework",
 					Foundation,
 					"-framework",

@@ -13,6 +13,7 @@
 #include "wx/thread.h"
 #include <dm.h>
 #include <dmIntegEuler.hpp>
+#include "HumanoidDataLogger.h"
 
 class SimulationThread : public wxThread {
 public:	
@@ -27,11 +28,15 @@ public:
 	
 	volatile Float idt, cdt, last_control_time, sim_time;
 	dmIntegEuler *G_integrator;
+	
+	HumanoidDataLogger * simRobot;
+	
 	volatile bool paused_flag;
 	
 private:
 	wxMutex mutex;
 	wxCondition * unPauseCondition;
+	
 	
 	volatile bool stopRequested;
 	

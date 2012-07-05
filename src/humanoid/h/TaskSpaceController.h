@@ -13,7 +13,6 @@
 #include <Eigen/Core>
 #include "dmArticulation.hpp"
 #include "GlobalTypes.h"
-
 #define NJ  20
 #define NF  4
 #define NS  2
@@ -38,13 +37,13 @@ const int hptConstrStart = fConstrEnd +1;
 
 
 
-class TaskSpaceController
+class TaskSpaceController : public virtual ArticulationSpecializer
 {
 public:
 	TaskSpaceController(dmArticulation * art);
 	
 	// This function initilizes the entire optimization problem.
-	void InitializeProblem();
+	//void InitializeProblem();
 	
 	// This function 
 	void ObtainArticulationData();
@@ -80,8 +79,6 @@ public:
 	MSKtask_t     task;
 	
 private:
-	
-	dmArticulation * artic;
 	
 	MSKenv_t      env;
 	

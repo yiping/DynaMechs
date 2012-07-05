@@ -9,7 +9,7 @@
 
 #include "GlobalDefines.h"
 #include "SimulationThread.h"
-#include "humanoidControl.h"
+#include "HumanoidController.h"
 
 #include <iostream>
 using namespace std;
@@ -42,11 +42,12 @@ void *SimulationThread::Entry()
 		}
 		// Check if it's time for control
 		if ((sim_time - last_control_time) >= cdt) {
-			if (sim_time > .2) {
-				ControlInfo ci;
-				HumanoidControl(ci); 
-				//cout << ci.totalTime << "\t" << ci.calcTime << "\t" << ci.setupTime << "\t" << ci.optimTime << "\t" << ci.iter << endl;
-			}
+			
+			ControlInfo ci;
+			humanoid->StateControl(ci);
+			//HumanoidControl(ci); 
+			//cout << ci.totalTime << "\t" << ci.calcTime << "\t" << ci.setupTime << "\t" << ci.optimTime << "\t" << ci.iter << endl;
+			
 			last_control_time = sim_time;
 		}
 		

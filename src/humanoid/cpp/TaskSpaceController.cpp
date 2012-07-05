@@ -161,7 +161,7 @@ void TaskSpaceController::ObtainArticulationData() {
 }
 
 //----------------------------------------------------------------------------
-void TaskSpaceController::InitializeProblem()
+/*void TaskSpaceController::InitializeProblem()
 {
 	UpdateVariableBounds();
 	UpdateConstraintMatrix();
@@ -176,7 +176,7 @@ void TaskSpaceController::InitializeProblem()
 	//cout << "A Sparsity " << endl;
 	
 	//cout << "H " << artic->H << endl;
-	/*MatrixXF A;
+	MatrixXF A;
 	A.resize(numCon,NUMVAR);
 	
 	for (int i=0; i<numCon; i++) {
@@ -200,13 +200,13 @@ void TaskSpaceController::InitializeProblem()
 			}
 		}
 		cout << endl;
-	}*/
+	}
 	//exit(-1);
 	//Slice to debug the friction cone basis
 	//cout << "Aslice " << endl;
 	//cout << A.block(fConstrStart,lambdaStart,6,NF) << endl;
 	
-}
+}*/
 
 void TaskSpaceController::UpdateTauObjective() {
 	MSKidxt       qsubi[NJ];

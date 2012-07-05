@@ -40,7 +40,8 @@ extern GRFInfo grfInfo;
 extern dmArticulation *G_robot;
 extern MainFrame *frame;
 extern SimulationThread * simThread;
-extern HumanoidDataLogger * dataLogger;
+extern HumanoidDataLogger * humanoid;
+
 
 extern wxMutex dataMutex;
 #define GROUP_FLAG 0x0800

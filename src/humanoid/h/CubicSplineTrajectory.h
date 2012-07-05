@@ -6,6 +6,10 @@
  *  Copyright 2012 __MyCompanyName__. All rights reserved.
  *
  */
+
+#ifndef __CUBIC_SPLINE_TRAJECTORY_H__
+#define __CUBIC_SPLINE_TRAJECTORY_H__
+
 #include "CubicSpline.h"
 #include "dm.h"
 #include <vector>
@@ -17,6 +21,7 @@ typedef vector<CubicSpline> SplineVector;
 class CubicSplineTrajectory
 {
 public:
+	CubicSplineTrajectory(int s);
 	void init(const VectorXF & xo, const VectorXF & xo_dot, const VectorXF & xf,const VectorXF & xf_dot, const Float T);
 	void reInit(const Float to, const VectorXF & xf, const VectorXF & xf_dot,const Float T);
 	void eval(Float t, VectorXF & x);
@@ -29,3 +34,5 @@ private:
 	Float tMax;
 	int size;
 };
+
+#endif

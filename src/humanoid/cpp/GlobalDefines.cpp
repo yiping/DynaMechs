@@ -27,6 +27,6 @@ GRFInfo grfInfo;
 
 SimulationThread * simThread;
 MainFrame *frame;
-HumanoidDataLogger * dataLogger;
-
 wxMutex dataMutex;
+
+HumanoidDataLogger * humanoid;

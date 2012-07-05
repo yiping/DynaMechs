@@ -9,6 +9,10 @@
 
 #include "CubicSplineTrajectory.h"
 
+CubicSplineTrajectory::CubicSplineTrajectory(int s)
+{
+	setSize(s);
+}
 
 void CubicSplineTrajectory::eval(Float t, VectorXF & x)
 {

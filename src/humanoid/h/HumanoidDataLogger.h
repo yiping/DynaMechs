@@ -13,19 +13,25 @@
 
 #include "DataLogger.h"
 #include <string>
+#include "HumanoidStateMachineController.h"
+using namespace std;
 
-class HumanoidDataLogger : public DataLogger {
+class HumanoidDataLogger : public DataLogger, public HumanoidStateMachineController 
+{
 	
 public:	
+	HumanoidDataLogger(dmArticulation * robot, int stateSize);
 	void logData();
-	void initializeDataLogging();
 	void saveData();
 	string dataSaveDirectory;
 private:
-	int COM_POSITION, COM_VELOCITY, COM_POSITION_DES, CENTROIDAL_MOMENTUM, QDD_OPT, HMAT, HDOT_DES, HDOT_OPT;
+	int LEFT_FOOT_POS, LEFT_FOOT_POS_DES, LEFT_FOOT_VEL, LEFT_FOOT_VEL_DES, LEFT_FOOT_ACC_DES;
+	int RIGHT_FOOT_POS, RIGHT_FOOT_POS_DES, RIGHT_FOOT_VEL, RIGHT_FOOT_VEL_DES, RIGHT_FOOT_ACC_DES;
+	int COM_POSITION, COM_VELOCITY, COM_POSITION_DES, COM_VELOCITY_DES, CENTROIDAL_MOMENTUM, QDD_OPT, HMAT, HDOT_DES, HDOT_OPT;
 	
 	enum DataItems {
 		TIME,
+		STATE_CODE,
 		// POSITIONS
 		BASE_QUAT0,
 		BASE_QUAT1,
@@ -153,6 +159,5 @@ private:
 		MAX_STATIC_GROUPS
 	};
 };
-
 
 #endif

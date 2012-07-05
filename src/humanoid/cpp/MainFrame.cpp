@@ -157,7 +157,7 @@ void MainFrame::OnClose(wxCloseEvent & event)
 }
 void MainFrame::OnSaveData(wxCommandEvent & event)
 {
-	dataLogger->saveData();
+	humanoid->saveData();
 }
 
 
@@ -219,10 +219,10 @@ void MainFrame::OnIntegrationStep(wxCommandEvent &event)
 }
 void MainFrame::OnSaveDirectory(wxCommandEvent &event)
 {
-	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(dataLogger->dataSaveDirectory.c_str(),wxConvUTF8));
+	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(humanoid->dataSaveDirectory.c_str(),wxConvUTF8));
 	dir += wxT("/");
-	dataLogger->dataSaveDirectory = dir.mb_str();
-	cout << "Data Directory Changed to " << dataLogger->dataSaveDirectory << endl;
+	humanoid->dataSaveDirectory = dir.mb_str();
+	cout << "Data Directory Changed to " << humanoid->dataSaveDirectory << endl;
 }
 
 

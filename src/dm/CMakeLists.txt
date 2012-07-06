@@ -20,6 +20,8 @@ SET(DM_SRCS  dm.h dmTime.h
 	dmTreadmill.hpp dmTreadmill.cpp 
 	dmForce.hpp dmForce.cpp 
 	dmContactModel.hpp dmContactModel.cpp 
+	dmDynamicContactModel.hpp dmDynamicContactModel.cpp
+	dmContactSystem.hpp dmContactSystem.cpp  
 	dmSecondaryForce.hpp dmSecondaryForce.cpp 
 	dmSecondaryJoint.hpp dmSecondaryJoint.cpp 
 	dmSecondarySphericalJoint.hpp dmSecondarySphericalJoint.cpp 

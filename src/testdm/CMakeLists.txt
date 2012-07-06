@@ -10,6 +10,9 @@ SET(CARTS_SRC  carts.cpp )
 ADD_EXECUTABLE(carts ${CARTS_SRC})
 TARGET_LINK_LIBRARIES(carts ${GLUT_LIBRARY} ${OPENGL_LIBRARY} dm dmu dmgl)
 
+SET(DT_SRC  dynamic_cast_test.cpp )
+ADD_EXECUTABLE(dctest ${DT_SRC})
+TARGET_LINK_LIBRARIES(dctest ${GLUT_LIBRARY} ${OPENGL_LIBRARY} dm dmu)
 
 # set(DEMOS simple start pendulum tree carts wire ring )
 # set(CORELIBS ${GLUT_LIBRARY} ${OPENGL_LIBRARY} dm dmu dmgl)

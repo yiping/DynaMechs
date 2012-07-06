@@ -92,6 +92,7 @@ See also  dmEnvironment,  dmRigidBody,  dmLoadFile_dm */
 
 class DM_DLL_API dmContactModel : public dmForce
 {
+
 public:
    ///
    dmContactModel();
@@ -125,14 +126,14 @@ public:
 
 // rendering functions (for future expansion/visualization):
    ///
-   void draw() const;
+   virtual void draw() const;
 
 private:
    // not implemented
    dmContactModel(const dmContactModel &);
    dmContactModel &operator=(const dmContactModel &);
 
-private:
+protected:
    bool m_reset_flag;
 
    //dmEnvironment *m_env;
@@ -148,12 +149,12 @@ private:
    bool *m_contact_flag_stored;
    bool *m_sliding_flag_stored;
    CartesianVector *m_initial_contact_pos_stored;
+   CartesianVector normal, current_pos;
 
-
+private:
    // temporary variables only used by computeContactForce
    Float ptemp, vtemp, temp;
    Float fe_normal_mag, fe_planar_mag;
-   CartesianVector normal, current_pos;
    CartesianVector peC_pos, veC_pos, vnC_pos, fe, fn, nn;
    CartesianVector p_planar, v_planar;
    CartesianVector fe_normal, fe_planar;

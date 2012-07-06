@@ -42,12 +42,14 @@
 #include "../dm/dmRevDCMotor.hpp"
 
 #include "../dm/dmContactModel.hpp"
+#include "../dm/dmDynamicContactModel.hpp"
 
 #include "../dm/dmStaticRootLink.hpp"
 #include "../dm/dmSecondaryJoint.hpp"
 #include "../dm/dmSecondaryPrismaticJoint.hpp"
 #include "../dm/dmSecondaryRevoluteJoint.hpp"
 #include "../dm/dmSecondarySphericalJoint.hpp"
+
 
 #include "dmLoadFile.h"
 #include "glLoadModels.h"
@@ -123,6 +125,31 @@ void setContactParameters40(dmRigidBody *body, ifstream &cfg_ptr)
 
       delete [] pos;
    }
+
+
+	// DM 5.0 | for extended contact model
+	readConfigParameterLabel(cfg_ptr, "Number_of_Dynamic_Contact_Points");
+	cfg_ptr >> num_points;
+
+	if (num_points > 0)
+	{
+	  readConfigParameterLabel(cfg_ptr, "Dynamic_Contact_Locations");
+
+	  CartesianVector *pos = new CartesianVector[num_points];
+
+	  for (unsigned int i=0; i<num_points; i++)
+	  {
+		 cfg_ptr >> pos[i][0]
+		         >> pos[i][1]
+		         >> pos[i][2];
+	  }
+
+	  dmDynamicContactModel *c_model = new dmDynamicContactModel();
+	  c_model->setContactPoints(num_points, pos);
+	  body->addForce(c_model);
+
+	  delete [] pos;
+	} 
 }
 
 //----------------------------------------------------------------------------

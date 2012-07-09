@@ -8,10 +8,14 @@ find_package(wxWidgets COMPONENTS core base gl REQUIRED)
 include( "${wxWidgets_USE_FILE}" )
 
 SET(SRCS  cpp/humanoidWx.cpp
+		  cpp/StateMachine.cpp
+		  cpp/BalanceDemoStateMachine.cpp
 		  cpp/BasicGLPane.cpp
 		  cpp/MainFrame.cpp
-          cpp/humanoidControl.cpp 
+		  cpp/Humanoid.cpp
+          cpp/HumanoidController.cpp 
 		  cpp/HumanoidDataLogger.cpp
+		  cpp/HumanoidStateMachineController.cpp
 		  cpp/SimulationThread.cpp
           cpp/CubicSpline.cpp
           cpp/CubicSplineTrajectory.cpp

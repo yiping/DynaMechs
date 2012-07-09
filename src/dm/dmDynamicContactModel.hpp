@@ -52,8 +52,11 @@ public:
 
 
 public:
-	vector<Float *> u;  //tip: you cannot use CartesianVector here, b/c arrays are not assignable
-	vector<Float *> ud;
+	//vector<Float *> u;  //tip: you cannot use CartesianVector here, b/c arrays are not assignable
+	//vector<Float *> ud;
+
+	vector<vector<Float> > u;
+	vector<vector<Float> > ud;
 	// temporary variables only used by computeForce function
 
 };

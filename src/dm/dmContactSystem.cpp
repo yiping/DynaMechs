@@ -38,6 +38,7 @@ void dmContactSystem::dynamics(Float *qy, Float *qdy)
 {
 	// Only to be used by dmIntegEuler integrator
 
+	cout<<"Integrator calling dynamics of contact..."<<endl; 
 	unsigned int base = getNumDOFs();
 	unsigned int offset = 0;
 	vector<dmDynamicContactModel *>::iterator it;
@@ -45,10 +46,12 @@ void dmContactSystem::dynamics(Float *qy, Float *qdy)
 	{
 		for (int i = 0; i<(*it)->getNumContactPoints(); i++)
 		{
-			(*it)->u[i][0] = qdy[offset+2*i  ] ; //update
-			(*it)->u[i][1] = qdy[offset+2*i+1] ; //update
+			(*it)->u[i][0] = qdy[offset+2*i  ] = qy[base+offset + 2*i  ] ; //update
+			(*it)->u[i][1] = qdy[offset+2*i+1] = qy[base+offset + 2*i+ 1 ] ; //update
 			qdy[base+offset + 2*i  ] = (*it)->ud[i][0];
 			qdy[base+offset + 2*i+1] = (*it)->ud[i][1];
+			cout<<qdy[offset+2*i  ]<<endl;
+			cout<<qdy[base+offset+2*i  ]<<endl;
 		}		
 		offset += 2*(*it)->getNumContactPoints();
 	}
@@ -92,7 +95,8 @@ void dmContactSystem::setState(Float q[], Float qd[])
 
 void dmContactSystem::scanRobot(dmArticulation* robot)
 {
-
+	cout<<"scan robot ..."<<endl;
+	cout<<"robot has "<<robot->getNumLinks()<<" links."<<endl;
 	for (unsigned int i =0; i< robot->getNumLinks(); i++)
 	{
 		dmLink* link;

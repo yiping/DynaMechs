@@ -41,13 +41,16 @@ void dmDynamicContactModel::setContactPoints(unsigned int num_contact_points,
 
 void dmDynamicContactModel::initializeDeformationStates(void)
 {
-	CartesianVector tt = {0.0, 0.0, 0.0};
+	vector<Float> tt (3, 0.0);
 	// arrays are not assignable
 	for (int i=0; i< m_num_contact_points; i++)
 	{
 		u.push_back(tt);
 		ud.push_back(tt);
+		cout<<"contact       "<<i<<": "<<u[i][0]<<"  "<<u[i][1]<<"  "<<u[i][2]<<endl;
+		cout<<"delta contact "<<i<<": "<<ud[i][0]<<"  "<<ud[i][1]<<"  "<<ud[i][2]<<endl;
 	}
+	cout<<"deformation initialized"<<endl;
 }
 
 
@@ -139,8 +142,8 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 		 	}
 		 	m_sliding_flag[i] = false;
 			// reset
-			u[i][0]=u[i][1]=u[i][2]=0;
-
+			cout<<"NO CONTACT | contact       "<<i<<": "<<u[i][0]<<"  "<<u[i][1]<<"  "<<u[i][2]<<endl;
+			cout<<"NO CONTACT | delta contact "<<i<<": "<<ud[i][0]<<"  "<<ud[i][1]<<"  "<<ud[i][2]<<endl;
 		}
     	else   // if in contact
      	{
@@ -157,16 +160,17 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
          	vc[1] += v[4];
          	vc[2] += v[5];
 
+			// TODO u: terrain patch surface coord -> ICS. 
 			for (j = 0; j < 3; j++)
 			{
 				vc_ICS[j] =  R_ICS[j][0]*vc[0] +
 						 	 R_ICS[j][1]*vc[1] +
 						 	 R_ICS[j][2]*vc[2];
-				u_ICS[j] = R_ICS[j][0]* u[i][0] +
-							  R_ICS[j][1]* u[i][1] +
-							  R_ICS[j][2]* u[i][2];
+				u_ICS[j] = 	 u[i][j];
 				dc_ICS[j] = u_ICS[j];
 			}
+			cout<<"IN CONTACT | contact       "<<i<<": "<<u[i][0]<<"  "<<u[i][1]<<"  "<<u[i][2]<<endl;
+			cout<<"IN CONTACT | delta contact "<<i<<": "<<ud[i][0]<<"  "<<ud[i][1]<<"  "<<ud[i][2]<<endl;
 
 			// Magnitudes of normal components of velocity and delta position.
 			vcn_mag = 	vc_ICS[0]*normal[0] +
@@ -235,10 +239,11 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 				fn[j] = R_ICS[0][j]*f_ICS[0] +
 						R_ICS[1][j]*f_ICS[1] +
 						R_ICS[2][j]*f_ICS[2];
-				ud[i][j] = R_ICS[0][j]*ud[i][0] +
-						   R_ICS[1][j]*ud[i][1] +
-						   R_ICS[2][j]*ud[i][2];
+				ud[i][j] = ud_ICS[j];
 			}
+
+			// TODO ud: ICS -> terrain patch surface coord.
+
 			crossproduct(m_contact_pos[i], fn, nn); //moment
 
 			// Accumulate for multiple contact points.
@@ -272,6 +277,7 @@ void dmDynamicContactModel::computeForce(const dmABForKinStruct & val,
                                   SpatialVector f_contact)
 {
 	computeForceKernel(val.p_ICS, val.R_ICS, val.v, f_contact);
+	cout<<"ABForKinStruct compute force"<<endl;
 }
 
 void dmDynamicContactModel::draw() const

@@ -54,8 +54,17 @@ $ cp crank ../../src/testdm/
 $ cd ../../src/testdm/
 $ ./crank
 
-You need to relocate the crank executable because it looks for some external files during runtime [specifically, .cfg file, .dm file, .env file as well as the terrain and 3D model files (in ../models folder, .xan and .dat) ]   This is not very convenient, but let's live with it for just now.
+You need to relocate the crank executable because it looks for some external files during runtime [specifically, .cfg file, .dm file, .env file as well as the terrain and 3D model files (in ../models folder, .xan and .dat) ]   This is not very convenient, though, and generally not a good practice for out-of-source build.
 
+
+
+For Eclipse user, if you want to run the executable by simply clicking the 'run' button, you need to
+
+1. go to 'run configureations' of your executable
+2. go to arguments tab
+3. uncheck the 'Use default' checkbox
+4. change the 'working directory' to
+   "[your_path]/DynaMechs/src/your_project, since all the configuration files that the your executable requires to run are there.  
 
 
 

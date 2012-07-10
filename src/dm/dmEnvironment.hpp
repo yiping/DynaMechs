@@ -35,81 +35,81 @@
 The environment class encapsulates all the information the a dynamic simulation
 needs for interaction (read forces of contact) between rigid bodies and the
 surrounding environment (terrain, friction, gravity, etc...).  The default
-constructor initializes an ``empty'' environment with no terrain, zero gravity,
+constructor initializes an  \e \b "empty" environment with no terrain, zero gravity,
 and zero friction coefficients.
 
 This class contains a static member variable that will point to the currently
-``active'' environment.  It is implemented this way because the dynamic
+ \e \b "active" environment.  It is implemented this way because the dynamic
 simulation algorithm needs one environment to query during simulation.  The
-current environment is set with a call to the static member function, {\tt
-dmEnvironment::setEnvironment}, and passing it a pointer to a previously
+current environment is set with a call to the static member function, 
+dmEnvironment::setEnvironment , and passing it a pointer to a previously
 instantiated environment object.  Likewise, you can get a pointer to the
-current environment with a call to the static member function {\tt
-dmEnvironment::getEnvironment}.
+current environment with a call to the static member function 
+dmEnvironment::getEnvironment.
 
-{\bf IMPORTANT}: The simulation algorithm will fail with a runtime error if an
+\b IMPORTANT : The simulation algorithm will fail with a runtime error if an
 environment has not been set in this fashion because various classes directly
 reference this object to obtain information about the environment.  Gravity is
-defined by a vector (magnitude {\em and} direction) and is set by calling the
-{\tt setGravity} function (and can be queried with the {\tt getGravity}).
+defined by a vector (magnitude \e and direction) and is set by calling the
+\b setGravity function (and can be queried with the \b getGravity function).
 
-This base class only supports prismatic terrains (i.e., gridded elevation data,
+This base class only supports \b prismatic \b terrains (i.e., gridded elevation data,
 evenly spaced in a plane).  Currently the only way to input terrain data
-is to call the {\tt loadTerrainData} with the name of the file containing the
+is to call the \b loadTerrainData with the name of the file containing the
 grid spacing and elevation data in the following format:
-\begin{verbatim}
+\verbatim
     4 5 5.0
     0   0    0    0    0
     0  -2.0 -2.0 -2.0  0
     0  -2.0 -2.0 -2.0  0
     0   0    0    0    0
-\end{verbatim}
+\endverbatim
 where the first two numbers define the dimensions of the grid (in numbers of
-points along the x and y axes) and the third defines the spacing between the
+points along the \c x and \c y axes) and the third defines the spacing between the
 points in both dimensions.  The rest define the elevation along the z axis.
-The {\tt getTerrainFilename} function returns a pointer to the terrain filename
+The \b getTerrainFilename function returns a pointer to the terrain filename
 that was loaded.
 
-There are many other (reasonably) self-explanatory set and get member functions
+There are many other (reasonably) self-explanatory \c set and \c get member functions
 that assign and return spring and damper parameters.  These parameters define
 the characteristics of the contact surfaces (slipperiness, rigidity, etc.)
-which are primarily by the {\tt dmContactModel::computeContactForce}
-function which calls the {\tt getGroundElevation} function (in the case of
-$z$-axis up prismatic terrains) to help detect collisions of various contact
-points with the terrain.  {\em This is a very preliminary class that, like the
-{\tt dmContactModel}, could stand a bit of redesign.}  See the programmer's
+which are primarily by the  dmContactModel::computeForce
+function which calls the \b getGroundElevation function (in the case of
+\c z -axis up prismatic terrains) to help detect collisions of various contact
+points with the terrain.  \b NOTE : <em> This is a very preliminary class that, like the
+ dmContactModel , could stand a little bit of redesign. </em>  See the programmer's
 manual (in process) for more details on the current contact algorithm.
-{\em A more sophisticated contact model is under development at the Ohio State
-University.}
+<em> A more sophisticated contact model is under development at the Ohio State
+University.</em>
 
-The functions {\tt getGroundElevation} and {\tt getGroundDepth} both take a
+The functions \b getGroundElevation and \b  getGroundDepth  both take a
 position vector and returns a distance through the terrain, and passes back the
-normal vector of the terrain at the point of contact.  Currently only the {\tt
-getGroundElevation} has been tested for use with prismatic terrain defined on a
-regular grid in the x-y plane with the z-axis pointing up.
+normal vector of the terrain at the point of contact.  Currently only the \b
+getGroundElevation  has been tested for use with prismatic terrain defined on a
+regular grid in the \c x-y plane with the \c z -axis pointing up.
 
-Finally two functions, {\tt draw} and {\tt drawInit} are not defined in the
+Finally two functions, \b draw and \b drawInit  are not defined in the
 library which the user must write to render the system using whatever 3D API
 the user desires.  The framework (no graphics code) for these draw
-functions for all classes are provided in {\tt draw.C}.  Examples of these with
+functions for all classes are provided in \c draw.C.  Examples of these with
 OpenGL code is provided with the example that accompanies this
-distribution (in {\tt gldraw.cpp}).
+distribution (in \b gldraw.cpp).
 
 In the case of hydrodynamic simulation (when the library is built with the
-DM_HYDRODYNAMICS environment variable set, or with the equivalent define in
-dm.h uncommented), fluid density and motion are also stored in this class.
-The default constructor initializes an ``empty'' environment with zero fluid
-density and motion.  The {\tt getState} and {\tt setState} member functions are
+\c DM_HYDRODYNAMICS environment variable set, or with the equivalent define in
+dm.h uncommented), fluid density and motion are also stored in this class. 
+The default constructor initializes an \e \b "empty"  environment with zero fluid
+density and motion.  The \b getState and \b setState  member functions are
 also added that get and set fluid velocity and acceleration (assumed to be the
-same over the entire field), and fluid density.  The {\tt dynamics} function
-will also be used by a {\tt dmIntegrator} object to update the fluid's
+same over the entire field), and fluid density.  The \b dynamics function
+will also be used by a  dmIntegrator  object to update the fluid's
 velocity based on the current acceleration.
 
-A configuration file reader, {\tt dmLoadFile\_env} is being supplied in the
-dmu (DynaMechs utilities) library that can be used to instantiate and intialize
+A configuration file reader, \b dmLoadFile_env  is being supplied in the
+\b dmu (DynaMechs utilities) library that can be used to instantiate and intialize
 contact model objects.  The lines in the configuration file are expected to be
 in the following form:
-\begin{verbatim}
+\verbatim
 Environment {
     Gravity_Vector                        G_x G_y G_z
     Terrain_Data_Filename                 "filename"
@@ -122,9 +122,9 @@ Environment {
 
     Fluid_Density                         p        # if DM_HYDRODYNAMICS set
 }
-\end{verbatim}
+\endverbatim
 
-See also {\tt dmContactModel}, {\tt dmLoadFile\_env}.  */
+See also  dmContactModel ,  dmLoadFile_env.  */
 
 //======================================================================
 

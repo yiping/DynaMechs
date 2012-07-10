@@ -1,0 +1,21 @@
+echo "run" ${PWD##*/} "in context ..."
+exe_name=${PWD##*/}
+echo "executable name is: $exe_name"
+#cd ../../build/bin_${PWD##*/}
+#if [ $? -eq 0 ];then
+#	pwd
+#else
+#	echo "bin_${PWD##*/} not existed!"
+#fi
+
+if cd ../../build/bin_${PWD##*/}; then
+	pwd
+else 
+	echo "bin_${PWD##*/} not existed!"
+	exit 1
+fi
+
+cp $exe_name ../../src/$exe_name/config
+cd ../../src/$exe_name/config
+pwd
+./$exe_name -c contact_demo.cfg

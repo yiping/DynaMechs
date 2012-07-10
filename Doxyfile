@@ -31,7 +31,7 @@ PROJECT_NAME           = DynaMechs
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 1.0
+PROJECT_NUMBER         = 5.0
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -656,7 +656,14 @@ EXCLUDE                = /home/yiping/ros/DynaMechs/src/aquarobot \
                          /home/yiping/ros/DynaMechs/src/testdm \
                          /home/yiping/ros/DynaMechs/src/models \
                          /home/yiping/ros/DynaMechs/src/kurmet \
-                         /home/yiping/ros/DynaMechs/src/spatial
+                         /home/yiping/ros/DynaMechs/src/spatial \
+                         /home/yiping/ros/DynaMechs/src/mosek \
+                         /home/yiping/ros/DynaMechs/src/wxDMV \
+                         /home/yiping/ros/DynaMechs/src/windmill \
+                         /home/yiping/ros/DynaMechs/src/doublePendulum \
+                         /home/yiping/ros/DynaMechs/src/flywheel_biped \
+                         /home/yiping/ros/DynaMechs/src/catbot \
+                         /home/yiping/ros/DynaMechs/src/humanoid
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or 
 # directories that are symbolic links (a Unix filesystem feature) are excluded 

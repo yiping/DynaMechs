@@ -23,8 +23,8 @@ EVT_RIGHT_UP(BasicGLPane::mouseRightUp)
 EVT_LEAVE_WINDOW(BasicGLPane::mouseLeftWindow)
 EVT_ENTER_WINDOW(BasicGLPane::mouseEnteredWindow)
 EVT_SIZE(BasicGLPane::resized)
-//EVT_KEY_DOWN(BasicGLPane::keyPressed)
-//EVT_KEY_UP(BasicGLPane::keyReleased)
+EVT_KEY_DOWN(BasicGLPane::keyPressed)
+EVT_KEY_UP(BasicGLPane::keyReleased)
 EVT_MOUSEWHEEL(BasicGLPane::mouseWheelMoved)
 EVT_PAINT(BasicGLPane::render)
 //EVT_IDLE(BasicGLPane::updateSim)
@@ -35,8 +35,11 @@ END_EVENT_TABLE()
 BasicGLPane::BasicGLPane(wxFrame* parent, int* args, const wxSize &size) :
 wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,wxT("GLWindow"),args)
 {
+	cout << "Creating Mouse" << endl;
 	mouse = new wxDMGLMouse(); // has to be put in the front
+	cout << "Creating Camera" << endl;
 	camera = new wxDMGLPolarCamera_zup();
+	cout << "Mouse and Camera Created" << endl;
 	
 	glViewport (0, 0, size.GetWidth(), size.GetHeight());
 	mouse->win_size_x = size.GetWidth();
@@ -153,7 +156,12 @@ void BasicGLPane::mouseEnteredWindow(wxMouseEvent& event)  {
 	mouse->in_canvas_flag = true;
 	//cout << "mouse entered window" << endl;
 }
-void BasicGLPane::keyPressed(wxKeyEvent& event) {}
+void BasicGLPane::keyPressed(wxKeyEvent& event) 
+{
+	if (event.GetUnicodeKey() == 32) {
+		mouse->button_flags |= MOUSE_M_DN;
+	}
+}
 void BasicGLPane::keyReleased(wxKeyEvent& event) {
 	//normally wxWidgets sends key events to the window that has the focus
 	//cout<<"key pressed " << event.GetUnicodeKey()<<endl;
@@ -169,6 +177,12 @@ void BasicGLPane::keyReleased(wxKeyEvent& event) {
 			}			
             break;
     }*/
+	if (event.GetUnicodeKey() == 32) {
+		mouse->button_flags &= ~MOUSE_M_DN;
+		camera->update(mouse);
+		camera->applyView();
+		Refresh();
+	}
 	
 }
 
@@ -245,10 +259,23 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	if(!model_loaded) return;
 	
 	//wxGLCanvas::SetCurrent(*m_context);
+	//cout << "Paint" << endl;
     wxPaintDC(this); // only to be used in paint events. use wxClientDC to paint outside the paint event
 	SetCurrent();
-	
+	//cout << "Current Set" << endl;
     
+	camera->setPerspective(45.0, (GLfloat)getWidth()/(GLfloat)getHeight(), 1.0, 200.0);
+	camera->update(mouse);
+	camera->applyView();
+	
+	// if you want the GL light to move with the camera, comment the following two lines - yiping
+	GLfloat light_position0[] = { 1.0, 1.0, 1.0, 0.0 };
+	glLightfv (GL_LIGHT0, GL_POSITION, light_position0);
+	
+	GLfloat light_position1[] = { -1.0, -1.0, 1.0, 0.0 };
+	glLightfv (GL_LIGHT1, GL_POSITION, light_position1);
+	
+	
     
 	
 	// When lighting is enabled, the primary color is calculated from the lighting equation instead of being taken from glColor and equivalent functions
@@ -267,7 +294,9 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	glEnable(GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
+	//cout << "User Graphics" << endl;
 	userGraphics();
+	//cout << "Complete" << endl;;
 	
 	// Draw Robot!
 	{
@@ -280,7 +309,9 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		{   
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		}
+		//cout << "Draw Robot" << endl;
 		G_robot->draw();
+		//cout << "Robot Drawn" << endl;
 		glPopAttrib();
 	}
 	
@@ -329,7 +360,6 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		gluOrtho2D (0,viewport[2], viewport[3], 0);
 		// build a orthographic projection matrix using width and height of view port
 		
-		
 		glDisable (GL_LIGHTING);// ****
 		glDepthFunc (GL_ALWAYS);
 		glColor3f (0,0,0);
@@ -357,8 +387,11 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
     //  When lighting is enabled, the primary color is calculated from the lighting equation instead of being taken from glColor and equivalent functions
 	//glEnable (GL_LIGHTING);
 	
+	//cout << "Flushing" << endl;
  	glFlush ();
+	//cout << "Swapping" << endl;
     SwapBuffers();
+	//cout << "Done drawing" << endl;
 }
 
 void BasicGLPane::glInit()

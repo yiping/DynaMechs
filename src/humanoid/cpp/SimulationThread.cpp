@@ -36,9 +36,11 @@ void *SimulationThread::Entry()
 	
 	while (!stopRequested) {
 		if (paused_flag) {
+			cout << "Sleeping for pause" << endl;
 			mutex.Lock();
 			unPauseCondition->Wait();
 			mutex.Unlock();
+			cout << "Awake now" << endl;
 		}
 		// Check if it's time for control
 		if ((sim_time - last_control_time) >= cdt) {
@@ -50,7 +52,6 @@ void *SimulationThread::Entry()
 			
 			last_control_time = sim_time;
 		}
-		
 		// Simulate
 		//lockRobot();
 		Float dt = idt;

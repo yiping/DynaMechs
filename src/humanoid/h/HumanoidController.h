@@ -20,9 +20,13 @@ public:
 	HumanoidController(dmArticulation * robot);
 	void HumanoidControl(ControlInfo &);
 	void ComputeGrfInfo(GRFInfo & grf);
+	void ComputeComInfo(Matrix6XF & Cmm, Vector6F & bias, Vector3F & pCom, Float & m); 
 	void ControlInit();
+	void extractQd(const VectorXF & dotDm, VectorXF & dot);
+	void ComputeActualQdd(VectorXF & qddA);
 	
-	Vector6F centMom, hDotDes, hDotOpt;
+	Vector6F centMom, hDotDes, hDotOpt, hDes;
+	Vector3F kDotDes;
 	VectorXF fs, lambda;
 	VectorXF pComDes, vComDes;
 	Float totalMass;
@@ -35,7 +39,18 @@ protected:
 	vector<VectorXF > vDesFoot;
 	vector<VectorXF > pFoot;
 	vector<VectorXF > vFoot;
+	vector<VectorXF > aFoot;
+	
 	vector<Matrix3F > RFoot;
+	IntVector contactState;
+	IntVector slidingState;
+	
+	Vector6F zmpWrenchOpt;
+	Vector3F zmpPosOpt;
+	
+	
+private:
+	void computeActualQdd(VectorXF & qdd);
 	
 };
 

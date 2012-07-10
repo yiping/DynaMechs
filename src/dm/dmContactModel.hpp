@@ -107,7 +107,8 @@ public:
    bool getContactPoint(unsigned int index, CartesianVector pos) const;
    ///
    bool getContactState(unsigned int index) const;
-
+   bool getSlidingState(unsigned int index) const;
+	
    ///
    void computeForce(const dmABForKinStruct &val, SpatialVector force);
    ///

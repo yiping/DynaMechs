@@ -81,10 +81,13 @@ bool MyApp::OnInit()
 	
 
 	
+	
 	simThread = new SimulationThread();
 	simThread->Create();
 	simThread->SetPriority(100);
-
+	cout << "Created Sim Thread" << endl;
+	
+	
 	// Populate GUI
 	{
 		//cout << "Frame" << endl;
@@ -93,11 +96,13 @@ bool MyApp::OnInit()
 		
 	}
 	
+	cout << "Showing Frame" << endl;
 	frame->Show();
+	cout << "Frame Shown" << endl;
 	
 	wxClientDC(frame->glPane);
 	frame->glPane->SetCurrent();
-	
+	cout << "Context Set" << endl;
 	
 	// Load DM File
 	{
@@ -151,15 +156,20 @@ bool MyApp::OnInit()
 		dmEnvironment *environment = dmuLoadFile_env(env_flname);
 		dmEnvironment::setEnvironment(environment);
 		
+		cout << "Environment Set" << endl;
+		
 		// ------------------------------------------------------------------
 		// Initialize a DynaMechs linkage system
 		char robot_flname[FILENAME_SIZE];
 		readConfigParameterLabel(cfg_ptr,"Robot_Parameter_File");
 		readFilename(cfg_ptr, robot_flname);
 
+		cout << "Creating Robot" << endl;
 		
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
 		humanoid = (HumanoidDataLogger *) new BalanceDemoStateMachine(G_robot);
+		
+		cout << "Robot Created" << endl;
 		
 		// --------
 		// Read in data directory
@@ -173,6 +183,7 @@ bool MyApp::OnInit()
 		
 		grfInfo.localContacts = 0;
 	}
+	
 	
 	
 	
@@ -191,8 +202,13 @@ bool MyApp::OnInit()
 		dmEnvironment::getEnvironment()->drawInit();
 		
 		frame->glPane->model_loaded = true;
+		cout << "Environment Drawn" << endl;
+		
 	}
+	cout << "Starting Timer" << endl;
 	frame->glPane->restartTimer();
+	
+	cout << "Starting Sim Thread" << endl;
 	simThread->Run();
     return true;
 } 
@@ -271,7 +287,7 @@ void BasicGLPane::userGraphics()
 
 
 void BasicGLPane::updateSim(wxTimerEvent & event) {
-	
+	//cout << "Time went off!" << endl;
 	dmTimespec tv_now;
 	dmGetSysTime(&tv_now);
 	
@@ -280,17 +296,10 @@ void BasicGLPane::updateSim(wxTimerEvent & event) {
 	
 	dmGetSysTime(&last_draw_tv);
 	
-	camera->setPerspective(45.0, (GLfloat)getWidth()/(GLfloat)getHeight(), 1.0, 200.0);
-	camera->update(mouse);
-	camera->applyView();
+	
+	
+	//cout << "Asking for repaint" << endl;
 	Refresh(); // ask for repaint
-	
-	// if you want the GL light to move with the camera, comment the following two lines - yiping
-	GLfloat light_position0[] = { 1.0, 1.0, 1.0, 0.0 };
-	glLightfv (GL_LIGHT0, GL_POSITION, light_position0);
-	
-	GLfloat light_position1[] = { -1.0, -1.0, 1.0, 0.0 };
-	glLightfv (GL_LIGHT1, GL_POSITION, light_position1);
 	
 	
 	timer_count++;
@@ -325,7 +334,7 @@ void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, doubl
 	
 	
 	// Exploit the special form of the rotation matrix (explained above) for find the axis of rotation
-	double rX, rY, rZ;
+	double rX,rY,rZ;
 	if(theta > 0) {	
 		rX = - normedDirection(1)/sinTheta;
 		rY =   normedDirection(0)/sinTheta;

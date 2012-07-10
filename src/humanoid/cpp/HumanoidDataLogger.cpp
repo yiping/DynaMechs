@@ -14,7 +14,6 @@
 #include "GlobalFunctions.h"
 
 HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : HumanoidStateMachineController(robot,stateSize) {
-
 	
 	setMaxItems(MAX_STATIC_ITEMS);
 	setMaxGroups(MAX_STATIC_GROUPS);
@@ -143,6 +142,10 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 	setItemName(LCOP_P_Y,		"L CoP Pos Y",			"lCopPos(2)");
 	setItemName(LCOP_N_Z,		"L CoP Mom Z",			"lCopNz");
 	
+	setItemName(LCONT_STATE,	"L Contact State",			"lContState");
+	setItemName(LSLIDE_STATE,	"L Slide State",			"lSlideState");
+	
+	
 	int leftCoPItems[] = {LCOP_F_X, LCOP_F_Y, LCOP_F_Z, LCOP_P_X, LCOP_P_Y, LCOP_N_Z};
 	
 	IntVector lCoPGroup(leftCoPItems,leftCoPItems+sizeof(leftCoPItems)/sizeof(int));
@@ -150,12 +153,15 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 	
 	
 	// Right CoP Groups
-	setItemName(RCOP_F_X,		"R CoP Force X",		"lCopForce(1)");
-	setItemName(RCOP_F_Y,		"R CoP Force Y",		"lCopForce(2)");
-	setItemName(RCOP_F_Z,		"R CoP Force Z",		"lCopForce(3)");
-	setItemName(RCOP_P_X,		"R CoP Pos X",			"lCopPos(1)");
-	setItemName(RCOP_P_Y,		"R CoP Pos Y",			"lCopPos(2)");
-	setItemName(RCOP_N_Z,		"R CoP Mom Z",			"lCopNz");
+	setItemName(RCOP_F_X,		"R CoP Force X",		"rCopForce(1)");
+	setItemName(RCOP_F_Y,		"R CoP Force Y",		"rCopForce(2)");
+	setItemName(RCOP_F_Z,		"R CoP Force Z",		"rCopForce(3)");
+	setItemName(RCOP_P_X,		"R CoP Pos X",			"rCopPos(1)");
+	setItemName(RCOP_P_Y,		"R CoP Pos Y",			"rlCopPos(2)");
+	setItemName(RCOP_N_Z,		"R CoP Mom Z",			"rCopNz");
+	
+	setItemName(RCONT_STATE,	"R Contact State",			"rContState");
+	setItemName(RSLIDE_STATE,	"R Slide State",			"rSlideState");
 	
 	int rightCoPItems[] = {RCOP_F_X, RCOP_F_Y, RCOP_F_Z, RCOP_P_X, RCOP_P_Y, RCOP_N_Z};
 	
@@ -189,19 +195,32 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 	LEFT_FOOT_VEL = addGroup("Left Foot Vel", "lFootVel", 6);
 	LEFT_FOOT_VEL_DES = addGroup("Left Foot Vel (Des)", "lFootVelDes", 6);
 	
+	LEFT_FOOT_ACC = addGroup("Left Foot Acc", "lFootAcc", 6);
+	LEFT_FOOT_ACC_DES = addGroup("Left Foot Acc (Des)", "lFootAccDes", 6);
+	
 	RIGHT_FOOT_POS = addGroup("Right Foot Pos", "rFootPos", 3);
 	RIGHT_FOOT_POS_DES = addGroup("Right Foot Pos (Des)", "rFootPosDes", 3);
 	
 	RIGHT_FOOT_VEL = addGroup("Right Foot Vel", "rFootVel", 6);
 	RIGHT_FOOT_VEL_DES = addGroup("Right Foot Vel (Des)", "rFootVelDes", 6);
 	
+	RIGHT_FOOT_ACC     = addGroup("Right Foot Acc", "rFootAcc", 6);
+	RIGHT_FOOT_ACC_DES = addGroup("Right Foot Acc (Des)", "rFootAccDes", 6);
 	
 	CENTROIDAL_MOMENTUM = addGroup("Centroidal Momentum",	"hCom",6);
+	HDES				= addGroup("Cent. Mom. Des",		"hComDes",3);
+	
 	HDOT_DES			= addGroup("H Dot Des",				"hDotDes", 6);
 	HDOT_OPT			= addGroup("H Dot Pot",				"hDotOpt",6);
 	
 	QDD_OPT				= addGroup("Qdd Opt",				"qddOpt", 26);
-	//QDD_ACT				= addGroup("Qdd Act",				"qddAct",26);
+	QDD_ACT				= addGroup("Qdd Act",				"qddAct", 26);
+	
+	LWRENCH_OPT			= addGroup("Left Wrench Opt",		"lWrenchOpt",6);
+	RWRENCH_OPT			= addGroup("Right Wrench Opt",		"rWrenchOpt",6);
+	
+	ZMP_WRENCH_OPT		= addGroup("Left Wrench Opt",		"zmpWrenchOpt",6);
+	ZMP_POS_OPT			= addGroup("ZMP Pos Opt",		"zmpPosOpt",3);
 	
 	HMAT				= addMatrixGroup("H",						"H",26,26);
 	
@@ -224,16 +243,23 @@ void HumanoidDataLogger::logData() {
 	force.segment(3,2) = grfInfo.pCoPs[0].head(2);
 	force(5)     = grfInfo.nCoPs[0];
 	assignGroup(RIGHT_FOOT_WRENCH, force);
+	assignItem(RCONT_STATE, contactState[0]);
+	assignItem(RSLIDE_STATE, slidingState[0]);
 	
 	force.head(3) = grfInfo.fCoPs[1];
 	force.segment(3,2) = grfInfo.pCoPs[1].head(2);
 	force(5)     = grfInfo.nCoPs[1];
 	assignGroup(LEFT_FOOT_WRENCH, force);
+	assignItem(LCONT_STATE, contactState[1]);
+	assignItem(LSLIDE_STATE, slidingState[1]);
 	
 	force.head(3) = grfInfo.fZMP;
 	force.segment(3,2) = grfInfo.pZMP.head(2);
 	force(5)     = grfInfo.nZMP;
 	assignGroup(ZMP_WRENCH, force);
+	
+	assignGroup(ZMP_WRENCH_OPT, zmpWrenchOpt);
+	assignGroup(ZMP_POS_OPT, zmpPosOpt);
 	
 	assignGroup(COM_POSITION, pCom);
 	assignGroup(COM_POSITION_DES, pComDes);
@@ -241,10 +267,14 @@ void HumanoidDataLogger::logData() {
 	assignGroup(COM_VELOCITY_DES, vComDes);
 	
 	assignGroup(CENTROIDAL_MOMENTUM, centMom);
+	assignGroup(HDES, hDes);
+	
 	assignGroup(HDOT_DES, hDotDes);
 	assignGroup(HDOT_OPT, hDotOpt);
 	
 	assignGroup(QDD_OPT, qdd);
+	assignGroup(QDD_ACT, qddA);
+	
 	
 	assignGroup(RIGHT_FOOT_POS, pFoot[0]);
 	assignGroup(RIGHT_FOOT_POS_DES, pDesFoot[0]);
@@ -252,11 +282,20 @@ void HumanoidDataLogger::logData() {
 	assignGroup(RIGHT_FOOT_VEL, vFoot[0]);
 	assignGroup(RIGHT_FOOT_VEL_DES, vDesFoot[0]);
 	
+	assignGroup(RIGHT_FOOT_ACC, aFoot[0]);
+	assignGroup(RIGHT_FOOT_ACC_DES, aDesFoot[0]);
+	
 	assignGroup(LEFT_FOOT_POS, pFoot[1]);
 	assignGroup(LEFT_FOOT_POS_DES, pDesFoot[1]);
 	
 	assignGroup(LEFT_FOOT_VEL, vFoot[1]);
 	assignGroup(LEFT_FOOT_VEL_DES, vDesFoot[1]);
+	
+	assignGroup(LEFT_FOOT_ACC, aFoot[1]);
+	assignGroup(LEFT_FOOT_ACC_DES, aDesFoot[1]);
+	
+	assignGroup(RWRENCH_OPT, fs.head(6));
+	assignGroup(LWRENCH_OPT, fs.tail(6));
 	
 	assignMatrixGroup(HMAT,G_robot->H);
 	dataMutex.Unlock();

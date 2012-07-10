@@ -18,9 +18,12 @@ public:
 	
 protected:
 	Matrix6XF CentMomMat;
+	Matrix6F IC0;
+	Matrix3F IBarC0;
+	
 	Vector3F pCom, vCom;
 	Vector6F cmBias;
-	VectorXF q, qdDm, qd,tau, qdd;
+	VectorXF q, qdDm, qd,tau, qdd, qddA;
 	
 private:
 	

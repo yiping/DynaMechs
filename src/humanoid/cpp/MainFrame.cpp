@@ -75,6 +75,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		menuBar->Check(MENU_Pause_Sim, true);
 		
 		SetMenuBar(menuBar);
+		cout << "Created Menus" << endl;
 	}
 	
 	
@@ -145,6 +146,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		SetSizer(sizer);
 		
 		SetAutoLayout(true);
+		cout << "Created Panel" << endl;
 	}
 }
 

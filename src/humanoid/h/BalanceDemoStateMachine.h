@@ -33,6 +33,7 @@ class BalanceDemoStateMachine : public HumanoidDataLogger
 		DS_LEFT,
 		STEP_RIGHT,
 		DS_RIGHT,
+		FALL,
 		NUM_BALANCE_STATES
 	};
 	virtual void StateControl(ControlInfo & ci);
@@ -55,15 +56,17 @@ class BalanceDemoStateMachine : public HumanoidDataLogger
 	void StepRight();
 	void DoubleSupportRight();
 	
+	void Fall();
+	
 	
 	typedef void (BalanceDemoStateMachine::*BalanceStateFuncPtr)();
 	vector<BalanceStateFuncPtr> stateFunctions;
 	
-	VectorXF aComDes;
+	VectorXF aComDes, kComDes;
 	CubicSplineTrajectory ComTrajectory;
 	Vector3F pLeftCom, pRightCom, pMiddleCom, pWalkPrep;
 	VectorXF pFootEnd;
-	Float kpCM, kdCM;
+	Float kpCM, kdCM, kdAM;
 };
 
 #endif

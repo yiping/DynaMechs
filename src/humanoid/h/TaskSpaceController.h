@@ -68,6 +68,7 @@ public:
 	VectorXF TaskBias;
 	VectorXF ConstraintBias;
 	VectorXF TaskWeight;
+	VectorXF hptConstrActive;
 	
 	XformVector SupportXforms;
 	IntVector SupportIndices;

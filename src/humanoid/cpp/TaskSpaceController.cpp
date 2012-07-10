@@ -13,7 +13,7 @@
 #include "mosek.h"
 #include "GlobalDefines.h"
 //#define OPTIM_DEBUG
-#define MU 1
+#define MU .5
 
 #define MAXSUBTASKS 12
 
@@ -402,7 +402,13 @@ void TaskSpaceController::UpdateHPTConstraintBounds()
 	int k = 0;
 	// Bounds on Constraints
 	for (i=hptConstrStart; i<hptConstrStart+ConstraintBias.rows(); i++) {
-		bkc[i]=MSK_BK_FX;
+		if (hptConstrActive[k] > 0) {
+			bkc[i]=MSK_BK_FX;
+		}
+		else {
+			bkc[i]=MSK_BK_FR;
+		}
+		
 		blc[i]=ConstraintBias(k);
 		buc[i]=ConstraintBias(k++);
 		r = MSK_putbound(task, MSK_ACC_CON, i, bkc[i], blc[i], buc[i]);

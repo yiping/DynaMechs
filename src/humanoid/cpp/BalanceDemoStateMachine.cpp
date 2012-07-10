@@ -59,8 +59,11 @@ BalanceDemoStateMachine::BalanceDemoStateMachine(dmArticulation * robot)
 	stateNames[FALL] = "Fall";
 	stateFunctions[FALL] = &BalanceDemoStateMachine::Fall;
 	
+	stateNames[DYN_STEP_LEFT] = "Dyn Step Left";
+	stateFunctions[DYN_STEP_LEFT] = &BalanceDemoStateMachine::DynamicStepLeft;
 	
-	
+	stateNames[DYN_SUPPORT_LEFT] = "Dyn Sup Left";
+	stateFunctions[DYN_SUPPORT_LEFT] = &BalanceDemoStateMachine::DynamicSupportLeft;
 
 	ComTrajectory.setSize(3);
 	aComDes.resize(3);
@@ -129,7 +132,7 @@ void BalanceDemoStateMachine::Drop() {
 }
 void BalanceDemoStateMachine::BalanceMiddle() {
 	if (stateTime > 1.8) {
-		state = FALL;
+		state = DYN_STEP_LEFT;
 		transitionFlag = true;
 		return;
 	}
@@ -139,6 +142,8 @@ void BalanceDemoStateMachine::BalanceMiddle() {
 	pComDes = pMiddleCom;
 	vComDes.setZero();
 	aComDes.setZero();
+	kDotDes.setZero();
+	kComDes.setZero();
 	transitionFlag = false;
 }
 void BalanceDemoStateMachine::BalanceLeft() {	
@@ -289,7 +294,7 @@ const Float StepTime = .5;
 const Float SupportTime = .8/1.3;
 const Float StepHeight = .06;
 const Float CoMxSway = .05;
-const Float StepLength = .2;
+const Float StepLength = .1;
 const Float DesiredVelocity = StepLength / (StepTime + SupportTime);
 const Float CoMHeight = .515;
 //const Float CoMHeight = .35;
@@ -536,8 +541,6 @@ void BalanceDemoStateMachine::Fall()
 {
 	static Float r, Iyy, thetaDes, thetaDotDes;
 	
-	
-	
 	if (transitionFlag) {
 		simThread->idt/=10;
 		simThread->cdt = .0005;
@@ -582,12 +585,91 @@ void BalanceDemoStateMachine::Fall()
 	thetaDotDes += simThread->cdt*thetaDDot;
 }
 
-
+void BalanceDemoStateMachine::DynamicStepLeft()
+{
+	static CubicSplineTrajectory footSpline(3);
+	static VectorXF vDes3(3), aDes3(3), pAct(3), vAct(6);
+	static VectorXF vFootEnd1(3), vFootEnd2(3),pFootStep1(3),pFootStep2(3);
+	
+	static bool halfwayFlag = true;
+	
+	if (transitionFlag) {
+		frame->logDataCheckBox->SetValue(true);
+		simThread->idt/=20;
+		vFootEnd1.setZero();
+		vFootEnd1(0) = +StepLength / StepTime * 2;
+		pFootStep1 << pFoot[1](0)+StepLength/2, pFoot[1](1),StepHeight;
+		footSpline.init(pFoot[1], vFoot[1].tail(3), pFootStep1, vFootEnd1,StepTime/2);
+		
+		transitionFlag = false;
+		halfwayFlag = true;
+	}
+	if (stateTime >= StepTime/2 && halfwayFlag  ) {
+		cout << setprecision(5);
+		cout << "Halfway " << simThread->sim_time << endl;
+		vFootEnd2.setZero();
+		pFootStep2 << pFootStep1(0)+StepLength/2, pFootStep1(1),0.01;
+		footSpline.init(pFoot[1], vFoot[1].tail(3), pFootStep2, vFootEnd2,StepTime/2);
+		halfwayFlag = false;
+	}
+	if (stateTime > StepTime) {
+		state = DYN_SUPPORT_LEFT;
+		transitionFlag = true;
+		return;
+	}
+	
+	AssignFootMaxLoad(1,0);
+	hptConstrActive.tail(6).setZero();
+	
+	kpFoot[1] = 50;
+	kdFoot[1] = 150;
+	VectorXF pDes3(3);
+	if (stateTime < StepTime/2) {
+		footSpline.eval(stateTime, pDes3, vDes3, aDes3);
+	}
+	else {
+		footSpline.eval(stateTime-StepTime/2, pDes3, vDes3, aDes3);
+	}
+	
+	vDesFoot[1].setZero();
+	aDesFoot[1].setZero();
+	
+	pDesFoot[1] = pDes3;
+	vDesFoot[1].tail(3) = vDes3;
+	aDesFoot[1].tail(3) = aDes3;
+}
+void BalanceDemoStateMachine::DynamicSupportLeft()
+{
+	if (transitionFlag) {
+		VectorXF pComEnd(3);
+		VectorXF vComEnd = VectorXF::Zero(3);
+		VectorXF pComInit = pCom;
+		VectorXF vComInit = centMom.tail(3)/totalMass;
+		
+		pComEnd << 2.09+.08, pFoot[1](1), CoMHeight;
+		
+		kpFoot[1] = 0;
+		kdFoot[1] = 0;
+		aDesFoot[1].setZero();
+		
+		ComTrajectory.init(pComInit, vComInit, pComEnd, vComEnd,SupportTime);
+		transitionFlag = false;
+	}
+	if (stateTime > SupportTime) {
+		state = STEP_RIGHT;
+		transitionFlag = true;
+	}
+	kpCM = 15;
+	kdCM = 25;
+	kdAM = kdCM;
+	ComTrajectory.eval(stateTime, pComDes, vComDes, aComDes);
+}
 
 void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 {
 	
 	this->HumanoidController::ControlInit();
+	hptConstrActive.setOnes(12);
 	
 	// Do at least one state call, and more if it transitioned out
 	do {
@@ -625,11 +707,11 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 			TaskBias.segment(0,3) += angMomDotDes;
 			TaskBias.segment(3,3) += linMomDotDes;
 			
-			TaskJacobian.block(0,0,3,NJ+6)*=1;
-			TaskBias.segment(0,3)*=1;
+			TaskJacobian.block(0,0,3,NJ+6)*=100;
+			TaskBias.segment(0,3)*=100;
 			
-			TaskJacobian.block(3,0,3,NJ+6)*=100;
-			TaskBias.segment(3,3)*=100;
+			TaskJacobian.block(3,0,3,NJ+6)*=1;
+			TaskBias.segment(3,3)*=1;
 			
 			
 	#ifdef CONTROL_DEBUG
@@ -674,7 +756,7 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 				}
 				
 				if (k <18) {
-					if (k!=15 && k!=9) {
+					if ((k!=15 && k!=9) || simThread->sim_time >1.5) {
 						TaskJacobian.row(taskRow+k-6).setZero();
 						TaskBias(taskRow+k-6) = 0;
 					}
@@ -682,7 +764,6 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 						TaskJacobian.row(taskRow+k-6) *=1;
 						TaskBias(taskRow+k-6) *= 1;
 					}
-
 				}
 				
 				kdm+=bodyi->link->getNumDOFs();
@@ -783,13 +864,7 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 				
 				if (kdFoot[i] == 0) {
 					aCom = - 10 * vFoot[i];
-				}
-				
-				if (slidingState[i]>0) {
-					aCom =  -25* vFoot[i]*0;
-				}
-				else {
-					aCom.setZero();
+					//aCom.setZero();
 				}
 
 				

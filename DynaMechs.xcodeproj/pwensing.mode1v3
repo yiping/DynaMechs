@@ -273,7 +273,6 @@
 								<string>19C6AB7E15890F8D00298257</string>
 								<string>19C6AAC21588ED1100298257</string>
 								<string>19C6AABF1588ED0600298257</string>
-								<string>1925868F14D2E99800778EA7</string>
 								<string>1925868014D2E96B00778EA7</string>
 								<string>1925863E14D2E93300778EA7</string>
 								<string>19A6F432157E4D2400ED6631</string>
@@ -295,7 +294,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 113}, {305, 930}}</string>
+							<string>{{0, 18}, {305, 930}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -344,19 +343,19 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>199267E115AC96A300E51313</string>
+										<string>1992680615AC99EE00E51313</string>
 										<key>history</key>
 										<array>
-											<string>1992676015AC8C2D00E51313</string>
 											<string>1992676315AC8C2D00E51313</string>
 											<string>1992676A15AC8DDE00E51313</string>
-											<string>1992678515AC90A000E51313</string>
 											<string>1992679A15AC920500E51313</string>
 											<string>199267B215AC935D00E51313</string>
 											<string>199267B915AC944600E51313</string>
-											<string>199267D515AC964100E51313</string>
 											<string>199267D615AC964100E51313</string>
-											<string>199267D715AC964100E51313</string>
+											<string>199267F715AC995600E51313</string>
+											<string>199267FF15AC99A100E51313</string>
+											<string>1992680415AC99EE00E51313</string>
+											<string>1992680515AC99EE00E51313</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -554,13 +553,13 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>199267E215AC96A300E51313</string>
+		<string>1992680715AC99EE00E51313</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>1992641715AB3FDD00E51313</string>
 		<string>1992641815AB3FDD00E51313</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>1925863714D2E86400778EA7</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -602,8 +601,6 @@
 							<string>313pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>

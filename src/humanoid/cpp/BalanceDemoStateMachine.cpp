@@ -786,7 +786,7 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 				}
 				
 				if (slidingState[i]>0) {
-					aCom =  -25* vFoot[i];
+					aCom =  -25* vFoot[i]*0;
 				}
 				else {
 					aCom.setZero();

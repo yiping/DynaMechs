@@ -326,6 +326,8 @@
 		19801DCA159B62DE00DB8AD5 /* CubicSpline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC7159B62DE00DB8AD5 /* CubicSpline.cpp */; };
 		19801DCB159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC8159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp */; };
 		19801DCC159B62DE00DB8AD5 /* DataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC9159B62DE00DB8AD5 /* DataLogger.cpp */; };
+		199267EA15AC986100E51313 /* dmContactSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 199267E615AC986100E51313 /* dmContactSystem.cpp */; };
+		199267EB15AC986100E51313 /* dmDynamicContactModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 199267E815AC986100E51313 /* dmDynamicContactModel.cpp */; };
 		19A6F42C157E4D0400ED6631 /* humanoidGlut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1940A49C1507C62100CD4386 /* humanoidGlut.cpp */; };
 		19A6F44C157E4EFD00ED6631 /* HumanoidController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */; };
 		19B85EBA158F7DA200788BE5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B85EB7158F7DA200788BE5 /* main.cpp */; };
@@ -837,6 +839,10 @@
 		19801DDA159B62EE00DB8AD5 /* CubicSplineTrajectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubicSplineTrajectory.h; path = src/humanoid/h/CubicSplineTrajectory.h; sourceTree = "<group>"; };
 		19801DDB159B62EE00DB8AD5 /* DataLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataLogger.h; path = src/humanoid/h/DataLogger.h; sourceTree = "<group>"; };
 		1990A15A15A8CB8900DE04A3 /* humanoid.env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = humanoid.env; path = src/humanoid/config/humanoid.env; sourceTree = "<group>"; };
+		199267E615AC986100E51313 /* dmContactSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dmContactSystem.cpp; path = src/dm/dmContactSystem.cpp; sourceTree = "<group>"; };
+		199267E715AC986100E51313 /* dmContactSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dmContactSystem.hpp; path = src/dm/dmContactSystem.hpp; sourceTree = "<group>"; };
+		199267E815AC986100E51313 /* dmDynamicContactModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dmDynamicContactModel.cpp; path = src/dm/dmDynamicContactModel.cpp; sourceTree = "<group>"; };
+		199267E915AC986100E51313 /* dmDynamicContactModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dmDynamicContactModel.hpp; path = src/dm/dmDynamicContactModel.hpp; sourceTree = "<group>"; };
 		19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidController.cpp; path = src/humanoid/cpp/HumanoidController.cpp; sourceTree = "<group>"; };
 		19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidWx.cpp; path = src/humanoid/cpp/humanoidWx.cpp; sourceTree = "<group>"; };
 		19B85EB7158F7DA200788BE5 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxDMV/main.cpp; sourceTree = "<group>"; };
@@ -2551,6 +2557,10 @@
 		19A6F433157E4D4100ED6631 /* Contact */ = {
 			isa = PBXGroup;
 			children = (
+				199267E615AC986100E51313 /* dmContactSystem.cpp */,
+				199267E715AC986100E51313 /* dmContactSystem.hpp */,
+				199267E815AC986100E51313 /* dmDynamicContactModel.cpp */,
+				199267E915AC986100E51313 /* dmDynamicContactModel.hpp */,
 				1925864714D2E95000778EA7 /* dmContactModel.cpp */,
 				1925864914D2E95000778EA7 /* dmEnvironment.cpp */,
 				1925864B14D2E95000778EA7 /* dmForce.cpp */,
@@ -4797,6 +4807,8 @@
 				194A858415A1F924007CBCFE /* Humanoid.cpp in Sources */,
 				192003E915A5F9FD0006A823 /* HumanoidStateMachineController.cpp in Sources */,
 				192003EA15A5F9FD0006A823 /* StateMachine.cpp in Sources */,
+				199267EA15AC986100E51313 /* dmContactSystem.cpp in Sources */,
+				199267EB15AC986100E51313 /* dmDynamicContactModel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

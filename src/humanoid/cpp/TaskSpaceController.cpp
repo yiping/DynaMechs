@@ -282,7 +282,7 @@ void TaskSpaceController::UpdateObjective() {
 			}
 		}
 		for (i = fStart; i <= (fEnd); i++) {
-			qsubi[k]=i; qsubj[k]=i; qval[k]=.01;
+			qsubi[k]=i; qsubj[k]=i; qval[k]=.1;
 			k++;
 		}
 		

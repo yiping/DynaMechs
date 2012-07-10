@@ -199,8 +199,8 @@ void executeGL_xan(ifstream &data_ptr)
 //    glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 //    data_ptr >> alpha;
 
-	glEnable(GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+//	glEnable(GL_BLEND);
+//	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // should be moved to user control code 
 	
     // ****
     //since I have switched to use glColorMaterial - yiping

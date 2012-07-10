@@ -35,7 +35,7 @@ wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,w
 	mouse = new wxDMGLMouse(); // has to be put in the front
 	camera = new wxDMGLPolarCamera_zup();
 	
-	glViewport (0, 0, size.GetWidth(), size.GetHeight());
+	// glViewport (0, 0, 0.8*size.GetWidth(), size.GetHeight());  //glViewport is meaningless here
 	mouse->win_size_x = size.GetWidth();
 	mouse->win_size_y = size.GetHeight();
 	cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
@@ -89,8 +89,8 @@ void BasicGLPane::mouseMoved(wxMouseEvent& event) {
 	//cout << "mouse moving" << endl;
 	//cout << "mouse moving          "<< mouse->button_flags  << endl;
 	extractMouseInfo(event);
-	camera->update(mouse);
-	camera->applyView();
+	//camera->update(mouse);
+	//camera->applyView();  // absorbed into render() function
 	Refresh();
 }
 void BasicGLPane::mouseLeftDown(wxMouseEvent& event) {
@@ -105,8 +105,8 @@ void BasicGLPane::mouseLeftUp(wxMouseEvent& event)  {
 	//cout << "left button released" << endl;
 	//cout << "left button released  "<< mouse->button_flags << endl;
 	extractMouseInfo(event);
-	camera->update(mouse);
-	camera->applyView();
+	//camera->update(mouse);
+	//camera->applyView(); // absorbed into render() function
 	Refresh();
 }
 
@@ -122,8 +122,8 @@ void BasicGLPane::mouseMiddleUp(wxMouseEvent& event)  {
 	//cout << "Mid button released" << endl;
 	
 	extractMouseInfo(event);
-	camera->update(mouse);
-	camera->applyView();
+	//camera->update(mouse);
+	//camera->applyView(); // absorbed into render() function
 	Refresh();
 }
 
@@ -137,8 +137,8 @@ void BasicGLPane::mouseRightUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_R_DN;
 	//cout << "right button released" << endl;
 	extractMouseInfo(event);
-	camera->update(mouse);
-	camera->applyView();
+	//camera->update(mouse);
+	//camera->applyView(); // absorbed into render() function
 	Refresh();
 }
 void BasicGLPane::mouseWheelMoved(wxMouseEvent& event) { }
@@ -174,7 +174,7 @@ void BasicGLPane::resized(wxSizeEvent& evt) {
 	
 	//cout<<"resize event"<<endl;
 	wxSize size = evt.GetSize();
-	glViewport (0, 0, size.GetWidth(), size.GetHeight());
+	// glViewport (0, 0, 0.8*size.GetWidth(), size.GetHeight()); // glViewport is meaningles here either.
 	mouse->win_size_x = size.GetWidth();
 	mouse->win_size_y = size.GetHeight();
 	//cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
@@ -182,7 +182,7 @@ void BasicGLPane::resized(wxSizeEvent& evt) {
 	//camera->setPerspective(45.0, (GLfloat)size.GetWidth()/(GLfloat)size.GetHeight(), 1.0, 200.0);
 	
 	//camera->setViewMat(view_mat);
-	//camera->applyView();
+	//camera->applyView();  // absorbed into render() function
 	
     Refresh();
 	
@@ -245,25 +245,40 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
     wxPaintDC(this); // only to be used in paint events. use wxClientDC to paint outside the paint event
 	SetCurrent();
 	
-    
-    
-	
-	// When lighting is enabled, the primary color is calculated from the lighting equation instead of being taken from glColor and equivalent functions
-	//glEnable (GL_LIGHTING);*/
-	
+    /* 
+	void glViewport(GLint  x,  GLint  y,  GLsizei  width,  GLsizei  height);
+
+	When a GL context is first attached to a window, width and height are set to the dimensions of that window.
+    and the value for (x,y)[lower left corner of the viewport rectangle] is (0,0).           
+
+	This means the glViewport can only be meaningfully applied after the SetCurrent();
+	*/
+
+
+	// primary view port:
+	glScissor(0, 0, getWidth(), getHeight());
+	glViewport (0, 0, getWidth(), getHeight());
+
 	glClearColor (0.49, 0.62, 0.75,1.0); /* background colour */ //lyp
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	camera->setPerspective(45.0, (GLfloat)(getWidth())/(GLfloat)getHeight(), 1.0, 200.0);
+	camera->update(mouse);
+	camera->applyView();  // applyView func. basically: switches to GL_MODELVIEW, load identity then perform a gluLookAt
+						  // gluLookAt computes the inverse camera transform and multiplies it onto the current matrix stack
+
+	// set up the lights locations so that they would be fixed with the scene, not with the camera
+	GLfloat light_position0[] = { 1.0, 1.0, 1.0, 0.0 };
+	glLightfv (GL_LIGHT0, GL_POSITION, light_position0);
 	
-	glMatrixMode (GL_MODELVIEW);
-	glPushMatrix ();
-	
-	// ===============================================================
+	GLfloat light_position1[] = { -1.0, -1.0, 1.0, 0.0 };
+	glLightfv (GL_LIGHT1, GL_POSITION, light_position1);
+
+	// -----------------------------------------------------------
 	(dmEnvironment::getEnvironment())->draw();
 	
-	// =========
-	glEnable(GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+	// -----------------------------------------------------------
+
 	userGraphics();
 	
 	// Draw Robot!
@@ -280,10 +295,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		G_robot->draw();
 		glPopAttrib();
 	}
-	
-	// ===============================================================
-	
-	glDisable (GL_LIGHTING);
+	// -----------------------------------------------------------
 	
 	// Draw Axes
 	{
@@ -305,36 +317,30 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
 	}
-	
-	
-	//glEnable (GL_LIGHTING);
-	
-	glPopMatrix ();
-	
-	// Setup Viewport
+	glColor3f(1.0, 1.0, 1.0); // prevent the drawing color contaminating the texture.
+
+	// Rendering text on the primary viewport
 	{
-		//// Write some information on the viewport
-		// we are currently in MODEL_VIEW
-		glPushMatrix ();
-		glLoadIdentity ();
 		glMatrixMode(GL_PROJECTION);
-		glPushMatrix ();
 		glLoadIdentity();
 		
 		GLint viewport [4];
 		glGetIntegerv (GL_VIEWPORT, viewport);
-		gluOrtho2D (0,viewport[2], viewport[3], 0);
+		gluOrtho2D (0, viewport[2], viewport[3], 0);
+		cout<<" 1- "<<viewport[0]<<" "<<viewport[1]<<" "<<viewport[2]<<" "<<viewport[3]<<endl;
 		// build a orthographic projection matrix using width and height of view port
 		
-		
-		glDisable (GL_LIGHTING);// ****
+		glMatrixMode (GL_MODELVIEW);
+		glLoadIdentity();
+		glDisable(GL_LIGHTING); // need to turn off light before rendering texts, otherwise the colors won't show.
 		glDepthFunc (GL_ALWAYS);
 		glColor3f (0,0,0);
 		glRasterPos2f(10, 20);
-		char * displaytext = (char *) "Humanoid Model";
+		char * displaytext = (char *) "Dynamic Contact Model Demo";
 		int len = (int) strlen(displaytext);
 		for (int i = 0; i<len; ++i)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, displaytext[i]);
+
 		glColor3f (1,1,1);
 		glRasterPos2f(10, 40);
 		char buffer [50];
@@ -344,25 +350,47 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);
 		
 		glDepthFunc (GL_LESS);
-		glPopMatrix ();
 		glMatrixMode(GL_MODELVIEW);
-		glPopMatrix ();
-		glEnable (GL_LIGHTING);// ****
+		glColor3f(1.0, 1.0, 1.0); 
+	
 	}
+
+	// auxiliary view ports
+	glScissor(0.7*getWidth(), 0.7*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight() );
+	glViewport (0.7*getWidth(), 0.7*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight());
+	glClearColor (0.0, 0.0, 0.0,1.0); /* background colour */ //lyp
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity ();
 	
-	
-    //  When lighting is enabled, the primary color is calculated from the lighting equation instead of being taken from glColor and equivalent functions
-	//glEnable (GL_LIGHTING);
-	
+	gluOrtho2D (-5, 5, -5, 5);
+	glMatrixMode (GL_MODELVIEW);
+	glLoadIdentity ();
+
+	// red square
+	glColor4f(1, 0, 0, 1);
+	glBegin(GL_TRIANGLES);                      // Drawing Using Triangles
+	glVertex3f( 0.0f, 1.0f, 0.0f);              // Top
+	glVertex3f(-1.0f,-1.0f, 0.0f);              // Bottom Left
+	glVertex3f( 1.0f,-1.0f, 0.0f);              // Bottom Right
+	glEnd(); 
+	glColor3f(1.0, 1.0, 1.0); 
+
+
+	glEnable (GL_LIGHTING);// ****
+
  	glFlush ();
     SwapBuffers();
+
+	
+
 }
 
 void BasicGLPane::glInit()
 {
 	//glEnable(GL_MULTISAMPLE);
 	//glHint(GL_MULTISAMPLE_FILTER_HINT_NV,GL_NICEST);
-	
+	glEnable(GL_SCISSOR_TEST);
 		GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 		GLfloat light_diffuse[] = { 0.7, 0.7, 0.7, 1.0 };
 		GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -410,8 +438,13 @@ void BasicGLPane::glInit()
 		// ****
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 		glEnable(GL_COLOR_MATERIAL);//!!
+
+		// When lighting is enabled, the primary color is calculated from the lighting equation instead of being taken from glColor and equivalent functions
+		// BUT: 
 		// The above two lines mean that glMaterial will control the polygon's specular and emission colors
-		// and the ambient and diffuse will both be set using glColor. - yiping
+		// and the ambient and diffuse will both be set using glColor. 
+		// glColorMaterial makes it possible to change a subset of material parameters for each
+        //    vertex using only the glColor command without calling glMaterial. - yiping
 		
 		quadratic=gluNewQuadric();          // Create A Pointer To The Quadric Object ( NEW )
 		gluQuadricNormals(quadratic, GLU_SMOOTH);   // Create Smooth Normals ( NEW )
@@ -440,18 +473,20 @@ void BasicGLPane::updateSim(wxTimerEvent & event)
 	
 	dmGetSysTime(&last_draw_tv);
 	
-	camera->setPerspective(45.0, (GLfloat)getWidth()/(GLfloat)getHeight(), 1.0, 200.0);
-	camera->update(mouse);
-	camera->applyView();
+	//camera->setPerspective(45.0, (GLfloat)getWidth()/(GLfloat)getHeight(), 1.0, 200.0);
+	//camera->update(mouse);
+	//camera->applyView();
+	// the above lines should be absorbed into render() function
+
 	Refresh(); // ask for repaint
 	
-	// if you want the GL light to move with the camera, comment the following two lines - yiping
-	GLfloat light_position0[] = { 1.0, 1.0, 1.0, 0.0 };
-	glLightfv (GL_LIGHT0, GL_POSITION, light_position0);
+	//// if you want the GL light to move with the camera, comment the following two lines - yiping
+	//GLfloat light_position0[] = { 1.0, 1.0, 1.0, 0.0 };
+	//glLightfv (GL_LIGHT0, GL_POSITION, light_position0);
 	
-	GLfloat light_position1[] = { -1.0, -1.0, 1.0, 0.0 };
-	glLightfv (GL_LIGHT1, GL_POSITION, light_position1);
-	
+	//GLfloat light_position1[] = { -1.0, -1.0, 1.0, 0.0 };
+	//glLightfv (GL_LIGHT1, GL_POSITION, light_position1);
+	// the above lines should also be absorbed into render() function
 	
 	timer_count++;
 	

@@ -13,6 +13,7 @@
 #include "dmDynamicContactModel.hpp"
 #include <vector>
 
+using namespace Eigen;
 //----------------------------------------------------------------------------
 dmDynamicContactModel::dmDynamicContactModel()
 {
@@ -129,8 +130,8 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 		                  	 R_ICS[j][2]*m_contact_pos[i][2]; //current contact position in ICS
 	  	}
 
-		ground_elevation = (dmEnvironment::getEnvironment())->getGroundElevation(current_pos, normal);
-
+		ground_elevation = (dmEnvironment::getEnvironment())->getGroundElevation(pc_ICS, normal);
+		cout<<"pc_ICS(array): "<<pc_ICS[0]<<" "<<pc_ICS[1]<<" "<<pc_ICS[2]<<endl;
 
 		if (pc_ICS[2] > ground_elevation)  // if NO contact
 		{
@@ -161,6 +162,11 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
          	vc[2] += v[5];
 
 			// TODO u: terrain patch surface coord -> ICS. 
+			Vector3F n;
+			n = Map<Vector3F>(normal);
+			//cout<<"normal_vec:   "<<n.transpose()<<endl;
+
+
 			for (j = 0; j < 3; j++)
 			{
 				vc_ICS[j] =  R_ICS[j][0]*vc[0] +

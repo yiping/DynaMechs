@@ -33,7 +33,7 @@ Articulation {
 					   -0.200    0.200     0.100	
 		Position 2 2 0.9
 		Orientation_Quat  0 0 0 1
-		Velocity 0 0 0 0.2 0 0
+		Velocity 0 0 0 2 0 0
 	}
 	# End Mobile Base
 

@@ -162,8 +162,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 363633628;
-			PBXWorkspaceStateSaveDate = 363633628;
+			PBXPerProjectTemplateStateSaveDate = 363641416;
+			PBXWorkspaceStateSaveDate = 363641416;
 		};
 		perUserProjectItems = {
 			1990A1E315A8DB3D00DE04A3 = 1990A1E315A8DB3D00DE04A3 /* PBXTextBookmark */;
@@ -560,44 +560,44 @@
 			1992680415AC99EE00E51313 = 1992680415AC99EE00E51313 /* PBXTextBookmark */;
 			1992680515AC99EE00E51313 = 1992680515AC99EE00E51313 /* PBXTextBookmark */;
 			1992680615AC99EE00E51313 = 1992680615AC99EE00E51313 /* PBXTextBookmark */;
-			1992682915AC9EFB00E51313 /* PBXTextBookmark */ = 1992682915AC9EFB00E51313 /* PBXTextBookmark */;
-			1992682A15AC9EFB00E51313 /* PBXTextBookmark */ = 1992682A15AC9EFB00E51313 /* PBXTextBookmark */;
-			1992682B15AC9EFB00E51313 /* PBXTextBookmark */ = 1992682B15AC9EFB00E51313 /* PBXTextBookmark */;
-			1992682C15AC9EFB00E51313 /* PBXTextBookmark */ = 1992682C15AC9EFB00E51313 /* PBXTextBookmark */;
-			1992682D15AC9EFB00E51313 /* PBXTextBookmark */ = 1992682D15AC9EFB00E51313 /* PBXTextBookmark */;
-			1992682E15AC9EFB00E51313 /* PBXTextBookmark */ = 1992682E15AC9EFB00E51313 /* PBXTextBookmark */;
-			1992682F15AC9EFB00E51313 /* PBXTextBookmark */ = 1992682F15AC9EFB00E51313 /* PBXTextBookmark */;
-			1992683015AC9EFB00E51313 /* PBXTextBookmark */ = 1992683015AC9EFB00E51313 /* PBXTextBookmark */;
-			1992683115AC9EFB00E51313 /* PBXTextBookmark */ = 1992683115AC9EFB00E51313 /* PBXTextBookmark */;
-			1992683D15AC9F1D00E51313 /* XCBuildMessageTextBookmark */ = 1992683D15AC9F1D00E51313 /* XCBuildMessageTextBookmark */;
-			1992683E15AC9F1D00E51313 /* PBXTextBookmark */ = 1992683E15AC9F1D00E51313 /* PBXTextBookmark */;
-			1992684715ACA05C00E51313 /* PBXTextBookmark */ = 1992684715ACA05C00E51313 /* PBXTextBookmark */;
-			1992684D15ACA11400E51313 /* PBXTextBookmark */ = 1992684D15ACA11400E51313 /* PBXTextBookmark */;
-			1992684E15ACA11400E51313 /* PBXTextBookmark */ = 1992684E15ACA11400E51313 /* PBXTextBookmark */;
-			1992685C15ACA34D00E51313 /* PBXTextBookmark */ = 1992685C15ACA34D00E51313 /* PBXTextBookmark */;
-			1992685D15ACA34D00E51313 /* PBXTextBookmark */ = 1992685D15ACA34D00E51313 /* PBXTextBookmark */;
-			1992685E15ACA34D00E51313 /* PBXTextBookmark */ = 1992685E15ACA34D00E51313 /* PBXTextBookmark */;
-			1992685F15ACA34D00E51313 /* PBXTextBookmark */ = 1992685F15ACA34D00E51313 /* PBXTextBookmark */;
-			1992686115ACA34D00E51313 /* PBXTextBookmark */ = 1992686115ACA34D00E51313 /* PBXTextBookmark */;
-			1992686215ACA34D00E51313 /* PBXTextBookmark */ = 1992686215ACA34D00E51313 /* PBXTextBookmark */;
-			1992687215ACA46A00E51313 /* PBXTextBookmark */ = 1992687215ACA46A00E51313 /* PBXTextBookmark */;
-			1992687315ACA46A00E51313 /* PBXTextBookmark */ = 1992687315ACA46A00E51313 /* PBXTextBookmark */;
-			1992687415ACA46A00E51313 /* PBXTextBookmark */ = 1992687415ACA46A00E51313 /* PBXTextBookmark */;
-			1992687515ACA46A00E51313 /* PBXTextBookmark */ = 1992687515ACA46A00E51313 /* PBXTextBookmark */;
-			1992687615ACA46A00E51313 /* PBXTextBookmark */ = 1992687615ACA46A00E51313 /* PBXTextBookmark */;
-			1992687A15ACA4A500E51313 /* PBXTextBookmark */ = 1992687A15ACA4A500E51313 /* PBXTextBookmark */;
-			1992687E15ACA4EC00E51313 /* PBXTextBookmark */ = 1992687E15ACA4EC00E51313 /* PBXTextBookmark */;
-			1992688815ACA7A600E51313 /* PBXTextBookmark */ = 1992688815ACA7A600E51313 /* PBXTextBookmark */;
-			1992688915ACA7A600E51313 /* PBXTextBookmark */ = 1992688915ACA7A600E51313 /* PBXTextBookmark */;
-			1992688A15ACA7A600E51313 /* PBXTextBookmark */ = 1992688A15ACA7A600E51313 /* PBXTextBookmark */;
-			1992688E15ACA80F00E51313 /* PBXTextBookmark */ = 1992688E15ACA80F00E51313 /* PBXTextBookmark */;
-			1992688F15ACA80F00E51313 /* PBXTextBookmark */ = 1992688F15ACA80F00E51313 /* PBXTextBookmark */;
-			1992689015ACA80F00E51313 /* PBXTextBookmark */ = 1992689015ACA80F00E51313 /* PBXTextBookmark */;
-			1992689415ACA94200E51313 /* PBXTextBookmark */ = 1992689415ACA94200E51313 /* PBXTextBookmark */;
-			1992689815ACA97500E51313 /* PBXTextBookmark */ = 1992689815ACA97500E51313 /* PBXTextBookmark */;
-			1992689C15ACA9A200E51313 /* PBXTextBookmark */ = 1992689C15ACA9A200E51313 /* PBXTextBookmark */;
-			199268A215ACABBF00E51313 /* PBXTextBookmark */ = 199268A215ACABBF00E51313 /* PBXTextBookmark */;
-			199268A615ACAC5800E51313 /* PBXTextBookmark */ = 199268A615ACAC5800E51313 /* PBXTextBookmark */;
+			1992682915AC9EFB00E51313 = 1992682915AC9EFB00E51313 /* PBXTextBookmark */;
+			1992682A15AC9EFB00E51313 = 1992682A15AC9EFB00E51313 /* PBXTextBookmark */;
+			1992682B15AC9EFB00E51313 = 1992682B15AC9EFB00E51313 /* PBXTextBookmark */;
+			1992682C15AC9EFB00E51313 = 1992682C15AC9EFB00E51313 /* PBXTextBookmark */;
+			1992682D15AC9EFB00E51313 = 1992682D15AC9EFB00E51313 /* PBXTextBookmark */;
+			1992682E15AC9EFB00E51313 = 1992682E15AC9EFB00E51313 /* PBXTextBookmark */;
+			1992682F15AC9EFB00E51313 = 1992682F15AC9EFB00E51313 /* PBXTextBookmark */;
+			1992683015AC9EFB00E51313 = 1992683015AC9EFB00E51313 /* PBXTextBookmark */;
+			1992683115AC9EFB00E51313 = 1992683115AC9EFB00E51313 /* PBXTextBookmark */;
+			1992683D15AC9F1D00E51313 = 1992683D15AC9F1D00E51313 /* PBXTextBookmark */;
+			1992683E15AC9F1D00E51313 = 1992683E15AC9F1D00E51313 /* PBXTextBookmark */;
+			1992684715ACA05C00E51313 = 1992684715ACA05C00E51313 /* PBXTextBookmark */;
+			1992684D15ACA11400E51313 = 1992684D15ACA11400E51313 /* PBXTextBookmark */;
+			1992684E15ACA11400E51313 = 1992684E15ACA11400E51313 /* PBXTextBookmark */;
+			1992685C15ACA34D00E51313 = 1992685C15ACA34D00E51313 /* PBXTextBookmark */;
+			1992685D15ACA34D00E51313 = 1992685D15ACA34D00E51313 /* PBXTextBookmark */;
+			1992685E15ACA34D00E51313 = 1992685E15ACA34D00E51313 /* PBXTextBookmark */;
+			1992685F15ACA34D00E51313 = 1992685F15ACA34D00E51313 /* PBXTextBookmark */;
+			1992686115ACA34D00E51313 = 1992686115ACA34D00E51313 /* PBXTextBookmark */;
+			1992686215ACA34D00E51313 = 1992686215ACA34D00E51313 /* PBXTextBookmark */;
+			1992687215ACA46A00E51313 = 1992687215ACA46A00E51313 /* PBXTextBookmark */;
+			1992687315ACA46A00E51313 = 1992687315ACA46A00E51313 /* PBXTextBookmark */;
+			1992687415ACA46A00E51313 = 1992687415ACA46A00E51313 /* PBXTextBookmark */;
+			1992687515ACA46A00E51313 = 1992687515ACA46A00E51313 /* PBXTextBookmark */;
+			1992687615ACA46A00E51313 = 1992687615ACA46A00E51313 /* PBXTextBookmark */;
+			1992687A15ACA4A500E51313 = 1992687A15ACA4A500E51313 /* PBXTextBookmark */;
+			1992687E15ACA4EC00E51313 = 1992687E15ACA4EC00E51313 /* PBXTextBookmark */;
+			1992688815ACA7A600E51313 = 1992688815ACA7A600E51313 /* PBXTextBookmark */;
+			1992688915ACA7A600E51313 = 1992688915ACA7A600E51313 /* PBXTextBookmark */;
+			1992688A15ACA7A600E51313 = 1992688A15ACA7A600E51313 /* PBXTextBookmark */;
+			1992688E15ACA80F00E51313 = 1992688E15ACA80F00E51313 /* PBXTextBookmark */;
+			1992688F15ACA80F00E51313 = 1992688F15ACA80F00E51313 /* PBXTextBookmark */;
+			1992689015ACA80F00E51313 = 1992689015ACA80F00E51313 /* PBXTextBookmark */;
+			1992689415ACA94200E51313 = 1992689415ACA94200E51313 /* PBXTextBookmark */;
+			1992689815ACA97500E51313 = 1992689815ACA97500E51313 /* PBXTextBookmark */;
+			1992689C15ACA9A200E51313 = 1992689C15ACA9A200E51313 /* PBXTextBookmark */;
+			199268A215ACABBF00E51313 = 199268A215ACABBF00E51313 /* PBXTextBookmark */;
+			199268A615ACAC5800E51313 = 199268A615ACAC5800E51313 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
 		userBuildSettings = {
@@ -742,12 +742,6 @@
 		name = BalanceDemoStateMachine.cpp;
 		path = /Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/src/humanoid/cpp/BalanceDemoStateMachine.cpp;
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{2906, 357}\";\n            s = 0;\n        },\n                {\n            r = \"{3611, 485}\";\n            s = 0;\n        },\n                {\n            r = \"{4144, 492}\";\n            s = 0;\n        },\n                {\n            r = \"{4683, 355}\";\n            s = 0;\n        },\n                {\n            r = \"{5082, 675}\";\n            s = 0;\n        },\n                {\n            r = \"{5798, 643}\";\n            s = 0;\n        },\n                {\n            r = \"{6765, 533}\";\n            s = 0;\n        },\n                {\n            r = \"{7350, 1299}\";\n            s = 0;\n        },\n                {\n            r = \"{8695, 1243}\";\n            s = 0;\n        },\n                {\n            r = \"{9991, 559}\";\n            s = 0;\n        },\n                {\n            r = \"{10596, 1243}\";\n            s = 0;\n        },\n                {\n            r = \"{11893, 558}\";\n            s = 0;\n        },\n                {\n            r = \"{12492, 1118}\";\n            s = 0;\n        },\n                {\n            r = \"{15113, 559}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 22387}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {971, 5338}}";
-			sepNavSelRange = "{7053, 0}";
-			sepNavVisRange = "{5635, 2542}";
-		};
 	};
 	192003E815A5F9FD0006A823 /* StateMachine.cpp */ = {
 		uiCtxt = {
@@ -1957,9 +1951,9 @@
 	};
 	19801DBA159B627A00DB8AD5 /* HumanoidController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {971, 886}}";
+			sepNavIntBoundsRect = "{{0, 0}, {911, 693}}";
 			sepNavSelRange = "{797, 0}";
-			sepNavVisRange = "{0, 1398}";
+			sepNavVisRange = "{0, 1382}";
 		};
 	};
 	19801DBB159B627A00DB8AD5 /* HumanoidDataLogger.h */ = {
@@ -6154,11 +6148,10 @@
 		vrLen = 12832;
 		vrLoc = 0;
 	};
-	1992683D15AC9F1D00E51313 /* XCBuildMessageTextBookmark */ = {
+	1992683D15AC9F1D00E51313 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		comments = "No 'void BalanceDemoStateMachine::DynamicSupport()' member function declared in class 'BalanceDemoStateMachine'";
 		fRef = 191CCD5B15A2411C00EDB32D /* BalanceDemoStateMachine.cpp */;
-		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
 		rLoc = 640;
 		rType = 1;
@@ -6245,6 +6238,7 @@
 	};
 	1992686015ACA34D00E51313 /* BasicGLPane.cpp */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
 		name = BasicGLPane.cpp;
 		path = /Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/src/contact_demo/srcs/BasicGLPane.cpp;
 		sourceTree = "<absolute>";

@@ -60,8 +60,8 @@ void BasicGLPane::userGraphics()
 		G_robot->getLink(0)->getPose(R,p);
 		box_pos= Map<Vector3F>(p);
 		Float* f;
-		//f = dynamic_cast<dmDynamicContactModel *>( dynamic_cast<dmRigidBody *>(G_robot->getLink(0))->getForce(0))->getLastComputedValue();
-		f = dynamic_cast<dmContactModel *>( dynamic_cast<dmRigidBody *>(G_robot->getLink(0))->getForce(0))->getLastComputedValue();
+		f = dynamic_cast<dmDynamicContactModel *>( dynamic_cast<dmRigidBody *>(G_robot->getLink(0))->getForce(0))->getLastComputedValue();
+		//f = dynamic_cast<dmContactModel *>( dynamic_cast<dmRigidBody *>(G_robot->getLink(0))->getForce(0))->getLastComputedValue();
 		cforce[0]=f[3]; cforce[1]=f[4]; cforce[2]=f[5]; 
 		cforce = cforce/100;
 		glColor3f(1.0, 0.0, 0.0);

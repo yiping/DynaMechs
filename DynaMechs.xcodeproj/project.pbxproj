@@ -836,6 +836,7 @@
 		19801DD9159B62EE00DB8AD5 /* CubicSpline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubicSpline.h; path = src/humanoid/h/CubicSpline.h; sourceTree = "<group>"; };
 		19801DDA159B62EE00DB8AD5 /* CubicSplineTrajectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubicSplineTrajectory.h; path = src/humanoid/h/CubicSplineTrajectory.h; sourceTree = "<group>"; };
 		19801DDB159B62EE00DB8AD5 /* DataLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataLogger.h; path = src/humanoid/h/DataLogger.h; sourceTree = "<group>"; };
+		1990A15A15A8CB8900DE04A3 /* humanoid.env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = humanoid.env; path = src/humanoid/config/humanoid.env; sourceTree = "<group>"; };
 		19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidController.cpp; path = src/humanoid/cpp/HumanoidController.cpp; sourceTree = "<group>"; };
 		19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidWx.cpp; path = src/humanoid/cpp/humanoidWx.cpp; sourceTree = "<group>"; };
 		19B85EB7158F7DA200788BE5 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxDMV/main.cpp; sourceTree = "<group>"; };
@@ -1930,7 +1931,7 @@
 		19F8D61D158BB38400BC4671 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		19F8D709158BB7D100BC4671 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxTest/main.cpp; sourceTree = "<group>"; };
 		19F8D70A158BB7D100BC4671 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = src/wxTest/main.h; sourceTree = "<group>"; };
-		19F8D759158BB7D500BC4671 /* wxTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = wxTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		19F8D759158BB7D500BC4671 /* wxDMV */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = wxDMV; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F8D78D158BC04A00BC4671 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
 		19F8D7F8158BD2F600BC4671 /* wxTest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxTest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F8D884158BD83A00BC4671 /* wxTest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxTest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2463,6 +2464,7 @@
 		19801DB2159B621E00DB8AD5 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				1990A15A15A8CB8900DE04A3 /* humanoid.env */,
 				1920046F15A61B830006A823 /* humanoid.dm */,
 				19801DB1159B621A00DB8AD5 /* humanoid.cfg */,
 			);
@@ -3980,7 +3982,7 @@
 				19EE349F153C526D0029D664 /* windmill */,
 				19577E2B1541A01000B991DF /* mosekTest */,
 				19BA5C8A158A432100BC26DA /* wxDMV */,
-				19F8D759158BB7D500BC4671 /* wxTest */,
+				19F8D759158BB7D500BC4671 /* wxDMV */,
 				19F8D7F8158BD2F600BC4671 /* wxTest2.app */,
 				19F8D884158BD83A00BC4671 /* wxTest2.app */,
 				19F8D8FE158BDBAC00BC4671 /* wxDMVapp.app */,
@@ -4289,7 +4291,7 @@
 			);
 			name = wxTest;
 			productName = wxDMV;
-			productReference = 19F8D759158BB7D500BC4671 /* wxTest */;
+			productReference = 19F8D759158BB7D500BC4671 /* wxDMV */;
 			productType = "com.apple.product-type.tool";
 		};
 		19F8D7F7158BD2F600BC4671 /* wxTest2 */ = {

@@ -56,6 +56,9 @@ BalanceDemoStateMachine::BalanceDemoStateMachine(dmArticulation * robot)
 	stateNames[DS_RIGHT] = "DS Right";
 	stateFunctions[DS_RIGHT] = &BalanceDemoStateMachine::DoubleSupportRight;
 	
+	stateNames[FALL] = "Fall";
+	stateFunctions[FALL] = &BalanceDemoStateMachine::Fall;
+	
 	
 	
 
@@ -94,6 +97,9 @@ BalanceDemoStateMachine::BalanceDemoStateMachine(dmArticulation * robot)
 	pComDes.resize(3);
 	pComDes.setZero();
 	
+	kComDes.resize(3);
+	kComDes.setZero();
+	
 	
 	state = DROP;
 	transitionFlag = true;
@@ -122,13 +128,14 @@ void BalanceDemoStateMachine::Drop() {
 	transitionFlag = false;
 }
 void BalanceDemoStateMachine::BalanceMiddle() {
-	/*if (stateTime > 1.8) {
-		state = WALK_PREP;
+	if (stateTime > 1.8) {
+		state = FALL;
 		transitionFlag = true;
 		return;
-	}*/
+	}
 	kpCM = 15;
 	kdCM = 25;
+	kdAM = 25;
 	pComDes = pMiddleCom;
 	vComDes.setZero();
 	aComDes.setZero();
@@ -155,6 +162,7 @@ void BalanceDemoStateMachine::BalanceLeft() {
 	ComTrajectory.eval(stateTime, pComDes, vComDes, aComDes);
 	kpCM = 90/5;
 	kdCM = 2*sqrt(kpCM)/5;
+	kdAM = kdCM;
 	
 }
 void BalanceDemoStateMachine::BalanceRight() {	
@@ -178,6 +186,7 @@ void BalanceDemoStateMachine::BalanceRight() {
 	ComTrajectory.eval(stateTime, pComDes, vComDes, aComDes);
 	kpCM = 90/5;
 	kdCM = 2*sqrt(kpCM)/5;
+	kdAM = kdCM;
 	
 }
 void BalanceDemoStateMachine::WeightShift() {
@@ -307,6 +316,7 @@ void BalanceDemoStateMachine::WalkPrep()
 	}
 	kpCM = 15;
 	kdCM = 25;
+	kdAM = kdCM;
 	ComTrajectory.eval(stateTime, pComDes, vComDes, aComDes);
 }
 
@@ -440,6 +450,7 @@ void BalanceDemoStateMachine::DoubleSupportLeft()
 	}
 	kpCM = 15;
 	kdCM = 25;
+	kdAM = kdCM;
 	ComTrajectory.eval(stateTime, pComDes, vComDes, aComDes);
 }
 
@@ -517,7 +528,58 @@ void BalanceDemoStateMachine::DoubleSupportRight()
 	}
 	kpCM = 15;
 	kdCM = 25;
+	kdAM = kdCM;
 	ComTrajectory.eval(stateTime, pComDes, vComDes, aComDes);
+}
+
+void BalanceDemoStateMachine::Fall()
+{
+	static Float r, Iyy, thetaDes, thetaDotDes;
+	
+	
+	
+	if (transitionFlag) {
+		simThread->idt/=10;
+		simThread->cdt = .0005;
+		r = sqrt(pow(pCom(0)-2.02,2) + pow(pCom(2),2));
+		thetaDes = atan2(pCom(0)-2.02, pCom(2));;
+		thetaDotDes = vCom.norm()/r;
+		
+		transitionFlag = false;
+	}
+	if (grfInfo.fCoPs[1](2) < 5) {
+		simThread->idt = .0001/1500;
+	}
+	
+	Float theta = atan2(pCom(0)-2.02, pCom(2));
+	Float thetaDot = vCom.norm()/r;
+	
+	Iyy = IBarC0(1,1);
+	
+	
+	frame->logDataCheckBox->SetValue(true);
+	kpCM = 15;
+	kdCM = 25;
+	kdAM = 25;
+	
+	
+	Float thetaDDot = totalMass * 9.81 * r * sin(theta) / (totalMass * pow(r,2) + Iyy);
+	
+	pComDes(0) = r*sin(thetaDes)+2.02;
+	pComDes(2) = r*cos(thetaDes);
+	
+	vComDes(0) = r*cos(thetaDes)*thetaDotDes;
+	vComDes(2) = -r*sin(thetaDes)*thetaDotDes;
+	
+	aComDes(0) = - r * sin(thetaDes) * pow(thetaDotDes,2) + r * cos(thetaDes) * thetaDDot;
+	aComDes(1) = 0;
+	aComDes(2) = -r * cos(thetaDes) * pow(thetaDotDes,2) - r*sin(thetaDes)*thetaDDot;
+	
+	kComDes << 0,(Iyy)*thetaDotDes,0;
+	kDotDes << 0,Iyy * thetaDDot ,0;
+	
+	thetaDes += simThread->cdt*thetaDotDes;
+	thetaDotDes += simThread->cdt*thetaDDot;
 }
 
 
@@ -547,8 +609,11 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 			// Compute Task Bias from RNEA Fw Kin
 			TaskBias.segment(0,6) = -cmBias;
 			
+			hDes.head(3) = kComDes;
+			hDes.tail(3) = vComDes*totalMass;
+			
 			Vector3F linMomDotDes = totalMass*aComDes + totalMass*kpCM*(pComDes - pCom) + kdCM*(vComDes*totalMass - centMom.tail(3));
-			Vector3F angMomDotDes = -kdCM*centMom.head(3);
+			Vector3F angMomDotDes = kDotDes + kdAM*(kComDes-centMom.head(3));
 			hDotDes.head(3) = angMomDotDes;
 			hDotDes.tail(3) = linMomDotDes;
 			
@@ -559,6 +624,9 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 			// Dampen angular and PD CoM
 			TaskBias.segment(0,3) += angMomDotDes;
 			TaskBias.segment(3,3) += linMomDotDes;
+			
+			TaskJacobian.block(0,0,3,NJ+6)*=1;
+			TaskBias.segment(0,3)*=1;
 			
 			TaskJacobian.block(3,0,3,NJ+6)*=100;
 			TaskBias.segment(3,3)*=100;
@@ -590,8 +658,9 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 			TaskJacobian.block(taskRow,6,NJ,NJ) = MatrixXF::Identity(NJ,NJ)*discountFactor;
 			
 			// Compute task bias based on PD on joint angles
-			VectorXF qDes = VectorXF::Zero(NJ+6); 					  
-			qDes << 0,0,0,0,0,0,  0,0,0,0,0,0   ,0,0,0,0,0,0,   0,2.5,-1.57, 0,    0, -2.4, -1.57, 0;
+			VectorXF qDes = VectorXF::Zero(NJ+6); 
+			//0-5 6-11 12-17 18-21 22-25
+			qDes << 0,0,0,0,0,0,  0,0,0,1.27,0,0   ,0,0,0,1.27,0,0,   0,2.5,-1.57, 0,    0, -2.4, -1.57, 0;
 			Float Kp = 20, Kd = 12;
 			
 			int k=6;
@@ -603,6 +672,19 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 						TaskBias(taskRow+k-6) = (Kp * (qDes(k) - q(kdm)) - Kd * qd(k))*discountFactor;
 					}
 				}
+				
+				if (k <18) {
+					if (k!=15 && k!=9) {
+						TaskJacobian.row(taskRow+k-6).setZero();
+						TaskBias(taskRow+k-6) = 0;
+					}
+					else {
+						TaskJacobian.row(taskRow+k-6) *=1;
+						TaskBias(taskRow+k-6) *= 1;
+					}
+
+				}
+				
 				kdm+=bodyi->link->getNumDOFs();
 				k+=bodyi->link->getTrueNumDOFs();
 			}
@@ -613,39 +695,6 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 			Matrix3F RDes[2];
 			Vector3F eOmega;
 			Vector3F om;
-			
-			//om << 0 , M_PI/2, 0*M_PI/2;
-			//matrixExpOmegaCross(om, RDes[0]);
-			
-			//om << 0 , M_PI/2, -M_PI/2*0;
-			//matrixExpOmegaCross(om, RDes[1]);
-			
-			
-			//RDes[0].setIdentity();
-			//RDes[1].setIdentity();
-			/*Matrix3F tmp;
-			tmp << 0,0,1,  1,0,0,  0,1,0;
-			RDes[0] = tmp;
-			RDes[1] = tmp;
-			
-			CartesianTensor RShoulder;
-			CartesianVector pShoulder;
-			
-			const int linkNums[] = {10,12};
-			const int jointNums[] = {12,16};
-			for (int i=0; i<2; i++) {
-				const int linkNum = linkNums[i];
-				const int jointNum = jointNums[i];
-				
-				G_robot->getLink(linkNum)->getPose(RShoulder,pShoulder);
-				copyRtoMat(RShoulder, RAct);
-				matrixLogRot(RDes[i]*RAct.transpose(),eOmega);
-				eOmega *=-1;
-				
-				Vector3F omega = qd.segment(6+jointNum,3);
-				
-				TaskBias.segment(taskRow+jointNum,3) = (Kp * eOmega - Kd * omega)*discountFactor - omega.cross(omega);
-			}*/
 			
 			Matrix3F tmpR;
 			tmpR << 0,0,1,  1,0,0,  0,1,0;
@@ -679,8 +728,8 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 			
 			// Scale Rows Accordingly...
 			// Legs
-			TaskJacobian.block(taskRow,0,12,NJ+6) *= 0;
-			TaskBias.segment(taskRow,12)        *= 0;
+			//TaskJacobian.block(taskRow,0,12,NJ+6) *= 0;
+			//TaskBias.segment(taskRow,12)        *= 0;
 			
 			// Right Arm
 			TaskJacobian.block(taskRow+12,0,4,NJ+6) *= 10;
@@ -701,43 +750,69 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 			
 			MatrixX6F X;
 			X.resize(6,6);  X.block(0,3,3,3).setZero(); X.block(3,0,3,3).setZero();
-			Matrix3F R;
+			//Matrix3F R;
 			Matrix3F eR;
 
-			Vector3F eOmega, pAct;
-			Vector6F aCom, vAct;
+			Vector3F eOmega;
+			Vector6F aCom;
+			int constraintRow = 0;
+			ConstraintJacobian.resize(12,NJ+6);
+			ConstraintBias.resize(12);
 			
 			for (int i=0; i<NS; i++) {
 				Vector6F aCom;
 				
 				int jointIndex = SupportIndices[i];
 				LinkInfoStruct * link = G_robot->m_link_list[jointIndex];
-				copyRtoMat(link->link_val2.R_ICS, R);
-				COPY_P_TO_VEC(link->link_val2.p_ICS, pAct);
+				//copyRtoMat(link->link_val2.R_ICS, R);
+				//COPY_P_TO_VEC(link->link_val2.p_ICS, pAct);
 				
 				// Compute the orientation Error
-				eR = RDesFoot[i] * R.transpose();
+				eR = RDesFoot[i] * RFoot[i].transpose();
 				matrixLogRot(eR,eOmega);
 				
-				// Compute the link velocity in the ICS
-				vAct.head(3) = R * link->link_val2.v.head(3);
-				vAct.tail(3) = R * link->link_val2.v.tail(3);
+				//// Compute the link velocity in the ICS
+				//vAct.head(3) = R * link->link_val2.v.head(3);
+				//vAct.tail(3) = R * link->link_val2.v.tail(3);
 				
 				
 				// Use a PD to create a desired acceleration
 				aCom.head(3) = kpFoot[i] * eOmega;
-				aCom.tail(3) = kpFoot[i] * (pDesFoot[i] - pAct);
-				aCom += aDesFoot[i] + kdFoot[i] * (vDesFoot[i] - vAct);
+				aCom.tail(3) = kpFoot[i] * (pDesFoot[i] - pFoot[i]);
+				aCom += aDesFoot[i] + kdFoot[i] * (vDesFoot[i] - vFoot[i]);
+				
+				if (kdFoot[i] == 0) {
+					aCom = - 10 * vFoot[i];
+				}
+				
+				if (slidingState[i]>0) {
+					aCom =  -25* vFoot[i];
+				}
+				else {
+					aCom.setZero();
+				}
+
+				
+				//aCom(5)*=0;
 				
 				// Compute Task Information
-				X.block(0,0,3,3) = R; 
-				X.block(3,3,3,3) = R;
+				X.block(0,0,3,3) = RFoot[i]; 
+				X.block(3,3,3,3) = RFoot[i];
 				G_robot->computeJacobian(jointIndex,X,footJacs[i]);
 				computeAccBiasFromFwKin(link->link_val2,footBias[i]);
+				
+				//cout << "Foot JacT " << i << endl;
+				//cout << footJacs[i].transpose() << endl;
 				
 				// Load Task Information
 				TaskJacobian.block(taskRow,0,6,NJ+6) = footJacs[i];
 				TaskBias.segment(taskRow,6)          = aCom - footBias[i];
+				
+				ConstraintJacobian.block(constraintRow,0,6,NJ+6) = footJacs[i];
+				ConstraintBias.segment(constraintRow,6) = aCom - footBias[i];
+				
+				aDesFoot[i] = aCom;
+				
 				
 				// Option to Scale Linear Position Control
 				TaskJacobian.block(taskRow+3,0,3,NJ+6) *=100; 
@@ -749,9 +824,11 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 				TaskBias.segment(taskRow,6)*=10;
 				
 				taskRow+=6;
+				constraintRow+=6;
 			}
 		}
 		HumanoidController::HumanoidControl(ci);
+		//exit(-1);
 	}
 	
 	

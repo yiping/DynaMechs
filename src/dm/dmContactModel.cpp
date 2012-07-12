@@ -157,6 +157,23 @@ bool dmContactModel::getContactState(unsigned int index) const
    }
 }
 
+//----------------------------------------------------------------------------
+//    Summary: get the sliding state of the i-th contact point
+//           : (for implementation of a contact sensor).
+// Parameters:
+//    Returns: true if sliding, false otherwise
+//----------------------------------------------------------------------------
+bool dmContactModel::getSlidingState(unsigned int index) const
+{
+	if (index < m_num_contact_points)
+		return m_sliding_flag[index];
+	else
+	{
+		cerr << "ERROR: Contact point index out of range" << endl;
+		return false;
+	}
+}
+
 
 //----------------------------------------------------------------------------
 //    Summary: Saves (pushes) the current contact state

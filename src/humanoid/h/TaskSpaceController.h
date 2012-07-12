@@ -17,7 +17,6 @@
 #define NF  4
 #define NS  2
 #define NP  4
-#define MU .5
 
 const int tauStart    = 0;
 const int tauEnd      = NJ-1;
@@ -57,7 +56,8 @@ public:
 	void UpdateVariableBounds();
 	
 	void UpdateConstraintMatrix();
-	void UpdateConstraintBounds();
+	void UpdateInitialConstraintBounds();
+	void UpdateHPTConstraintBounds();
 	
 	void Optimize();
 	

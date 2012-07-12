@@ -11,8 +11,11 @@
 #include "dmContactModel.hpp"
 #include "dmRigidBody.hpp"
 #include "mosek.h"
+#include "GlobalDefines.h"
+//#define OPTIM_DEBUG
+#define MU 1
 
-#define MAXSUBTASKS 2
+#define MAXSUBTASKS 12
 
 #define MAXNUMCON (NJ+6 + 6*NS + MAXSUBTASKS)              /* Number of constraints.             */
 #define NUMVAR (NJ + NJ+6+6*NS+NS*NP*NF)  /* Number of variables.               */
@@ -58,7 +61,7 @@ TaskSpaceController::TaskSpaceController(dmArticulation * art) {
 	
 	
 	// Initial Assumption for this round in the library
-	numCon = MAXNUMCON - MAXSUBTASKS;
+	numCon = MAXNUMCON - MAXSUBTASKS+12;
 	
 	/* Check whether the return code is ok. */
 	if ( r==MSK_RES_OK )
@@ -278,6 +281,11 @@ void TaskSpaceController::UpdateObjective() {
 				}
 			}
 		}
+		for (i = fStart; i <= (fEnd); i++) {
+			qsubi[k]=i; qsubj[k]=i; qval[k]=.01;
+			k++;
+		}
+		
 		if (k > MAXNUMQNZ) {
 			printf("PROBLEM WITH Q MATRIX, MORE NONZERO ELEMENTS THAN EXPECTED!\n");
 			exit(-1);
@@ -353,7 +361,7 @@ void TaskSpaceController::AssignFootMaxLoad(int index, double maxLoad) {
 
 
 
-void TaskSpaceController::UpdateConstraintBounds() {
+void TaskSpaceController::UpdateInitialConstraintBounds() {
 	MSKidxt       i;//,j;
 	
 	MSKboundkeye  bkc[MAXNUMCON];
@@ -375,6 +383,21 @@ void TaskSpaceController::UpdateConstraintBounds() {
 		buc[i] = 0;
 	}
 	
+
+	
+	//cout << "Putting Bounds " << endl;
+	for(i=0; i<=fConstrEnd && r==MSK_RES_OK; ++i) {
+		r = MSK_putbound(task, MSK_ACC_CON, i, bkc[i], blc[i], buc[i]);
+	}
+	
+}
+
+void TaskSpaceController::UpdateHPTConstraintBounds()
+{
+	MSKboundkeye  bkc[MAXNUMCON];
+	double        blc[MAXNUMCON], buc[MAXNUMCON]; 
+	MSKidxt       i;
+	
 	//cout << "Loading Hpt Constraints Bounds " << endl;
 	int k = 0;
 	// Bounds on Constraints
@@ -382,13 +405,10 @@ void TaskSpaceController::UpdateConstraintBounds() {
 		bkc[i]=MSK_BK_FX;
 		blc[i]=ConstraintBias(k);
 		buc[i]=ConstraintBias(k++);
-	}
-	
-	//cout << "Putting Bounds " << endl;
-	for(i=0; i<numCon && r==MSK_RES_OK; ++i) {
 		r = MSK_putbound(task, MSK_ACC_CON, i, bkc[i], blc[i], buc[i]);
 	}
 }
+
 
 void TaskSpaceController::UpdateConstraintMatrix() {
 	
@@ -527,11 +547,13 @@ void TaskSpaceController::UpdateConstraintMatrix() {
 	int row=0;
 	MSKidxt k=0;
 	for (MSKidxt i =hptConstrStart; i< hptConstrStart + ConstraintBias.rows(); i++) {
-		
+		//cout << "CJ row " << row << endl;
+		k=0;
 		for (MSKidxt jj = 0; jj<(NJ+6); jj++) {
 			if (ConstraintJacobian(row,jj) !=0) {
 				aval[k]=ConstraintJacobian(row,jj);
 				asub[k]=qddStart+jj;
+				//cout << aval[k] << ",";
 				k++;
 			}
 		}
@@ -539,6 +561,9 @@ void TaskSpaceController::UpdateConstraintMatrix() {
 			r = MSK_putavec(task, MSK_ACC_CON,i,k,asub,aval);
 		}
 		row++;
+		//cout << endl << " nnz " << k << endl;
+		//cout << ConstraintJacobian.row(row) << endl;
+		
 	}
 	//cout << "additional Constraints added" << endl;
 
@@ -555,7 +580,34 @@ void TaskSpaceController::Optimize() {
 		/* Print a summary containing information
 		 about the solution for debugging purposes*/
 		#ifdef OPTIM_DEBUG
+			MatrixXF A;
+			A.resize(numCon,NUMVAR);
+			
+			for (int i=0; i<numCon; i++) {
+				if (i==fConstrStart) {
+					cout << endl;
+				}
+				
+				
+				for (int j=0; j<NUMVAR; j++) {
+					if (j==qddStart || j==fStart || j==lambdaStart) {
+						cout << "|";
+					}
+					double aij;
+					MSK_getaij (task,i,j,&aij);
+					A(i,j) = aij;
+					if (abs(aij) > 10e-10) {
+						cout << "X";
+					}
+					else {
+						cout <<" ";
+					}
+				}
+				cout << endl;
+			}
+		
 			MSK_solutionsummary (task,MSK_STREAM_LOG);
+			cout << "Optim Complete" << endl;
 		#endif
 		
 		if ( r==MSK_RES_OK ) {
@@ -592,6 +644,7 @@ void TaskSpaceController::Optimize() {
 				case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
 				case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:  
 					printf("Primal or dual infeasibility certificate found.\n");
+					cout << "time = " <<setprecision(5) << simThread->sim_time << endl;
 					break;
 					
 				case MSK_SOL_STA_UNKNOWN:

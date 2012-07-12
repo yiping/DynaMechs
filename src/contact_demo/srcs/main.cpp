@@ -169,6 +169,16 @@ bool MyApp::OnInit()
 		G_contact = new dmContactSystem();
 		G_contact-> scanRobot(G_robot);
 		
+
+		// set status bar
+    	wxString s;
+    	s.Printf(wxT("idt = %1.1e s"), simThread->idt);
+		frame->SetStatusText(s,1);
+		s.Printf(_T("cdt = %f s" ), simThread->cdt);
+		frame->SetStatusText(s,2);
+		s.Printf(_T("refresh every %.2f ms"), 1000/(frame->glPane->render_rate) );
+		frame->SetStatusText(s,3);
+		
 		// ------------------------
 		// Read in data directory
 		char data_dir[FILENAME_SIZE];
@@ -178,7 +188,7 @@ bool MyApp::OnInit()
 		
 		simThread->G_integrator->addSystem(G_robot);
 		simThread->G_integrator->addSystem(G_contact);
-		
+		cout<<"checkpoint1"<<endl;
 	}
 	
 

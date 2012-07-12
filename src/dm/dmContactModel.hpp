@@ -125,6 +125,8 @@ public:
    ///
    void popState();
 
+	Float* getLastComputedValue() const;
+
 // rendering functions (for future expansion/visualization):
    ///
    virtual void draw() const;
@@ -151,6 +153,8 @@ protected:
    bool *m_sliding_flag_stored;
    CartesianVector *m_initial_contact_pos_stored;
    CartesianVector normal, current_pos;
+
+	Float * m_last_computed_contact_force;
 
 private:
    // temporary variables only used by computeContactForce

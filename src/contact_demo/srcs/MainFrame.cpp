@@ -30,8 +30,9 @@ END_EVENT_TABLE()
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame(NULL, -1, title, pos, size) {
-    CreateStatusBar();
-    SetStatusText( _("Welcome to DynaMechs wxViewr!") );
+    CreateStatusBar(4);
+    SetStatusText( _("DynaMechs 5.0"),0 );
+
 	
 	// Create menus
 	{
@@ -182,6 +183,9 @@ void MainFrame::OnControlStep(wxCommandEvent &event)
 		if(dialog.GetValue().ToDouble(&newcdt)) {
 			if(newcdt > 0) {
 				simThread->cdt = newcdt;
+				wxString s;
+    			s.Printf(wxT("cdt = %f s"), simThread->cdt);
+				frame->SetStatusText(s,2);
 			}
 		}
 	}
@@ -200,6 +204,9 @@ void MainFrame::OnDisplayFreq(wxCommandEvent &event)
 			{
 				glPane->render_rate = newfreq;
 				glPane->restartTimer();
+				wxString s;
+    			s.Printf(wxT("refresh every %.2f ms"), 1000/glPane->render_rate);
+				frame->SetStatusText(s,3);
 			}
 		}
 	}
@@ -218,6 +225,9 @@ void MainFrame::OnIntegrationStep(wxCommandEvent &event)
 			if(newidt > 0) 
 			{
 				simThread->idt = newidt;
+				wxString s;
+    			s.Printf(wxT("idt = %1.2e s"), simThread->idt);
+				frame->SetStatusText(s,1);
 			}
 		}
 	}

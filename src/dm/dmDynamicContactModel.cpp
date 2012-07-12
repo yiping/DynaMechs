@@ -24,6 +24,8 @@ dmDynamicContactModel::dmDynamicContactModel()
 dmDynamicContactModel::~dmDynamicContactModel()
 {
 	// will call dmContactModel destrctor first
+	
+
 }
 
 //----------------------------------------------------------------------------
@@ -44,6 +46,8 @@ void dmDynamicContactModel::initializeDeformationStates(void)
 {
 	vector<Float> tt (3, 0.0);
 	// arrays are not assignable
+
+	
 	for (int i=0; i< m_num_contact_points; i++)
 	{
 		u.push_back(tt);
@@ -51,6 +55,9 @@ void dmDynamicContactModel::initializeDeformationStates(void)
 		cout<<"contact       "<<i<<": "<<u[i][0]<<"  "<<u[i][1]<<"  "<<u[i][2]<<endl;
 		cout<<"delta contact "<<i<<": "<<ud[i][0]<<"  "<<ud[i][1]<<"  "<<ud[i][2]<<endl;
 	}
+
+	
+
 	cout<<"deformation initialized"<<endl;
 }
 
@@ -77,8 +84,8 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 	// vc        : linear velocity of a contact point (in body CS)
 	// vc_ICS    : linear velocity of a contact point in ICS
 	// dc_ICS    : displacement vector between pc_ICS and anchor point in ICS
-	// vcn_mag   : magnitude of normal contact point velocity
-	// dcn_mag   : magnitude of normal displacement component
+	// vcn   	 : normal component of a contact point velocity
+	// dcn   : normal component of displacement of a contact point 
 	// fn_mag    : magnitude of normal force.
 	// vt_ICS    : tangential velocity (perp. to ground normal) of a contact point in ICS
 	// dt_ICS    : tangential displacement between pc_ICS and anchor point in ICS
@@ -94,8 +101,8 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 	CartesianVector dt_ICS;
 	CartesianVector ft_ICS;
 	CartesianVector fn_ICS;
-	Float vcn_mag;
-	Float dcn_mag;
+	Float vcn;
+	Float dcn;
 	Float fn_mag;
 	Float ft_mag_stick;
 	Float ft_mag_slip;
@@ -131,7 +138,7 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 	  	}
 
 		ground_elevation = (dmEnvironment::getEnvironment())->getGroundElevation(pc_ICS, normal);
-		cout<<"pc_ICS(array): "<<pc_ICS[0]<<" "<<pc_ICS[1]<<" "<<pc_ICS[2]<<endl;
+		//cout<<"pc_ICS(array): "<<pc_ICS[0]<<" "<<pc_ICS[1]<<" "<<pc_ICS[2]<<endl;
 
 		if (pc_ICS[2] > ground_elevation)  // if NO contact
 		{
@@ -142,9 +149,9 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 				m_boundary_flag = true;
 		 	}
 		 	m_sliding_flag[i] = false;
-			// reset
-			cout<<"NO CONTACT | contact       "<<i<<": "<<u[i][0]<<"  "<<u[i][1]<<"  "<<u[i][2]<<endl;
-			cout<<"NO CONTACT | delta contact "<<i<<": "<<ud[i][0]<<"  "<<ud[i][1]<<"  "<<ud[i][2]<<endl;
+			
+			//cout<<"NO CONTACT | contact       "<<i<<": "<<u[i][0]<<"  "<<u[i][1]<<"  "<<u[i][2]<<endl;
+			//cout<<"NO CONTACT | delta contact "<<i<<": "<<ud[i][0]<<"  "<<ud[i][1]<<"  "<<ud[i][2]<<endl;
 		}
     	else   // if in contact
      	{
@@ -153,6 +160,7 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 				m_contact_flag[i] = true;
 				m_boundary_flag = true;
 			}
+
 
 			// Compute normal contact force
          	// contact point linear velocity and "spring" displacement wrt ICS.
@@ -165,47 +173,49 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 			Vector3F n;
 			n = Map<Vector3F>(normal);
 			//cout<<"normal_vec:   "<<n.transpose()<<endl;
+			for (j = 0; j < 3; j++)
+			{
+				u_ICS[j] = u[i][j];
+			}
 
-
+			
 			for (j = 0; j < 3; j++)
 			{
 				vc_ICS[j] =  R_ICS[j][0]*vc[0] +
 						 	 R_ICS[j][1]*vc[1] +
 						 	 R_ICS[j][2]*vc[2];
-				u_ICS[j] = 	 u[i][j];
-				dc_ICS[j] = u_ICS[j];
+				
 			}
-			cout<<"IN CONTACT | contact       "<<i<<": "<<u[i][0]<<"  "<<u[i][1]<<"  "<<u[i][2]<<endl;
-			cout<<"IN CONTACT | delta contact "<<i<<": "<<ud[i][0]<<"  "<<ud[i][1]<<"  "<<ud[i][2]<<endl;
+			//cout<<"IN CONTACT | contact       "<<i<<": "<<u[i][0]<<"  "<<u[i][1]<<"  "<<u[i][2]<<endl;
+			//cout<<"IN CONTACT | delta contact "<<i<<": "<<ud[i][0]<<"  "<<ud[i][1]<<"  "<<ud[i][2]<<endl;
 
-			// Magnitudes of normal components of velocity and delta position.
-			vcn_mag = 	vc_ICS[0]*normal[0] +
+			// normal components of velocity and delta position.
+			vcn = 	vc_ICS[0]*normal[0] +
 				 		vc_ICS[1]*normal[1] +
 				 		vc_ICS[2]*normal[2];
-			dcn_mag = 	dc_ICS[0]*normal[0] +
-				 		dc_ICS[1]*normal[1] +
-				 		dc_ICS[2]*normal[2];
+			dcn = 	(pc_ICS[2] - ground_elevation)*normal[2];
 
 			// Magnitude of normal force.
 			Float K, D, mu;
 			D =  (dmEnvironment::getEnvironment())->getGroundNormalDamperConstant();
 			K =  (dmEnvironment::getEnvironment())->getGroundNormalSpringConstant();
 			mu = (dmEnvironment::getEnvironment())->getGroundKineticFrictionCoeff();
-			fn_mag = -D*vcn_mag - K*dcn_mag;
+			fn_mag = -D*vcn - K*dcn;
 
 			fn_mag = max(Float(0), fn_mag); // no sucking force
+			
 			if (fn_mag >0)
 			{
 		    	for (j = 0; j < 3; j++)
 		    	{
-					fn_ICS[j] = normal[j]*fn_mag;
+					fn_ICS[j] = normal[j]*fn_mag; // normal contact force in ICS
 		    	}			
 
 				// Planar forces assuming sticking contact.
 				for (j = 0; j < 3; j++)
 				{
-					vt_ICS[j] = vc_ICS[j] - normal[j]*vcn_mag;
-					dt_ICS[j] = dc_ICS[j] - normal[j]*dcn_mag;
+					vt_ICS[j] = vc_ICS[j] - normal[j]*vcn;
+					dt_ICS[j] = u_ICS[j];
 					ft_ICS[j] = -D*vt_ICS[j] -K*dt_ICS[j];
 				}
 				ft_mag_stick = sqrt(ft_ICS[0]*ft_ICS[0] +
@@ -259,9 +269,18 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 				f_contact[j + 3] += fn[j];
 			}
      	}
+
+
+	}
+
+	//cout<<"f_contact: "<<"[ "<<f_contact[3]<<" "<<f_contact[4]<<" "<<f_contact[5]<<" ]"<<endl;
+	for (j = 0; j < 6; j++)
+	{
+		m_last_computed_contact_force[j] = f_contact[j];
 	}
 
 }
+
 
 
 
@@ -283,7 +302,7 @@ void dmDynamicContactModel::computeForce(const dmABForKinStruct & val,
                                   SpatialVector f_contact)
 {
 	computeForceKernel(val.p_ICS, val.R_ICS, val.v, f_contact);
-	cout<<"ABForKinStruct compute force"<<endl;
+	//cout<<"ABForKinStruct compute force"<<endl;
 }
 
 void dmDynamicContactModel::draw() const

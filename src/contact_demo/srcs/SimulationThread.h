@@ -25,6 +25,9 @@ public:
 	
 	
 	volatile bool paused_flag;
+	SpatialVector box_ext_f; // in box coordinate
+
+	wxMutex mutexProtectSharedData;
 	
 private:
 	wxMutex mutex;

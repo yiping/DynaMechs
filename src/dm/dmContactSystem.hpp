@@ -54,6 +54,7 @@ public:
 
 	//
 	void scanRobot(dmArticulation* robot);
+	vector<dmDynamicContactModel*>& getDynamicContacts();
 
 private:
 	vector<dmDynamicContactModel*> contacts;

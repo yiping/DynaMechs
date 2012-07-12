@@ -21,6 +21,7 @@ SimulationThread::SimulationThread() : wxThread(wxTHREAD_JOINABLE)
 	unPauseCondition  = new wxCondition(mutex);
 	G_integrator = new dmIntegEuler();
 	paused_flag = true;
+	sim_time = 0;
 }
 
 SimulationThread::~SimulationThread()

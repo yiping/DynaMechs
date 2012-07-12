@@ -2,6 +2,15 @@
  *  TaskSpaceController.h
  *  DynaMechs
  *
+ *  Created by Patrick Wensing on 7/11/12.
+ *  Copyright 2012 __MyCompanyName__. All rights reserved.
+ *
+ */
+
+/*
+ *  TaskSpaceController.h
+ *  DynaMechs
+ *
  *  Created by Patrick Wensing on 4/23/12.
  *  Copyright 2012 __MyCompanyName__. All rights reserved.
  *
@@ -13,62 +22,33 @@
 #include <Eigen/Core>
 #include "dmArticulation.hpp"
 #include "GlobalTypes.h"
-#define NJ  20
-#define NF  4
-#define NS  2
-#define NP  4
-
-const int tauStart    = 0;
-const int tauEnd      = NJ-1;
-const int qddStart    = NJ;
-const int qddEnd      = 2*NJ+5;
-const int fStart      = 2*NJ+6;
-const int fEnd        = 2*NJ+5 + 6*NS;
-const int lambdaStart = 2*NJ+6 + 6*NS;
-const int lambdaEnd   = 2*NJ+5 + 6*NS + NS*NP*NF;
-
-const int dynConstrStart = 0;
-const int dynConstrEnd   = NJ+5;
-const int fConstrStart   = NJ+6;
-const int fConstrEnd     = NJ+5+6*NS;
-const int hptConstrStart = fConstrEnd +1;
-
-
 
 
 class TaskSpaceController : public virtual ArticulationSpecializer
 {
 public:
-	TaskSpaceController(dmArticulation * art);
-	
-	// This function initilizes the entire optimization problem.
-	//void InitializeProblem();
+	TaskSpaceController(dmArticulation * art) { artic= art;} ;
 	
 	// This function 
-	void ObtainArticulationData();
+	virtual void ObtainArticulationData()=0;
 	
-	void AssignFootMaxLoad(int index, double maxLoad);
+	virtual void AssignFootMaxLoad(int index, double maxLoad) =0;
+	virtual void UpdateObjective() =0;
+	virtual void UpdateTauObjective()=0;
+	virtual void UpdateVariableBounds()=0;	
+	virtual void UpdateConstraintMatrix()=0;
+	virtual void UpdateInitialConstraintBounds()=0;
+	virtual void UpdateHPTConstraintBounds()=0;
 	
+	virtual void Optimize()=0;
 	
-	void UpdateObjective();
-	void UpdateTauObjective();
-	
-	void UpdateVariableBounds();
-	
-	void UpdateConstraintMatrix();
-	void UpdateInitialConstraintBounds();
-	void UpdateHPTConstraintBounds();
-	
-	void Optimize();
-	
-	~TaskSpaceController();
-	MatrixXF ConstraintJacobian;
 	MatrixXF TaskJacobian;
-	
 	VectorXF TaskBias;
-	VectorXF ConstraintBias;
 	VectorXF TaskWeight;
-	VectorXF hptConstrActive;
+	
+	VectorXF taskConstrActive;
+	VectorXF taskOptimActive;
+	
 	
 	XformVector SupportXforms;
 	IntVector SupportIndices;
@@ -80,7 +60,7 @@ public:
 	int iter;
 	MSKtask_t     task;
 	
-private:
+protected:
 	
 	MSKenv_t      env;
 	

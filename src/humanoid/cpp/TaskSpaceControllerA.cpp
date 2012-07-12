@@ -1,15 +1,4 @@
 /*
- *  TaskSpaceController2.cpp
- *  DynaMechs
- *
- *  Created by Patrick Wensing on 6/12/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
- */
-
-#include "TaskSpaceController2.h"
-
-/*
  *  TaskSpaceController.cpp
  *  DynaMechs
  *
@@ -18,19 +7,39 @@
  *
  */
 
-#include "TaskSpaceController.h"
+#include "TaskSpaceControllerA.h"
 #include "dmContactModel.hpp"
 #include "dmRigidBody.hpp"
 #include "mosek.h"
+#include "GlobalDefines.h"
+//#define OPTIM_DEBUG
 
-#define MAXSUBTASKS 2
+#define MAXNUMTASKS (20+6+12)
 
-#define MAXNUMCON (NJ+6 + 6*NS + MAXSUBTASKS)              /* Number of constraints.             */
+#define MAXNUMCON (NJ+6 + 6*NS + MAXNUMTASKS)              /* Number of constraints.             */
 #define NUMVAR (NJ + NJ+6+6*NS+NS*NP*NF)  /* Number of variables.               */
 #define MAXNUMANZ (4*NJ*NJ)					  /* Number of non-zeros in A.           */
 #define MAXNUMQNZ ((NJ+6)*(NJ+6))            /* Max Number of non-zeros in Q.           */
 
 //#define OPTIM_DEBUG
+
+
+const int TaskSpaceControllerA::tauStart    = 0;
+const int TaskSpaceControllerA::tauEnd      = NJ-1;
+const int TaskSpaceControllerA::qddStart    = NJ;
+const int TaskSpaceControllerA::qddEnd      = 2*NJ+5;
+const int TaskSpaceControllerA::fStart      = 2*NJ+6;
+const int TaskSpaceControllerA::fEnd        = 2*NJ+5 + 6*NS;
+const int TaskSpaceControllerA::lambdaStart = 2*NJ+6 + 6*NS;
+const int TaskSpaceControllerA::lambdaEnd   = 2*NJ+5 + 6*NS + NS*NP*NF;
+
+const int TaskSpaceControllerA::dynConstrStart = 0;
+const int TaskSpaceControllerA::dynConstrEnd   = NJ+5;
+const int TaskSpaceControllerA::fConstrStart   = NJ+6;
+const int TaskSpaceControllerA::fConstrEnd     = NJ+5+6*NS;
+const int TaskSpaceControllerA::hptConstrStart = fConstrEnd +1;
+
+
 
 static void MSKAPI printstr(void *handle,
                             char str[])
@@ -42,8 +51,7 @@ static void MSKAPI printstr(void *handle,
 } /* printstr */
 
 
-TaskSpaceController::TaskSpaceController(dmArticulation * art) {
-	artic = art;
+TaskSpaceControllerA::TaskSpaceControllerA(dmArticulation * art) : TaskSpaceController(art) {
 	
 	// Create Linearized Friction Cone Basis
 	FrictionBasis = MatrixXF::Zero(6,NF);
@@ -69,7 +77,7 @@ TaskSpaceController::TaskSpaceController(dmArticulation * art) {
 	
 	
 	// Initial Assumption for this round in the library
-	numCon = MAXNUMCON - MAXSUBTASKS;
+	numCon = MAXNUMCON;
 	
 	/* Check whether the return code is ok. */
 	if ( r==MSK_RES_OK )
@@ -138,7 +146,7 @@ TaskSpaceController::TaskSpaceController(dmArticulation * art) {
 		MSK_putname(task, MSK_PI_VAR, i, (char*) ss.str().c_str());
 	}
 	
-	
+
 	k=0;
 	for (int i=dynConstrStart; i<dynConstrEnd; i++) {
 		stringstream ss;
@@ -157,22 +165,22 @@ TaskSpaceController::TaskSpaceController(dmArticulation * art) {
 
 //----------------------------------------------------------------------------
 
-TaskSpaceController::~TaskSpaceController() {
+TaskSpaceControllerA::~TaskSpaceControllerA() {
 	MSK_deletetask(&task);
 	MSK_deleteenv(&env);
 }
 
-void TaskSpaceController::ObtainArticulationData() {
+void TaskSpaceControllerA::ObtainArticulationData() {
 	artic->computeH();
 	artic->computeCandG();
-	
+		
 	for (int i=0; i<NS; i++) {
 		artic->computeJacobian(SupportIndices[i], SupportXforms[i],SupportJacobians[i]);
 	}
 }
 
 //----------------------------------------------------------------------------
-void TaskSpaceController::InitializeProblem()
+/*void TaskSpaceController::InitializeProblem()
 {
 	UpdateVariableBounds();
 	UpdateConstraintMatrix();
@@ -187,39 +195,39 @@ void TaskSpaceController::InitializeProblem()
 	//cout << "A Sparsity " << endl;
 	
 	//cout << "H " << artic->H << endl;
-	/*MatrixXF A;
-	 A.resize(numCon,NUMVAR);
-	 
-	 for (int i=0; i<numCon; i++) {
-	 if (i==fConstrStart) {
-	 cout << endl;
-	 }
-	 
-	 
-	 for (int j=0; j<NUMVAR; j++) {
-	 if (j==qddStart || j==fStart || j==lambdaStart) {
-	 cout << "|";
-	 }
-	 double aij;
-	 MSK_getaij (task,i,j,&aij);
-	 A(i,j) = aij;
-	 if (abs(aij) > 10e-10) {
-	 cout << "X";
-	 }
-	 else {
-	 cout <<" ";
-	 }
-	 }
-	 cout << endl;
-	 }*/
+	MatrixXF A;
+	A.resize(numCon,NUMVAR);
+	
+	for (int i=0; i<numCon; i++) {
+		if (i==fConstrStart) {
+			cout << endl;
+		}
+		
+		
+		for (int j=0; j<NUMVAR; j++) {
+			if (j==qddStart || j==fStart || j==lambdaStart) {
+				cout << "|";
+			}
+			double aij;
+			MSK_getaij (task,i,j,&aij);
+			A(i,j) = aij;
+			if (abs(aij) > 10e-10) {
+				cout << "X";
+			}
+			else {
+				cout <<" ";
+			}
+		}
+		cout << endl;
+	}
 	//exit(-1);
 	//Slice to debug the friction cone basis
 	//cout << "Aslice " << endl;
 	//cout << A.block(fConstrStart,lambdaStart,6,NF) << endl;
 	
-}
+}*/
 
-void TaskSpaceController::UpdateTauObjective() {
+void TaskSpaceControllerA::UpdateTauObjective() {
 	MSKidxt       qsubi[NJ];
 	MSKidxt       qsubj[NJ];
 	double		  qval[NJ];
@@ -246,18 +254,22 @@ void TaskSpaceController::UpdateTauObjective() {
 	}
 }
 
-void TaskSpaceController::UpdateObjective() {
+void TaskSpaceControllerA::UpdateObjective() {
 	MSKidxt       qsubi[MAXNUMQNZ];
 	MSKidxt       qsubj[MAXNUMQNZ];
 	double        qval[MAXNUMQNZ];
-	//double        c[NUMVAR]   = {0.0,-1.0,0.0};
-	
 	MSKidxt       i,j;
 	
 	MatrixXd JtT = TaskJacobian.transpose();
-	
-	//cout << " J = " << TaskJacobian << endl;
-	//cout << " b = " << TaskBias  << endl;
+	for (int i=0; i<taskOptimActive.size(); i++) {
+		if (taskOptimActive(i)==0) {
+			JtT.col(i).setZero();
+		}
+		else {
+			JtT.col(i)*=TaskWeight(i)*TaskWeight(i);
+		}
+	}
+
 	MatrixXd Q = JtT*TaskJacobian+MatrixXF::Identity(NJ+6,NJ+6)*.00001;
 	
 	VectorXd c = VectorXF::Zero(NUMVAR);
@@ -289,6 +301,11 @@ void TaskSpaceController::UpdateObjective() {
 				}
 			}
 		}
+		for (i = fStart; i <= (fEnd); i++) {
+			qsubi[k]=i; qsubj[k]=i; qval[k]=.1;
+			k++;
+		}
+		
 		if (k > MAXNUMQNZ) {
 			printf("PROBLEM WITH Q MATRIX, MORE NONZERO ELEMENTS THAN EXPECTED!\n");
 			exit(-1);
@@ -303,7 +320,7 @@ void TaskSpaceController::UpdateObjective() {
 	}
 }
 
-void TaskSpaceController::UpdateVariableBounds() {
+void TaskSpaceControllerA::UpdateVariableBounds() {
 	MSKidxt       i;
 	
 	MSKboundkeye  bkx[NUMVAR];
@@ -329,10 +346,10 @@ void TaskSpaceController::UpdateVariableBounds() {
 		bkx[i] = MSK_BK_FR;
 		blx[i] = -MSK_INFINITY;
 		bux[i] = +MSK_INFINITY;
-		
+
 		/*bkx[i] = MSK_BK_FX;
-		 blx[i] = 0;
-		 bux[i] = 0;*/
+		blx[i] = 0;
+		bux[i] = 0;*/
 		
 	}
 	
@@ -343,16 +360,23 @@ void TaskSpaceController::UpdateVariableBounds() {
 		bux[i] = +MSK_INFINITY;
 		
 		/*bkx[i] = MSK_BK_FX;
-		 blx[i] = 0;
-		 bux[i] = 0;*/
+		blx[i] = 0;
+		bux[i] = 0;*/
 		
 	}
 	
 	MSK_putboundslice(task, MSK_ACC_VAR, 0, NUMVAR-1, bkx, blx, bux);
 }
 
-void TaskSpaceController::UpdateConstraintBounds() {
-	MSKidxt       i,j;
+void TaskSpaceControllerA::AssignFootMaxLoad(int index, double maxLoad) {
+	
+	r =  MSK_putbound(task, MSK_ACC_VAR, fStart+6*index+5, MSK_BK_UP, -MSK_INFINITY, maxLoad);	
+}
+
+
+
+void TaskSpaceControllerA::UpdateInitialConstraintBounds() {
+	MSKidxt       i;//,j;
 	
 	MSKboundkeye  bkc[MAXNUMCON];
 	double        blc[MAXNUMCON], buc[MAXNUMCON]; 
@@ -373,22 +397,42 @@ void TaskSpaceController::UpdateConstraintBounds() {
 		buc[i] = 0;
 	}
 	
+
+	
+	//cout << "Putting Bounds " << endl;
+	for(i=0; i<=fConstrEnd && r==MSK_RES_OK; ++i) {
+		r = MSK_putbound(task, MSK_ACC_CON, i, bkc[i], blc[i], buc[i]);
+	}
+	
+}
+
+void TaskSpaceControllerA::UpdateHPTConstraintBounds()
+{
+	MSKboundkeye  bkc[MAXNUMCON];
+	double        blc[MAXNUMCON], buc[MAXNUMCON]; 
+	MSKidxt       i;
+	
 	//cout << "Loading Hpt Constraints Bounds " << endl;
 	int k = 0;
 	// Bounds on Constraints
-	for (i=hptConstrStart; i<hptConstrStart+ConstraintBias.rows(); i++) {
-		bkc[i]=MSK_BK_FX;
-		blc[i]=ConstraintBias(k);
-		buc[i]=ConstraintBias(k++);
-	}
-	
-	//cout << "Putting Bounds " << endl;
-	for(i=0; i<numCon && r==MSK_RES_OK; ++i) {
+	for (i=hptConstrStart; i<hptConstrStart+TaskBias.rows(); i++) {
+		//cout << k << " of " << TaskBias.rows() << endl;
+		
+		if (taskConstrActive(k) > 0) {
+			bkc[i]=MSK_BK_FX;
+		}
+		else {
+			bkc[i]=MSK_BK_FR;
+		}
+		
+		blc[i]=TaskBias(k);
+		buc[i]=TaskBias(k++);
 		r = MSK_putbound(task, MSK_ACC_CON, i, bkc[i], blc[i], buc[i]);
 	}
 }
 
-void TaskSpaceController::UpdateConstraintMatrix() {
+
+void TaskSpaceControllerA::UpdateConstraintMatrix() {
 	
 	MSKidxt       asub[NUMVAR],asubtmp[NUMVAR];
 	double		  aval[NUMVAR];
@@ -501,7 +545,7 @@ void TaskSpaceController::UpdateConstraintMatrix() {
 					aval[kact++]=LocalFrictionBases(j,cnt); 
 				}
 			}
-			
+									  
 			asub[kact]   = fSub;
 			aval[kact++] = -1;
 			
@@ -524,12 +568,14 @@ void TaskSpaceController::UpdateConstraintMatrix() {
 	// Load rows for Additional Constraints	
 	int row=0;
 	MSKidxt k=0;
-	for (MSKidxt i =hptConstrStart; i< hptConstrStart + ConstraintBias.rows(); i++) {
-		
+	for (MSKidxt i =hptConstrStart; i< hptConstrStart + TaskBias.rows(); i++) {
+		//cout << "CJ row " << row << endl;
+		k=0;
 		for (MSKidxt jj = 0; jj<(NJ+6); jj++) {
-			if (ConstraintJacobian(row,jj) !=0) {
-				aval[k]=ConstraintJacobian(row,jj);
+			if (TaskJacobian(row,jj) !=0) {
+				aval[k]=TaskJacobian(row,jj);
 				asub[k]=qddStart+jj;
+				//cout << aval[k] << ",";
 				k++;
 			}
 		}
@@ -537,12 +583,15 @@ void TaskSpaceController::UpdateConstraintMatrix() {
 			r = MSK_putavec(task, MSK_ACC_CON,i,k,asub,aval);
 		}
 		row++;
+		//cout << endl << " nnz " << k << endl;
+		//cout << ConstraintJacobian.row(row) << endl;
+		
 	}
 	//cout << "additional Constraints added" << endl;
-	
+
 }
 
-void TaskSpaceController::Optimize() {
+void TaskSpaceControllerA::Optimize() {
 	xx.resize(NUMVAR);
 	if ( r==MSK_RES_OK ) {
 		MSKrescodee trmcode;
@@ -552,13 +601,40 @@ void TaskSpaceController::Optimize() {
 		
 		/* Print a summary containing information
 		 about the solution for debugging purposes*/
-#ifdef OPTIM_DEBUG
-		MSK_solutionsummary (task,MSK_STREAM_LOG);
-#endif
+		#ifdef OPTIM_DEBUG
+			MatrixXF A;
+			A.resize(numCon,NUMVAR);
+			
+			for (int i=0; i<numCon; i++) {
+				if (i==fConstrStart) {
+					cout << endl;
+				}
+				
+				
+				for (int j=0; j<NUMVAR; j++) {
+					if (j==qddStart || j==fStart || j==lambdaStart) {
+						cout << "|";
+					}
+					double aij;
+					MSK_getaij (task,i,j,&aij);
+					A(i,j) = aij;
+					if (abs(aij) > 10e-10) {
+						cout << "X";
+					}
+					else {
+						cout <<" ";
+					}
+				}
+				cout << endl;
+			}
+		
+			MSK_solutionsummary (task,MSK_STREAM_LOG);
+			cout << "Optim Complete" << endl;
+		#endif
 		
 		if ( r==MSK_RES_OK ) {
 			MSKsolstae solsta;
-			int j;
+			//int j;
 			
 			
 			MSK_getsolutionstatus (task,
@@ -590,6 +666,7 @@ void TaskSpaceController::Optimize() {
 				case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
 				case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:  
 					printf("Primal or dual infeasibility certificate found.\n");
+					cout << "time = " <<setprecision(5) << simThread->sim_time << endl;
 					break;
 					
 				case MSK_SOL_STA_UNKNOWN:

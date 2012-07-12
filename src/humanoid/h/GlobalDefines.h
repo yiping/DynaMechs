@@ -46,6 +46,11 @@ extern HumanoidDataLogger * humanoid;
 extern wxMutex dataMutex;
 #define GROUP_FLAG 0x0800
 
+#define NJ 20
+#define NS 2
+#define NP 4
+#define NF 4
+#define MU .5
 
 
 

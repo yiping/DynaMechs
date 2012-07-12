@@ -322,7 +322,6 @@
 		19801C4B159B44AF00DB8AD5 /* R2D2.icns in Resources */ = {isa = PBXBuildFile; fileRef = 19801C4A159B44AF00DB8AD5 /* R2D2.icns */; };
 		19801DB4159B623A00DB8AD5 /* BasicGLPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB3159B623A00DB8AD5 /* BasicGLPane.cpp */; };
 		19801DC0159B629B00DB8AD5 /* GlobalFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DBD159B629B00DB8AD5 /* GlobalFunctions.cpp */; };
-		19801DC5159B62C100DB8AD5 /* TaskSpaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC1159B62C100DB8AD5 /* TaskSpaceController.cpp */; };
 		19801DCA159B62DE00DB8AD5 /* CubicSpline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC7159B62DE00DB8AD5 /* CubicSpline.cpp */; };
 		19801DCB159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC8159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp */; };
 		19801DCC159B62DE00DB8AD5 /* DataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC9159B62DE00DB8AD5 /* DataLogger.cpp */; };
@@ -330,6 +329,7 @@
 		199267EB15AC986100E51313 /* dmDynamicContactModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 199267E815AC986100E51313 /* dmDynamicContactModel.cpp */; };
 		19A6F42C157E4D0400ED6631 /* humanoidGlut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1940A49C1507C62100CD4386 /* humanoidGlut.cpp */; };
 		19A6F44C157E4EFD00ED6631 /* HumanoidController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */; };
+		19B1EB3115ADE57B005FCEE4 /* TaskSpaceControllerA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1EB3015ADE57B005FCEE4 /* TaskSpaceControllerA.cpp */; };
 		19B85EBA158F7DA200788BE5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B85EB7158F7DA200788BE5 /* main.cpp */; };
 		19B85EBB158F7DA200788BE5 /* userControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B85EB9158F7DA200788BE5 /* userControl.cpp */; };
 		19B85EC3158F7E2F00788BE5 /* wxDMGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C95158A436400BC26DA /* wxDMGLCamera.cpp */; };
@@ -828,10 +828,9 @@
 		19801DBD159B629B00DB8AD5 /* GlobalFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GlobalFunctions.cpp; path = src/humanoid/cpp/GlobalFunctions.cpp; sourceTree = "<group>"; };
 		19801DBE159B629B00DB8AD5 /* GlobalFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalFunctions.h; path = src/humanoid/h/GlobalFunctions.h; sourceTree = "<group>"; };
 		19801DBF159B629B00DB8AD5 /* GlobalTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalTypes.h; path = src/humanoid/h/GlobalTypes.h; sourceTree = "<group>"; };
-		19801DC1159B62C100DB8AD5 /* TaskSpaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TaskSpaceController.cpp; path = src/humanoid/cpp/TaskSpaceController.cpp; sourceTree = "<group>"; };
-		19801DC2159B62C100DB8AD5 /* TaskSpaceController2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TaskSpaceController2.cpp; path = src/humanoid/cpp/TaskSpaceController2.cpp; sourceTree = "<group>"; };
-		19801DC3159B62C100DB8AD5 /* TaskSpaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskSpaceController.h; path = src/humanoid/h/TaskSpaceController.h; sourceTree = "<group>"; };
-		19801DC4159B62C100DB8AD5 /* TaskSpaceController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskSpaceController2.h; path = src/humanoid/h/TaskSpaceController2.h; sourceTree = "<group>"; };
+		19801DC2159B62C100DB8AD5 /* TaskSpaceControllerB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TaskSpaceControllerB.cpp; path = src/humanoid/cpp/TaskSpaceControllerB.cpp; sourceTree = "<group>"; };
+		19801DC3159B62C100DB8AD5 /* TaskSpaceControllerA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskSpaceControllerA.h; path = src/humanoid/h/TaskSpaceControllerA.h; sourceTree = "<group>"; };
+		19801DC4159B62C100DB8AD5 /* TaskSpaceControllerB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskSpaceControllerB.h; path = src/humanoid/h/TaskSpaceControllerB.h; sourceTree = "<group>"; };
 		19801DC7159B62DE00DB8AD5 /* CubicSpline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CubicSpline.cpp; path = src/humanoid/cpp/CubicSpline.cpp; sourceTree = "<group>"; };
 		19801DC8159B62DE00DB8AD5 /* CubicSplineTrajectory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CubicSplineTrajectory.cpp; path = src/humanoid/cpp/CubicSplineTrajectory.cpp; sourceTree = "<group>"; };
 		19801DC9159B62DE00DB8AD5 /* DataLogger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DataLogger.cpp; path = src/humanoid/cpp/DataLogger.cpp; sourceTree = "<group>"; };
@@ -844,6 +843,8 @@
 		199267E815AC986100E51313 /* dmDynamicContactModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dmDynamicContactModel.cpp; path = src/dm/dmDynamicContactModel.cpp; sourceTree = "<group>"; };
 		199267E915AC986100E51313 /* dmDynamicContactModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dmDynamicContactModel.hpp; path = src/dm/dmDynamicContactModel.hpp; sourceTree = "<group>"; };
 		19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidController.cpp; path = src/humanoid/cpp/HumanoidController.cpp; sourceTree = "<group>"; };
+		19B1EB3015ADE57B005FCEE4 /* TaskSpaceControllerA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TaskSpaceControllerA.cpp; path = src/humanoid/cpp/TaskSpaceControllerA.cpp; sourceTree = "<group>"; };
+		19B1EB3615ADE61A005FCEE4 /* TaskSpaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskSpaceController.h; path = src/humanoid/h/TaskSpaceController.h; sourceTree = "<group>"; };
 		19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidWx.cpp; path = src/humanoid/cpp/humanoidWx.cpp; sourceTree = "<group>"; };
 		19B85EB7158F7DA200788BE5 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxDMV/main.cpp; sourceTree = "<group>"; };
 		19B85EB8158F7DA200788BE5 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = src/wxDMV/main.h; sourceTree = "<group>"; };
@@ -1937,7 +1938,7 @@
 		19F8D61D158BB38400BC4671 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		19F8D709158BB7D100BC4671 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxTest/main.cpp; sourceTree = "<group>"; };
 		19F8D70A158BB7D100BC4671 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = src/wxTest/main.h; sourceTree = "<group>"; };
-		19F8D759158BB7D500BC4671 /* wxDMV */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = wxDMV; sourceTree = BUILT_PRODUCTS_DIR; };
+		19F8D759158BB7D500BC4671 /* wxTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = wxTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F8D78D158BC04A00BC4671 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
 		19F8D7F8158BD2F600BC4671 /* wxTest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxTest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F8D884158BD83A00BC4671 /* wxTest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxTest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2630,10 +2631,11 @@
 		19C6AAC21588ED1100298257 /* Optimization */ = {
 			isa = PBXGroup;
 			children = (
-				19801DC1159B62C100DB8AD5 /* TaskSpaceController.cpp */,
-				19801DC2159B62C100DB8AD5 /* TaskSpaceController2.cpp */,
-				19801DC3159B62C100DB8AD5 /* TaskSpaceController.h */,
-				19801DC4159B62C100DB8AD5 /* TaskSpaceController2.h */,
+				19B1EB3615ADE61A005FCEE4 /* TaskSpaceController.h */,
+				19801DC2159B62C100DB8AD5 /* TaskSpaceControllerB.cpp */,
+				19801DC3159B62C100DB8AD5 /* TaskSpaceControllerA.h */,
+				19801DC4159B62C100DB8AD5 /* TaskSpaceControllerB.h */,
+				19B1EB3015ADE57B005FCEE4 /* TaskSpaceControllerA.cpp */,
 			);
 			name = Optimization;
 			sourceTree = "<group>";
@@ -3992,7 +3994,7 @@
 				19EE349F153C526D0029D664 /* windmill */,
 				19577E2B1541A01000B991DF /* mosekTest */,
 				19BA5C8A158A432100BC26DA /* wxDMV */,
-				19F8D759158BB7D500BC4671 /* wxDMV */,
+				19F8D759158BB7D500BC4671 /* wxTest */,
 				19F8D7F8158BD2F600BC4671 /* wxTest2.app */,
 				19F8D884158BD83A00BC4671 /* wxTest2.app */,
 				19F8D8FE158BDBAC00BC4671 /* wxDMVapp.app */,
@@ -4301,7 +4303,7 @@
 			);
 			name = wxTest;
 			productName = wxDMV;
-			productReference = 19F8D759158BB7D500BC4671 /* wxDMV */;
+			productReference = 19F8D759158BB7D500BC4671 /* wxTest */;
 			productType = "com.apple.product-type.tool";
 		};
 		19F8D7F7158BD2F600BC4671 /* wxTest2 */ = {
@@ -4745,7 +4747,6 @@
 			files = (
 				19B85F40158F852700788BE5 /* GlobalDefines.cpp in Sources */,
 				19801DCC159B62DE00DB8AD5 /* DataLogger.cpp in Sources */,
-				19801DC5159B62C100DB8AD5 /* TaskSpaceController.cpp in Sources */,
 				19801DCA159B62DE00DB8AD5 /* CubicSpline.cpp in Sources */,
 				19B85F13158F7E5600788BE5 /* HumanoidController.cpp in Sources */,
 				19EAF03515A1F3F4007E4EC2 /* HumanoidDataLogger.cpp in Sources */,
@@ -4809,6 +4810,7 @@
 				192003EA15A5F9FD0006A823 /* StateMachine.cpp in Sources */,
 				199267EA15AC986100E51313 /* dmContactSystem.cpp in Sources */,
 				199267EB15AC986100E51313 /* dmDynamicContactModel.cpp in Sources */,
+				19B1EB3115ADE57B005FCEE4 /* TaskSpaceControllerA.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

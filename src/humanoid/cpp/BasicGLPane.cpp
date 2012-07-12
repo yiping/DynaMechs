@@ -191,7 +191,7 @@ void BasicGLPane::resized(wxSizeEvent& evt) {
 	
 	//cout<<"resize event"<<endl;
 	wxSize size = evt.GetSize();
-	glViewport (0, 0, size.GetWidth(), size.GetHeight());
+	//glViewport (0, 0, size.GetWidth(), size.GetHeight());
 	mouse->win_size_x = size.GetWidth();
 	mouse->win_size_y = size.GetHeight();
 	//cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;

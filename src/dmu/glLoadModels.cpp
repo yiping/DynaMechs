@@ -204,7 +204,7 @@ void executeGL_xan(ifstream &data_ptr)
 	
     // ****
     //since I have switched to use glColorMaterial - yiping
-    GLfloat color[4] = {0.0, 0.0, 0.0, 0.7};
+    GLfloat color[4] = {0.0, 0.0, 0.0, 0.6};
     data_ptr >> color[0] >> color[1] >> color[2];  // emission color
     //
     data_ptr >> color[0] >> color[1] >> color[2];  // ambient color

@@ -26,11 +26,20 @@ dmContactSystem::~dmContactSystem()
 
 unsigned int dmContactSystem::getNumDOFs() const
 {
-	unsigned int sum = 0;
-	vector<dmDynamicContactModel *>::const_iterator it;
-	for ( it= contacts.begin() ; it < contacts.end(); it++ )	
-		sum += 2*(*it)->getNumContactPoints();
-	return sum;
+
+	if (OKtoProceed)
+	{
+		unsigned int sum = 0;
+		vector<dmDynamicContactModel *>::const_iterator it;
+		for ( it= contacts.begin() ; it < contacts.end(); it++ )	
+			sum += 2*(*it)->getNumContactPoints();
+		return sum;
+	}
+	else
+	{
+		return 0;
+		cout<<"warning! - No Dynamic contact has been set";
+	}
 }
 
 /*! Only to be used by dmIntegEuler integrator */
@@ -38,58 +47,65 @@ void dmContactSystem::dynamics(Float *qy, Float *qdy)
 {
 	// Only to be used by dmIntegEuler integrator
 
-	cout<<"Integrator calling dynamics of contact..."<<endl; 
-	unsigned int base = getNumDOFs();
-	unsigned int offset = 0;
-	vector<dmDynamicContactModel *>::iterator it;
-	for (it = contacts.begin(); it < contacts.end(); it++)
+	if (OKtoProceed)
 	{
-		for (int i = 0; i<(*it)->getNumContactPoints(); i++)
+		//cout<<"Integrator calling dynamics of contact..."<<endl; 
+		unsigned int base = getNumDOFs();
+		unsigned int offset = 0;
+		vector<dmDynamicContactModel *>::iterator it;
+		for (it = contacts.begin(); it < contacts.end(); it++)
 		{
-			(*it)->u[i][0] = qdy[offset+2*i  ] = qy[base+offset + 2*i  ] ; //update
-			(*it)->u[i][1] = qdy[offset+2*i+1] = qy[base+offset + 2*i+ 1 ] ; //update
-			qdy[base+offset + 2*i  ] = (*it)->ud[i][0];
-			qdy[base+offset + 2*i+1] = (*it)->ud[i][1];
-			cout<<qdy[offset+2*i  ]<<endl;
-			cout<<qdy[base+offset+2*i  ]<<endl;
-		}		
-		offset += 2*(*it)->getNumContactPoints();
+			for (int i = 0; i<(*it)->getNumContactPoints(); i++)
+			{
+				(*it)->u[i][0] = qdy[offset+2*i  ] = qy[base+offset + 2*i  ] ; //update
+				(*it)->u[i][1] = qdy[offset+2*i+1] = qy[base+offset + 2*i+ 1 ] ; //update
+				qdy[base+offset + 2*i  ] = (*it)->ud[i][0];
+				qdy[base+offset + 2*i+1] = (*it)->ud[i][1];
+				//cout<<qdy[offset+2*i  ]<<endl;
+				//cout<<qdy[base+offset+2*i  ]<<endl;
+			}		
+			offset += 2*(*it)->getNumContactPoints();
+		}
 	}
-
 }
 
 void dmContactSystem::getState(Float q[], Float qd[]) const
 {
-	unsigned int offset = 0;
-	vector<dmDynamicContactModel *>::const_iterator it;
-	for (it = contacts.begin(); it < contacts.end(); it++)
+	if (OKtoProceed)
 	{
-		for (int i = 0; i<(*it)->getNumContactPoints(); i++)
+		unsigned int offset = 0;
+		vector<dmDynamicContactModel *>::const_iterator it;
+		for (it = contacts.begin(); it < contacts.end(); it++)
 		{
-			qd[offset+2*i] = (*it)->u[i][0];
-			qd[offset+2*i+1] = (*it)->u[i][1];
-			q[offset+2*i] = 99;  //dummy fillings
-			q[offset+2*i+1] = 99; //dummy fillings
+			for (int i = 0; i<(*it)->getNumContactPoints(); i++)
+			{
+				qd[offset+2*i] = (*it)->u[i][0];
+				qd[offset+2*i+1] = (*it)->u[i][1];
+				q[offset+2*i] = 99;  //dummy fillings
+				q[offset+2*i+1] = 99; //dummy fillings
+			}
+			offset += 2*(*it)->getNumContactPoints();
 		}
-		offset += 2*(*it)->getNumContactPoints();
 	}
 }
 
 
 void dmContactSystem::setState(Float q[], Float qd[])
 {
-	unsigned int offset = 0;
-	vector<dmDynamicContactModel *>::iterator it;
-	for (it = contacts.begin(); it < contacts.end(); it++)
+	if (OKtoProceed)
 	{
-		for (int i = 0; i<(*it)->getNumContactPoints(); i++)
+		unsigned int offset = 0;
+		vector<dmDynamicContactModel *>::iterator it;
+		for (it = contacts.begin(); it < contacts.end(); it++)
 		{
-			(*it)->u[i][0] = qd[offset+2*i] ;
-			(*it)->u[i][1] = qd[offset+2*i+1] ;
+			for (int i = 0; i<(*it)->getNumContactPoints(); i++)
+			{
+				(*it)->u[i][0] = qd[offset+2*i] ;
+				(*it)->u[i][1] = qd[offset+2*i+1] ;
+			}
+			offset += 2*(*it)->getNumContactPoints();
 		}
-		offset += 2*(*it)->getNumContactPoints();
 	}
-
 }
 
 
@@ -137,4 +153,10 @@ void dmContactSystem::scanRobot(dmArticulation* robot)
 
 void dmContactSystem::draw() const
 {
+}
+
+
+vector<dmDynamicContactModel*>& dmContactSystem::getDynamicContacts()
+{
+	return contacts;
 }

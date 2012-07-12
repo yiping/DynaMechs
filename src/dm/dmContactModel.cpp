@@ -46,6 +46,7 @@ dmContactModel::dmContactModel() :
       m_sliding_flag_stored(NULL),
       m_initial_contact_pos_stored(NULL)
 {
+	m_last_computed_contact_force = new Float [6];
 }
 
 //----------------------------------------------------------------------------
@@ -63,6 +64,10 @@ dmContactModel::~dmContactModel()
       delete[]m_sliding_flag_stored;
       delete[]m_initial_contact_pos_stored;
    }
+
+	// need to clear traces on the heap to prevent memory leak
+
+	delete [] m_last_computed_contact_force;
 }
 
 //----------------------------------------------------------------------------
@@ -387,6 +392,12 @@ void dmContactModel::computeForce(const dmABForKinStruct &val,
       }
    }
    m_reset_flag = false;
+
+	for (j = 0; j < 6; j++)
+	{
+		m_last_computed_contact_force[j] = f_contact[j];
+	}
+
 }
 
 
@@ -593,5 +604,17 @@ void dmContactModel::computeForce(const dmRNEAStruct &val,
       }
    }
    m_reset_flag = false;
+
+	for (j = 0; j < 6; j++)
+	{
+		m_last_computed_contact_force[j] = f_contact[j];
+	}
+
 }
 
+
+
+Float* dmContactModel::getLastComputedValue() const
+{
+	return m_last_computed_contact_force;
+}

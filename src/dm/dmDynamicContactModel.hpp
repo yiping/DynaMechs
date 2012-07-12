@@ -49,15 +49,15 @@ public:
                             SpatialVector f_contact);
 	// rendering functions:
 	void draw() const;
-
+	
 
 public:
 	//vector<Float *> u;  //tip: you cannot use CartesianVector here, b/c arrays are not assignable
 	//vector<Float *> ud;
 
 	vector<vector<Float> > u;
-	vector<vector<Float> > ud;
-	// temporary variables only used by computeForce function
+	vector<vector<Float> > ud; // later should be somehow made private
+
 
 };
 

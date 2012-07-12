@@ -19,10 +19,8 @@ Articulation {
 						0.0 	0.1667	0.0
 						0.0 	0.0 	0.2667
 		Center_of_Gravity	0.0	0.0	0.0	
-		Number_of_Contact_Points	0
-					
-		Number_of_Dynamic_Contact_Points 8 
-		Dynamic_Contact_Locations
+		Number_of_Contact_Points	8 
+		Contact_Locations
 					   -0.200   -0.200    -0.100
 						0.200   -0.200    -0.100
 						0.200    0.200    -0.100
@@ -30,10 +28,13 @@ Articulation {
 					   -0.200   -0.200     0.100
 						0.200   -0.200     0.100
 						0.200    0.200     0.100
-					   -0.200    0.200     0.100	
+					   -0.200    0.200     0.100						
+		Number_of_Dynamic_Contact_Points 0
+		#Dynamic_Contact_Locations
+
 		Position 2 2 0.9
 		Orientation_Quat  0 0 0 1
-		Velocity 0 0 0 2 0 0
+		Velocity 0 0 0 0 0 0
 	}
 	# End Mobile Base
 

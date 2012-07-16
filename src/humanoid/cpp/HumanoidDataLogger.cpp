@@ -15,48 +15,46 @@
 
 HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : HumanoidStateMachineController(robot,stateSize) {
 	
-	setMaxItems(MAX_STATIC_ITEMS);
-	setMaxGroups(MAX_STATIC_GROUPS);
 	
-	setItemName(TIME,			"Time",					"t");
-	setItemName(STATE_CODE,		"State",				"state");
+	TIME	=		addItem("Time",					"t");
+	STATE_CODE=		addItem("State",				"state");
 	
 	// Angles
-	setItemName(BASE_QUAT0,		"Base Quaternion0",		"q(1)");
-	setItemName(BASE_QUAT1,		"Base Quaternion1",		"q(2)");
-	setItemName(BASE_QUAT2,		"Base Quaternion2",		"q(3)");
-	setItemName(BASE_QUAT3,		"Base Quaternion3",		"q(4)");
-	setItemName(BASE_P_X,		"Base Position X" ,		"q(5)");
-	setItemName(BASE_P_Y,		"Base Position Y",		"q(6)");
-	setItemName(BASE_P_Z,		"Base Position Z",		"q(7)");
+	BASE_QUAT0=		addItem("Base Quaternion0",		"q(1)");
+	BASE_QUAT1=		addItem("Base Quaternion1",		"q(2)");
+	BASE_QUAT2=		addItem("Base Quaternion2",		"q(3)");
+	BASE_QUAT3=		addItem("Base Quaternion3",		"q(4)");
+	BASE_P_X=		addItem("Base Position X" ,		"q(5)");
+	BASE_P_Y=		addItem("Base Position Y",		"q(6)");
+	BASE_P_Z=		addItem("Base Position Z",		"q(7)");
 	
-	setItemName(RHIP_QUAT0,		"R Hip q0",				"q(8)");
-	setItemName(RHIP_QUAT1,		"R Hip q1",				"q(9)");
-	setItemName(RHIP_QUAT2,		"R Hip q2",				"q(10)");
-	setItemName(RHIP_QUAT3,		"R Hip q3",				"q(11)");
-	setItemName(RKNEE,			"R Knee Angle",			"q(12)");
-	setItemName(RANK1,			"R Ank 1 Angle",		"q(13)");
-	setItemName(RANK2,			"R Ank 2 Angle",		"q(14)");
+	RHIP_QUAT0=		addItem("R Hip q0",				"q(8)");
+	RHIP_QUAT1=		addItem("R Hip q1",				"q(9)");
+	RHIP_QUAT2=		addItem("R Hip q2",				"q(10)");
+	RHIP_QUAT3=		addItem("R Hip q3",				"q(11)");
+	RKNEE=			addItem("R Knee Angle",			"q(12)");
+	RANK1=			addItem("R Ank 1 Angle",		"q(13)");
+	RANK2=			addItem("R Ank 2 Angle",		"q(14)");
 	
-	setItemName(LHIP_QUAT0,		"L Hip q0",				"q(15)");
-	setItemName(LHIP_QUAT1,		"L Hip q1",				"q(16)");
-	setItemName(LHIP_QUAT2,		"L Hip q2",				"q(17)");
-	setItemName(LHIP_QUAT3,		"L Hip q3",				"q(18)");
-	setItemName(LKNEE,			"L Knee Angle",			"q(19)");
-	setItemName(LANK1,			"L Ank 1 Angle",		"q(20)");
-	setItemName(LANK2,			"L Ank 2 Angle",		"q(21)");
+	LHIP_QUAT0=		addItem("L Hip q0",				"q(15)");
+	LHIP_QUAT1=		addItem("L Hip q1",				"q(16)");
+	LHIP_QUAT2=		addItem("L Hip q2",				"q(17)");
+	LHIP_QUAT3=		addItem("L Hip q3",				"q(18)");
+	LKNEE=			addItem("L Knee Angle",			"q(19)");
+	LANK1=			addItem("L Ank 1 Angle",		"q(20)");
+	LANK2=			addItem("L Ank 2 Angle",		"q(21)");
 	
-	setItemName(RSHOULD_QUAT0,	"R Shoulder Phi",		"q(22)");
-	setItemName(RSHOULD_QUAT1,	"R Shoulder Psi",		"q(23)");
-	setItemName(RSHOULD_QUAT2,	"R Shoulder Gamma",		"q(24)");
-	setItemName(RSHOULD_QUAT3,	"R Shoulder Gamma",		"q(25)");
-	setItemName(RELBOW,			"R Elbow Angle",		"q(26)");
+	RSHOULD_QUAT0=		addItem("R Shoulder q0",		"q(22)");
+	RSHOULD_QUAT1=		addItem("R Shoulder q1",		"q(23)");
+	RSHOULD_QUAT2=		addItem("R Shoulder q2",		"q(24)");
+	RSHOULD_QUAT3=		addItem("R Shoulder q3",		"q(25)");
+	RELBOW=				addItem("R Elbow Angle",		"q(26)");
 	
-	setItemName(LSHOULD_QUAT0,	"R Shoulder Phi",		"q(27)");
-	setItemName(LSHOULD_QUAT1,	"R Shoulder Psi",		"q(28)");
-	setItemName(LSHOULD_QUAT2,	"R Shoulder Gamma",		"q(29)");
-	setItemName(LSHOULD_QUAT3,	"R Shoulder Gamma",		"q(30)");
-	setItemName(LELBOW,			"L Elbow Angle",		"q(31)");
+	LSHOULD_QUAT0=		addItem("R Shoulder Phi",		"q(27)");
+	LSHOULD_QUAT1=		addItem("R Shoulder Psi",		"q(28)");
+	LSHOULD_QUAT2=		addItem("R Shoulder Gamma",		"q(29)");
+	LSHOULD_QUAT3=		addItem("R Shoulder Gamma",		"q(30)");
+	LELBOW=				addItem("L Elbow Angle",		"q(31)");
 	
 	int angleItems[] = {BASE_QUAT0,BASE_QUAT1,BASE_QUAT2,BASE_QUAT3,
 		BASE_P_X,BASE_P_Y,BASE_P_Z,
@@ -65,34 +63,34 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 		RSHOULD_QUAT0,RSHOULD_QUAT1,RSHOULD_QUAT2,RSHOULD_QUAT3,RELBOW,
 		LSHOULD_QUAT0,LSHOULD_QUAT1,LSHOULD_QUAT2,LSHOULD_QUAT3,LELBOW};
 	IntVector angleGroup(angleItems,angleItems+sizeof(angleItems)/sizeof(int));
-	declareGroup(JOINT_ANGLES,"Joint Angles", angleGroup);
+	JOINT_ANGLES = declareGroup("Joint Angles", angleGroup);
 	
-	setItemName(BASE_OMEGA_X,	"Base Omega X",			"qd(1)");
-	setItemName(BASE_OMEGA_Y,	"Base Omega Y",			"qd(2)");
-	setItemName(BASE_OMEGA_Z,	"Base Omega Z",			"qd(3)");
-	setItemName(BASE_V_X,		"Base Vel. X",			"qd(4)");
-	setItemName(BASE_V_Y,		"Base Vel. Y",			"qd(5)");
-	setItemName(BASE_V_Z,		"Base Vel. Z",			"qd(6)");
-	setItemName(RHIP_OMEGA_X,	"R Hip Omega X",		"qd(7)");
-	setItemName(RHIP_OMEGA_Y,   "R Hip Omega Y",		"qd(8)");
-	setItemName(RHIP_OMEGA_Z,	"R Hip Omega Z",		"qd(9)");
-	setItemName(RKNEE_RATE,		"R Knee Rate",			"qd(10)");
-	setItemName(RANK1_RATE,		"R Ank 1 Rate",			"qd(11)");
-	setItemName(RANK2_RATE,		"R Ank 2 Rate",			"qd(12)");
-	setItemName(LHIP_OMEGA_X,	"L Hip Omega X",		"qd(13)");
-	setItemName(LHIP_OMEGA_Y,   "L Hip Omega Y",		"qd(14)");
-	setItemName(LHIP_OMEGA_Z,	"L Hip Omega Z",		"qd(15)");
-	setItemName(LKNEE_RATE,		"L Knee Rate",			"qd(16)");
-	setItemName(LANK1_RATE,		"L Ank 1 Rate",			"qd(17)");
-	setItemName(LANK2_RATE,		"L Ank 2 Rate",			"qd(18)");
-	setItemName(RSHOULD_OMEGA_X,"R Shoulder Omega X",	"qd(19)");
-	setItemName(RSHOULD_OMEGA_Y,"R Shoulder Omega Y",	"qd(20)");
-	setItemName(RSHOULD_OMEGA_Z,"R Shoulder Omega Z",	"qd(21)");
-	setItemName(RELBOW_RATE,	"R Elbow Rate",			"qd(22)");
-	setItemName(LSHOULD_OMEGA_X,"L Shoulder Omega X",	"qd(23)");
-	setItemName(LSHOULD_OMEGA_Y,"L Shoulder Omega Y",	"qd(24)");
-	setItemName(LSHOULD_OMEGA_Z,"L Shoulder Omega Z",	"qd(25)");
-	setItemName(LELBOW_RATE,	"L Elbow Rate",			"qd(26)");
+	BASE_OMEGA_X=		addItem("Base Omega X",			"qd(1)");
+	BASE_OMEGA_Y=		addItem("Base Omega Y",			"qd(2)");
+	BASE_OMEGA_Z=		addItem("Base Omega Z",			"qd(3)");
+	BASE_V_X=			addItem("Base Vel. X",			"qd(4)");
+	BASE_V_Y=			addItem("Base Vel. Y",			"qd(5)");
+	BASE_V_Z=			addItem("Base Vel. Z",			"qd(6)");
+	RHIP_OMEGA_X=		addItem("R Hip Omega X",		"qd(7)");
+	RHIP_OMEGA_Y=		addItem("R Hip Omega Y",		"qd(8)");
+	RHIP_OMEGA_Z=		addItem("R Hip Omega Z",		"qd(9)");
+	RKNEE_RATE=			addItem("R Knee Rate",			"qd(10)");
+	RANK1_RATE=			addItem("R Ank 1 Rate",			"qd(11)");
+	RANK2_RATE=			addItem("R Ank 2 Rate",			"qd(12)");
+	LHIP_OMEGA_X=		addItem("L Hip Omega X",		"qd(13)");
+	LHIP_OMEGA_Y=		addItem("L Hip Omega Y",		"qd(14)");
+	LHIP_OMEGA_Z=		addItem("L Hip Omega Z",		"qd(15)");
+	LKNEE_RATE=		addItem("L Knee Rate",			"qd(16)");
+	LANK1_RATE=		addItem("L Ank 1 Rate",			"qd(17)");
+	LANK2_RATE=		addItem("L Ank 2 Rate",			"qd(18)");
+	RSHOULD_OMEGA_X=		addItem("R Shoulder Omega X",	"qd(19)");
+	RSHOULD_OMEGA_Y=		addItem("R Shoulder Omega Y",	"qd(20)");
+	RSHOULD_OMEGA_Z=		addItem("R Shoulder Omega Z",	"qd(21)");
+	RELBOW_RATE=		addItem("R Elbow Rate",			"qd(22)");
+	LSHOULD_OMEGA_X=		addItem("L Shoulder Omega X",	"qd(23)");
+	LSHOULD_OMEGA_Y=		addItem("L Shoulder Omega Y",	"qd(24)");
+	LSHOULD_OMEGA_Z=		addItem("L Shoulder Omega Z",	"qd(25)");
+	LELBOW_RATE=		addItem("L Elbow Rate",			"qd(26)");
 	
 	int rateItems[] = {BASE_OMEGA_X,BASE_OMEGA_Y,BASE_OMEGA_Z,BASE_V_X,BASE_V_Y,BASE_V_Z,
 		RHIP_OMEGA_X,RHIP_OMEGA_Y,RHIP_OMEGA_Z,RKNEE_RATE,RANK1_RATE,RANK2_RATE,
@@ -101,28 +99,28 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 		LSHOULD_OMEGA_X,LSHOULD_OMEGA_Y,LSHOULD_OMEGA_Z,LELBOW_RATE};
 	
 	IntVector rateGroup(rateItems,rateItems+sizeof(rateItems)/sizeof(int));
-	declareGroup(JOINT_RATES,"Joint Rates", rateGroup);
+	JOINT_RATES = declareGroup("Joint Rates", rateGroup);
 	
-	setItemName(RHIP_TAU_X,		"R Hip Tau X",			"tau(1)");
-	setItemName(RHIP_TAU_Y,		"R Hip Tau Y",			"tau(2)");
-	setItemName(RHIP_TAU_Z,		"R Hip Tau Z",			"tau(3)");
-	setItemName(RKNEE_TAU,		"R Knee Tau",			"tau(4)");
-	setItemName(RANK1_TAU,		"R Ank 1 Tau",			"tau(5)");
-	setItemName(RANK2_TAU,		"R Ank 2 Tau",			"tau(6)");
-	setItemName(LHIP_TAU_X,		"L Hip Tau X",			"tau(7)");
-	setItemName(LHIP_TAU_Y,		"L Hip Tau Y",			"tau(8)");
-	setItemName(LHIP_TAU_Z,		"L Hip Tau Z",			"tau(9)");
-	setItemName(LKNEE_TAU,		"L Knee Tau",			"tau(10)");
-	setItemName(LANK1_TAU,		"L Ank 1 Tau",			"tau(11)");
-	setItemName(LANK2_TAU,		"L Ank 2 Tau",			"tau(12)");
-	setItemName(RSHOULD_TAU_X,	"R Shoulder Tau X",		"tau(13)");
-	setItemName(RSHOULD_TAU_Y,	"R Shoulder Tau Y",		"tau(14)");
-	setItemName(RSHOULD_TAU_Z,	"R Shoulder Tau Z",		"tau(15)");
-	setItemName(RELBOW_TAU,		"R Elbow Tau",			"tau(16)");
-	setItemName(LSHOULD_TAU_X,	"L Shoulder Tau X",		"tau(17)");
-	setItemName(LSHOULD_TAU_Y,	"L Shoulder Tau Y",		"tau(18)");
-	setItemName(LSHOULD_TAU_Z,	"L Shoulder Tau Z",		"tau(19)");
-	setItemName(LELBOW_TAU,		"L Elbow Tau",			"tau(20)");
+	RHIP_TAU_X=		addItem("R Hip Tau X",			"tau(1)");
+	RHIP_TAU_Y=		addItem("R Hip Tau Y",			"tau(2)");
+	RHIP_TAU_Z=		addItem("R Hip Tau Z",			"tau(3)");
+	RKNEE_TAU=		addItem("R Knee Tau",			"tau(4)");
+	RANK1_TAU=		addItem("R Ank 1 Tau",			"tau(5)");
+	RANK2_TAU=		addItem("R Ank 2 Tau",			"tau(6)");
+	LHIP_TAU_X=		addItem("L Hip Tau X",			"tau(7)");
+	LHIP_TAU_Y=		addItem("L Hip Tau Y",			"tau(8)");
+	LHIP_TAU_Z=		addItem("L Hip Tau Z",			"tau(9)");
+	LKNEE_TAU=		addItem("L Knee Tau",			"tau(10)");
+	LANK1_TAU=		addItem("L Ank 1 Tau",			"tau(11)");
+	LANK2_TAU=		addItem("L Ank 2 Tau",			"tau(12)");
+	RSHOULD_TAU_X=		addItem("R Shoulder Tau X",		"tau(13)");
+	RSHOULD_TAU_Y=		addItem("R Shoulder Tau Y",		"tau(14)");
+	RSHOULD_TAU_Z=		addItem("R Shoulder Tau Z",		"tau(15)");
+	RELBOW_TAU=		addItem("R Elbow Tau",			"tau(16)");
+	LSHOULD_TAU_X=		addItem("L Shoulder Tau X",		"tau(17)");
+	LSHOULD_TAU_Y=		addItem("L Shoulder Tau Y",		"tau(18)");
+	LSHOULD_TAU_Z=		addItem("L Shoulder Tau Z",		"tau(19)");
+	LELBOW_TAU=		addItem("L Elbow Tau",			"tau(20)");
 	
 	
 	int tauItems[] = {RHIP_TAU_X,RHIP_TAU_Y,RHIP_TAU_Z,RKNEE_TAU,RANK1_TAU,RANK2_TAU,
@@ -131,55 +129,55 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 		LSHOULD_TAU_X,LSHOULD_TAU_Y,LSHOULD_TAU_Z,LELBOW_TAU};
 	
 	IntVector tauGroup(tauItems,tauItems+sizeof(tauItems)/sizeof(int));
-	declareGroup(JOINT_TORQUES,"Joint Torques", tauGroup);
+	JOINT_TORQUES = declareGroup("Joint Torques", tauGroup);
 	
 	
 	// Left CoP Group
-	setItemName(LCOP_F_X,		"L CoP Force X",		"lCopForce(1)");
-	setItemName(LCOP_F_Y,		"L CoP Force Y",		"lCopForce(2)");
-	setItemName(LCOP_F_Z,		"L CoP Force Z",		"lCopForce(3)");
-	setItemName(LCOP_P_X,		"L CoP Pos X",			"lCopPos(1)");
-	setItemName(LCOP_P_Y,		"L CoP Pos Y",			"lCopPos(2)");
-	setItemName(LCOP_N_Z,		"L CoP Mom Z",			"lCopNz");
+	LCOP_F_X=		addItem("L CoP Force X",		"lCopForce(1)");
+	LCOP_F_Y=		addItem("L CoP Force Y",		"lCopForce(2)");
+	LCOP_F_Z=		addItem("L CoP Force Z",		"lCopForce(3)");
+	LCOP_P_X=		addItem("L CoP Pos X",			"lCopPos(1)");
+	LCOP_P_Y=		addItem("L CoP Pos Y",			"lCopPos(2)");
+	LCOP_N_Z=		addItem("L CoP Mom Z",			"lCopNz");
 	
-	setItemName(LCONT_STATE,	"L Contact State",			"lContState");
-	setItemName(LSLIDE_STATE,	"L Slide State",			"lSlideState");
+	LCONT_STATE = addItem("L Contact State",			"lContState");
+	LSLIDE_STATE = addItem("L Slide State",			"lSlideState");
 	
 	
 	int leftCoPItems[] = {LCOP_F_X, LCOP_F_Y, LCOP_F_Z, LCOP_P_X, LCOP_P_Y, LCOP_N_Z};
 	
 	IntVector lCoPGroup(leftCoPItems,leftCoPItems+sizeof(leftCoPItems)/sizeof(int));
-	declareGroup(LEFT_FOOT_WRENCH,"Left Foot Wrench", lCoPGroup);
+	LEFT_FOOT_WRENCH = declareGroup("Left Foot Wrench", lCoPGroup);
 	
 	
 	// Right CoP Groups
-	setItemName(RCOP_F_X,		"R CoP Force X",		"rCopForce(1)");
-	setItemName(RCOP_F_Y,		"R CoP Force Y",		"rCopForce(2)");
-	setItemName(RCOP_F_Z,		"R CoP Force Z",		"rCopForce(3)");
-	setItemName(RCOP_P_X,		"R CoP Pos X",			"rCopPos(1)");
-	setItemName(RCOP_P_Y,		"R CoP Pos Y",			"rlCopPos(2)");
-	setItemName(RCOP_N_Z,		"R CoP Mom Z",			"rCopNz");
+	RCOP_F_X=		addItem("R CoP Force X",		"rCopForce(1)");
+	RCOP_F_Y=		addItem("R CoP Force Y",		"rCopForce(2)");
+	RCOP_F_Z=		addItem("R CoP Force Z",		"rCopForce(3)");
+	RCOP_P_X=		addItem("R CoP Pos X",			"rCopPos(1)");
+	RCOP_P_Y=		addItem("R CoP Pos Y",			"rlCopPos(2)");
+	RCOP_N_Z=		addItem("R CoP Mom Z",			"rCopNz");
 	
-	setItemName(RCONT_STATE,	"R Contact State",			"rContState");
-	setItemName(RSLIDE_STATE,	"R Slide State",			"rSlideState");
+	RCONT_STATE = addItem("R Contact State",			"rContState");
+	RSLIDE_STATE = addItem("R Slide State",			"rSlideState");
 	
 	int rightCoPItems[] = {RCOP_F_X, RCOP_F_Y, RCOP_F_Z, RCOP_P_X, RCOP_P_Y, RCOP_N_Z};
 	
 	IntVector rCoPGroup(rightCoPItems,rightCoPItems+sizeof(rightCoPItems)/sizeof(int));
-	declareGroup(RIGHT_FOOT_WRENCH,"Right Foot Wrench", rCoPGroup);
+	RIGHT_FOOT_WRENCH = declareGroup("Right Foot Wrench", rCoPGroup);
 	
 	// Zmp Group
-	setItemName(ZMP_F_X,		"ZMP Force X",			"zmpForce(1)");
-	setItemName(ZMP_F_Y,		"ZMP Force Y",			"zmpForce(2)");
-	setItemName(ZMP_F_Z,		"ZMP Force Z",			"zmpForce(3)");
-	setItemName(ZMP_P_X,		"ZMP Pos X",			"zmpPos(1)");
-	setItemName(ZMP_P_Y,		"ZMP Pos Y",			"zmpPos(2)");
-	setItemName(ZMP_N_Z,		"ZMP Mom Z",			"zmpNz");
+	ZMP_F_X=		addItem("ZMP Force X",			"zmpForce(1)");
+	ZMP_F_Y=		addItem("ZMP Force Y",			"zmpForce(2)");
+	ZMP_F_Z=		addItem("ZMP Force Z",			"zmpForce(3)");
+	ZMP_P_X=		addItem("ZMP Pos X",			"zmpPos(1)");
+	ZMP_P_Y=		addItem("ZMP Pos Y",			"zmpPos(2)");
+	ZMP_N_Z=		addItem("ZMP Mom Z",			"zmpNz");
 	
 	int zmpItems[] = {ZMP_F_X, ZMP_F_Y, ZMP_F_Z, ZMP_P_X, ZMP_P_Y, ZMP_N_Z};
 	
 	IntVector zmpGroup(zmpItems,zmpItems+sizeof(zmpItems)/sizeof(int));
-	declareGroup(ZMP_WRENCH,"ZMP Wrench", zmpGroup);
+	ZMP_WRENCH = declareGroup("ZMP Wrench", zmpGroup);
 
 	
 	// Add Dynamic Groups

@@ -66,7 +66,7 @@ class BalanceDemoStateMachine : public HumanoidDataLogger
 	typedef void (BalanceDemoStateMachine::*BalanceStateFuncPtr)();
 	vector<BalanceStateFuncPtr> stateFunctions;
 	
-	VectorXF aComDes, kComDes;
+	
 	CubicSplineTrajectory ComTrajectory;
 	Vector3F pLeftCom, pRightCom, pMiddleCom, pWalkPrep;
 	VectorXF pFootEnd;

@@ -329,7 +329,77 @@
 		199267EB15AC986100E51313 /* dmDynamicContactModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 199267E815AC986100E51313 /* dmDynamicContactModel.cpp */; };
 		19A6F42C157E4D0400ED6631 /* humanoidGlut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1940A49C1507C62100CD4386 /* humanoidGlut.cpp */; };
 		19A6F44C157E4EFD00ED6631 /* HumanoidController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */; };
+		19B0331015B45FD300025508 /* JumpingStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */; };
 		19B1EB3115ADE57B005FCEE4 /* TaskSpaceControllerA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1EB3015ADE57B005FCEE4 /* TaskSpaceControllerA.cpp */; };
+		19B1EC4615AF2BB7005FCEE4 /* R2D2.icns in Resources */ = {isa = PBXBuildFile; fileRef = 19801C4A159B44AF00DB8AD5 /* R2D2.icns */; };
+		19B1EC4F15AF2BB7005FCEE4 /* wxDMGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C95158A436400BC26DA /* wxDMGLCamera.cpp */; };
+		19B1EC5015AF2BB7005FCEE4 /* wxDMGLFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C97158A436400BC26DA /* wxDMGLFlyCamera.cpp */; };
+		19B1EC5115AF2BB7005FCEE4 /* wxDMGLMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C99158A436400BC26DA /* wxDMGLMouse.cpp */; };
+		19B1EC5215AF2BB7005FCEE4 /* wxDMGLPolarCamera_yup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C9B158A436400BC26DA /* wxDMGLPolarCamera_yup.cpp */; };
+		19B1EC5315AF2BB7005FCEE4 /* wxDMGLPolarCamera_zup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C9D158A436400BC26DA /* wxDMGLPolarCamera_zup.cpp */; };
+		19B1EC5415AF2BB7005FCEE4 /* wxDMGLPolarCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C9F158A436400BC26DA /* wxDMGLPolarCamera.cpp */; };
+		19B1EC5515AF2BB7005FCEE4 /* dmLoadFile_dm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868114D2E97C00778EA7 /* dmLoadFile_dm.cpp */; };
+		19B1EC5615AF2BB7005FCEE4 /* dmLoadFile_dm21.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868214D2E97C00778EA7 /* dmLoadFile_dm21.cpp */; };
+		19B1EC5715AF2BB7005FCEE4 /* dmLoadFile_dm30.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868314D2E97C00778EA7 /* dmLoadFile_dm30.cpp */; };
+		19B1EC5815AF2BB7005FCEE4 /* dmLoadFile_dm40.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868414D2E97C00778EA7 /* dmLoadFile_dm40.cpp */; };
+		19B1EC5915AF2BB7005FCEE4 /* dmLoadFile_dm203.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868514D2E97C00778EA7 /* dmLoadFile_dm203.cpp */; };
+		19B1EC5A15AF2BB7005FCEE4 /* dmLoadFile_env.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868614D2E97C00778EA7 /* dmLoadFile_env.cpp */; };
+		19B1EC5B15AF2BB7005FCEE4 /* dmLoadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868714D2E97C00778EA7 /* dmLoadFile.cpp */; };
+		19B1EC5C15AF2BB7005FCEE4 /* dmUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868A14D2E97C00778EA7 /* dmUtils.cpp */; };
+		19B1EC5D15AF2BB7005FCEE4 /* glLoadModels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868B14D2E97C00778EA7 /* glLoadModels.cpp */; };
+		19B1EC5E15AF2BB7005FCEE4 /* dmArticulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864314D2E95000778EA7 /* dmArticulation.cpp */; };
+		19B1EC5F15AF2BB7005FCEE4 /* dmLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865514D2E95000778EA7 /* dmLink.cpp */; };
+		19B1EC6015AF2BB7005FCEE4 /* dmMDHLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865714D2E95000778EA7 /* dmMDHLink.cpp */; };
+		19B1EC6115AF2BB7005FCEE4 /* dmRigidBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866514D2E95000778EA7 /* dmRigidBody.cpp */; };
+		19B1EC6215AF2BB7005FCEE4 /* dmSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867514D2E95000778EA7 /* dmSystem.cpp */; };
+		19B1EC6315AF2BB7005FCEE4 /* dmMobileBaseLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865914D2E95000778EA7 /* dmMobileBaseLink.cpp */; };
+		19B1EC6415AF2BB7005FCEE4 /* dmPrismaticLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865D14D2E95000778EA7 /* dmPrismaticLink.cpp */; };
+		19B1EC6515AF2BB7005FCEE4 /* dmQuaternionLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865F14D2E95000778EA7 /* dmQuaternionLink.cpp */; };
+		19B1EC6615AF2BB7005FCEE4 /* dmRevoluteLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866314D2E95000778EA7 /* dmRevoluteLink.cpp */; };
+		19B1EC6715AF2BB7005FCEE4 /* dmSphericalLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867114D2E95000778EA7 /* dmSphericalLink.cpp */; };
+		19B1EC6815AF2BB7005FCEE4 /* dmZScrewTxLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867A14D2E95000778EA7 /* dmZScrewTxLink.cpp */; };
+		19B1EC6915AF2BB7005FCEE4 /* dmContactModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864714D2E95000778EA7 /* dmContactModel.cpp */; };
+		19B1EC6A15AF2BB7005FCEE4 /* dmEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864914D2E95000778EA7 /* dmEnvironment.cpp */; };
+		19B1EC6B15AF2BB7005FCEE4 /* dmForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864B14D2E95000778EA7 /* dmForce.cpp */; };
+		19B1EC6C15AF2BB7005FCEE4 /* gldraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867C14D2E95000778EA7 /* gldraw.cpp */; };
+		19B1EC6D15AF2BB7005FCEE4 /* svd_linpack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867D14D2E95000778EA7 /* svd_linpack.cpp */; };
+		19B1EC6E15AF2BB7005FCEE4 /* dmTreadmill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867814D2E95000778EA7 /* dmTreadmill.cpp */; };
+		19B1EC6F15AF2BB7005FCEE4 /* dmStaticRootLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925867314D2E95000778EA7 /* dmStaticRootLink.cpp */; };
+		19B1EC7015AF2BB7005FCEE4 /* dmActuator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864114D2E95000778EA7 /* dmActuator.cpp */; };
+		19B1EC7115AF2BB7005FCEE4 /* dmClosedArticulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864514D2E95000778EA7 /* dmClosedArticulation.cpp */; };
+		19B1EC7215AF2BB7005FCEE4 /* dmIntegEuler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864D14D2E95000778EA7 /* dmIntegEuler.cpp */; };
+		19B1EC7315AF2BB7005FCEE4 /* dmIntegrator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925864F14D2E95000778EA7 /* dmIntegrator.cpp */; };
+		19B1EC7415AF2BB7005FCEE4 /* dmIntegRK4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865114D2E95000778EA7 /* dmIntegRK4.cpp */; };
+		19B1EC7515AF2BB7005FCEE4 /* dmIntegRK45.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865314D2E95000778EA7 /* dmIntegRK45.cpp */; };
+		19B1EC7615AF2BB7005FCEE4 /* dmObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925865B14D2E95000778EA7 /* dmObject.cpp */; };
+		19B1EC7715AF2BB7005FCEE4 /* dmRevDCMotor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866114D2E95000778EA7 /* dmRevDCMotor.cpp */; };
+		19B1EC7815AF2BB7005FCEE4 /* dmSecondaryForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866714D2E95000778EA7 /* dmSecondaryForce.cpp */; };
+		19B1EC7915AF2BB7005FCEE4 /* dmSecondaryJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866914D2E95000778EA7 /* dmSecondaryJoint.cpp */; };
+		19B1EC7A15AF2BB7005FCEE4 /* dmSecondaryPrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866B14D2E95000778EA7 /* dmSecondaryPrismaticJoint.cpp */; };
+		19B1EC7B15AF2BB7005FCEE4 /* dmSecondaryRevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866D14D2E95000778EA7 /* dmSecondaryRevoluteJoint.cpp */; };
+		19B1EC7C15AF2BB7005FCEE4 /* dmSecondarySphericalJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925866F14D2E95000778EA7 /* dmSecondarySphericalJoint.cpp */; };
+		19B1EC8B15AF2BB7005FCEE4 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876914D2EDF400778EA7 /* GLUT.framework */; };
+		19B1EC8C15AF2BB7005FCEE4 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876B14D2EDF400778EA7 /* OpenGL.framework */; };
+		19B1EC8D15AF2BB7005FCEE4 /* libmosek.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8CFA7158BADA500BC4671 /* libmosek.6.0.dylib */; };
+		19B1EC8E15AF2BB7005FCEE4 /* libwx_base_carbonu-2.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3E1158BB2D000BC4671 /* libwx_base_carbonu-2.8.a */; };
+		19B1EC8F15AF2BB7005FCEE4 /* libwx_macu_core-2.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3E4158BB2D000BC4671 /* libwx_macu_core-2.8.a */; };
+		19B1EC9015AF2BB7005FCEE4 /* libwx_macu_gl-2.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3E5158BB2D000BC4671 /* libwx_macu_gl-2.8.a */; };
+		19B1EC9115AF2BB7005FCEE4 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D78D158BC04A00BC4671 /* QuickTime.framework */; };
+		19B1EC9215AF2BB7005FCEE4 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3F4158BB30E00BC4671 /* IOKit.framework */; };
+		19B1EC9315AF2BB7005FCEE4 /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D61C158BB36E00BC4671 /* System.framework */; };
+		19B1EC9415AF2BB7005FCEE4 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3EE158BB30E00BC4671 /* AGL.framework */; };
+		19B1EC9515AF2BB7005FCEE4 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3F0158BB30E00BC4671 /* Carbon.framework */; };
+		19B1EC9615AF2BB7005FCEE4 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D61D158BB38400BC4671 /* AppKit.framework */; };
+		19B1ECB815AF2C25005FCEE4 /* BasicGLPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECAC15AF2C25005FCEE4 /* BasicGLPane.cpp */; };
+		19B1ECB915AF2C25005FCEE4 /* globalFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECAE15AF2C25005FCEE4 /* globalFunctions.cpp */; };
+		19B1ECBA15AF2C25005FCEE4 /* globals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB015AF2C25005FCEE4 /* globals.cpp */; };
+		19B1ECBB15AF2C25005FCEE4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB215AF2C25005FCEE4 /* main.cpp */; };
+		19B1ECBC15AF2C25005FCEE4 /* MainFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB315AF2C25005FCEE4 /* MainFrame.cpp */; };
+		19B1ECBD15AF2C25005FCEE4 /* SimulationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB515AF2C25005FCEE4 /* SimulationThread.cpp */; };
+		19B1ECBE15AF2C25005FCEE4 /* user_graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB715AF2C25005FCEE4 /* user_graphics.cpp */; };
+		19B1ECC215AF2C9B005FCEE4 /* dmContactSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 199267E615AC986100E51313 /* dmContactSystem.cpp */; };
+		19B1ECC315AF2C9B005FCEE4 /* dmDynamicContactModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 199267E815AC986100E51313 /* dmDynamicContactModel.cpp */; };
+		19B1ED2F15AF5E72005FCEE4 /* TaskSpaceControllerB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DC2159B62C100DB8AD5 /* TaskSpaceControllerB.cpp */; };
 		19B85EBA158F7DA200788BE5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B85EB7158F7DA200788BE5 /* main.cpp */; };
 		19B85EBB158F7DA200788BE5 /* userControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B85EB9158F7DA200788BE5 /* userControl.cpp */; };
 		19B85EC3158F7E2F00788BE5 /* wxDMGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19BA5C95158A436400BC26DA /* wxDMGLCamera.cpp */; };
@@ -843,8 +913,24 @@
 		199267E815AC986100E51313 /* dmDynamicContactModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dmDynamicContactModel.cpp; path = src/dm/dmDynamicContactModel.cpp; sourceTree = "<group>"; };
 		199267E915AC986100E51313 /* dmDynamicContactModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dmDynamicContactModel.hpp; path = src/dm/dmDynamicContactModel.hpp; sourceTree = "<group>"; };
 		19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidController.cpp; path = src/humanoid/cpp/HumanoidController.cpp; sourceTree = "<group>"; };
+		19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JumpingStateMachine.cpp; path = src/humanoid/cpp/JumpingStateMachine.cpp; sourceTree = "<group>"; };
+		19B0331115B45FEB00025508 /* JumpingStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JumpingStateMachine.h; path = src/humanoid/h/JumpingStateMachine.h; sourceTree = "<group>"; };
 		19B1EB3015ADE57B005FCEE4 /* TaskSpaceControllerA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TaskSpaceControllerA.cpp; path = src/humanoid/cpp/TaskSpaceControllerA.cpp; sourceTree = "<group>"; };
 		19B1EB3615ADE61A005FCEE4 /* TaskSpaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskSpaceController.h; path = src/humanoid/h/TaskSpaceController.h; sourceTree = "<group>"; };
+		19B1EC9A15AF2BB7005FCEE4 /* contactDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = contactDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		19B1ECA115AF2BB7005FCEE4 /* humanoidWx-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "humanoidWx-Info copy.plist"; path = "src/humanoid/resources/humanoidWx-Info copy.plist"; sourceTree = "<group>"; };
+		19B1ECAC15AF2C25005FCEE4 /* BasicGLPane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BasicGLPane.cpp; path = src/contact_demo/srcs/BasicGLPane.cpp; sourceTree = "<group>"; };
+		19B1ECAD15AF2C25005FCEE4 /* BasicGLPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicGLPane.h; path = src/contact_demo/srcs/BasicGLPane.h; sourceTree = "<group>"; };
+		19B1ECAE15AF2C25005FCEE4 /* globalFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = globalFunctions.cpp; path = src/contact_demo/srcs/globalFunctions.cpp; sourceTree = "<group>"; };
+		19B1ECAF15AF2C25005FCEE4 /* globalFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = globalFunctions.h; path = src/contact_demo/srcs/globalFunctions.h; sourceTree = "<group>"; };
+		19B1ECB015AF2C25005FCEE4 /* globals.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = globals.cpp; path = src/contact_demo/srcs/globals.cpp; sourceTree = "<group>"; };
+		19B1ECB115AF2C25005FCEE4 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = globals.h; path = src/contact_demo/srcs/globals.h; sourceTree = "<group>"; };
+		19B1ECB215AF2C25005FCEE4 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/contact_demo/srcs/main.cpp; sourceTree = "<group>"; };
+		19B1ECB315AF2C25005FCEE4 /* MainFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainFrame.cpp; path = src/contact_demo/srcs/MainFrame.cpp; sourceTree = "<group>"; };
+		19B1ECB415AF2C25005FCEE4 /* MainFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainFrame.h; path = src/contact_demo/srcs/MainFrame.h; sourceTree = "<group>"; };
+		19B1ECB515AF2C25005FCEE4 /* SimulationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimulationThread.cpp; path = src/contact_demo/srcs/SimulationThread.cpp; sourceTree = "<group>"; };
+		19B1ECB615AF2C25005FCEE4 /* SimulationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimulationThread.h; path = src/contact_demo/srcs/SimulationThread.h; sourceTree = "<group>"; };
+		19B1ECB715AF2C25005FCEE4 /* user_graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = user_graphics.cpp; path = src/contact_demo/srcs/user_graphics.cpp; sourceTree = "<group>"; };
 		19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidWx.cpp; path = src/humanoid/cpp/humanoidWx.cpp; sourceTree = "<group>"; };
 		19B85EB7158F7DA200788BE5 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxDMV/main.cpp; sourceTree = "<group>"; };
 		19B85EB8158F7DA200788BE5 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = src/wxDMV/main.h; sourceTree = "<group>"; };
@@ -2049,6 +2135,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		19B1EC8A15AF2BB7005FCEE4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19B1EC8B15AF2BB7005FCEE4 /* GLUT.framework in Frameworks */,
+				19B1EC8C15AF2BB7005FCEE4 /* OpenGL.framework in Frameworks */,
+				19B1EC8D15AF2BB7005FCEE4 /* libmosek.6.0.dylib in Frameworks */,
+				19B1EC8E15AF2BB7005FCEE4 /* libwx_base_carbonu-2.8.a in Frameworks */,
+				19B1EC8F15AF2BB7005FCEE4 /* libwx_macu_core-2.8.a in Frameworks */,
+				19B1EC9015AF2BB7005FCEE4 /* libwx_macu_gl-2.8.a in Frameworks */,
+				19B1EC9115AF2BB7005FCEE4 /* QuickTime.framework in Frameworks */,
+				19B1EC9215AF2BB7005FCEE4 /* IOKit.framework in Frameworks */,
+				19B1EC9315AF2BB7005FCEE4 /* System.framework in Frameworks */,
+				19B1EC9415AF2BB7005FCEE4 /* AGL.framework in Frameworks */,
+				19B1EC9515AF2BB7005FCEE4 /* Carbon.framework in Frameworks */,
+				19B1EC9615AF2BB7005FCEE4 /* AppKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		19B85EF4158F7E2F00788BE5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2250,6 +2355,7 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				19B1ECA215AF2C04005FCEE4 /* contactDemo */,
 				19F8D860158BD79400BC4671 /* wxCube */,
 				19F8D705158BB7AB00BC4671 /* wxTest */,
 				19F8CFA9158BB1EB00BC4671 /* wxWidgets */,
@@ -2421,6 +2527,8 @@
 		198016D215994F9F00DB8AD5 /* humanoid Utils */ = {
 			isa = PBXGroup;
 			children = (
+				19B0331115B45FEB00025508 /* JumpingStateMachine.h */,
+				19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */,
 				192003E715A5F9FD0006A823 /* HumanoidStateMachineController.cpp */,
 				192003E815A5F9FD0006A823 /* StateMachine.cpp */,
 				192003EB15A5FA0D0006A823 /* HumanoidStateMachineController.h */,
@@ -2464,6 +2572,7 @@
 			children = (
 				19801CE1159B56D400DB8AD5 /* humanoidWx-Info.plist */,
 				19801C4A159B44AF00DB8AD5 /* R2D2.icns */,
+				19B1ECA115AF2BB7005FCEE4 /* humanoidWx-Info copy.plist */,
 			);
 			name = "App Support";
 			sourceTree = "<group>";
@@ -2570,6 +2679,25 @@
 				1925864814D2E95000778EA7 /* dmContactModel.hpp */,
 			);
 			name = Contact;
+			sourceTree = "<group>";
+		};
+		19B1ECA215AF2C04005FCEE4 /* contactDemo */ = {
+			isa = PBXGroup;
+			children = (
+				19B1ECAC15AF2C25005FCEE4 /* BasicGLPane.cpp */,
+				19B1ECAD15AF2C25005FCEE4 /* BasicGLPane.h */,
+				19B1ECAE15AF2C25005FCEE4 /* globalFunctions.cpp */,
+				19B1ECAF15AF2C25005FCEE4 /* globalFunctions.h */,
+				19B1ECB015AF2C25005FCEE4 /* globals.cpp */,
+				19B1ECB115AF2C25005FCEE4 /* globals.h */,
+				19B1ECB215AF2C25005FCEE4 /* main.cpp */,
+				19B1ECB315AF2C25005FCEE4 /* MainFrame.cpp */,
+				19B1ECB415AF2C25005FCEE4 /* MainFrame.h */,
+				19B1ECB515AF2C25005FCEE4 /* SimulationThread.cpp */,
+				19B1ECB615AF2C25005FCEE4 /* SimulationThread.h */,
+				19B1ECB715AF2C25005FCEE4 /* user_graphics.cpp */,
+			);
+			name = contactDemo;
 			sourceTree = "<group>";
 		};
 		19B864721590D99800788BE5 /* wxExtensions */ = {
@@ -3999,6 +4127,7 @@
 				19F8D884158BD83A00BC4671 /* wxTest2.app */,
 				19F8D8FE158BDBAC00BC4671 /* wxDMVapp.app */,
 				19B85F10158F7E2F00788BE5 /* humanoidWx.app */,
+				19B1EC9A15AF2BB7005FCEE4 /* contactDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4241,6 +4370,23 @@
 			productReference = 197B846215070B530064753B /* kurmet */;
 			productType = "com.apple.product-type.tool";
 		};
+		19B1EC4415AF2BB7005FCEE4 /* contactDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 19B1EC9715AF2BB7005FCEE4 /* Build configuration list for PBXNativeTarget "contactDemo" */;
+			buildPhases = (
+				19B1EC4515AF2BB7005FCEE4 /* Resources */,
+				19B1EC4715AF2BB7005FCEE4 /* Sources */,
+				19B1EC8A15AF2BB7005FCEE4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = contactDemo;
+			productName = wxDMVapp;
+			productReference = 19B1EC9A15AF2BB7005FCEE4 /* contactDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		19B85EC0158F7E2F00788BE5 /* humanoidWx */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 19B85F0D158F7E2F00788BE5 /* Build configuration list for PBXNativeTarget "humanoidWx" */;
@@ -4393,11 +4539,20 @@
 				19F8D864158BD83A00BC4671 /* wxCube */,
 				19F8D8FD158BDBAC00BC4671 /* wxDMVapp */,
 				19B85EC0158F7E2F00788BE5 /* humanoidWx */,
+				19B1EC4415AF2BB7005FCEE4 /* contactDemo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		19B1EC4515AF2BB7005FCEE4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19B1EC4615AF2BB7005FCEE4 /* R2D2.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		19B85EC1158F7E2F00788BE5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4741,10 +4896,73 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		19B1EC4715AF2BB7005FCEE4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19B1ECC215AF2C9B005FCEE4 /* dmContactSystem.cpp in Sources */,
+				19B1ECC315AF2C9B005FCEE4 /* dmDynamicContactModel.cpp in Sources */,
+				19B1EC4F15AF2BB7005FCEE4 /* wxDMGLCamera.cpp in Sources */,
+				19B1EC5015AF2BB7005FCEE4 /* wxDMGLFlyCamera.cpp in Sources */,
+				19B1EC5115AF2BB7005FCEE4 /* wxDMGLMouse.cpp in Sources */,
+				19B1EC5215AF2BB7005FCEE4 /* wxDMGLPolarCamera_yup.cpp in Sources */,
+				19B1EC5315AF2BB7005FCEE4 /* wxDMGLPolarCamera_zup.cpp in Sources */,
+				19B1EC5415AF2BB7005FCEE4 /* wxDMGLPolarCamera.cpp in Sources */,
+				19B1EC5515AF2BB7005FCEE4 /* dmLoadFile_dm.cpp in Sources */,
+				19B1EC5615AF2BB7005FCEE4 /* dmLoadFile_dm21.cpp in Sources */,
+				19B1EC5715AF2BB7005FCEE4 /* dmLoadFile_dm30.cpp in Sources */,
+				19B1EC5815AF2BB7005FCEE4 /* dmLoadFile_dm40.cpp in Sources */,
+				19B1EC5915AF2BB7005FCEE4 /* dmLoadFile_dm203.cpp in Sources */,
+				19B1EC5A15AF2BB7005FCEE4 /* dmLoadFile_env.cpp in Sources */,
+				19B1EC5B15AF2BB7005FCEE4 /* dmLoadFile.cpp in Sources */,
+				19B1EC5C15AF2BB7005FCEE4 /* dmUtils.cpp in Sources */,
+				19B1EC5D15AF2BB7005FCEE4 /* glLoadModels.cpp in Sources */,
+				19B1EC5E15AF2BB7005FCEE4 /* dmArticulation.cpp in Sources */,
+				19B1EC5F15AF2BB7005FCEE4 /* dmLink.cpp in Sources */,
+				19B1EC6015AF2BB7005FCEE4 /* dmMDHLink.cpp in Sources */,
+				19B1EC6115AF2BB7005FCEE4 /* dmRigidBody.cpp in Sources */,
+				19B1EC6215AF2BB7005FCEE4 /* dmSystem.cpp in Sources */,
+				19B1EC6315AF2BB7005FCEE4 /* dmMobileBaseLink.cpp in Sources */,
+				19B1EC6415AF2BB7005FCEE4 /* dmPrismaticLink.cpp in Sources */,
+				19B1EC6515AF2BB7005FCEE4 /* dmQuaternionLink.cpp in Sources */,
+				19B1EC6615AF2BB7005FCEE4 /* dmRevoluteLink.cpp in Sources */,
+				19B1EC6715AF2BB7005FCEE4 /* dmSphericalLink.cpp in Sources */,
+				19B1EC6815AF2BB7005FCEE4 /* dmZScrewTxLink.cpp in Sources */,
+				19B1EC6915AF2BB7005FCEE4 /* dmContactModel.cpp in Sources */,
+				19B1EC6A15AF2BB7005FCEE4 /* dmEnvironment.cpp in Sources */,
+				19B1EC6B15AF2BB7005FCEE4 /* dmForce.cpp in Sources */,
+				19B1EC6C15AF2BB7005FCEE4 /* gldraw.cpp in Sources */,
+				19B1EC6D15AF2BB7005FCEE4 /* svd_linpack.cpp in Sources */,
+				19B1EC6E15AF2BB7005FCEE4 /* dmTreadmill.cpp in Sources */,
+				19B1EC6F15AF2BB7005FCEE4 /* dmStaticRootLink.cpp in Sources */,
+				19B1EC7015AF2BB7005FCEE4 /* dmActuator.cpp in Sources */,
+				19B1EC7115AF2BB7005FCEE4 /* dmClosedArticulation.cpp in Sources */,
+				19B1EC7215AF2BB7005FCEE4 /* dmIntegEuler.cpp in Sources */,
+				19B1EC7315AF2BB7005FCEE4 /* dmIntegrator.cpp in Sources */,
+				19B1EC7415AF2BB7005FCEE4 /* dmIntegRK4.cpp in Sources */,
+				19B1EC7515AF2BB7005FCEE4 /* dmIntegRK45.cpp in Sources */,
+				19B1EC7615AF2BB7005FCEE4 /* dmObject.cpp in Sources */,
+				19B1EC7715AF2BB7005FCEE4 /* dmRevDCMotor.cpp in Sources */,
+				19B1EC7815AF2BB7005FCEE4 /* dmSecondaryForce.cpp in Sources */,
+				19B1EC7915AF2BB7005FCEE4 /* dmSecondaryJoint.cpp in Sources */,
+				19B1EC7A15AF2BB7005FCEE4 /* dmSecondaryPrismaticJoint.cpp in Sources */,
+				19B1EC7B15AF2BB7005FCEE4 /* dmSecondaryRevoluteJoint.cpp in Sources */,
+				19B1EC7C15AF2BB7005FCEE4 /* dmSecondarySphericalJoint.cpp in Sources */,
+				19B1ECB815AF2C25005FCEE4 /* BasicGLPane.cpp in Sources */,
+				19B1ECB915AF2C25005FCEE4 /* globalFunctions.cpp in Sources */,
+				19B1ECBA15AF2C25005FCEE4 /* globals.cpp in Sources */,
+				19B1ECBB15AF2C25005FCEE4 /* main.cpp in Sources */,
+				19B1ECBC15AF2C25005FCEE4 /* MainFrame.cpp in Sources */,
+				19B1ECBD15AF2C25005FCEE4 /* SimulationThread.cpp in Sources */,
+				19B1ECBE15AF2C25005FCEE4 /* user_graphics.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		19B85EC2158F7E2F00788BE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19B1ED2F15AF5E72005FCEE4 /* TaskSpaceControllerB.cpp in Sources */,
 				19B85F40158F852700788BE5 /* GlobalDefines.cpp in Sources */,
 				19801DCC159B62DE00DB8AD5 /* DataLogger.cpp in Sources */,
 				19801DCA159B62DE00DB8AD5 /* CubicSpline.cpp in Sources */,
@@ -4811,6 +5029,7 @@
 				199267EA15AC986100E51313 /* dmContactSystem.cpp in Sources */,
 				199267EB15AC986100E51313 /* dmDynamicContactModel.cpp in Sources */,
 				19B1EB3115ADE57B005FCEE4 /* TaskSpaceControllerA.cpp in Sources */,
+				19B0331015B45FD300025508 /* JumpingStateMachine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5407,6 +5626,121 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				PRODUCT_NAME = kurmet;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		19B1EC9815AF2BB7005FCEE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				HEADER_SEARCH_PATHS = (
+					src/,
+					src/dmgl,
+					src/wxWidgets/include,
+					src/wxdmgl,
+					src/dmu,
+					src/dm,
+					"src/wxWidgets/mac-unicode-release-static-2.8",
+				);
+				INFOPLIST_FILE = "src/humanoid/resources/humanoidWx-Info copy.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					src/wxWidgets,
+					"$(inherited)",
+					"\\\"$(SRCROOT)/src/wxWidgets\\\"",
+					"\\\"$(SRCROOT)/src/mosek/6/tools/platform/osx32x86/bin\\\"",
+					"\\\"$(SRCROOT)/src/wxWidgets\\\"",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-fvisibility=default",
+					"$(OTHER_CFLAGS)",
+					"-D__WXMAC__",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-fpascal-strings",
+					"-DWX_PRECOMP",
+				);
+				OTHER_LDFLAGS = (
+					"-w",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+					"-lexpat",
+					"-liconv",
+					"-lpthread",
+					"-lz",
+					"-framework",
+					Foundation,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = contactDemo;
+			};
+			name = Debug;
+		};
+		19B1EC9915AF2BB7005FCEE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				HEADER_SEARCH_PATHS = (
+					src/,
+					src/dmgl,
+					src/wxWidgets/include,
+					src/wxdmgl,
+					src/dmu,
+					src/dm,
+					"src/wxWidgets/mac-unicode-release-static-2.8",
+				);
+				INFOPLIST_FILE = "src/humanoid/resources/humanoidWx-Info copy.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					src/wxWidgets,
+					"$(inherited)",
+					"\\\"$(SRCROOT)/src/wxWidgets\\\"",
+					"\\\"$(SRCROOT)/src/mosek/6/tools/platform/osx32x86/bin\\\"",
+					"\\\"$(SRCROOT)/src/wxWidgets\\\"",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-fvisibility=default",
+					"$(OTHER_CFLAGS)",
+					"-D__WXMAC__",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-fpascal-strings",
+					"-DWX_PRECOMP",
+				);
+				OTHER_LDFLAGS = (
+					"-w",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+					"-lexpat",
+					"-liconv",
+					"-lpthread",
+					"-lz",
+					"-framework",
+					Foundation,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = contactDemo;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -6103,6 +6437,15 @@
 			buildConfigurations = (
 				197B846015070B530064753B /* Debug */,
 				197B846115070B530064753B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		19B1EC9715AF2BB7005FCEE4 /* Build configuration list for PBXNativeTarget "contactDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19B1EC9815AF2BB7005FCEE4 /* Debug */,
+				19B1EC9915AF2BB7005FCEE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

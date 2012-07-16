@@ -173,24 +173,17 @@ int DataLogger::addGroup(const string & displayName, const string & matlabName, 
 	return maxGroups-1;
 }
 
-void DataLogger::setMaxGroups(int maxG) {
-	maxGroups = maxG;
-	groups.resize(maxGroups);
-	groupNames.resize(maxGroups);
+int DataLogger::declareGroup(const string & groupname, IntVector & itemCodes) {
+	groups.push_back(itemCodes);
+	groupNames.push_back(groupname);
+	maxGroups++;	
+	return maxGroups -1;
 }
 
-void DataLogger::setMaxItems(int maxI) {
-	maxItems = maxI;
-	itemNames.resize(maxItems);
-	matlabItemNames.resize(maxItems);
-}
-
-void DataLogger::declareGroup(int groupCode, const string & name, IntVector & itemCodes) {
-	groups[groupCode] = itemCodes;
-	groupNames[groupCode] = name;
-}
-
-void DataLogger::setItemName(int itemCode, const string & s, const string & s2) {
-	itemNames[itemCode] = s;
-	matlabItemNames[itemCode] = s2;
+int  DataLogger::addItem(const string & displayName, const string & matlabName)
+{
+	itemNames.push_back(displayName);
+	matlabItemNames.push_back( matlabName);
+	maxItems ++;
+	return maxItems -1;
 }

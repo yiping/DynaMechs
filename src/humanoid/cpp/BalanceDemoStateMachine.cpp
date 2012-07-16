@@ -750,10 +750,9 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 					if (bodyi->dof == 1) {
 						TaskBias(taskRow+k-6) = (Kp * (qDes(k) - q(kdm)) - Kd * qd(k))*discountFactor;
 					}
-				}
-				
-				if (k <18) {
-					taskOptimActive(taskRow+k-6)=0;
+					if (k <18) {
+						taskOptimActive.segment(taskRow+k-6,bodyi->dof).setZero();
+					}
 				}
 				
 				kdm+=bodyi->link->getNumDOFs();
@@ -855,9 +854,10 @@ void BalanceDemoStateMachine::StateControl(ControlInfo & ci)
 				TaskWeight.segment(taskRow+3,3).setConstant(1000);
 				
 				taskRow+=6;
-				constraintRow+=6;
 			}
 		}
+		//cout << "Total Tasks! " << taskRow << endl;
+		//cout << "Size " << TaskBias.size() << endl;
 		HumanoidController::HumanoidControl(ci);
 		//exit(-1);
 	}

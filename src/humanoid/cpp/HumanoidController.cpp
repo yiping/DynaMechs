@@ -39,7 +39,7 @@ Float totalMass;
 
 CubicSplineTrajectory ComTrajectory;*/
 
-HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerA(robot) {
+HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerB(robot) {
 	q.resize(STATE_SIZE);
 	qdDm.resize(STATE_SIZE);
 	qd.resize(RATE_SIZE);
@@ -72,6 +72,37 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 	}
 	SupportXforms = Xforms;
 	
+	// Construct Point Force Transform
+	PointForceXforms.resize(NS);
+	for (int i=0; i<NS; i++) {
+		PointForceXforms[i].resize(NJ);
+		
+		//cout << "Getting forces for link " << SupportIndices[i] << endl;
+		dmRigidBody * linki = (dmRigidBody*) artic->m_link_list[SupportIndices[i]]->link;
+		dmContactModel * dmContactLattice = (dmContactModel *) linki->getForce(0); 
+		
+		//cout << "Assigning Temporary Matricies" << endl;
+		Matrix3F RSup = SupportXforms[i].block(0,0,3,3);
+		Matrix3F tmpMat = SupportXforms[i].block(3,0,3,3)*RSup.transpose();
+		Vector3F piRelSup;
+		crossExtract(tmpMat,piRelSup);
+		
+		//cout << "pirelsup " << endl << piRelSup << endl;
+		
+		for (int j=0; j<NP; j++) {
+			Vector3F pRel, tmp;
+				
+			//Tmp is now the contact point location relative to the body coordinate
+			dmContactLattice->getContactPoint(j,tmp.data());
+			
+			// Point of contact (relative to support origin) in support coordinates
+			pRel = RSup*tmp + piRelSup;
+			
+			PointForceXforms[i][j].setIdentity(6,6);
+			PointForceXforms[i][j].block(0,3,3,3) = cr3(pRel);
+		}
+	}
+	
 	pFoot.resize(NS);
 	pDesFoot.resize(NS);
 	
@@ -93,8 +124,34 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 		
 		aFoot[i].resize(6);
 		aDesFoot[i].resize(6);
+		
+		aDesFoot[i].setZero();
+		vDesFoot[i].setZero();
+		pDesFoot[i].setZero();
 	}
 	//ComTrajectory.setSize(3);
+	
+	
+	kpFoot.resize(NS);
+	kdFoot.resize(NS);
+	aDesFoot.resize(NS);
+	pDesFoot.resize(NS);
+	vDesFoot.resize(NS);
+	RDesFoot.resize(NS);
+
+	
+	aComDes.resize(3);
+	aComDes.setZero();
+	
+	vComDes.resize(3);
+	vComDes.setZero();
+	
+	pComDes.resize(3);
+	pComDes.setZero();
+	
+	kComDes.resize(3);
+	kComDes.setZero();
+	
 }
 
 void HumanoidController::ControlInit()
@@ -190,15 +247,14 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 	{
 		dmGetSysTime(&tv2);
 		UpdateObjective();
-		UpdateHPTConstraintBounds();
 		UpdateConstraintMatrix();
+		
+		UpdateHPTConstraintBounds();
+		
 		
 		dmGetSysTime(&tv3);
 		Optimize();
-		tau = xx.segment(tauStart,NJ);
-		qdd = xx.segment(qddStart,NJ+6);
-		fs = xx.segment(fStart,6*NS);
-		lambda = xx.segment(lambdaStart,NS*NP*NF);
+
 		
 		// Extract Results
 		hDotOpt = CentMomMat*qdd + cmBias;

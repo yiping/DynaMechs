@@ -51,6 +51,8 @@ public:
 	
 	
 	XformVector SupportXforms;
+	vector<XformVector > PointForceXforms;
+	
 	IntVector SupportIndices;
 	
 	VectorXF xx;
@@ -59,6 +61,8 @@ public:
 	int numCon;
 	int iter;
 	MSKtask_t     task;
+	VectorXF tau, qdd, fs, lambda;
+	
 	
 protected:
 	

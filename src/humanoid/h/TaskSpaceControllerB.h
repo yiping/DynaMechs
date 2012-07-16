@@ -7,14 +7,9 @@
  *
  */
 
-/*
- *  TaskSpaceController.h
- *  DynaMechs
- *
- *  Created by Patrick Wensing on 4/23/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
- */
+#ifndef __TASK_SPACE_CONTROLLER_B_H__
+#define __TASK_SPACE_CONTROLLER_B_H__
+
 
 #include "TaskSpaceController.h"
 #include "mosek.h"
@@ -48,4 +43,8 @@ public:
 	~TaskSpaceControllerB();
 	
 	static const int tauStart, tauEnd, fStart,fEnd,zStart,eStart,eEnd,eConstrStart,eConstrEnd;
+private:
+	VectorXF eBiasCandG;
 };
+
+#endif

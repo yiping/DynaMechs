@@ -12,9 +12,11 @@
 #include "dmRigidBody.hpp"
 #include "mosek.h"
 #include "GlobalDefines.h"
+#include <Eigen/Cholesky>
 
 #define MAXNUMTASKS (20+6+12)
 
+//#define OPTIM_DEBUG
 
 const int TaskSpaceControllerB::tauStart    = 0;
 const int TaskSpaceControllerB::tauEnd      = NJ-1;
@@ -93,6 +95,10 @@ TaskSpaceControllerB::TaskSpaceControllerB(dmArticulation * art) : TaskSpaceCont
 			if (r == MSK_RES_OK)
 				r = MSK_putmaxnumanz(task,MAXNUMANZ);
 			
+			if (r == MSK_RES_OK) {
+				r =  MSK_putmaxnumcone (task,NS*NP+1);
+			}
+			
 			/* Append 'numCon' empty constraints.
 			 The constraints will initially have no bounds. */
 			if ( r == MSK_RES_OK )
@@ -102,6 +108,28 @@ TaskSpaceControllerB::TaskSpaceControllerB(dmArticulation * art) : TaskSpaceCont
 			 The variables will initially be fixed at zero (x=0). */
 			if ( r == MSK_RES_OK )
 				r = MSK_append(task,MSK_ACC_VAR,NUMVAR);
+			
+			// Error Cone
+			int k=0;
+			MSKidxt csub[MAXNUMTASKS+1];
+			csub[k++] = zStart;
+			for (int i=0; i<MAXNUMTASKS; i++) {
+				csub[k++]=eStart+i;
+			}
+			MSK_appendcone(task, MSK_CT_QUAD, 0.0, MAXNUMTASKS+1, csub);
+			
+			// Append force cones!
+			for (int i=0; i<NS*NP; i++) {
+				MSKidxt csub[3];
+				csub[0] = fStart+3*i+2;
+				csub[1] = fStart+3*i;
+				csub[2] = fStart+3*i+1;
+				
+				MSK_appendcone(task, MSK_CT_QUAD, 0.0, 3, csub);
+			}
+			
+			
+			
 		}
 	}
 	
@@ -144,7 +172,8 @@ void TaskSpaceControllerB::UpdateTauObjective() {
 
 void TaskSpaceControllerB::UpdateObjective() {
 	
-	VectorXd c = VectorXF::Zero(NUMVAR);
+	VectorXd c;
+	c.setZero(NUMVAR);
 	c(zStart) = 1;
 	MSKidxt j;
 	
@@ -204,189 +233,109 @@ void TaskSpaceControllerB::UpdateInitialConstraintBounds() {
 	// None	
 }
 
-void TaskSpaceControllerB::UpdateHPTConstraintBounds()
-{
-	MSKboundkeye  bkc[MAXNUMCON];
-	double        blc[MAXNUMCON], buc[MAXNUMCON]; 
-	MSKidxt       i;
+void TaskSpaceControllerB::UpdateHPTConstraintBounds() {
+	int k=0;
+	MSKidxt csub[MAXNUMTASKS+1];
+	csub[k++] = zStart;
 	
-	//cout << "Loading Hpt Constraints Bounds " << endl;
-	int k = 0;
-	// Bounds on Constraints
-	for (i=hptConstrStart; i<hptConstrStart+TaskBias.rows(); i++) {
-		//cout << k << " of " << TaskBias.rows() << endl;
+	MSKboundkeye bk;
+	double bl, bu;
+	for (int i=0; i<MAXNUMTASKS; i++) {
 		
-		if (taskConstrActive(k) > 0) {
-			bkc[i]=MSK_BK_FX;
+		if (taskConstrActive[i] > 0) {
+			bk = MSK_BK_FX;
+			bl = TaskWeight(i)*(TaskBias(i)+eBiasCandG(i));
+			bu = bl;
+			MSK_putbound(task, MSK_ACC_VAR, eStart+i,MSK_BK_FX, 0, 0);
+		}
+		else if (taskOptimActive[i] >0) {
+			bk = MSK_BK_FX;
+			bl = TaskWeight(i)*(TaskBias(i)+eBiasCandG(i));
+			bu = bl;
+			csub[k++] = eStart+i;
 		}
 		else {
-			bkc[i]=MSK_BK_FR;
+			bk = MSK_BK_FR;
+			bl = -MSK_INFINITY;
+			bu = +MSK_INFINITY;
 		}
-		
-		blc[i]=TaskBias(k);
-		buc[i]=TaskBias(k++);
-		r = MSK_putbound(task, MSK_ACC_CON, i, bkc[i], blc[i], buc[i]);
+
+		MSK_putbound(task, MSK_ACC_CON, i, bk, bl, bu);
 	}
+	MSK_putcone(task, 0, MSK_CT_QUAD, 0.0, k, csub);
 }
 
 
 void TaskSpaceControllerB::UpdateConstraintMatrix() {
-	
+	//dmTimespec tv1,tv2;
+	//dmGetSysTime(&tv1);
 	MSKidxt       asub[NUMVAR],asubtmp[NUMVAR];
 	double		  aval[NUMVAR];
 	cout << setprecision(2);
 	//cout << "H= " << endl << artic->H << endl;
 	
+	LDLT<MatrixXF> decomp(artic->H);
+	MatrixXF invHJt = decomp.solve(TaskJacobian.transpose());
+	MatrixXF JinvH = invHJt.transpose();
+	int m = TaskJacobian.rows();
+	
+	MatrixXF LambdaInvTau = JinvH.block(0,6,m,NJ);
+	LambdaInvTau.topRows(6).setZero();
+	
+	MatrixXF LambdaInvF(m,3*NS*NP);
+	
+	eBiasCandG.resize(m);
+	eBiasCandG = TaskJacobian*decomp.solve(artic->CandG);
+	
+	// Compute the LamndaInvF using one leg at a time, exploiting common structure.
+	for (int i = 0; i<NS; i++) {
+		MatrixXF LambdaInvFLoc(m,6);
+		LambdaInvFLoc = JinvH * SupportJacobians[i].transpose();
+			
+		for (int j=0; j<NP; j++) {
+			
+			
+			//int rightrows = PointForceXforms[i][j].bottomRows(3).rows();
+			//int rightcols = PointForceXforms[i][j].bottomRows(3).cols();
+			
+			//cout << rightrows << "," << rightcols << endl;
+			LambdaInvF.block(0,3*(NP*i+j),m,3) = LambdaInvFLoc*PointForceXforms[i][j].rightCols(3);
+			// Mu scaling
+			LambdaInvF.col(3*(NP*i+j)+2) /= MU;
+		}
+	} 
+	
+	//dmGetSysTime(&tv2);
+	//cout << "Loaded " << timeDiff(tv1, tv2) << endl;
+	
 	// Load rows for dynamics Constraints
-	for(MSKidxt i=dynConstrStart; i<=dynConstrEnd && r == MSK_RES_OK; ++i) {
+	for(MSKidxt i=eConstrStart; i<=eConstrEnd && r == MSK_RES_OK; ++i) {
 		MSKidxt k=0;
-		for (MSKidxt j=0; j<NJ+6; j++) {
-			if (artic->H(i,j) != 0) {
-				asub[k]=j+qddStart;
-				aval[k]=artic->H(i,j);
+		for (MSKidxt j=0; j<NJ; j++) {
+			if (LambdaInvTau(i,j) != 0) {
+				asub[k]=j+tauStart;
+				aval[k]=TaskWeight(i)*LambdaInvTau(i,j);
 				k++;
 			}
 		}
-		if (i>=6) {
-			asub[k] = (i-6)+tauStart;
-			aval[k] = -1;
-			k++;
-		}
 		
-		for (MSKidxt js=0; js<NS; js++) {
-			MSKidxt fsub = 6*js + fStart;
-			for (MSKidxt j=0; j<6; j++) {
-				if (SupportJacobians[js](j,i) != 0) {
-					asub[k] = fsub+j;
-					aval[k] = -SupportJacobians[js](j,i);
-					k++;
-				}
+		for (MSKidxt j=0; j<3*NS*NP; j++) {
+			if (LambdaInvF(i,j) != 0) {
+				asub[k]=j+fStart;
+				aval[k]=TaskWeight(i)*LambdaInvF(i,j);
+				k++;
 			}
 		}
+		
+		asub[k] = eStart+i;
+		aval[k] = -1;
+		k++;
 		
 		//cout << "Loading Constraint " << i << " k=" << endl;
 		if(r == MSK_RES_OK) {
 			r = MSK_putavec(task, MSK_ACC_CON,i,k,asub,aval);
 		}
-		//cout << "d" << i << " = ";
-		//for (int j=0; j<k; j++) {
-		//	cout << aval[j] << " ";
-		//}
-		//cout << endl;
 	}
-	
-	
-	// Load rows for Force Constraints
-	MSKidxt fSub = fStart;
-	
-	
-	// Loop though support bodies
-	for (MSKidxt i = 0; i<NS; i++) {
-		//cout << "Building for support body " << i << endl;
-		
-		Matrix<Float, 6, NP*NF, RowMajor> LocalFrictionBases;
-		
-		MSKidxt k=0;
-		Matrix6F PointXForm, TotalXForm;
-		
-		//cout << "Assigning PointXform blocks " << endl;
-		//cout << "Block size " << PointXForm.block(0,0,3,3).size() << endl;
-		//cout << "Assign size " << Matrix3F::Identity().size() << endl;
-		PointXForm.block(0,0,3,3) = Matrix3F::Identity();
-		PointXForm.block(3,3,3,3) = Matrix3F::Identity();
-		PointXForm.block(0,3,3,3) = Matrix3F::Zero();
-		
-		//cout << "Getting forces for link " << SupportIndices[i] << endl;
-		dmRigidBody * linki = (dmRigidBody*) artic->m_link_list[SupportIndices[i]]->link;
-		dmContactModel * dmContactLattice = (dmContactModel *) linki->getForce(0); 
-		
-		//cout << "Assigning Temporary Matricies" << endl;
-		Matrix3F RSup = SupportXforms[i].block(0,0,3,3);
-		Matrix3F tmpMat = SupportXforms[i].block(3,0,3,3)*RSup.transpose();
-		Vector3F piRelSup;
-		crossExtract(tmpMat,piRelSup);
-		
-		//cout << "pirelsup " << endl << piRelSup << endl;
-		
-		//Loop thought points for support i
-		for (MSKidxt jp =0; jp<NP; jp++) {
-			
-			//cout << "Looping through support point " << jp << endl;
-			MSKidxt lambdaSub = lambdaStart + NP*NF*i + NF*jp;
-			Vector3F pRel, tmp;
-			
-			//Tmp is now the contact point location relative to the body coordinate
-			dmContactLattice->getContactPoint(jp,tmp.data());
-			
-			// Point of contact (relative to support origin) in support coordinates
-			pRel = RSup*tmp + piRelSup;
-			
-			//cout << "Point of contact in body coordinates" << endl << tmp << endl;
-			//cout << "Relative Point of contact in Support Coordinates " << endl << pRel << endl;
-			
-			PointXForm.block(0,3,3,3) = cr3(pRel);
-			
-			LocalFrictionBases.block(0,NF*jp,6,NF) = PointXForm*FrictionBasis;
-			for (MSKidxt jf=0; jf<NF; jf++) {
-				asubtmp[k++] = lambdaSub++;
-			}
-		}
-		//cout << "Local Friction Basis Size " << LocalFrictionBases.rows() << " by " << LocalFrictionBases.cols() << endl;
-		
-		// Process Sparsity of Local Friction basis
-		for (int j=0; j<6 ; j++) {
-			
-			int kact = 0;
-			for (int cnt=0; cnt <NP*NF; cnt++) {
-				if(abs(LocalFrictionBases(j,cnt)) > 10e-10) {
-					asub[kact]=asubtmp[cnt];
-					aval[kact++]=LocalFrictionBases(j,cnt); 
-				}
-			}
-			
-			asub[kact]   = fSub;
-			aval[kact++] = -1;
-			
-			//cout << "f" << j << endl;
-			//for (int cnt =0; cnt<kact; cnt++) {
-			//	cout << aval[cnt] << ", "; 
-			//}
-			//cout <<endl;
-			
-			if(r == MSK_RES_OK) {
-				r = MSK_putavec(task, MSK_ACC_CON,fConstrStart+6*i+j,kact,asub,aval);
-			}
-			
-			fSub++;
-		}
-		//cout << "Constraints Added " << endl;
-		
-	}
-	
-	// Load rows for Additional Constraints	
-	int row=0;
-	MSKidxt k=0;
-	for (MSKidxt i =hptConstrStart; i< hptConstrStart + TaskBias.rows(); i++) {
-		//cout << "CJ row " << row << endl;
-		k=0;
-		for (MSKidxt jj = 0; jj<(NJ+6); jj++) {
-			if (TaskJacobian(row,jj) !=0) {
-				aval[k]=TaskJacobian(row,jj);
-				asub[k]=qddStart+jj;
-				//cout << aval[k] << ",";
-				k++;
-			}
-		}
-		if(r == MSK_RES_OK) {
-			r = MSK_putavec(task, MSK_ACC_CON,i,k,asub,aval);
-		}
-		row++;
-		//cout << endl << " nnz " << k << endl;
-		//cout << ConstraintJacobian.row(row) << endl;
-		
-	}
-	//cout << "additional Constraints added" << endl;
-	
 }
 
 void TaskSpaceControllerB::Optimize() {
@@ -394,9 +343,21 @@ void TaskSpaceControllerB::Optimize() {
 	if ( r==MSK_RES_OK ) {
 		MSKrescodee trmcode;
 		
-		/* Run optimizer */
-		r = MSK_optimizetrm(task,&trmcode);
+
+		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_REL_GAP, 10e-04);
+		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_DFEAS, 10e-04);
+		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_MU_RED, 10e-08);
+		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_PFEAS, 10e-08);
+		MSK_putintparam(task, MSK_IPAR_INTPNT_NUM_THREADS, 1);
 		
+		//MSK_putintparam(task, MSK_IPAR_DATA_CHECK, MSK_OFF);
+		//MSK_putintparam(task, MSK_IPAR_CONCURRENT_NUM_OPTIMIZERS, 0);
+		//MSK_putintparam(task, MSK_IPAR_LOG, 0);
+		MSK_putintparam(task, MSK_IPAR_INTPNT_BASIS, MSK_BI_NEVER);
+		
+		/* Run optimizer */
+		
+		r = MSK_optimizetrm(task,&trmcode);
 		/* Print a summary containing information
 		 about the solution for debugging purposes*/
 #ifdef OPTIM_DEBUG
@@ -404,13 +365,9 @@ void TaskSpaceControllerB::Optimize() {
 		A.resize(numCon,NUMVAR);
 		
 		for (int i=0; i<numCon; i++) {
-			if (i==fConstrStart) {
-				cout << endl;
-			}
-			
 			
 			for (int j=0; j<NUMVAR; j++) {
-				if (j==qddStart || j==fStart || j==lambdaStart) {
+				if (j==tauStart || j==fStart || j==eStart) {
 					cout << "|";
 				}
 				double aij;
@@ -490,5 +447,25 @@ void TaskSpaceControllerB::Optimize() {
 						 symname,
 						 desc);
 		printf("Error %s - '%s'\n",symname,desc);
+	}
+	
+	//MSKrealt a;
+	//MSK_getdouparam(task, MSK_DPAR_INTPNT_CO_TOL_REL_GAP, &a);
+	//cout << a << endl;
+	//exit(-1);
+	
+	tau = xx.segment(tauStart,NJ);
+	qdd = VectorXF::Zero(NJ+6);
+	fs = VectorXF::Zero(6*NS);
+	lambda = VectorXF::Zero(1);
+	VectorXF f(NS*NP);
+	f = xx.segment(fStart,3*NS*NP);
+	
+	for (int i=0; i<NS; i++) {
+		for (int j=0; j<NP ; j++) {
+			Vector3F floc = f.segment(3*(NP*i+j),3);
+			floc(2)/=MU;
+			fs.segment(6*i,6) += PointForceXforms[i][j].rightCols(3)*floc;
+		}
 	}
 }

@@ -489,46 +489,13 @@ void TaskSpaceControllerA::UpdateConstraintMatrix() {
 		Matrix<Float, 6, NP*NF, RowMajor> LocalFrictionBases;
 		
 		MSKidxt k=0;
-		Matrix6F PointXForm, TotalXForm;
-		
-		//cout << "Assigning PointXform blocks " << endl;
-		//cout << "Block size " << PointXForm.block(0,0,3,3).size() << endl;
-		//cout << "Assign size " << Matrix3F::Identity().size() << endl;
-		PointXForm.block(0,0,3,3) = Matrix3F::Identity();
-		PointXForm.block(3,3,3,3) = Matrix3F::Identity();
-		PointXForm.block(0,3,3,3) = Matrix3F::Zero();
-		
-		//cout << "Getting forces for link " << SupportIndices[i] << endl;
-		dmRigidBody * linki = (dmRigidBody*) artic->m_link_list[SupportIndices[i]]->link;
-		dmContactModel * dmContactLattice = (dmContactModel *) linki->getForce(0); 
-		
-		//cout << "Assigning Temporary Matricies" << endl;
-		Matrix3F RSup = SupportXforms[i].block(0,0,3,3);
-		Matrix3F tmpMat = SupportXforms[i].block(3,0,3,3)*RSup.transpose();
-		Vector3F piRelSup;
-		crossExtract(tmpMat,piRelSup);
-		
-		//cout << "pirelsup " << endl << piRelSup << endl;
 		
 		//Loop thought points for support i
 		for (MSKidxt jp =0; jp<NP; jp++) {
-			
 			//cout << "Looping through support point " << jp << endl;
 			MSKidxt lambdaSub = lambdaStart + NP*NF*i + NF*jp;
-			Vector3F pRel, tmp;
 			
-			//Tmp is now the contact point location relative to the body coordinate
-			dmContactLattice->getContactPoint(jp,tmp.data());
-			
-			// Point of contact (relative to support origin) in support coordinates
-			pRel = RSup*tmp + piRelSup;
-			
-			//cout << "Point of contact in body coordinates" << endl << tmp << endl;
-			//cout << "Relative Point of contact in Support Coordinates " << endl << pRel << endl;
-			
-			PointXForm.block(0,3,3,3) = cr3(pRel);
-			
-			LocalFrictionBases.block(0,NF*jp,6,NF) = PointXForm*FrictionBasis;
+			LocalFrictionBases.block(0,NF*jp,6,NF) = PointForceXforms[i][jp]*FrictionBasis;
 			for (MSKidxt jf=0; jf<NF; jf++) {
 				asubtmp[k++] = lambdaSub++;
 			}
@@ -693,4 +660,8 @@ void TaskSpaceControllerA::Optimize() {
 						 desc);
 		printf("Error %s - '%s'\n",symname,desc);
 	}
+	tau = xx.segment(tauStart,NJ);
+	qdd = xx.segment(qddStart,NJ+6);
+	fs = xx.segment(fStart,6*NS);
+	lambda = xx.segment(lambdaStart,NS*NP*NF);
 }

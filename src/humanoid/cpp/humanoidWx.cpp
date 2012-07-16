@@ -167,6 +167,7 @@ bool MyApp::OnInit()
 		cout << "Creating Robot" << endl;
 		
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
+		
 		humanoid = (HumanoidDataLogger *) new BalanceDemoStateMachine(G_robot);
 		
 		cout << "Robot Created" << endl;

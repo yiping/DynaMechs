@@ -76,6 +76,32 @@ drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('Z Ang Mom (m)');
 
 
+
+f = figure('Name','hDot','Position',figPos); figs = [figs f];
+clf
+a=[a subplot(311)];
+hold on
+plot(t,hDotOpt(1,:),'r');
+plot(t,hDotDes(1,:),'r--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM X'); xlabel('Time (s)'); ylabel('X Position (m)');
+
+a=[a subplot(312)];
+hold on
+plot(t,hDotOpt(2,:),'g');
+plot(t,hDotDes(2,:),'g--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM Y'); xlabel('Time (s)'); ylabel('Y Position (m)');
+
+a=[a subplot(313)];
+hold on
+plot(t,hDotOpt(3,:),'b');
+plot(t,hDotDes(3,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM Z'); xlabel('Time (s)'); ylabel('Z Position (m)');
+
+
+
 f = figure('Name','CoM Trajectory','Position',figPos); figs = [figs f];
 clf
 hold on

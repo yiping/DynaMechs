@@ -230,8 +230,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -271,14 +269,16 @@
 								<string>1940A4981507C5FE00CD4386</string>
 								<string>198016D215994F9F00DB8AD5</string>
 								<string>19C6AAC21588ED1100298257</string>
+								<string>19C6AABF1588ED0600298257</string>
 								<string>1C37FBAC04509CD000000102</string>
+								<string>190B17FB15B5F04E00EBD39A</string>
+								<string>190B182215B5F56C00EBD39A</string>
 								<string>1C37FAAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>28</integer>
 									<integer>16</integer>
 									<integer>12</integer>
 									<integer>3</integer>
@@ -286,7 +286,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {341, 964}}</string>
+							<string>{{0, 2}, {341, 964}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -316,12 +316,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>BalanceDemoStateMachine.cpp</string>
+								<string>JumpingStateMachine.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -329,17 +331,23 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>BalanceDemoStateMachine.cpp</string>
+										<string>JumpingStateMachine.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>190B180515B5F09F00EBD39A</string>
+										<string>190B191E15B60D4500EBD39A</string>
 										<key>history</key>
 										<array>
-											<string>190B180115B5F09F00EBD39A</string>
-											<string>190B180215B5F09F00EBD39A</string>
-											<string>190B180315B5F09F00EBD39A</string>
-											<string>190B180415B5F09F00EBD39A</string>
+											<string>190B182415B5F56C00EBD39A</string>
+											<string>190B182515B5F56C00EBD39A</string>
+											<string>190B182615B5F56C00EBD39A</string>
+											<string>190B182815B5F56C00EBD39A</string>
+											<string>190B183715B5F5DF00EBD39A</string>
+											<string>190B18FE15B608ED00EBD39A</string>
+											<string>190B18FF15B608ED00EBD39A</string>
+											<string>190B190015B608ED00EBD39A</string>
+											<string>190B191C15B60D4500EBD39A</string>
+											<string>190B191D15B60D4500EBD39A</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -537,8 +545,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>190B191F15B60D4500EBD39A</string>
+		<string>190B182B15B5F56C00EBD39A</string>
+		<string>190B182C15B5F56C00EBD39A</string>
 		<string>1925863714D2E86400778EA7</string>
 		<string>1CD10A99069EF8BA00B06720</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -558,12 +570,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>JumpingStateMachine.cpp</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -905,7 +919,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C78EAAD065D492600B07095</string>
-				<string>190B14F015B4F99C00EBD39A</string>
+				<string>190B181F15B5F55E00EBD39A</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>

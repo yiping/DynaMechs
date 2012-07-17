@@ -15,18 +15,12 @@
 
 DataLogger::DataLogger() {
 	curr = NULL;
+	maxItems = 0;
+	maxGroups = 0;
 }
 void DataLogger::newRecord() {
 	curr = new FloatVector(maxItems);
 	data.push_back(curr);
-	
-	/*for (int i = 0 ; i< maxGroups; i++) {
-		cout << "Group  " << i << " ='" << groupNames[i] << "' Size " << groups[i].size() << endl;
-	}
-	
-	for (int i=0; i<maxItems; i++) {
-		cout << "item " << i << " = " << itemNames[i] << endl;
-	}*/
 	return;
 }
 

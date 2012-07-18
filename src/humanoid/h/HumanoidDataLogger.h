@@ -32,7 +32,7 @@ private:
 	int ZMP_WRENCH_OPT, ZMP_POS_OPT;
 	
 	
-	enum DataItems {
+	int
 		TIME,
 		STATE_CODE,
 		// POSITIONS
@@ -150,25 +150,15 @@ private:
 		ZMP_F_Z,
 		ZMP_P_X,
 		ZMP_P_Y,
-		ZMP_N_Z,
-		MAX_STATIC_ITEMS
-	};
+	ZMP_N_Z;
 	
-	enum DataGroups {
+	int
 		JOINT_ANGLES,
 		JOINT_RATES,
 		JOINT_TORQUES,
 		LEFT_FOOT_WRENCH,
-		//LEFT_FOOT_COP_FORCE,
-		//LEFT_FOOT_COP_LOC,
 		RIGHT_FOOT_WRENCH,
-		//RIGHT_FOOT_COP_FORCE,
-		//RIGHT_FOOT_COP_POS,
-		ZMP_WRENCH,
-		//ZMP_FORCE,
-		//ZMP_POS,
-		MAX_STATIC_GROUPS
-	};
+		ZMP_WRENCH;
 };
 
 #endif

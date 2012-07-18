@@ -21,6 +21,7 @@ SimulationThread::SimulationThread() : wxThread(wxTHREAD_JOINABLE)
 	unPauseCondition  = new wxCondition(mutex);
 	G_integrator = new dmIntegEuler();
 	paused_flag = true;
+	sim_time = 0;
 }
 
 SimulationThread::~SimulationThread()
@@ -30,8 +31,9 @@ SimulationThread::~SimulationThread()
 
 void *SimulationThread::Entry()
 {
-	dmTimespec tv_now;
+	dmTimespec tv_now, last_control_tv;
 	dmGetSysTime(&tv_now);
+	dmGetSysTime(&last_control_tv);
 	stopRequested = false;
 	
 	while (!stopRequested) {
@@ -49,7 +51,15 @@ void *SimulationThread::Entry()
 			humanoid->StateControl(ci);
 			//HumanoidControl(ci); 
 			//cout << ci.totalTime << "\t" << ci.calcTime << "\t" << ci.setupTime << "\t" << ci.optimTime << "\t" << ci.iter << endl;
+			dmGetSysTime(&tv_now);
+			Float realTimeDiff = timeDiff(last_control_tv, tv_now);
+			Float sleepTime = 3*cdt - realTimeDiff;
 			
+			if (sleepTime > 0) {
+				wxMicroSleep((unsigned long) (sleepTime * 1e6));
+			}
+			
+			dmGetSysTime(&last_control_tv);
 			last_control_time = sim_time;
 		}
 		// Simulate

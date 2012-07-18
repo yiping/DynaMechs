@@ -21,6 +21,7 @@
 //#define CONTROL_DEBUG
 
 
+
 #define STATE_SIZE (NJ+7+4)
 #define RATE_SIZE  (NJ+6)
 /*Matrix3F RSup;
@@ -38,7 +39,7 @@ Float totalMass;
 
 CubicSplineTrajectory ComTrajectory;*/
 
-HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceController(robot) {
+HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerA(robot) {
 	q.resize(STATE_SIZE);
 	qdDm.resize(STATE_SIZE);
 	qd.resize(RATE_SIZE);
@@ -58,7 +59,7 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 	for (int k=0; k<NS; k++) {
 		Xforms[k].resize(6,6);
 		
-		dmRigidBody * link = (dmRigidBody*) G_robot->getLink(SupportIndices[k]);
+		dmRigidBody * link = (dmRigidBody*) artic->getLink(SupportIndices[k]);
 		dmContactModel * dmContactLattice = (dmContactModel *) link->getForce(0); 
 		
 		Vector3F pRel;
@@ -70,6 +71,37 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 		Xforms[k].block(3,3,3,3) = RSup;
 	}
 	SupportXforms = Xforms;
+	
+	// Construct Point Force Transform
+	PointForceXforms.resize(NS);
+	for (int i=0; i<NS; i++) {
+		PointForceXforms[i].resize(NJ);
+		
+		//cout << "Getting forces for link " << SupportIndices[i] << endl;
+		dmRigidBody * linki = (dmRigidBody*) artic->m_link_list[SupportIndices[i]]->link;
+		dmContactModel * dmContactLattice = (dmContactModel *) linki->getForce(0); 
+		
+		//cout << "Assigning Temporary Matricies" << endl;
+		Matrix3F RSup = SupportXforms[i].block(0,0,3,3);
+		Matrix3F tmpMat = SupportXforms[i].block(3,0,3,3)*RSup.transpose();
+		Vector3F piRelSup;
+		crossExtract(tmpMat,piRelSup);
+		
+		//cout << "pirelsup " << endl << piRelSup << endl;
+		
+		for (int j=0; j<NP; j++) {
+			Vector3F pRel, tmp;
+				
+			//Tmp is now the contact point location relative to the body coordinate
+			dmContactLattice->getContactPoint(j,tmp.data());
+			
+			// Point of contact (relative to support origin) in support coordinates
+			pRel = RSup*tmp + piRelSup;
+			
+			PointForceXforms[i][j].setIdentity(6,6);
+			PointForceXforms[i][j].block(0,3,3,3) = cr3(pRel);
+		}
+	}
 	
 	pFoot.resize(NS);
 	pDesFoot.resize(NS);
@@ -92,8 +124,34 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 		
 		aFoot[i].resize(6);
 		aDesFoot[i].resize(6);
+		
+		aDesFoot[i].setZero();
+		vDesFoot[i].setZero();
+		pDesFoot[i].setZero();
 	}
 	//ComTrajectory.setSize(3);
+	
+	
+	kpFoot.resize(NS);
+	kdFoot.resize(NS);
+	aDesFoot.resize(NS);
+	pDesFoot.resize(NS);
+	vDesFoot.resize(NS);
+	RDesFoot.resize(NS);
+
+	
+	aComDes.resize(3);
+	aComDes.setZero();
+	
+	vComDes.resize(3);
+	vComDes.setZero();
+	
+	pComDes.resize(3);
+	pComDes.setZero();
+	
+	kComDes.resize(3);
+	kComDes.setZero();
+	
 }
 
 void HumanoidController::ControlInit()
@@ -101,7 +159,7 @@ void HumanoidController::ControlInit()
 	//Update State Variables for Control
 	{
 		artic->getState(q.data(),qdDm.data());
-		int N = G_robot->getTrueNumDOFs();
+		int N = artic->getTrueNumDOFs();
 		
 		extractQd(qdDm, qd);
 		
@@ -112,15 +170,15 @@ void HumanoidController::ControlInit()
 			//qdDm(4) = 2;
 			//qdDm(5) = -.8;
 			//qdDm.segment(7,NJ) = VectorXF::Ones(NJ);
-			//G_robot->setState(q.data(),qdDm.data());
+			//artic->setState(q.data(),qdDm.data());
 		}
 		
 		
 		//Dynamechs expresses the velocity of the FB in the ICS coordinate
 		//We get it in the FB coord here to be consistent
 		//with our definition of H.
-		G_robot->getLink(0)->rtxFromInboard(qdDm.data(),qd.data());
-		G_robot->getLink(0)->rtxFromInboard(qdDm.data()+3,qd.data()+3);
+		artic->getLink(0)->rtxFromInboard(qdDm.data(),qd.data());
+		artic->getLink(0)->rtxFromInboard(qdDm.data()+3,qd.data()+3);
 		
 		ObtainArticulationData();
 		UpdateVariableBounds();
@@ -189,15 +247,14 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 	{
 		dmGetSysTime(&tv2);
 		UpdateObjective();
-		UpdateHPTConstraintBounds();
 		UpdateConstraintMatrix();
+		
+		UpdateHPTConstraintBounds();
+		
 		
 		dmGetSysTime(&tv3);
 		Optimize();
-		tau = xx.segment(tauStart,NJ);
-		qdd = xx.segment(qddStart,NJ+6);
-		fs = xx.segment(fStart,6*NS);
-		lambda = xx.segment(lambdaStart,NS*NP*NF);
+
 		
 		// Extract Results
 		hDotOpt = CentMomMat*qdd + cmBias;
@@ -247,7 +304,7 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 		//cout << "Joint input = " << jointInput.transpose() << endl;
 		//exit(-1);
 		//jointInput.segment(7,NJ) = tau;
-		G_robot->setJointInput(jointInput.data());
+		artic->setJointInput(jointInput.data());
 		ComputeActualQdd(qddA);
 		dmGetSysTime(&tv4);
 	}
@@ -270,8 +327,8 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 		cout << "qd2 " << qd.transpose() << endl;
 		cout << "Task Bias " << TaskBias << endl;
 		
-		//cout << "H = " << endl << G_robot->H << endl;
-		cout << "CandG = " << endl << G_robot->CandG.transpose() << endl;
+		//cout << "H = " << endl << artic->H << endl;
+		cout << "CandG = " << endl << artic->CandG.transpose() << endl;
 		
 		if (simThread->sim_time > 0) {
 			
@@ -319,8 +376,8 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 			VectorXF e = TaskJacobian * qdd - TaskBias;
 			cout << "e = " << e.transpose() << endl;
 			
-			MatrixXF H = G_robot->H;
-			VectorXF CandG = G_robot->CandG;
+			MatrixXF H = artic->H;
+			VectorXF CandG = artic->CandG;
 			
 			MatrixXF S = MatrixXF::Zero(NJ,NJ+6);
 			S.block(0,6,NJ,NJ) = MatrixXF::Identity(NJ,NJ);
@@ -365,13 +422,13 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 			
 			for (int i=0; i<NS; i++) {
 				int linkIndex = SupportIndices[i];
-				G_robot->computeJacobian(linkIndex,X,Jac);
-				dmRigidBody * link = (dmRigidBody *) G_robot->getLink(linkIndex);
+				artic->computeJacobian(linkIndex,X,Jac);
+				dmRigidBody * link = (dmRigidBody *) artic->getLink(linkIndex);
 				
 				for (int j=0; j< link->getNumForces(); j++) {
 					dmForce * f = link->getForce(j);
 					Vector6F fContact;
-					f->computeForce(G_robot->m_link_list[linkIndex]->link_val2,fContact.data());
+					f->computeForce(artic->m_link_list[linkIndex]->link_val2,fContact.data());
 					generalizedContactForce += Jac.transpose()*fContact;
 				}
 			}
@@ -390,7 +447,7 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 			
 			
 			//Process qdds
-			G_robot->dynamics(state.data(),stateDot.data());
+			artic->dynamics(state.data(),stateDot.data());
 			//
 			VectorXF qdds = VectorXF::Zero(NJ+6);
 			qdds.segment(0,6) = stateDot.segment(NJ+7,6);
@@ -401,7 +458,7 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 			qdds.segment(6,NJ) = stateDot.segment(NJ+7*2,NJ);
 			
 			Matrix3F ics_R_fb;
-			copyRtoMat(G_robot->m_link_list[0]->link_val2.R_ICS,ics_R_fb);
+			copyRtoMat(artic->m_link_list[0]->link_val2.R_ICS,ics_R_fb);
 			
 			qdds.head(3) = ics_R_fb.transpose() * qdds.head(3);
 			qdds.segment(3,3) = ics_R_fb.transpose() * qdds.segment(3,3);
@@ -412,7 +469,7 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 			//cout << "CandG " << endl << CandG << endl;
 			
 			//cout << setprecision(6);
-			//cout << "I_0^C = " << endl << G_robot->H.block(0,0,6,6) << endl;
+			//cout << "I_0^C = " << endl << artic->H.block(0,0,6,6) << endl;
 			//exit(-1);
 		}
 	}
@@ -475,7 +532,7 @@ void HumanoidController::ComputeActualQdd(VectorXF & qddA)
 	VectorXF stateDot = VectorXF::Zero(2*STATE_SIZE);
 	
 	//Process qdds
-	G_robot->dynamics(state.data(),stateDot.data());
+	artic->dynamics(state.data(),stateDot.data());
 	extractQd(stateDot.segment(STATE_SIZE,STATE_SIZE), qddA);
 	
 	//qdds.segment(0,6) = stateDot.segment(STATE_SIZE,STATE_SIZE);
@@ -483,7 +540,7 @@ void HumanoidController::ComputeActualQdd(VectorXF & qddA)
 	
 	qddA.segment(3,3) -= cr3(qdDm.segment(0,3))*qdDm.segment(3,3);
 	Matrix3F ics_R_fb;
-	copyRtoMat(G_robot->m_link_list[0]->link_val2.R_ICS,ics_R_fb);
+	copyRtoMat(artic->m_link_list[0]->link_val2.R_ICS,ics_R_fb);
 	qddA.head(3) = ics_R_fb.transpose() * qddA.head(3);
 	qddA.segment(3,3) = ics_R_fb.transpose() * qddA.segment(3,3);
 	
@@ -494,7 +551,7 @@ void HumanoidController::ComputeActualQdd(VectorXF & qddA)
 	//cout << "CandG " << endl << CandG << endl;
 	
 	//cout << setprecision(6);
-	//cout << "I_0^C = " << endl << G_robot->H.block(0,0,6,6) << endl;
+	//cout << "I_0^C = " << endl << artic->H.block(0,0,6,6) << endl;
 	//exit(-1);	
 	
 }
@@ -528,7 +585,7 @@ void HumanoidController::ComputeComInfo(Matrix6XF & Cmm, Vector6F & bias, Vector
 	// pCom = pBase + pComRelBase
 	pCom -= ics_R_fb*pFBRelCoM;
 	
-	int N = G_robot->H.cols();
+	int N = artic->H.cols();
 	Cmm.resize(6,N);
 	
 	

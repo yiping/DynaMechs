@@ -76,6 +76,32 @@ drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('Z Ang Mom (m)');
 
 
+
+f = figure('Name','hDot','Position',figPos); figs = [figs f];
+clf
+a=[a subplot(311)];
+hold on
+plot(t,hDotOpt(1,:),'r');
+plot(t,hDotDes(1,:),'r--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM X'); xlabel('Time (s)'); ylabel('X Position (m)');
+
+a=[a subplot(312)];
+hold on
+plot(t,hDotOpt(2,:),'g');
+plot(t,hDotDes(2,:),'g--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM Y'); xlabel('Time (s)'); ylabel('Y Position (m)');
+
+a=[a subplot(313)];
+hold on
+plot(t,hDotOpt(3,:),'b');
+plot(t,hDotDes(3,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM Z'); xlabel('Time (s)'); ylabel('Z Position (m)');
+
+
+
 f = figure('Name','CoM Trajectory','Position',figPos); figs = [figs f];
 clf
 hold on
@@ -218,13 +244,52 @@ xlabel('Time (s)'); ylabel('ZMP N Z');
 f = figure('Name','Foot Trajectories','Position',figPos); figs = [figs f];
 clf
 hold on
-plot(lFootPos(2,:),lFootPos(3,:),'r')
-plot(lFootPosDes(2,:),lFootPosDes(3,:),'r--')
+plot(lFootPos(1,:),lFootPos(3,:),'r')
+plot(lFootPosDes(1,:),lFootPosDes(3,:),'r--')
 
-plot(rFootPos(2,:),rFootPos(3,:),'b')
-plot(rFootPosDes(2,:),rFootPosDes(3,:),'b--')
-xlabel('Y Position (m)');
+plot(rFootPos(1,:),rFootPos(3,:),'b')
+plot(rFootPosDes(1,:),rFootPosDes(3,:),'b--')
+xlabel('X Position (m)');
 ylabel('Z Position (m)');
+
+
+f = figure('Name','Left Foot Trajectories','Position',figPos); figs = [figs f];
+a=[a subplot(321)]
+hold on
+plot(t,lFootPos(1,:),'r');
+plot(t,lFootPosDes(1,:),'r--');
+xlabel('Time (s)'); ylabel('Pos X');
+
+a=[a subplot(323)]
+hold on
+plot(t,lFootPos(2,:),'g');
+plot(t,lFootPosDes(2,:),'g--');
+xlabel('Time (s)'); ylabel('Pos Y');
+
+a=[a subplot(325)]
+hold on
+plot(t,lFootPos(3,:),'b');
+plot(t,lFootPosDes(3,:),'b--');
+xlabel('Time (s)'); ylabel('Pos Z');
+
+a=[a subplot(322)]
+hold on
+plot(t,lFootVel(4,:),'r');
+plot(t,lFootVelDes(4,:),'r--');
+xlabel('Time (s)'); ylabel('Vel X');
+
+a=[a subplot(324)]
+hold on
+plot(t,lFootVel(5,:),'g');
+plot(t,lFootVelDes(5,:),'g--');
+xlabel('Time (s)'); ylabel('Vel Y');
+
+a=[a subplot(326)]
+hold on
+plot(t,lFootVel(6,:),'b');
+plot(t,lFootVelDes(6,:),'b--');
+xlabel('Time (s)'); ylabel('Vel Z');
+
 
 
 %%%%%%%%%

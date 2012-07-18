@@ -10,12 +10,12 @@
 #ifndef __HUMANOID_CONTROL_H__
 #define __HUMANOID_CONTROL_H__
 
-#include "TaskSpaceController.h"
+#include "TaskSpaceControllerA.h"
 #include "Humanoid.h"
 
 #define COPY_P_TO_VEC(p,pvec) pvec << p[0], p[1], p[2]; 
 
-class HumanoidController : public Humanoid , public TaskSpaceController {
+class HumanoidController : public Humanoid , public TaskSpaceControllerA {
 public:
 	HumanoidController(dmArticulation * robot);
 	void HumanoidControl(ControlInfo &);
@@ -27,7 +27,6 @@ public:
 	
 	Vector6F centMom, hDotDes, hDotOpt, hDes;
 	Vector3F kDotDes;
-	VectorXF fs, lambda;
 	VectorXF pComDes, vComDes;
 	Float totalMass;
 protected:
@@ -48,6 +47,7 @@ protected:
 	Vector6F zmpWrenchOpt;
 	Vector3F zmpPosOpt;
 	
+	VectorXF aComDes, kComDes;
 	
 private:
 	void computeActualQdd(VectorXF & qdd);

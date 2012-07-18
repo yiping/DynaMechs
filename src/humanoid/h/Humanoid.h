@@ -23,7 +23,7 @@ protected:
 	
 	Vector3F pCom, vCom;
 	Vector6F cmBias;
-	VectorXF q, qdDm, qd,tau, qdd, qddA;
+	VectorXF q, qdDm, qd, qddA;
 	
 private:
 	

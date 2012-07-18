@@ -47,7 +47,7 @@
 #include "TaskSpaceController.h"
 #include "HumanoidController.h"
 #include "SimulationThread.h"
-#include "BalanceDemoStateMachine.h"
+#include "JumpingStateMachine.h"
 //#define KURMET_DEBUG
 
 #define OUTPUT_DEBUG_INFO
@@ -167,7 +167,8 @@ bool MyApp::OnInit()
 		cout << "Creating Robot" << endl;
 		
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
-		humanoid = (HumanoidDataLogger *) new BalanceDemoStateMachine(G_robot);
+		
+		humanoid = (HumanoidDataLogger *) new JumpingStateMachine(G_robot);
 		
 		cout << "Robot Created" << endl;
 		

@@ -41,7 +41,7 @@ wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,w
 	camera = new wxDMGLPolarCamera_zup();
 	cout << "Mouse and Camera Created" << endl;
 	
-	glViewport (0, 0, size.GetWidth(), size.GetHeight());
+	//glViewport (0, 0, size.GetWidth(), size.GetHeight());
 	mouse->win_size_x = size.GetWidth();
 	mouse->win_size_y = size.GetHeight();
 	cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
@@ -95,8 +95,8 @@ void BasicGLPane::mouseMoved(wxMouseEvent& event) {
 	//cout << "mouse moving" << endl;
 	//cout << "mouse moving          "<< mouse->button_flags  << endl;
 	extractMouseInfo(event);
-	camera->update(mouse);
-	camera->applyView();
+	//camera->update(mouse);
+	//camera->applyView();
 	Refresh();
 }
 void BasicGLPane::mouseLeftDown(wxMouseEvent& event) {
@@ -111,8 +111,8 @@ void BasicGLPane::mouseLeftUp(wxMouseEvent& event)  {
 	//cout << "left button released" << endl;
 	//cout << "left button released  "<< mouse->button_flags << endl;
 	extractMouseInfo(event);
-	camera->update(mouse);
-	camera->applyView();
+	//camera->update(mouse);
+	//camera->applyView();
 	Refresh();
 }
 
@@ -128,8 +128,8 @@ void BasicGLPane::mouseMiddleUp(wxMouseEvent& event)  {
 	//cout << "Mid button released" << endl;
 	
 	extractMouseInfo(event);
-	camera->update(mouse);
-	camera->applyView();
+	//camera->update(mouse);
+	//camera->applyView();
 	Refresh();
 }
 
@@ -143,8 +143,8 @@ void BasicGLPane::mouseRightUp(wxMouseEvent& event)  {
 	mouse->button_flags &= ~MOUSE_R_DN;
 	//cout << "right button released" << endl;
 	extractMouseInfo(event);
-	camera->update(mouse);
-	camera->applyView();
+	//camera->update(mouse);
+	//camera->applyView();
 	Refresh();
 }
 void BasicGLPane::mouseWheelMoved(wxMouseEvent& event) { }
@@ -179,8 +179,8 @@ void BasicGLPane::keyReleased(wxKeyEvent& event) {
     }*/
 	if (event.GetUnicodeKey() == 32) {
 		mouse->button_flags &= ~MOUSE_M_DN;
-		camera->update(mouse);
-		camera->applyView();
+		//camera->update(mouse);
+		//camera->applyView();
 		Refresh();
 	}
 	
@@ -191,7 +191,7 @@ void BasicGLPane::resized(wxSizeEvent& evt) {
 	
 	//cout<<"resize event"<<endl;
 	wxSize size = evt.GetSize();
-	glViewport (0, 0, size.GetWidth(), size.GetHeight());
+	//glViewport (0, 0, size.GetWidth(), size.GetHeight());
 	mouse->win_size_x = size.GetWidth();
 	mouse->win_size_y = size.GetHeight();
 	//cout << "w= " << mouse->win_size_x << ",  h=" << mouse->win_size_y << endl;
@@ -204,46 +204,6 @@ void BasicGLPane::resized(wxSizeEvent& evt) {
     Refresh();
 	
 	//// Update();
-}
-
-/** Inits the OpenGL viewport for drawing in 3D. */
-void BasicGLPane::prepare3DViewport(int topleft_x, int topleft_y, int bottomrigth_x, int bottomrigth_y) {
-	
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black Background
-    glClearDepth(1.0f);	// Depth Buffer Setup
-    glEnable(GL_DEPTH_TEST); // Enables Depth Testing
-    glDepthFunc(GL_LEQUAL); // The Type Of Depth Testing To Do
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	
-    glEnable(GL_COLOR_MATERIAL);
-	
-    glViewport(topleft_x, topleft_y, bottomrigth_x-topleft_x, bottomrigth_y-topleft_y);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-	
-    float ratio_w_h = (float)(bottomrigth_x-topleft_x)/(float)(bottomrigth_y-topleft_y);
-    gluPerspective(45 /*view angle*/, ratio_w_h, 0.1 /*clip close*/, 200 /*clip far*/);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-	
-}
-
-/** Inits the OpenGL viewport for drawing in 2D. */
-void BasicGLPane::prepare2DViewport(int topleft_x, int topleft_y, int bottomrigth_x, int bottomrigth_y) {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black Background
-    glEnable(GL_TEXTURE_2D);   // textures
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_BLEND);
-    glDisable(GL_DEPTH_TEST);
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	
-    glViewport(topleft_x, topleft_y, bottomrigth_x-topleft_x, bottomrigth_y-topleft_y);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    
-    gluOrtho2D(topleft_x, bottomrigth_x, bottomrigth_y, topleft_y);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 }
 
 int BasicGLPane::getWidth() {
@@ -264,6 +224,14 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	SetCurrent();
 	//cout << "Current Set" << endl;
     
+	
+	// primary view port:
+	glScissor(0, 0, getWidth(), getHeight());
+	glViewport (0, 0, getWidth(), getHeight());
+	
+	glClearColor (0.49, 0.62, 0.75,1.0); /* background colour */ //lyp
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	camera->setPerspective(45.0, (GLfloat)getWidth()/(GLfloat)getHeight(), 1.0, 200.0);
 	camera->update(mouse);
 	camera->applyView();
@@ -380,7 +348,9 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glPopMatrix ();
 		glMatrixMode(GL_MODELVIEW);
 		glPopMatrix ();
+		glColor3f(1.0, 1.0, 1.0); 
 		glEnable (GL_LIGHTING);// ****
+		
 	}
 	
 	
@@ -398,6 +368,7 @@ void BasicGLPane::glInit()
 {
 	//glEnable(GL_MULTISAMPLE);
 	//glHint(GL_MULTISAMPLE_FILTER_HINT_NV,GL_NICEST);
+	glEnable(GL_SCISSOR_TEST);
 	
 		GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 		GLfloat light_diffuse[] = { 0.7, 0.7, 0.7, 1.0 };

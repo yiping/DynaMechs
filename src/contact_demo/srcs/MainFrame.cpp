@@ -3,7 +3,7 @@
 //  July 7, 2012
 //  YL
 
-#include "globals.h"
+#include "globalVariables.h"
 #include "MainFrame.h"
 
 
@@ -151,7 +151,8 @@ void MainFrame::OnClose(wxCloseEvent & event)
 
 void MainFrame::OnSaveData(wxCommandEvent & event)
 {
-	//
+	// saving data
+	logger->saveToFile();
 }
 
 
@@ -235,11 +236,11 @@ void MainFrame::OnIntegrationStep(wxCommandEvent &event)
 
 void MainFrame::OnSaveDirectory(wxCommandEvent &event)
 {
-	string dataSaveDirectory = "";
-	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(dataSaveDirectory.c_str(),wxConvUTF8));
+	//string dataSaveDirectory = "";
+	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(logger->dataSaveDirectory.c_str(),wxConvUTF8));
 	dir += wxT("/");
-	dataSaveDirectory = dir.mb_str();
-	cout << "Data Directory Changed to " << dataSaveDirectory << endl;
+	logger->dataSaveDirectory = dir.mb_str();
+	cout << "Data Directory Changed to " << logger->dataSaveDirectory << endl;
 }
 
 

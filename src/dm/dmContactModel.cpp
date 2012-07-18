@@ -46,7 +46,9 @@ dmContactModel::dmContactModel() :
       m_sliding_flag_stored(NULL),
       m_initial_contact_pos_stored(NULL)
 {
-	m_last_computed_contact_force = new Float [6];
+	cout<<"dmContactModel constructor"<<endl;
+	//for (int i =0; i<6;i++)
+	//	 cout<<m_last_computed_contact_force[i]<<endl;
 }
 
 //----------------------------------------------------------------------------
@@ -67,7 +69,7 @@ dmContactModel::~dmContactModel()
 
 	// need to clear traces on the heap to prevent memory leak
 
-	delete [] m_last_computed_contact_force;
+	
 }
 
 //----------------------------------------------------------------------------
@@ -230,6 +232,9 @@ void dmContactModel::computeForce(const dmABForKinStruct &val,
    for (j = 0; j < 6; j++)
    {
       f_contact[j] = 0.0;
+
+	  // for debug only **
+	  f_planar_damper[j] = 0.0;
    }
    if (dmEnvironment::getEnvironment() == NULL)
    {
@@ -332,6 +337,10 @@ void dmContactModel::computeForce(const dmABForKinStruct &val,
                                  getGroundPlanarDamperConstant()*v_planar[j] -
                   (dmEnvironment::getEnvironment())->
                                  getGroundPlanarSpringConstant()*p_planar[j];
+
+			   // for debug only **
+			   fe_planar_damper_ICS[j] =  -(dmEnvironment::getEnvironment())->
+                                 getGroundPlanarDamperConstant()*v_planar[j];
             }
             fe_planar_mag = sqrt(fe_planar[0]*fe_planar[0] +
                                  fe_planar[1]*fe_planar[1] +
@@ -379,6 +388,11 @@ void dmContactModel::computeForce(const dmABForKinStruct &val,
                fe_planar[1] *= temp;
                fe_planar[2] *= temp;
 
+			   // for debug only **
+               fe_planar_damper_ICS[0] *= temp;
+               fe_planar_damper_ICS[1] *= temp;
+               fe_planar_damper_ICS[2] *= temp;
+
                m_initial_contact_pos[i][0] = current_pos[0];
                m_initial_contact_pos[i][1] = current_pos[1];
                m_initial_contact_pos[i][2] = ground_elevation;
@@ -397,14 +411,26 @@ void dmContactModel::computeForce(const dmABForKinStruct &val,
             fn[j] = val.R_ICS[0][j]*fe[0] +
                     val.R_ICS[1][j]*fe[1] +
                     val.R_ICS[2][j]*fe[2];
+
+			// for debug only **
+            fe_planar_damper[j] = val.R_ICS[0][j]*fe_planar_damper_ICS[0] +
+                    			  val.R_ICS[1][j]*fe_planar_damper_ICS[1] +
+                    			  val.R_ICS[2][j]*fe_planar_damper_ICS[2];
          }
          crossproduct(m_contact_pos[i], fn, nn);
+
+		 // for debug only **
+		 crossproduct(m_contact_pos[i], fe_planar_damper, nn2);
 
          // Accumulate for multiple contact points.
          for (j = 0; j < 3; j++)
          {
             f_contact[j] += nn[j];
             f_contact[j + 3] += fn[j];
+
+			// for debug only **
+			f_planar_damper[j] += nn2[j];
+			f_planar_damper[j+3] += fe_planar_damper[j];
          }
       }
    }
@@ -413,6 +439,9 @@ void dmContactModel::computeForce(const dmABForKinStruct &val,
 	for (j = 0; j < 6; j++)
 	{
 		m_last_computed_contact_force[j] = f_contact[j];
+
+	  	// for debug only **
+	  	m_f_planar_damper[j] = f_planar_damper[j];
 	}
 
 }
@@ -438,6 +467,9 @@ void dmContactModel::computeForce(const dmRNEAStruct &val,
    for (j = 0; j < 6; j++)
    {
       f_contact[j] = 0.0;
+	  
+	  // for debug only *
+	  f_planar_damper[j] = 0.0;
    }
    if (dmEnvironment::getEnvironment() == NULL)
    {
@@ -544,6 +576,10 @@ void dmContactModel::computeForce(const dmRNEAStruct &val,
                                  getGroundPlanarDamperConstant()*v_planar[j] -
                   (dmEnvironment::getEnvironment())->
                                  getGroundPlanarSpringConstant()*p_planar[j];
+
+			   // for debug only *
+			   fe_planar_damper_ICS[j] =  -(dmEnvironment::getEnvironment())->
+                                 getGroundPlanarDamperConstant()*v_planar[j];
             }
             fe_planar_mag = sqrt(fe_planar[0]*fe_planar[0] +
                                  fe_planar[1]*fe_planar[1] +
@@ -591,6 +627,11 @@ void dmContactModel::computeForce(const dmRNEAStruct &val,
                fe_planar[1] *= temp;
                fe_planar[2] *= temp;
 
+			   // for debug only *
+               fe_planar_damper_ICS[0] *= temp;
+               fe_planar_damper_ICS[1] *= temp;
+               fe_planar_damper_ICS[2] *= temp;
+
                m_initial_contact_pos[i][0] = current_pos[0];
                m_initial_contact_pos[i][1] = current_pos[1];
                m_initial_contact_pos[i][2] = ground_elevation;
@@ -609,29 +650,71 @@ void dmContactModel::computeForce(const dmRNEAStruct &val,
             fn[j] = val.R_ICS[0][j]*fe[0] +
                     val.R_ICS[1][j]*fe[1] +
                     val.R_ICS[2][j]*fe[2];
+
+			// for debug only *
+            fe_planar_damper[j] = val.R_ICS[0][j]*fe_planar_damper_ICS[0] +
+                    			  val.R_ICS[1][j]*fe_planar_damper_ICS[1] +
+                    			  val.R_ICS[2][j]*fe_planar_damper_ICS[2];
          }
          crossproduct(m_contact_pos[i], fn, nn);
+
+		 // for debug only *
+		 crossproduct(m_contact_pos[i], fe_planar_damper, nn2);
 
          // Accumulate for multiple contact points.
          for (j = 0; j < 3; j++)
          {
             f_contact[j] += nn[j];
             f_contact[j + 3] += fn[j];
+
+			// for debug only *
+			f_planar_damper[j] += nn2[j];
+			f_planar_damper[j+3] += fe_planar_damper[j];
          }
       }
    }
    m_reset_flag = false;
 
-	for (j = 0; j < 6; j++)
-	{
-		m_last_computed_contact_force[j] = f_contact[j];
-	}
+   for (j = 0; j < 6; j++)
+   {
+      m_last_computed_contact_force[j] = f_contact[j];
+
+	  // for debug only *
+	  m_f_planar_damper[j] = f_planar_damper[j];
+   }
 
 }
 
 
 
-Float* dmContactModel::getLastComputedValue() const
+void dmContactModel::getLastComputedValue(SpatialVector contact_f) const
 {
-	return m_last_computed_contact_force;
+	//cout<<"getLastComputedValue..."<<endl;
+	for (unsigned int j = 0; j < 6; j++)
+	{	
+		contact_f[j] = m_last_computed_contact_force[j];
+	}
+}
+
+
+void dmContactModel::getCurrentAnchorPoint(CartesianVector anc, unsigned int contact_point_index) const
+{
+	if (contact_point_index <0 || contact_point_index>= m_num_contact_points)
+	{
+		cout<<"contact point index out of range - getCurrentAnchorPoint() "<<endl;
+		exit(1);
+	}
+
+	for (unsigned int j = 0; j < 3; j++)
+	{	
+		anc[j] = m_initial_contact_pos[contact_point_index][j];
+	}
+}
+
+void dmContactModel::getLastComputedPlanarDamperForce(SpatialVector f_pd) const
+{
+	for (unsigned int j = 0; j < 6; j++)
+	{	
+		f_pd[j] = m_f_planar_damper[j];
+	}
 }

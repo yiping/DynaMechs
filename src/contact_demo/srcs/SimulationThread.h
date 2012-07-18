@@ -27,12 +27,16 @@ public:
 	volatile bool paused_flag;
 	SpatialVector box_ext_f; // in box coordinate
 
-	wxMutex mutexProtectSharedData;
+	wxMutex mutexProtectSharedData;	
+	wxMutex re_mutex;
+	wxCondition * refreshCondition;
 	
 private:
 	wxMutex mutex;
 	wxCondition * unPauseCondition;
-	
+	Float Integ_count;
+
+
 	
 	volatile bool stopRequested;
 	

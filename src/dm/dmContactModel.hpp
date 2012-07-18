@@ -125,7 +125,11 @@ public:
    ///
    void popState();
 
-	Float* getLastComputedValue() const;
+	void getLastComputedValue(SpatialVector contact_f) const;
+	void getCurrentAnchorPoint(CartesianVector anc, unsigned int contact_point_index) const;
+
+	// for debug only
+	void getLastComputedPlanarDamperForce(SpatialVector f_pd) const;
 
 // rendering functions (for future expansion/visualization):
    ///
@@ -154,7 +158,9 @@ protected:
    CartesianVector *m_initial_contact_pos_stored;
    CartesianVector normal, current_pos;
 
-	Float * m_last_computed_contact_force;
+   SpatialVector m_last_computed_contact_force;
+   // for debugy only *
+   SpatialVector m_f_planar_damper;
 
 private:
    // temporary variables only used by computeContactForce
@@ -163,6 +169,10 @@ private:
    CartesianVector peC_pos, veC_pos, vnC_pos, fe, fn, nn;
    CartesianVector p_planar, v_planar;
    CartesianVector fe_normal, fe_planar;
+
+   // for debugy only *
+   CartesianVector fe_planar_damper, nn2, fe_planar_damper_ICS; 
+   SpatialVector f_planar_damper;
 };
 
 #endif

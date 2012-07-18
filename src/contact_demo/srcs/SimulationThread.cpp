@@ -3,7 +3,7 @@
 //  YL
 
 
-#include "globals.h"
+#include "globalVariables.h"
 #include "SimulationThread.h"
 
 #include <iostream>
@@ -15,6 +15,10 @@ using namespace std;
 SimulationThread::SimulationThread() : wxThread(wxTHREAD_JOINABLE) 
 {
 	unPauseCondition  = new wxCondition(mutex);
+	refreshCondition  = new wxCondition(re_mutex);
+	re_mutex.Lock(); // // re_mutex needs to be initially locked
+						// so that the Gui thread will not signal the condition 
+						// before the simThread start waiting on it!
 	G_integrator = new dmIntegEuler();
 	paused_flag = true;
 	mutexProtectSharedData.Unlock();
@@ -27,6 +31,7 @@ SimulationThread::SimulationThread() : wxThread(wxTHREAD_JOINABLE)
 SimulationThread::~SimulationThread()
 {
 	delete unPauseCondition;
+	delete refreshCondition;
 }
 
 void *SimulationThread::Entry()
@@ -46,21 +51,32 @@ void *SimulationThread::Entry()
 		// Check if it's time for control
 		if ((sim_time - last_control_time) >= cdt) 
 		{
-			wxMutexLocker lock(mutexProtectSharedData);
+			//wxMutexLocker lock(mutexProtectSharedData);
 			
 			dynamic_cast<dmRigidBody *>(G_robot->getLink(0))->setExternalForce(box_ext_f);
 
-			
+			if (frame->logDataCheckBox->IsChecked()) 
+			{
+				//cout<<"log data!"<<endl;
+				logger->logData();
+			}
 			
 			last_control_time = sim_time;
 		}
 		
 		// Simulate
-		//lockRobot();
+
 		Float dt = idt;
 		G_integrator->simulate(dt);
-		//unlockRobot();
+
 		sim_time += idt;
+		Integ_count++;
+		if (Integ_count == 2)
+		{
+			Integ_count = 0;
+			refreshCondition->Wait(); // Wait() atomically unlocks the re_mutex and start waiting
+									  // once signaled by Gui(main) thread, it then locks re_mutex again and returns
+		}
 		dmGetSysTime(&tv_now);
 	}
 	return NULL;
@@ -74,8 +90,9 @@ void SimulationThread::requestStop()
 {
 	stopRequested = true;
 	unPause();
-
+	refreshCondition->Signal(); // unWait ... 
 	// waits for a joinable thread to terminate and returns the value
 	Wait();
 }
+
 

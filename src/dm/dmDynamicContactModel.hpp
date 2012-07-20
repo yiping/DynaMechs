@@ -58,6 +58,10 @@ public:
 	vector<vector<Float> > u;
 	vector<vector<Float> > ud; // later should be somehow made private
 
+	// one for each contact point
+	CartesianVector* last_normal; 
+	vector<Matrix3F,Eigen::aligned_allocator<Matrix3F> > last_patch_R_ICS;
+
 
 };
 

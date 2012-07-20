@@ -46,7 +46,8 @@ dmContactModel::dmContactModel() :
       m_sliding_flag_stored(NULL),
       m_initial_contact_pos_stored(NULL)
 {
-	cout<<"dmContactModel constructor"<<endl;
+	cout<<"calling dmContactModel constructor ..."<<endl;
+
 	//for (int i =0; i<6;i++)
 	//	 cout<<m_last_computed_contact_force[i]<<endl;
 }
@@ -234,7 +235,7 @@ void dmContactModel::computeForce(const dmABForKinStruct &val,
       f_contact[j] = 0.0;
 
 	  // for debug only **
-	  f_planar_damper[j] = 0.0;
+	  f_contact_planar_damper[j] = 0.0;
    }
    if (dmEnvironment::getEnvironment() == NULL)
    {
@@ -429,8 +430,8 @@ void dmContactModel::computeForce(const dmABForKinStruct &val,
             f_contact[j + 3] += fn[j];
 
 			// for debug only **
-			f_planar_damper[j] += nn2[j];
-			f_planar_damper[j+3] += fe_planar_damper[j];
+			f_contact_planar_damper[j] += nn2[j];
+			f_contact_planar_damper[j+3] += fe_planar_damper[j];
          }
       }
    }
@@ -441,7 +442,7 @@ void dmContactModel::computeForce(const dmABForKinStruct &val,
 		m_last_computed_contact_force[j] = f_contact[j];
 
 	  	// for debug only **
-	  	m_f_planar_damper[j] = f_planar_damper[j];
+	  	m_f_contact_planar_damper[j] = f_contact_planar_damper[j];
 	}
 
 }
@@ -469,7 +470,7 @@ void dmContactModel::computeForce(const dmRNEAStruct &val,
       f_contact[j] = 0.0;
 	  
 	  // for debug only *
-	  f_planar_damper[j] = 0.0;
+	  f_contact_planar_damper[j] = 0.0;
    }
    if (dmEnvironment::getEnvironment() == NULL)
    {
@@ -668,8 +669,8 @@ void dmContactModel::computeForce(const dmRNEAStruct &val,
             f_contact[j + 3] += fn[j];
 
 			// for debug only *
-			f_planar_damper[j] += nn2[j];
-			f_planar_damper[j+3] += fe_planar_damper[j];
+			f_contact_planar_damper[j] += nn2[j];
+			f_contact_planar_damper[j+3] += fe_planar_damper[j];
          }
       }
    }
@@ -680,7 +681,7 @@ void dmContactModel::computeForce(const dmRNEAStruct &val,
       m_last_computed_contact_force[j] = f_contact[j];
 
 	  // for debug only *
-	  m_f_planar_damper[j] = f_planar_damper[j];
+	  m_f_contact_planar_damper[j] = f_contact_planar_damper[j];
    }
 
 }
@@ -715,6 +716,6 @@ void dmContactModel::getLastComputedPlanarDamperForce(SpatialVector f_pd) const
 {
 	for (unsigned int j = 0; j < 6; j++)
 	{	
-		f_pd[j] = m_f_planar_damper[j];
+		f_pd[j] = m_f_contact_planar_damper[j];
 	}
 }

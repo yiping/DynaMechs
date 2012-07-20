@@ -88,16 +88,26 @@ ylabel('Z Force (N)');
 
 
 f = figure('Name','3 ','Position',figPos); figs = [figs f];
-a=[a gca];
+a=[a subplot(211)];
 hold on
 plot(t, cf(6,:)*mu_static );
 plot(t, cf(6,:)*mu_slip,'m');
-plot(t, -cf(4,:),'r');
 plot(t, ext_f(4,:),'k');
-plot(t, 4*547*box_vel(4,:),'g');
-plot(t, -cf_pd(4,:),'y');
-ylim([0,110]);
+plot(t, -cf(4,:),'r');
+%plot(t, 4*547*box_vel(4,:),'g');
+plot(t, -cf_pd(4,:),'Color',[0 0.498039215803146 0]);
 
+ylim([0,110]);
+xlabel('Time (s)','FontSize',12);
+ylabel('force (N)','FontSize',12);
+legend('mu\_static * f\_contact\_normal','mu\_kinetc * f\_contact\_normal',...
+'f\_external','f\_contact\_tangential',  'f\_contact\_tangential\_damper' );
+
+a=[a subplot(212)];
+plot(t, box_vel(4,:));
+xlabel('Time (s)','FontSize',12);
+ylabel('velocity (m/s)','FontSize',12);
+legend('velocity of contact point');
 
 % f = figure('Name','4 ','Position',figPos); figs = [figs f];
 % clf
@@ -197,6 +207,9 @@ ylim([0,110]);
 % plot(t, box_pos(3,:)-0.1,'r');
 % xlabel('Time (s)'); 
 % ylabel('Pos Z (m/s)');
+
+
+
 
 
 

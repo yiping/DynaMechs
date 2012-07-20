@@ -168,6 +168,10 @@ bool MyApp::OnInit()
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
 		G_contact = new dmContactSystem();
 		G_contact-> scanRobot(G_robot);
+		if (G_contact->getNumDOFs())
+		{
+			cout<<"found total "<<G_contact->getNumDOFs()/2<<" dynamic contact points in robot"<<endl;
+		}
 		logger = new ContactDemoDataLogger();
 		
 

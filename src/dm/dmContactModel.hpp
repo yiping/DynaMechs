@@ -128,7 +128,7 @@ public:
 	void getLastComputedValue(SpatialVector contact_f) const;
 	void getCurrentAnchorPoint(CartesianVector anc, unsigned int contact_point_index) const;
 
-	// for debug only
+	// for debug only *
 	void getLastComputedPlanarDamperForce(SpatialVector f_pd) const;
 
 // rendering functions (for future expansion/visualization):
@@ -159,8 +159,11 @@ protected:
    CartesianVector normal, current_pos;
 
    SpatialVector m_last_computed_contact_force;
+
    // for debugy only *
-   SpatialVector m_f_planar_damper;
+   SpatialVector m_f_contact_planar_damper;
+   CartesianVector fe_planar_damper,fe_planar_damper_ICS;
+   SpatialVector f_contact_planar_damper;
 
 private:
    // temporary variables only used by computeContactForce
@@ -171,8 +174,8 @@ private:
    CartesianVector fe_normal, fe_planar;
 
    // for debugy only *
-   CartesianVector fe_planar_damper, nn2, fe_planar_damper_ICS; 
-   SpatialVector f_planar_damper;
+   CartesianVector nn2; 
+
 };
 
 #endif

@@ -128,7 +128,7 @@ void setContactParameters40(dmRigidBody *body, ifstream &cfg_ptr)
 
 
 	// DM 5.0 | for extended contact model
-	/*readConfigParameterLabel(cfg_ptr, "Number_of_Dynamic_Contact_Points");
+	readConfigParameterLabel(cfg_ptr, "Number_of_Dynamic_Contact_Points");
 	cfg_ptr >> num_points;
 
 	if (num_points > 0)
@@ -149,7 +149,7 @@ void setContactParameters40(dmRigidBody *body, ifstream &cfg_ptr)
 	  body->addForce(c_model);
 
 	  delete [] pos;
-	} */
+	} 
 }
 
 //----------------------------------------------------------------------------

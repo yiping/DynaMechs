@@ -15,7 +15,7 @@ DataLogger::DataLogger() {
 	maxItems = 0;
 }
 void DataLogger::newRecord() {
-	curr = new FloatVector(maxItems);
+	curr = new FloatVector(maxItems); // ? when delete? pop_front?
 	data.push_back(curr);
 	
 	/*for (int i = 0 ; i< maxGroups; i++) {
@@ -93,6 +93,7 @@ void DataLogger::writeRecords(){
 			fprintf(fPtr, "%lf\t",(double) curr->at(i) );
 		}
 		fprintf(fPtr,"\n");
+		delete data[0]; // prevent memory leak
 		data.pop_front();
 	}
 	curr = NULL;

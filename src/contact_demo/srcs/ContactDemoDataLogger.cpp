@@ -23,23 +23,24 @@ ContactDemoDataLogger::ContactDemoDataLogger( )
 	G_BOX_VEL		   		= addGroup("Box Vel ", "box_vel", 6);
 	G_SLIDING_FLAGS   		= addGroup("Sliding Flags", "sflags", 8);
 	G_CONTACT_FLAGS   		= addGroup("Contact Flags", "cflags", 8);
-	G_ANCHOR_0_ICS		   		= addGroup("Anchor Pos 0 ICS", "anc0", 3);
-	G_ANCHOR_1_ICS		   		= addGroup("Anchor Pos 1 ICS", "anc1", 3);
-	G_ANCHOR_2_ICS		   		= addGroup("Anchor Pos 2 ICS", "anc2", 3);
-	G_ANCHOR_3_ICS		   		= addGroup("Anchor Pos 3 ICS", "anc3", 3);
+	//G_ANCHOR_0_ICS		   		= addGroup("Anchor Pos 0 ICS", "anc0", 3);
+	//G_ANCHOR_1_ICS		   		= addGroup("Anchor Pos 1 ICS", "anc1", 3);
+	//G_ANCHOR_2_ICS		   		= addGroup("Anchor Pos 2 ICS", "anc2", 3);
+	//G_ANCHOR_3_ICS		   		= addGroup("Anchor Pos 3 ICS", "anc3", 3);
 
-	cout<<"SIM_TIME                  "<<SIM_TIME<<endl
+	cout<<endl<<"SIM_TIME                  "<<SIM_TIME<<endl
+		<<"G_CONTACT_F               "<<G_CONTACT_F<<endl
 		<<"G_CONTACT_F_PLANAR_DAMPER "<<G_CONTACT_F_PLANAR_DAMPER<<endl
-		<<"G_CONTACT_F           	 "<<G_CONTACT_F<<endl
 		<<"G_EXT_F                   "<<G_EXT_F<<endl
 		<<"G_BOX_POS_ICS             "<<G_BOX_POS_ICS <<endl
-		<<"G_BOX_VEL        		 "<<G_BOX_VEL <<endl
+		<<"G_BOX_VEL                 "<<G_BOX_VEL <<endl
 		<<"G_SLIDING_FLAGS           "<<G_SLIDING_FLAGS <<endl
 		<<"G_CONTACT_FLAGS           "<<G_CONTACT_FLAGS <<endl
-		<<"G_ANCHOR_0_ICS          	 "<<G_ANCHOR_0_ICS <<endl
-		<<"G_ANCHOR_1_ICS          	 "<<G_ANCHOR_1_ICS <<endl
-		<<"G_ANCHOR_2_ICS          	 "<<G_ANCHOR_2_ICS <<endl
-		<<"G_ANCHOR_3_ICS     		 "<<G_ANCHOR_3_ICS <<endl;
+		//<<"G_ANCHOR_0_ICS          	 "<<G_ANCHOR_0_ICS <<endl
+		//<<"G_ANCHOR_1_ICS          	 "<<G_ANCHOR_1_ICS <<endl
+		//<<"G_ANCHOR_2_ICS          	 "<<G_ANCHOR_2_ICS <<endl
+		//<<"G_ANCHOR_3_ICS     		 "<<G_ANCHOR_3_ICS <<endl
+		<<endl;
 }	
 
 
@@ -54,8 +55,11 @@ void ContactDemoDataLogger::logData()
 	SpatialVector f;
 	dmRigidBody * rb = dynamic_cast<dmRigidBody *>(G_robot->getLink(0));
 
-	//dmDynamicContactModel * cm = dynamic_cast<dmDynamicContactModel *>(rb->getForce(0));
+	#ifdef USE_DYNAMIC_CONTACT_MODEL
+	dmDynamicContactModel * cm = dynamic_cast<dmDynamicContactModel *>(rb->getForce(0));
+	#else
 	dmContactModel * cm = dynamic_cast<dmContactModel *>(rb->getForce(0));
+	#endif
 
 	cm->getLastComputedValue(f);
     
@@ -94,23 +98,23 @@ void ContactDemoDataLogger::logData()
 	assignGroup(G_SLIDING_FLAGS,sflags );
 	assignGroup(G_CONTACT_FLAGS,cflags );
 
-	CartesianVector anc;
-	Vector3F a;
-	cm->getCurrentAnchorPoint(anc,0);
-	a = Map<Vector3F>(anc);
-	assignGroup(G_ANCHOR_0_ICS, a);
+//	CartesianVector anc;
+//	Vector3F a;
+//	cm->getCurrentAnchorPoint(anc,0);
+//	a = Map<Vector3F>(anc);
+//	assignGroup(G_ANCHOR_0_ICS, a);
 
-	cm->getCurrentAnchorPoint(anc,1);
-	a = Map<Vector3F>(anc);
-	assignGroup(G_ANCHOR_1_ICS, a);
+//	cm->getCurrentAnchorPoint(anc,1);
+//	a = Map<Vector3F>(anc);
+//	assignGroup(G_ANCHOR_1_ICS, a);
 
-	cm->getCurrentAnchorPoint(anc,2);
-	a = Map<Vector3F>(anc);
-	assignGroup(G_ANCHOR_2_ICS, a);
+//	cm->getCurrentAnchorPoint(anc,2);
+//	a = Map<Vector3F>(anc);
+//	assignGroup(G_ANCHOR_2_ICS, a);
 
-	cm->getCurrentAnchorPoint(anc,3);
-	a = Map<Vector3F>(anc);
-	assignGroup(G_ANCHOR_3_ICS, a);
+//	cm->getCurrentAnchorPoint(anc,3);
+//	a = Map<Vector3F>(anc);
+//	assignGroup(G_ANCHOR_3_ICS, a);
 
 
 	dataMutex.Unlock();

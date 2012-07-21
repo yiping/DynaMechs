@@ -469,5 +469,7 @@ DMU_DLL_API dmObject *dmuFindObject(const char *name, dmArticulation *system);
 DMU_DLL_API bool readFilename(ifstream &cfg_ptr, char *filename);
 DMU_DLL_API void readConfigParameterLabel(ifstream &cfg_ptr,
                                           const char *label);
+DMU_DLL_API bool readConfigParameterLabelNonRecursive(ifstream &cfg_ptr,
+                                          const char *label);
 
 #endif

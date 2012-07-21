@@ -196,7 +196,7 @@ bool MyApp::OnInit()
 	
 		simThread->G_integrator->addSystem(G_robot);
 		simThread->G_integrator->addSystem(G_contact);
-		cout<<"checkpoint1"<<endl;
+		// cout<<"checkpoint1"<<endl;
 	}
 	
 

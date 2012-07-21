@@ -114,3 +114,75 @@ void readConfigParameterLabel(ifstream &cfg_ptr, const char *label)
         << " found.\n";
    exit(4);
 }
+
+
+
+//-------------------------------------------------------------------
+
+bool readConfigParameterLabelNonRecursive(ifstream &cfg_ptr, const char *label)
+{
+
+	register int i;
+	register unsigned char c = '\0';
+	char line[80];
+	bool onceMore = true;
+
+	while (onceMore )
+	{
+		cfg_ptr >> line; // will automatically skip all the spaces and enters
+		//cout<<"[unprocessed line] "<<line<<endl;
+
+		if ((line[0] != COMMENT_CHAR) && (line[0] != '\n'))
+		{		
+			//cout<<"[meaningful line] "<<line<<endl;
+			if (strncmp(line, label, strlen(label)) == 0)
+			{
+				cout<<"found ["<<label<<"] label"<<endl;
+				return true;
+			}
+			else
+			{
+				cerr << "Tried and didn't find ["<< label <<"] label"<< endl;
+				//cerr << "But, buddy, no worries, we can proceed without ["<<label<<"]"<<endl;
+				cerr << "Proceed without ["<<label<<"]"<<endl;	
+				onceMore = false;
+				// wait, before you quit searching, put that label back in the stream!
+				// cout<<"rewinding ifstream ..."<<endl;
+				int sl = strlen(line);
+				//cout<<sl<<endl;
+				for (int j=0; j<strlen(line);j++)
+				{
+					cfg_ptr.putback(line[sl-1-j]);
+					//cout<<line[sl-1-j];
+				}
+				cout<<endl<<"-------"<<endl;
+				return false;
+			}
+		}
+		else //filter all the comments
+		{
+			for (int k =0;k<strlen(line);k++)
+			{
+				c = line[k];
+				if (c == '\n')
+					cout<<"[ENTER]"<<endl;
+				else
+					cout<<c;
+			}
+			while ((c != '\n') && ((i = cfg_ptr.get()) != EOF))
+			{
+				c =  (unsigned char) i;
+				if (c ==' ')
+					cout<<"[_]";
+				else if (c=='\n')
+					cout<<"[ENTER] "<<endl;
+				else
+					cout<<c;
+			}
+			// what you just read in are useless commments, so try one more time;
+			onceMore = true;
+		}
+	}
+
+}
+

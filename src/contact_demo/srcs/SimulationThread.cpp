@@ -70,12 +70,15 @@ void *SimulationThread::Entry()
 		G_integrator->simulate(dt);
 
 		sim_time += idt;
-		Integ_count++;
-		if (Integ_count == 2)
+		if (frame-> syncGraphicsCheckBox->IsChecked())
 		{
-			Integ_count = 0;
-			refreshCondition->Wait(); // Wait() atomically unlocks the re_mutex and start waiting
-									  // once signaled by Gui(main) thread, it then locks re_mutex again and returns
+			Integ_count++;
+			if (Integ_count == 20)
+			{
+				Integ_count = 0;
+				refreshCondition->Wait(); // Wait() atomically unlocks the re_mutex and start waiting
+										  // once signaled by Gui(main) thread, it then locks re_mutex again and returns
+			}
 		}
 		dmGetSysTime(&tv_now);
 	}

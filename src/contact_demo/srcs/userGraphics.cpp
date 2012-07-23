@@ -80,7 +80,7 @@ void BasicGLPane::userGraphics()
 		drawArrow(box_pos, ext_f, .005, .01, .03);		
 		glColor3f(1.0, 1.0, 1.0);
 
-		if (frame->showCoM->IsChecked()) 
+/*		if (frame->showCoM->IsChecked()) 
 		{
 
 		}
@@ -94,7 +94,7 @@ void BasicGLPane::userGraphics()
 		if (frame->showNetForceAtGround->IsChecked()) 
 		{
 
-		}
+		}*/
 		
 		if (simThread->sim_time>500) {
 			glPushMatrix();

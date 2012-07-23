@@ -162,9 +162,10 @@ void dmEnvironment::loadTerrainData(const char *filename)
    // Read the elevation/depth data in meters.
    data_ptr >> m_x_dim >> m_y_dim >> m_grid_resolution;
 
-#ifdef DEBUG
+//#ifdef DEBUG
    cout << "Terrain data: (" << m_x_dim << ", " << m_y_dim << ").\n" << flush;
-#endif
+   cout << "Terrain resoluation: " << m_grid_resolution<<endl; 
+//#endif
 
    // allocate space for and read in depth data;
    m_depth = new Float *[m_x_dim];

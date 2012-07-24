@@ -36,7 +36,6 @@
 extern volatile Float ComPos[3];
 extern volatile Float ComDes[3];
 
-extern GRFInfo grfInfo;
 extern dmArticulation *G_robot;
 extern MainFrame *frame;
 extern SimulationThread * simThread;

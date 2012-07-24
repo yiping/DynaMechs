@@ -14,7 +14,7 @@
 #include "GlobalDefines.h"
 //#define OPTIM_DEBUG
 
-#define MAXNUMTASKS (20+6+12)
+#define MAXNUMTASKS (6+20+6+12)
 
 #define MAXNUMCON (NJ+6 + 6*NS + MAXNUMTASKS)              /* Number of constraints.             */
 #define NUMVAR (NJ + NJ+6+6*NS+NS*NP*NF)  /* Number of variables.               */
@@ -270,7 +270,7 @@ void TaskSpaceControllerA::UpdateObjective() {
 		}
 	}
 
-	MatrixXd Q = JtT*TaskJacobian+MatrixXF::Identity(NJ+6,NJ+6)*.00001;
+	MatrixXd Q = JtT*TaskJacobian+MatrixXF::Identity(NJ+6,NJ+6)*.001;
 	
 	VectorXd c = VectorXF::Zero(NUMVAR);
 	c.segment(qddStart,NJ+6) = -JtT*TaskBias;
@@ -562,6 +562,8 @@ void TaskSpaceControllerA::Optimize() {
 	xx.resize(NUMVAR);
 	if ( r==MSK_RES_OK ) {
 		MSKrescodee trmcode;
+		
+		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_REL_GAP, 10e-14);
 		
 		/* Run optimizer */
 		r = MSK_optimizetrm(task,&trmcode);

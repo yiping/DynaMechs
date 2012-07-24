@@ -86,9 +86,10 @@ void DataLogger::writeRecords(){
 	while (data.size() > 0) {
 		curr = data[0];
 		for (int i=0; i < maxItems; i++) {
-			fprintf(fPtr, "%lf\t",(double) curr->at(i) );
+			fprintf(fPtr, "%.15lf\t",(double) curr->at(i) );
 		}
 		fprintf(fPtr,"\n");
+		delete data.front();
 		data.pop_front();
 	}
 	curr = NULL;

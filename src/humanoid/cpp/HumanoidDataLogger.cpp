@@ -222,6 +222,13 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 	
 	HMAT				= addMatrixGroup("H",						"H",26,26);
 	
+	JLF				= addMatrixGroup("Jleftfoot",			"Jlf",6,26);
+	JRF             = addMatrixGroup("Jrightfoot", "Jrf",6,26);
+	
+	CANDG               = addGroup("CandG", "CandG", 26);
+	
+	LEFT_FOOT_SPATIAL_WRENCH  = addGroup("Left Foot Spatial Wrench", "lFootSpatWrench", 6);
+	RIGHT_FOOT_SPATIAL_WRENCH = addGroup("Right Foot Spatial Wrench", "rFootSpatWrench", 6);
 }
 
 
@@ -295,7 +302,18 @@ void HumanoidDataLogger::logData() {
 	assignGroup(RWRENCH_OPT, fs.head(6));
 	assignGroup(LWRENCH_OPT, fs.tail(6));
 	
-	assignMatrixGroup(HMAT,G_robot->H);
+	
+	cout << grfInfo.footJacs.size() << endl;
+	cout << grfInfo.footJacs[0].rows() << "," << grfInfo.footJacs[0].cols() << endl;
+	
+	assignMatrixGroup(JRF, grfInfo.footJacs[0]);
+	assignMatrixGroup(JLF, grfInfo.footJacs[1]);
+	
+	assignGroup(RIGHT_FOOT_SPATIAL_WRENCH, grfInfo.footWrenches[0]);
+	assignGroup(LEFT_FOOT_SPATIAL_WRENCH, grfInfo.footWrenches[1]);
+	
+	assignGroup(CANDG, artic->CandG);
+	assignMatrixGroup(HMAT,artic->H);
 	dataMutex.Unlock();
 }
 

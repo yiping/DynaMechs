@@ -26,6 +26,9 @@ typedef struct GRFInfoStruct {
 	vector<Vector3F > pCoPs;
 	vector<Vector3F > fCoPs;
 	vector<Float > nCoPs;
+	
+	vector<Vector6F> footWrenches;
+	vector<MatrixXF> footJacs;
 } GRFInfo;
 
 

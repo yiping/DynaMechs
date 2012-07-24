@@ -29,6 +29,9 @@ public:
 	Vector3F kDotDes;
 	VectorXF pComDes, vComDes;
 	Float totalMass;
+	
+	GRFInfo grfInfo;
+	
 protected:
 	void InertialKinematicInfo(int index, Matrix3F & RtoICS, VectorXF & pICS, VectorXF & spatVelICS);
 	vector<Float > kpFoot, kdFoot;
@@ -41,8 +44,19 @@ protected:
 	vector<VectorXF > aFoot;
 	
 	vector<Matrix3F > RFoot;
+	
+	
+	vector<VectorXF> posDesJoint;
+	vector<Matrix3F> RDesJoint;
+	vector<VectorXF> rateDesJoint;
+	vector<VectorXF> accDesJoint;
+	vector<Float > kpJoint;
+	vector<Float > kdJoint;
+	
 	IntVector contactState;
 	IntVector slidingState;
+	
+	
 	
 	Vector6F zmpWrenchOpt;
 	Vector3F zmpPosOpt;

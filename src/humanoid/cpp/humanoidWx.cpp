@@ -182,7 +182,13 @@ bool MyApp::OnInit()
 		
 		simThread->G_integrator->addSystem(G_robot);
 		
-		grfInfo.localContacts = 0;
+		/*cout << "Initial state" << endl;
+		Float qInit[31], qdInit[31];
+		G_robot->getState(qInit,qdInit);
+		for (int i =0; i<31; i++) {
+			cout << setprecision(6) << endl;
+			cout << qInit[i] << "\t" << qdInit[i] << endl;
+		}*/
 	}
 	
 	
@@ -224,6 +230,8 @@ void BasicGLPane::userGraphics()
 {
 	// Plot User Stuff
 	{
+		//glPolygonMode(GL_FRONT, GL_FILL);
+		//glPolygonMode(GL_BACK, GL_LINE);
 		if (frame->showCoM->IsChecked()) {
 			// Draw COM Info
 			glBegin(GL_LINES);
@@ -251,9 +259,9 @@ void BasicGLPane::userGraphics()
 		
 		if (frame->showGRF->IsChecked()) {
 			// Draw GRF Info
-			for (int i=0; i< grfInfo.localContacts; i++) {
-				Vector3F footPoint = grfInfo.pCoPs[i];
-				Vector3F grf = grfInfo.fCoPs[i]/forceScale;
+			for (int i=0; i< humanoid->grfInfo.localContacts; i++) {
+				Vector3F footPoint = humanoid->grfInfo.pCoPs[i];
+				Vector3F grf = humanoid->grfInfo.fCoPs[i]/forceScale;
 				
 				drawArrow(footPoint, grf, .005, .01, .03);
 				
@@ -262,12 +270,12 @@ void BasicGLPane::userGraphics()
 		
 		if (frame->showNetForceAtGround->IsChecked()) {
 			//Draw ZMPInfo
-			Vector3F footPoint = grfInfo.pZMP;
-			Vector3F grf = grfInfo.fZMP/forceScale;
+			Vector3F footPoint = humanoid->grfInfo.pZMP;
+			Vector3F grf = humanoid->grfInfo.fZMP/forceScale;
 			drawArrow(footPoint, grf, .005, .01, .03);
 		}
 		
-		if (simThread->sim_time>7) {
+		/*if (simThread->sim_time>7) {
 			glPushMatrix();
 			glColor4f(1.0, 0.0, 0.0,0.75);
 			glTranslatef(2.18, 2, .15);
@@ -277,9 +285,40 @@ void BasicGLPane::userGraphics()
 			gluDisk(quadratic,0.0,.05f,32,32);
 			
 			glPopMatrix();
-		}
+		}*/
 		frame->realTimeRatioDisplay->SetLabel(wxString::Format(wxT("RT Ratio: %.2lf"), real_time_ratio));
 		
+		
+		Float qBase[7], qdBase[7];
+		G_robot->getLink(0)->getState(qBase,qdBase);
+		
+		Float theta = acos(qBase[3])*2 * 180 / M_PI;
+		
+		
+		
+		glPushMatrix();
+		glTranslatef(qBase[4], qBase[5], qBase[6]);
+		glRotatef(theta, qBase[0], qBase[1], qBase[2]);
+		glTranslatef(0, 0, .4);
+		glColor4f(0.700, 0.700, 0.700,.6);
+		
+		Float cylRad = .02;
+		Float cylHeight = .04;
+		Float headRad = .06;
+		
+		gluQuadricOrientation(frame->glPane->quadratic,GLU_INSIDE);
+		gluCylinder(frame->glPane->quadratic,cylRad,cylRad,cylHeight,16,16);
+		
+		
+		gluQuadricOrientation(frame->glPane->quadratic,GLU_OUTSIDE);
+		gluCylinder(frame->glPane->quadratic,cylRad,cylRad,cylHeight,16,16);
+		
+		
+		glTranslatef(0, 0, cylHeight + sqrt(headRad*headRad - cylRad*cylRad));
+		gluSphere(quadratic,headRad,32,32);
+		
+		//glEnd();
+		glPopMatrix();
 	}
 	
 }

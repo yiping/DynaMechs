@@ -345,15 +345,15 @@ void TaskSpaceControllerB::Optimize() {
 		
 
 		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_REL_GAP, 10e-04);
-		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_DFEAS, 10e-04);
-		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_MU_RED, 10e-08);
-		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_PFEAS, 10e-08);
-		MSK_putintparam(task, MSK_IPAR_INTPNT_NUM_THREADS, 1);
+		//MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_DFEAS, 10e-04);
+		//MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_MU_RED, 10e-08);
+		//MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_PFEAS, 10e-08);
+		//MSK_putintparam(task, MSK_IPAR_INTPNT_NUM_THREADS, 1);
 		
 		//MSK_putintparam(task, MSK_IPAR_DATA_CHECK, MSK_OFF);
 		//MSK_putintparam(task, MSK_IPAR_CONCURRENT_NUM_OPTIMIZERS, 0);
 		//MSK_putintparam(task, MSK_IPAR_LOG, 0);
-		MSK_putintparam(task, MSK_IPAR_INTPNT_BASIS, MSK_BI_NEVER);
+		//MSK_putintparam(task, MSK_IPAR_INTPNT_BASIS, MSK_BI_NEVER);
 		
 		/* Run optimizer */
 		

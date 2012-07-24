@@ -182,7 +182,7 @@ void executeGL_xan(ifstream &data_ptr)
    // // to allow users to switch betwee solid face and wireframe 
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_LINE);
-
+	//glEnable(GL_BLEND);
 
 //   GLfloat color[4] = {0.0, 0.0, 0.0, 1.0};
 //   data_ptr >> color[0] >> color[1] >> color[2];  // emission color
@@ -292,12 +292,14 @@ void executeGL_xan(ifstream &data_ptr)
       }
       glEnd();
    }
-	glDisable(GL_BLEND);
+	//glDisable(GL_BLEND);
 }
 
 //----------------------------------------------------------------------------
 GLuint dmGLLoadFile_xan(char *model_filename)
 {
+	cout << "Loading " << model_filename << endl;
+	
    ifstream data_ptr;
    data_ptr.open(model_filename);
    if (!data_ptr)

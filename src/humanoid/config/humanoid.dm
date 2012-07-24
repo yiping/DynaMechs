@@ -15,10 +15,11 @@ Articulation {
 		Graphics_Model	"./humanoid_model/torso.xan"
 
 		Mass			12.1
-		Inertia			0.218	0.0027	0.0117
-					0.0027	0.257	0.0048
-					0.0117	0.0048	0.121
-		Center_of_Gravity	0.038	0.0008	0.0849	
+		Inertia			0.218	0	0
+						0	0.257	0
+						0	0	0.121
+		#Center_of_Gravity	0.038	0	0.0849
+		Center_of_Gravity	0	0	0.15	
 		Number_of_Contact_Points	0
 
 		Position 2 2 .62
@@ -50,7 +51,7 @@ Articulation {
 				Inertia			0.00039	-1.6e-005	-0.00021
 							-1.6e-005	0.0127	0
 							-0.00021	0	0.0127
-				Center_of_Gravity	0.0784	-0.0001	-0.0037	
+				Center_of_Gravity	0.0784	0 0	
 				Number_of_Contact_Points	1
 				Contact_Locations	0.25	0	0	
 	
@@ -58,7 +59,9 @@ Articulation {
 				#Initial_Joint_Angles	0 0 -.2
 				#Initial_Joint_Angles	0 1.57079633 1.57079633
 				
-				Orientation_Quat   -0.5474    0.4476    0.4476    0.5474
+				Orientation_Quat   -0.547418790962427   0.447585374315599   0.447585374315599 0.547418790962427
+				#Orientation_Quat 0 0 0 1
+				
 				Initial_Angular_Velocity	0 0 0
 				#Axes_Limits			0	0  0
 				#Joint_Limit_Spring_Constant	0
@@ -74,12 +77,12 @@ Articulation {
 				Inertia			0.000238	-2e-006	-1e-006
 							-2e-006	0.0116	0
 							-1e-006	0	0.0116
-				Center_of_Gravity	0.0964	-0.0003	-0.0002	
+				Center_of_Gravity	0.0964	0 0	
 				Number_of_Contact_Points	1
 					Contact_Locations	 0.2500         0         0
 	
 	
-				MDH_Parameters		0.25	0	0	.4	
+				MDH_Parameters		0.25	0	0	.5	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -99,7 +102,7 @@ Articulation {
 				Center_of_Gravity	0 	0	0	
 				Number_of_Contact_Points	0	
 	
-				MDH_Parameters		0.25	0	0	-.2	
+				MDH_Parameters		0.25	0	0	-.3	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -116,7 +119,7 @@ Articulation {
 				Inertia			0.000238	-2e-006	-1e-006
 							-2e-006	0.0116	0
 							-1e-006	0	0.0116
-				Center_of_Gravity	0.0964	-0.0003	-0.0002	
+				Center_of_Gravity	0.0964	0 0
 				Number_of_Contact_Points	4
 					Contact_Locations	 0.01         .05         .1
 										 0.01         .05         -.05
@@ -148,13 +151,15 @@ Articulation {
 				Inertia			0.00039	-1.6e-005	-0.00021
 							-1.6e-005	0.0127	0
 							-0.00021	0	0.0127
-				Center_of_Gravity	0.0784	-0.0001	-0.0015	
+				Center_of_Gravity	0.0784	0 0
 				Number_of_Contact_Points	1
 				Contact_Locations	0.25	0	0	
 	
 				Position_From_Inboard_Link 0 .09 0
 				#Initial_Joint_Angles	0 0 -.2
-				Orientation_Quat  -0.5474    0.4476    0.4476    0.5474
+				Orientation_Quat  -0.547418790962427   0.447585374315599   0.447585374315599 0.547418790962427
+				#Orientation_Quat 0 0 0 1
+				
 				Initial_Angular_Velocity	0 0 0
 				#Axes_Limits			0	0  0
 				#Joint_Limit_Spring_Constant	0
@@ -170,10 +175,10 @@ Articulation {
 				Inertia			0.000238	-2e-006	-1e-006
 							-2e-006	0.0116	0
 							-1e-006	0	0.0116
-				Center_of_Gravity	0.0964	-0.0003	-0.0002	
+				Center_of_Gravity	0.0964	0 0	
 				Number_of_Contact_Points	0
 	
-				MDH_Parameters		0.25	0	0	.4
+				MDH_Parameters		0.25	0	0	.5
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -193,7 +198,7 @@ Articulation {
 				Center_of_Gravity	0 	0	0	
 				Number_of_Contact_Points	0	
 	
-				MDH_Parameters		0.25	0	0	-.2
+				MDH_Parameters		0.25	0	0	-.3
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -210,7 +215,7 @@ Articulation {
 				Inertia			0.000238	-2e-006	-1e-006
 							-2e-006	0.0116	0
 							-1e-006	0	0.0116
-				Center_of_Gravity	0.0964	-0.0003	-0.0002	
+				Center_of_Gravity	0.0964	0 0
 				Number_of_Contact_Points	4
 					Contact_Locations	 0.01         .05         .1
 										 0.01         .05         -.05
@@ -246,19 +251,16 @@ Articulation {
 				Inertia			0.00039	-1.6e-005	-0.00021
 							-1.6e-005	0.0127	0
 							-0.00021	0	0.0127
-				Center_of_Gravity	0.0784	-0.0001	-0.0037	
+				Center_of_Gravity	0.0784	0 0	
 				Number_of_Contact_Points	1
 				Contact_Locations	0.25	0	0	
 	
 				Position_From_Inboard_Link 0 -.09 .4 
-				#Initial_Joint_Angles	0 .5 2
-				#Initial_Joint_Angles	2 .8 2.8
-				##Initial_Joint_Angles	0 2.5 -1.57
-				#Initial_Joint_Angles	0 0 -1.57
-				#Initial_Joint_Angles	0 -2.4 -1.57
-				#Initial_Joint_Angles	0 0 0
 				
-				Orientation_Quat  0.7071         0   -0.1405    0.6930
+				#Orientation_Quat  0.7071         0   -0.1405    0.6930
+				Orientation_Quat 0.411088474250840   0.481322761710462  -0.588681264845017 0.502781298198333
+				#Orientation_Quat 0 0 0 1
+				
 				Initial_Angular_Velocity	0 0 0
 				#Axes_Limits			0	0  0
 				#Joint_Limit_Spring_Constant	0
@@ -275,12 +277,12 @@ Articulation {
 				Inertia			0.000238	-2e-006	-1e-006
 							-2e-006	0.0116	0
 							-1e-006	0	0.0116
-				Center_of_Gravity	0.0964	-0.0003	-0.0002	
+				Center_of_Gravity	0.0964	0 0	
 				Number_of_Contact_Points	1
 					Contact_Locations	 0.2500         0         0
 	
 	
-				MDH_Parameters		0.25	0	0	0.5	
+				MDH_Parameters		0.25	0	0	0.50000	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0
@@ -303,7 +305,7 @@ Articulation {
 				Inertia			0.00039	-1.6e-005	-0.00021
 							-1.6e-005	0.0127	0
 							-0.00021	0	0.0127
-				Center_of_Gravity	0.0784	-0.0001	-0.0015	
+				Center_of_Gravity	0.0784	0 0	
 				Number_of_Contact_Points	1
 				Contact_Locations	0.25	0	0	
 	
@@ -311,7 +313,10 @@ Articulation {
 				#Initial_Joint_Angles	0 -2.4 -1.57
 				#Initial_Joint_Angles	0 0 -1.57
 				
-				Orientation_Quat  0.6930    0.1405         0    0.7071
+				#Orientation_Quat  0.6930    0.1405         0    0.7071
+				Orientation_Quat 0.502781298198333   0.588681264845017  -0.481322761710462 0.411088474250840
+				#Orientation_Quat 0 0 0 1
+				
 				Initial_Angular_Velocity	0 0 0
 				#Axes_Limits			0	0  0
 				#Joint_Limit_Spring_Constant	0
@@ -327,11 +332,11 @@ Articulation {
 				Inertia			0.000238	-2e-006	-1e-006
 							-2e-006	0.0116	0
 							-1e-006	0	0.0116
-				Center_of_Gravity	0.0964	-0.0003	-0.0002	
+				Center_of_Gravity	0.0964	0	0	
 				Number_of_Contact_Points	1
 				Contact_Locations	 0.2500         0         0
 	
-				MDH_Parameters		0.25	0	0	.5	
+				MDH_Parameters		0.25	0	0	.5000	
 				Initial_Joint_Velocity	0
 				Joint_Limits			0	0
 				Joint_Limit_Spring_Constant	0

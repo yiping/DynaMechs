@@ -22,7 +22,7 @@
 dmArticulation *G_robot;
 volatile Float ComPos[3];
 volatile Float ComDes[3];
-GRFInfo grfInfo;
+
 
 
 SimulationThread * simThread;

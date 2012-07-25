@@ -413,3 +413,11 @@ Float dmEnvironment::getGroundElevation(CartesianVector contact_pos,
 
    return elevation_var;
 }
+
+
+void dmEnvironment::getTerrainDepthsArray(Float ** &depths ) const
+{
+	// printf("%p\n", m_depth);
+	depths = m_depth;
+	// printf("%p\n", depths);
+}

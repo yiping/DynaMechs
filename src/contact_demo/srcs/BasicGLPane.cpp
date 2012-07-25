@@ -531,8 +531,11 @@ void BasicGLPane::updateSim(wxTimerEvent & event)
 	if (update_time > 2.5)
 	{
 		timer_count ++;
-		cerr << "time/real_time: " << simThread->sim_time << '/' << rtime
-		<< "  frame_rate: " << (double) timer_count/rtime << endl;
+		//cerr << "time/real_time: " << simThread->sim_time << '/' << rtime
+		//<< "  frame_rate: " << (double) timer_count/rtime << endl;
+
+		cerr<<"Sim Time: \033[1;31m"<< simThread->sim_time<< "\033[0m\n";
+
 		dmGetSysTime(&update_tv);
 	}
 }

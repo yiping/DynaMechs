@@ -15,31 +15,28 @@
 ContactDemoDataLogger::ContactDemoDataLogger( ) 
 {
 	SIM_TIME          		= addItem( "Sim Time",		"t");
-
-	G_CONTACT_F		  		= addGroup("(Total) Contact Force",	"cf", 6);
-	G_CONTACT_F_PLANAR_DAMPER = addGroup("Planar Damper Contact Force", "cf_pd", 6);
+	NORMAL_PENETRATION		= addItem( "Normal Penetration ", "n_penetration");
+	NORMAL_VELOCITY 		= addItem( "Normal Velocity ", "n_velocity");
+	G_FE_TERRAIN		  			= addGroup("(Total) Force",	"fe_terrain", 3);
+	G_FE_PLANAR_DAMPER_TERRAIN 		= addGroup("Planar Damper Force", "fe_pd_terrain", 3);
 	G_EXT_F           		= addGroup("External Force",	"ext_f", 6);
 	G_BOX_POS_ICS     		= addGroup("Box Pos in ICS", "box_pos", 3);
 	G_BOX_VEL		   		= addGroup("Box Vel ", "box_vel", 6);
-	G_SLIDING_FLAGS   		= addGroup("Sliding Flags", "sflags", 8);
-	G_CONTACT_FLAGS   		= addGroup("Contact Flags", "cflags", 8);
-	//G_ANCHOR_0_ICS		   		= addGroup("Anchor Pos 0 ICS", "anc0", 3);
-	//G_ANCHOR_1_ICS		   		= addGroup("Anchor Pos 1 ICS", "anc1", 3);
-	//G_ANCHOR_2_ICS		   		= addGroup("Anchor Pos 2 ICS", "anc2", 3);
-	//G_ANCHOR_3_ICS		   		= addGroup("Anchor Pos 3 ICS", "anc3", 3);
+	G_SLIDING_FLAGS   		= addGroup("Sliding Flags", "sflags", 1);
+	G_CONTACT_FLAGS   		= addGroup("Contact Flags", "cflags", 1);
 
-	cout<<endl<<"SIM_TIME                  "<<SIM_TIME<<endl
-		<<"G_CONTACT_F               "<<G_CONTACT_F<<endl
-		<<"G_CONTACT_F_PLANAR_DAMPER "<<G_CONTACT_F_PLANAR_DAMPER<<endl
+
+	cout<<endl<<"SIM_TIME                  	"<<SIM_TIME<<endl
+		<<"NORMAL_PENETRATION               "<<NORMAL_PENETRATION<<endl
+		<<"NORMAL_VELOCITY               "<<NORMAL_VELOCITY<<endl
+		<<"G_FE_TERRAIN	               		"<<G_FE_TERRAIN	<<endl
+		<<"G_FE_PLANAR_DAMPER_TERRAIN	 	"<<G_FE_PLANAR_DAMPER_TERRAIN	<<endl
 		<<"G_EXT_F                   "<<G_EXT_F<<endl
 		<<"G_BOX_POS_ICS             "<<G_BOX_POS_ICS <<endl
 		<<"G_BOX_VEL                 "<<G_BOX_VEL <<endl
 		<<"G_SLIDING_FLAGS           "<<G_SLIDING_FLAGS <<endl
 		<<"G_CONTACT_FLAGS           "<<G_CONTACT_FLAGS <<endl
-		//<<"G_ANCHOR_0_ICS          	 "<<G_ANCHOR_0_ICS <<endl
-		//<<"G_ANCHOR_1_ICS          	 "<<G_ANCHOR_1_ICS <<endl
-		//<<"G_ANCHOR_2_ICS          	 "<<G_ANCHOR_2_ICS <<endl
-		//<<"G_ANCHOR_3_ICS     		 "<<G_ANCHOR_3_ICS <<endl
+
 		<<endl;
 }	
 
@@ -52,6 +49,7 @@ void ContactDemoDataLogger::logData()
 	assignItem(SIM_TIME, simThread->sim_time);
 
 	Vector6F force;	
+	Vector3F f3;
 	SpatialVector f;
 	dmRigidBody * rb = dynamic_cast<dmRigidBody *>(G_robot->getLink(0));
 
@@ -61,15 +59,32 @@ void ContactDemoDataLogger::logData()
 	dmContactModel * cm = dynamic_cast<dmContactModel *>(rb->getForce(0));
 	#endif
 
-	cm->getLastComputedValue(f);
-    
+	Float n_pen, n_vel;
+	n_pen = cm->m_normal_penetration[0];
+	n_vel = cm->m_normal_velocity[0];
+	assignItem(NORMAL_PENETRATION, n_pen);
+	assignItem(NORMAL_VELOCITY, n_vel);
 
-	force = Map<Vector6F>(f);
-	assignGroup(G_CONTACT_F, force);
 
-    cm->getLastComputedPlanarDamperForce(f);
-	force = Map<Vector6F>(f);
-	assignGroup(G_CONTACT_F_PLANAR_DAMPER, force);
+	//cm->getLastComputedValue(f);
+	//force = Map<Vector6F>(f);
+	//assignGroup(G_CONTACT_F, force);
+
+	CartesianVector fe;
+	for (int j=0;j<3;j++)
+		fe[j] = cm->m_fe_patch[0][j];
+	f3 = Map<Vector3F>(fe);
+	assignGroup(G_FE_TERRAIN, f3);
+
+    //cm->getLastComputedPlanarDamperForce(f);
+	//force = Map<Vector6F>(f);
+	//assignGroup(G_CONTACT_F_PLANAR_DAMPER, force);
+
+	for (int j=0;j<3;j++)
+		fe[j] = cm->m_fe_patch_planar_damper[0][j];
+	f3 = Map<Vector3F>(fe);
+	assignGroup(G_FE_PLANAR_DAMPER_TERRAIN, f3);	
+
 
 	rb->getExternalForce(f);
 	force = Map<Vector6F>(f);	
@@ -88,9 +103,9 @@ void ContactDemoDataLogger::logData()
 
 	//
 
-	VectorXF sflags(8);
-	VectorXF cflags(8);
-	for (int i=0; i<8; i++)
+	VectorXF sflags(1);
+	VectorXF cflags(1);
+	for (int i=0; i<1; i++)
 	{
 		sflags(i) = cm->getSlidingState(i);
 		cflags(i) = cm->getContactState(i);

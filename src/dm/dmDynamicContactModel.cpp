@@ -15,7 +15,7 @@
 
 using namespace Eigen;
 
-void getRotationMatrix(const Vector3F &z_ICS, const Vector3F &n_ICS, Matrix3F & patch_R_ICS)
+void getRotationMatrix(const Vector3F &z_ICS, const Vector3F &n_ICS, Matrix3F & ICS_R_patch)
 {
 	// z_ICS and n_ICS has to be normalized already !
 	Float cosTheta = z_ICS.dot(n_ICS);
@@ -28,11 +28,11 @@ void getRotationMatrix(const Vector3F &z_ICS, const Vector3F &n_ICS, Matrix3F & 
 		rotAxis_ICS<< -n_ICS(1)/sinTheta, n_ICS(0)/sinTheta, 0;
 		rotAxis_ICS.normalize();
 
-		patch_R_ICS = Matrix3F::Identity()+ sinTheta*cr3(rotAxis_ICS) + (1-cosTheta)*cr3(rotAxis_ICS)*cr3(rotAxis_ICS);
+		ICS_R_patch = Matrix3F::Identity()+ sinTheta*cr3(rotAxis_ICS) + (1-cosTheta)*cr3(rotAxis_ICS)*cr3(rotAxis_ICS);
 	}
 	else
 	{
-		patch_R_ICS = Matrix3F::Identity();
+		ICS_R_patch = Matrix3F::Identity();
 	}
 }
 
@@ -67,6 +67,10 @@ dmDynamicContactModel::~dmDynamicContactModel()
 	if (m_num_contact_points)
 	{
 		delete [] last_normal;
+		delete [] m_fe_patch;
+		delete [] m_fe_ICS;
+		delete [] m_fe_patch_planar_damper;
+
 	}
 }
 
@@ -84,13 +88,32 @@ void dmDynamicContactModel::setContactPoints(unsigned int num_contact_points,
 	{
 		initializeDeformationStates();
 		last_normal = new CartesianVector[m_num_contact_points];
+		m_fe_patch = new CartesianVector[m_num_contact_points];
+		m_fe_ICS = new CartesianVector[m_num_contact_points];
+		m_fe_patch_planar_damper = new CartesianVector[m_num_contact_points];
+
 		Matrix3F m = Matrix3F::Identity();
 		for (int i = 0; i < m_num_contact_points; i++)
 		{
 			last_normal[i][0] = 0;
 			last_normal[i][1] = 0;
 			last_normal[i][2] = 1;
-			last_patch_R_ICS.push_back(m);
+
+			m_fe_patch[i][0] = 0;
+			m_fe_patch[i][1] = 0;
+			m_fe_patch[i][2] = 0;
+
+			m_fe_ICS[i][0] = 0;
+			m_fe_ICS[i][1] = 0;
+			m_fe_ICS[i][2] = 0;
+
+			m_fe_patch_planar_damper[i][0] = 0;
+			m_fe_patch_planar_damper[i][1] = 0;
+			m_fe_patch_planar_damper[i][2] = 0;
+
+			last_ICS_R_patch.push_back(m);
+			m_normal_penetration.push_back(0);
+			m_normal_velocity.push_back(0);
 		}
 	}
 
@@ -124,7 +147,7 @@ void dmDynamicContactModel::initializeDeformationStates(void)
 //    Summary: Compute the external force due to contact with terrain stored in
 //             a dmEnvironment object
 // Parameters: p_ICS - position of the rigid body (wrt ICS)
-//             R_ICS - orientation of the rigid body (wrt ICS)
+//             R_ICS - is actually ICS_R_B - orientation of the rigid body (from Body to ICS)
 //             v - spatial velocity (wrt the body's CS)
 //    Returns: f_contact - (total) spatial contact force exerted on the body wrt to the
 //                   body's CS
@@ -160,7 +183,7 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 	CartesianVector vc_ICS;
 	CartesianVector dc_ICS;
 	CartesianVector vt_ICS;
-	CartesianVector dt_ICS;
+	//CartesianVector dt_ICS;
 
 	CartesianVector fe_planar_ICS;
 	CartesianVector fe_normal_ICS;
@@ -205,7 +228,7 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 		 	pc_ICS[j] = 	 p_ICS[j] +
 		                  	 R_ICS[j][0]*m_contact_pos[i][0] +
 		                  	 R_ICS[j][1]*m_contact_pos[i][1] +
-		                  	 R_ICS[j][2]*m_contact_pos[i][2]; //current contact position in ICS
+		                  	 R_ICS[j][2]*m_contact_pos[i][2]; //current contact position in ICS | R_ICS means rotation from body to ICS | historic notation
 	  	}
 
 		ground_elevation = (dmEnvironment::getEnvironment())->getGroundElevation(pc_ICS, normal); //normal at pc_ICS
@@ -220,6 +243,15 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 				m_boundary_flag = true;
 		 	}
 		 	m_sliding_flag[i] = false;
+
+			for (j = 0; j < 3; j++)
+			{
+				m_fe_patch[i][j] = 0;
+				m_fe_patch_planar_damper[i][j] = 0;
+				m_fe_ICS[i][j] = 0;
+			}
+			m_normal_penetration[i] =0; 
+			m_normal_velocity[i] =0;
 			
 			//cout<<"NO CONTACT | contact       "<<i<<": "<<u[i][0]<<"  "<<u[i][1]<<"  "<<u[i][2]<<endl;
 			//cout<<"NO CONTACT | delta contact "<<i<<": "<<ud[i][0]<<"  "<<ud[i][1]<<"  "<<ud[i][2]<<endl;
@@ -245,13 +277,13 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 			Vector3F z_ICS;
 			z_ICS<< 0,0,1;
 		
-			Matrix3F patch_R_ICS;
+			Matrix3F ICS_R_patch;
 			
 			Vector3F n_ICS;
 			n_ICS = Map<Vector3F>(normal);
 			//cout<<"normal_vec:   "<<n_ICS.transpose()<<endl;
-			getRotationMatrix(z_ICS, n_ICS, patch_R_ICS);
-			//cout<<patch_R_ICS<<endl;
+			getRotationMatrix(z_ICS, n_ICS, ICS_R_patch);
+			//cout<<ICS_R_patch<<endl;
 
 			// if ground normal changes, re-project the u to the new patch surface.
 			// i.e. modifying u outside Euler integrator is required...
@@ -260,9 +292,9 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 				Vector3F u_patch;
 				u_patch << u[i][0], u[i][1], 0; // remember, only 2 dof for each contact point!
 				Vector3F u_patch_reprojected;
-				u_patch_reprojected = patch_R_ICS * last_patch_R_ICS[i].transpose() * u_patch; // R' = R^-1 
-				u_patch_reprojected(0) = 0; //on surface
-				for (j = 0; j < 3; j++)
+				u_patch_reprojected = ICS_R_patch.transpose() * last_ICS_R_patch[i]* u_patch; // R' = R^-1 
+				u_patch_reprojected(2) = 0; //on surface
+				for (j = 0; j < 2; j++)
 				{
 					u[i][j] = u_patch_reprojected(j);
 				}
@@ -275,8 +307,8 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 			{
 				// u_ICS[j] = u[i][j];
 
-				u_ICS[j] = patch_R_ICS(0,j)*u[i][0] + 
-						   patch_R_ICS(1,j)*u[i][1] ; //   R' * u
+				u_ICS[j] = ICS_R_patch(j,0)*u[i][0] + 
+						   ICS_R_patch(j,1)*u[i][1] ; //   R * u
 			}
 
 			
@@ -295,33 +327,43 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 				 	vc_ICS[1]*normal[1] +
 				 	vc_ICS[2]*normal[2];
 			dcn = 	(pc_ICS[2] - ground_elevation)*normal[2];
+			m_normal_penetration[i] = dcn;
+			m_normal_velocity[i] = vcn;
 
 			// Magnitude of normal force.
-			Float K, D, mu;
-			D =  (dmEnvironment::getEnvironment())->getGroundNormalDamperConstant();
-			K =  (dmEnvironment::getEnvironment())->getGroundNormalSpringConstant();
+			Float Kn, Dn, Kt, Dt, mu;
+			Dn =  (dmEnvironment::getEnvironment())->getGroundNormalDamperConstant();
+			Kn =  (dmEnvironment::getEnvironment())->getGroundNormalSpringConstant();
+
+			Dt =  (dmEnvironment::getEnvironment())->getGroundPlanarDamperConstant();
+			Kt =  (dmEnvironment::getEnvironment())->getGroundPlanarSpringConstant();
+
 			mu = (dmEnvironment::getEnvironment())->getGroundKineticFrictionCoeff();
 
-			fe_normal_mag = -D*vcn - K*dcn;
+			fe_normal_mag = -Dn*vcn - Kn*dcn;
 
 			fe_normal_mag = max(Float(0), fe_normal_mag); // no sucking force
+
+	    	for (j = 0; j < 3; j++)
+	    	{
+				fe_normal_ICS[j] = normal[j]*fe_normal_mag; // normal contact force in ICS
+	    	}		
+
+
+
 			
 			if (fe_normal_mag >0)
 			{
-		    	for (j = 0; j < 3; j++)
-		    	{
-					fe_normal_ICS[j] = normal[j]*fe_normal_mag; // normal contact force in ICS
-		    	}			
+
 
 				// Planar forces assuming sticking contact.
 				for (j = 0; j < 3; j++)
 				{
 					vt_ICS[j] = vc_ICS[j] - normal[j]*vcn;
-					dt_ICS[j] = u_ICS[j];
-					fe_planar_ICS[j] = -D*vt_ICS[j] -K*dt_ICS[j];
+					fe_planar_ICS[j] = -Dt*vt_ICS[j] - Kt*u_ICS[j];
 
 					//-debug-
-					fe_planar_damper_ICS[j] = -D*vt_ICS[j] ;
+					fe_planar_damper_ICS[j] = -Dt*vt_ICS[j] ;
 				}
 
 				fe_planar_mag_stick = sqrt( fe_planar_ICS[0]*fe_planar_ICS[0] +
@@ -349,9 +391,31 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 			
 				for (j = 0; j < 3; j++)
 				{
-					ud_ICS[j] = -(fe_planar_ICS[j] + K * u_ICS[j]) /D;
+					ud_ICS[j] = -(fe_planar_ICS[j] + Kt * u_ICS[j]) /Dt;
 				}
+
+
 			}
+			else  // A special situation that even when the contact point is still below ground, there is no force on the contact point.
+			{
+				// m_sliding_flag[i] = false;
+				
+				for (j = 0; j < 3; j++)
+				{
+					fe_planar_ICS[j] = 0;
+
+					//-debug-
+					fe_planar_damper_ICS[j] = 0;
+
+					ud_ICS[j] = 0;
+				}
+
+			}
+
+
+
+
+
 
 			// Add normal and planar forces.
 			for (j = 0; j < 3; j++)
@@ -359,6 +423,9 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 			   fe_ICS[j] = fe_planar_ICS[j] + fe_normal_ICS[j];
 			}
 
+			// check for force on each contact point (in ICS)
+			//cout<<"contact-"<<i<<" fe_normal_ICS: ["<<fe_normal_ICS[0]<<" "<<fe_normal_ICS[1]<<" "<<fe_normal_ICS[2]<<"]"<<endl;
+			//cout<<"         "<<  " fe_planar_ICS: ["<<fe_planar_ICS[0]<<" "<<fe_planar_ICS[1]<<" "<<fe_planar_ICS[2]<<"]"<<endl;
 
 			// Compute Contact Force at link CS
 			for (j = 0; j < 3; j++)
@@ -374,23 +441,56 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 
 			}
 
+
+			for (j = 0; j < 3; j++)
+			{
+				m_fe_patch[i][j] =  ICS_R_patch(0,j)*fe_ICS[0] +
+								 	ICS_R_patch(1,j)*fe_ICS[1] +
+								 	ICS_R_patch(2,j)*fe_ICS[2];
+
+		    	m_fe_patch_planar_damper[i][j] = ICS_R_patch(0,j)*fe_planar_damper_ICS[0] +
+		            			  	  		 	 ICS_R_patch(1,j)*fe_planar_damper_ICS[1] +
+		            			  	  		 	 ICS_R_patch(2,j)*fe_planar_damper_ICS[2];
+				m_fe_ICS[i][j] = fe_ICS[j];
+			}
+
+			// check for force on each contact point (in body CS)
+			if (isDifferent(normal, last_normal[i]))
+			{	
+				cout<<"\033[1;32m--- Contact["<<i<<"] detects change of ground normal ---\033[0m"<<endl;
+				cout<<"last normal: ["<<last_normal[i][0]<<" "<<last_normal[0][1]<<" "<<last_normal[0][2]<<"]"<<endl;
+				cout<<"new normal : ["<<normal[0]<<" "<<normal[1]<<" "<<normal[2]<<"]"<<endl;
+				cout<<"u= [\033[1;32m"<<u[i][0]<<" "<<u[i][1]<<"\033[0m]"<<endl;
+				cout<<"u_ICS= [\033[1;32m"<<u_ICS[0]<<" "<<u_ICS[1]<<" "<<u_ICS[2]<<"\033[0m]"<<endl;
+				cout<<"fe_normal_mag = "<<fe_normal_mag<<endl;
+				cout<<"fe_normal_ICS = ["<<fe_normal_ICS[0]<<" "<<fe_normal_ICS[1]<<" "<<fe_normal_ICS[2]<<"]"<<endl;
+				cout<<ICS_R_patch<<endl;
+				cout<<"contact-"<<i<<" fe (in ground patch CS): ["<<m_fe_patch[i][0]<<" "<<m_fe_patch[i][1]<<" "<<m_fe_patch[i][2]<<"]"<<endl;
+				cout<<"contact-"<<i<<" fe -p-d (in ground patch CS): ["<<m_fe_patch_planar_damper[i][0]<<" "<<m_fe_patch_planar_damper[i][1]<<" "<<m_fe_patch_planar_damper[i][2]<<"]"<<endl;
+			}			
+
+
+
+
+
 			for (j = 0; j<2 ; j++)
 			{
 				// TODO ud: ICS -> terrain patch surface coord.
 				// ud[i][j] = ud_ICS[j];
 		
-				ud[i][j] = patch_R_ICS(j,0)* ud_ICS[0] + 
-						   patch_R_ICS(j,1)* ud_ICS[1] + 
-						   patch_R_ICS(j,2)* ud_ICS[2]; //   R * ud_ICS
+				ud[i][j] = ICS_R_patch(0,j)* ud_ICS[0] + 
+						   ICS_R_patch(1,j)* ud_ICS[1] + 
+						   ICS_R_patch(2,1)* ud_ICS[2]; //   R' * ud_ICS
 			}
 
 			// update 'last'
 			last_normal[i][0] = normal[0];
 			last_normal[i][1] = normal[1];
 			last_normal[i][2] = normal[2];
-			last_patch_R_ICS[i] = patch_R_ICS;
+			last_ICS_R_patch[i] = ICS_R_patch;
 
 			crossproduct(m_contact_pos[i], fe, ne); //moment
+
 
 			//-debug-
 			crossproduct(m_contact_pos[i], fe_planar_damper, ne2);
@@ -406,6 +506,7 @@ void dmDynamicContactModel::computeForceKernel(const CartesianVector p_ICS,
 				f_contact_planar_damper[j+3] += fe_planar_damper[j];
 			}
      	}
+
 
 
 	}

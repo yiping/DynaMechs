@@ -20,8 +20,8 @@ end
 
 
 % constants
-mu_static = 0.9;
-mu_slip = 0.86;
+mu_static = 0.16;
+mu_slip = 0.15;
 
 
 a=[];
@@ -34,8 +34,8 @@ clf
 title('ground contact force');
 a=[a subplot(311)];
 hold on
-plot(t, cf(4,:));
-title(' Contact Force X component (body coordinate)'); 
+plot(t, fe_terrain(1,:));
+title(' fe_{terrain} X in local patch coordinates'); 
 xlabel('Time (s)'); 
 ylabel(' X force (N) ');
 
@@ -43,8 +43,8 @@ ylabel(' X force (N) ');
 
 a=[a subplot(312)];
 hold on
-plot(t, cf(5,:));
-title('Contact Force Y component ');
+plot(t, fe_terrain(2,:));
+title(' fe_{terrain} Y in local patch coordinates');
 xlabel('Time (s)'); 
 ylabel('Y Force (N) ');
 
@@ -52,8 +52,8 @@ ylabel('Y Force (N) ');
 
 a=[a subplot(313)];
 hold on
-plot(t, cf(6,:));
-title('Contact Force Z component  '); 
+plot(t, fe_terrain(3,:));
+title(' fe_{terrain} Z in local patch coordinates'); 
 xlabel('Time (s)'); 
 ylabel('Z Force (N)');
 ylim([0,150]);
@@ -88,26 +88,56 @@ ylabel('Z Force (N)');
 
 
 f = figure('Name','3 ','Position',figPos); figs = [figs f];
-a=[a subplot(211)];
+a=[a subplot(212)];
 hold on
-plot(t, cf(6,:)*mu_static );
-plot(t, cf(6,:)*mu_slip,'m');
-plot(t, ext_f(4,:),'k');
-plot(t, -cf(4,:),'r');
+%plot(t, fe_terrain(3,:)*mu_static );
+%plot(t, fe_terrain(3,:)*mu_slip,'m');
+%plot(t, ext_f(4,:),'k');
+plot(t, -fe_terrain(1,:),'r');
 %plot(t, 4*547*box_vel(4,:),'g');
-plot(t, -cf_pd(4,:),'Color',[0 0.498039215803146 0]);
+plot(t, -fe_pd_terrain(1,:),'Color',[0 0.498039215803146 0]);
 
 ylim([0,110]);
 xlabel('Time (s)','FontSize',12);
-ylabel('force (N)','FontSize',12);
-legend('mu\_static * f\_contact\_normal','mu\_kinetc * f\_contact\_normal',...
-'f\_external','f\_contact\_tangential',  'f\_contact\_tangential\_damper' );
+ylabel('Tangential force (N) (in local terrain patch CS) ');
+
+
+a=[a subplot(211)];
+plot(t, fe_terrain(3,:));
+xlabel('Time (s)');
+ylabel('normal force (N) (in local terrain patch CS)');
+ylim([0,110]);
+
+%plot(t, box_vel(4,:));
+%xlabel('Time (s)','FontSize',12);
+%ylabel('velocity (m/s)','FontSize',12);
+
+
+f = figure('Name','4 ','Position',figPos); figs = [figs f];
+a=[a subplot(311)];
+plot(t, box_pos(1,:));
+xlabel('Time (s)');
+ylabel('contact point position X');
+
+a=[a subplot(312)];
+plot(t, box_pos(3,:));
+xlabel('Time (s)');
+ylabel('contact point position Z');
+
+
+f = figure('Name','5 ','Position',figPos); figs = [figs f];
+a=[a subplot(211)];
+plot(t, n_penetration);
+xlabel('Time (s)');
+ylabel('normal penetration');
 
 a=[a subplot(212)];
-plot(t, box_vel(4,:));
-xlabel('Time (s)','FontSize',12);
-ylabel('velocity (m/s)','FontSize',12);
-legend('velocity of contact point');
+plot(t, n_velocity);
+xlabel('Time (s)');
+ylabel('normal velocity');
+
+
+
 
 % f = figure('Name','4 ','Position',figPos); figs = [figs f];
 % clf

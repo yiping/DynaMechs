@@ -18,10 +18,11 @@ x = x * xRes;
 y = y * yRes;
 
 [XI,YI] = meshgrid(x,y);
-%ZI = 2*(XI./2.5-xDim/5).*exp(-(XI./2.5-xDim/5).^2-(YI./2.5-yDim/5).^2);
+%%ZI = 2*(XI./2.5-xDim/5).*exp(-(XI./2.5-xDim/5).^2-(YI./2.5-yDim/5).^2);
 
-ZI = 2*(XI./2.5-(xDim*xRes)/5).*exp(-(XI./2.5-(xDim*xRes)/5).^2-(YI./2.5-(yDim*yRes)/5).^2);
+%ZI = 2*(XI./2.5-(xDim*xRes)/5).*exp(-(XI./2.5-(xDim*xRes)/5).^2-(YI./2.5-(yDim*yRes)/5).^2);
 
+ZI = 0.4*cos(YI./2);
 
 mesh(XI,YI,ZI);
 hold
@@ -43,7 +44,7 @@ hold off
 
 outputDir = '.';
 
-fid = fopen(strcat(outputDir,'/terrain2.dat'),'w');
+fid = fopen(strcat(outputDir,'/terrain3.dat'),'w');
 [nr, nc] =size(ZI);
 fprintf(fid, '%d  %d  %2.2f\n',xDim, yDim, xRes); 
 for i=1:nr

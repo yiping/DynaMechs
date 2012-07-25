@@ -73,7 +73,7 @@ void *SimulationThread::Entry()
 		if (frame-> syncGraphicsCheckBox->IsChecked())
 		{
 			Integ_count++;
-			if (Integ_count == 20)
+			if (Integ_count == 4)
 			{
 				Integ_count = 0;
 				refreshCondition->Wait(); // Wait() atomically unlocks the re_mutex and start waiting

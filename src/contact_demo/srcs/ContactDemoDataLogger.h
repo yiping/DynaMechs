@@ -19,9 +19,9 @@ public:
 	void saveToFile();
 	string dataSaveDirectory;
 private:
-	int SIM_TIME;
-	int G_CONTACT_F,
-		G_CONTACT_F_PLANAR_DAMPER, 
+	int SIM_TIME, NORMAL_PENETRATION, NORMAL_VELOCITY;  // designed for only one contact point
+	int G_FE_TERRAIN,
+		G_FE_PLANAR_DAMPER_TERRAIN, 
 		G_EXT_F, 
 		G_BOX_POS_ICS, 
 		G_BOX_VEL, 

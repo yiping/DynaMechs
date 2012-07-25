@@ -60,8 +60,12 @@ public:
 
 	// one for each contact point
 	CartesianVector* last_normal; 
-	vector<Matrix3F,Eigen::aligned_allocator<Matrix3F> > last_patch_R_ICS;
-
+	vector<Matrix3F,Eigen::aligned_allocator<Matrix3F> > last_ICS_R_patch;
+	CartesianVector* m_fe_patch;
+	CartesianVector* m_fe_ICS;
+	CartesianVector* m_fe_patch_planar_damper;
+	vector<Float> m_normal_penetration;
+	vector<Float> m_normal_velocity;
 
 };
 

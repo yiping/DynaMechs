@@ -26,7 +26,7 @@ Articulation {
 		Dynamic_Contact_Locations
 					   0.00   0.00    0.00
 
-		Position 2.2 2.2 0.9
+		Position 2.2 0.8 0.9
 		Orientation_Quat  0 0 0 1
 		Velocity 0 0 0 0 0 0
 	}

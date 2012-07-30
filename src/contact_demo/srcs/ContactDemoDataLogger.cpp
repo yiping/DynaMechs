@@ -45,7 +45,7 @@ ContactDemoDataLogger::ContactDemoDataLogger( )
 void ContactDemoDataLogger::logData() 
 {
 	dataMutex.Lock();
-	newRecord();
+/*	newRecord();
 	assignItem(SIM_TIME, simThread->sim_time);
 
 	Vector6F force;	
@@ -131,7 +131,7 @@ void ContactDemoDataLogger::logData()
 //	a = Map<Vector3F>(anc);
 //	assignGroup(G_ANCHOR_3_ICS, a);
 
-
+*/
 	dataMutex.Unlock();
 }
 

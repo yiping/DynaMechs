@@ -382,9 +382,9 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	}
 
 	// auxiliary view ports
-	glScissor(0.7*getWidth(), 0.7*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight() );
+/*	glScissor(0.7*getWidth(), 0.7*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight() );
 	glViewport (0.7*getWidth(), 0.7*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight());
-	glClearColor (0.0, 0.0, 0.0,1.0); /* background colour */ //lyp
+	glClearColor (0.0, 0.0, 0.0,1.0); // background colour  lyp
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity ();
@@ -393,7 +393,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity ();
 
-	// red square
+	// red triangle
 	glColor4f(1, 0, 0, 1);
 	glBegin(GL_TRIANGLES);                      // Drawing Using Triangles
 	glVertex3f( 0.0f, 1.0f, 0.0f);              // Top
@@ -411,7 +411,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	for (int i = 0; i<len; ++i)
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, displaytext[i]); //GLUT_BITMAP_HELVETICA_18
 	glDepthFunc (GL_LESS);
-	glColor3f(1.0, 1.0, 1.0); 
+	glColor3f(1.0, 1.0, 1.0); */
 
 	glEnable (GL_LIGHTING);// ****
 

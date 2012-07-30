@@ -70,7 +70,7 @@ void BasicGLPane::userGraphics()
 		dmContactModel * cm = dynamic_cast<dmContactModel *>(rb->getForce(0));
 		#endif
 
-		// only for single contact point
+/*		// only for single contact point
 		for (int j=0;j<3;j++)
 			fe(j) = cm->m_fe_ICS[0][j];
 
@@ -78,7 +78,7 @@ void BasicGLPane::userGraphics()
 		fe = fe/100;
 		glColor3f(1.0, 0.0, 0.0);
 		drawArrow(box_pos, fe, .005, .01, .03);		
-		glColor3f(1.0, 1.0, 1.0);
+		glColor3f(1.0, 1.0, 1.0);*/
 
 		rb->getExternalForce(f);
 		Vector3F ext_f;
@@ -89,8 +89,8 @@ void BasicGLPane::userGraphics()
 
 		
 		// show which terrain patch is activated
-		showActivatedTerrainPatches();
-
+		/*showActivatedTerrainPatches();
+		*/
 
 /*		if (frame->showCoM->IsChecked()) 
 		{

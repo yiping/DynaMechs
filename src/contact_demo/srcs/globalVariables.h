@@ -34,7 +34,7 @@ extern ContactDemoDataLogger * logger;
 //extern wxMutex dataMutex;
 #define GROUP_FLAG 0x0800
 
-#define USE_DYNAMIC_CONTACT_MODEL
+//#define USE_DYNAMIC_CONTACT_MODEL
 
 
 #endif

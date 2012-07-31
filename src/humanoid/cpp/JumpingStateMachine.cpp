@@ -144,7 +144,7 @@ void JumpingStateMachine::Drop() {
 			}
 		}
 	}
-	if (stateTime > .2) {
+	if (stateTime > .20) {
 		state = BALANCE_MIDDLE;
 		transitionFlag = true;
 		return;
@@ -152,6 +152,9 @@ void JumpingStateMachine::Drop() {
 	transitionFlag = false;
 }
 void JumpingStateMachine::BalanceMiddle() {
+	if (transitionFlag) {
+		cout << pCom << endl;
+	}
 	if (stateTime > 1) {
 		state = SQUAT;
 		transitionFlag = true;
@@ -161,6 +164,7 @@ void JumpingStateMachine::BalanceMiddle() {
 	kdCM = 2*sqrt(kpCM);
 	kdAM = 25;
 	pComDes << 2.00, 2.0, .48;
+	//pComDes << 2.00, 2.0, .72;
 	vComDes.setZero();
 	aComDes.setZero();
 	kDotDes.setZero();
@@ -206,9 +210,9 @@ void JumpingStateMachine::Thrust()
 	if (transitionFlag) {
 		cout << "Thrust" << endl;
 	}
-	cout << pCom(2) << endl;
+	//cout << pCom(2) << endl;
 	//cout << "Thrust" << endl;
-	if (q(11) < .7) {
+	if (q(11) < .75) {
 	//if (pCom(2) > .485) {
 		state = FLIGHT;
 		transitionFlag = true;
@@ -229,11 +233,13 @@ void JumpingStateMachine::Thrust()
 void JumpingStateMachine::Flight()
 {
 	static Vector3F pFootRel0, pFootRel1;
+	
+	//static CubicSpline transitionSpline;
 	static CubicSplineTrajectory footSpline(3);
 	
 	if (transitionFlag) {
 		cout << "Flight" << endl;
-		//simThread->idt/=10;
+		//simThread->idt/=10000;
 		//simThread->cdt/=1;
 		
 		pFootRel0 = pFoot[0] - pCom;
@@ -241,16 +247,22 @@ void JumpingStateMachine::Flight()
 		
 		transitionFlag =false;
 		
-		Vector3F pInit, vZero, pFinal;
+		Vector3F pInit, vZero, pFinal,vInit;
 		pInit.setZero();
 		vZero.setZero();
 		pFinal << .1, 0 , .03;
-		footSpline.init(pInit, vZero, pFinal, vZero, .2);
+		
+		//vInit = vFoot[0].tail(3) -vCom;
+		vInit.setZero();
+		
+		footSpline.init(pInit, vInit, pFinal, vZero, .2);
+		//transitionSpline.init(0, 0, 1, 0, .05);
 	}
 	taskOptimActive.head(6).setZero();
 	taskConstrActive.tail(12).setZero();
 	taskOptimActive.tail(12).setOnes();
-	
+
+	//TaskWeight.tail(12).setConstant(10);
 	VectorXF p(3), pd(3), pdd(3);
 	footSpline.eval(stateTime, p,pd, pdd);
 	
@@ -281,7 +293,7 @@ void JumpingStateMachine::Flight()
 	aDesFoot[0].tail(3) += pdd;
 	aDesFoot[1].tail(3) += pdd;
 	
-	cout << taskConstrActive.transpose() << endl;
+	//cout << taskConstrActive.transpose() << endl;
 
 	if (contactState[0]>=10 && contactState[1]>=10 && stateTime>.1) {
 		cout << "Landed" << endl;
@@ -329,6 +341,8 @@ void JumpingStateMachine::Land()
 
 void JumpingStateMachine::StateControl(ControlInfo & ci)
 {
+	dmTimespec controlStart, controlEnd;
+	dmGetSysTime(&controlStart);
 	
 	this->HumanoidController::ControlInit();
 	taskOptimActive.setOnes(6+NJ+6+12);
@@ -338,6 +352,11 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 	taskConstrActive.tail(12).setOnes();
 	
 	TaskWeight.setOnes(6+NJ+6+12);
+	
+	TaskWeight.tail(12).setConstant(1000);
+	//TaskWeight.segment(taskRow  ,6).setConstant(10);
+	//TaskWeight.segment(taskRow+3,3).setConstant(1000);
+	
 	
 	// Do at least one state call, and more if it transitioned out
 	do {
@@ -596,8 +615,7 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 				aDesFoot[i] = aCom;
 				
 				// Option to Scale Linear/Angular Position Control
-				TaskWeight.segment(taskRow  ,6).setConstant(10);
-				TaskWeight.segment(taskRow+3,3).setConstant(1000);
+				
 				
 				taskRow+=6;
 			}
@@ -605,9 +623,17 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 		//cout << "Total Tasks! " << taskRow << endl;
 		//cout << "Size " << TaskBias.size() << endl;
 		HumanoidController::HumanoidControl(ci);
+		
+		dmGetSysTime(&controlEnd);
+		
+		controlTime = timeDiff(controlStart, controlEnd);
+		
+		if (frame->logDataCheckBox->IsChecked()) {
+			logData();
+		}
+		//cout << "Control Complete " << simThread->sim_time << endl;
 		//exit(-1);
 	}
-	
 	
 	stateTime += simThread->cdt;
 }

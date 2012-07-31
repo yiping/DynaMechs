@@ -14,7 +14,7 @@
 #include "GlobalDefines.h"
 #include <Eigen/Cholesky>
 
-#define MAXNUMTASKS (20+6+12)
+#define MAXNUMTASKS (6+20+6+12)
 
 //#define OPTIM_DEBUG
 
@@ -28,9 +28,10 @@ const int TaskSpaceControllerB::eEnd		= TaskSpaceControllerB::eStart+ MAXNUMTASK
 
 const int TaskSpaceControllerB::eConstrStart = 0;
 const int TaskSpaceControllerB::eConstrEnd   = TaskSpaceControllerB::eConstrStart + MAXNUMTASKS-1;
+const int TaskSpaceControllerB::fNormConstrStart = TaskSpaceControllerB::eConstrEnd+1;
+const int TaskSpaceControllerB::fNormConstrEnd   = TaskSpaceControllerB::fNormConstrStart+NS-1;
 
-
-#define MAXNUMCON (MAXNUMTASKS)						/* Number of constraints.             */
+#define MAXNUMCON (MAXNUMTASKS+NS)						/* Number of constraints.             */
 #define NUMVAR (NJ+3*NS*NP+1+MAXNUMTASKS)			/* Number of variables.               */
 #define MAXNUMANZ (NUMVAR*MAXNUMCON)				/* Number of non-zeros in A.           */
 #define MAXNUMQNZ (MAXNUMVAR*MAXNUMVAR)				/* Max Number of non-zeros in Q.           */
@@ -222,15 +223,17 @@ void TaskSpaceControllerB::UpdateVariableBounds() {
 
 void TaskSpaceControllerB::AssignFootMaxLoad(int index, double maxLoad) {
 	
-	cout << "Needs implemented" << endl;
-	exit(-1);
-	//r =  MSK_putbound(task, MSK_ACC_VAR, fStart+6*index+5, MSK_BK_UP, -MSK_INFINITY, maxLoad);	
+	r = MSK_putbound(task, MSK_ACC_CON, fNormConstrStart+index, MSK_BK_UP, -MSK_INFINITY, maxLoad);	
 }
 
 
 
 void TaskSpaceControllerB::UpdateInitialConstraintBounds() {
-	// None	
+	for (MSKidxt i=0; i<NS; i++) {
+		if(r == MSK_RES_OK) {
+			r = MSK_putbound(task, MSK_ACC_CON, fNormConstrStart+i, MSK_BK_FR, -MSK_INFINITY, MSK_INFINITY);
+		}
+	}	
 }
 
 void TaskSpaceControllerB::UpdateHPTConstraintBounds() {
@@ -242,13 +245,13 @@ void TaskSpaceControllerB::UpdateHPTConstraintBounds() {
 	double bl, bu;
 	for (int i=0; i<MAXNUMTASKS; i++) {
 		
-		if (taskConstrActive[i] > 0) {
+		if (taskConstrActive(i) > 0) {
 			bk = MSK_BK_FX;
 			bl = TaskWeight(i)*(TaskBias(i)+eBiasCandG(i));
 			bu = bl;
 			MSK_putbound(task, MSK_ACC_VAR, eStart+i,MSK_BK_FX, 0, 0);
 		}
-		else if (taskOptimActive[i] >0) {
+		else if (taskOptimActive(i) >0) {
 			bk = MSK_BK_FX;
 			bl = TaskWeight(i)*(TaskBias(i)+eBiasCandG(i));
 			bu = bl;
@@ -271,7 +274,7 @@ void TaskSpaceControllerB::UpdateConstraintMatrix() {
 	//dmGetSysTime(&tv1);
 	MSKidxt       asub[NUMVAR],asubtmp[NUMVAR];
 	double		  aval[NUMVAR];
-	cout << setprecision(2);
+	//cout << setprecision(2);
 	//cout << "H= " << endl << artic->H << endl;
 	
 	LDLT<MatrixXF> decomp(artic->H);
@@ -336,6 +339,20 @@ void TaskSpaceControllerB::UpdateConstraintMatrix() {
 			r = MSK_putavec(task, MSK_ACC_CON,i,k,asub,aval);
 		}
 	}
+	
+	// Load rows for foot normal force constraints
+	for (MSKidxt i=0; i<NS; i++) {
+		MSKidxt asub[NP];
+		MSKrealt aval[NP];
+		
+		for (int j=0; j<NP; j++) {
+			asub[j] = fStart+(3*(NP*i+j)+2);
+			aval[j] = 1;
+		}
+		if(r == MSK_RES_OK) {
+			r = MSK_putavec(task, MSK_ACC_CON,i+fNormConstrStart,NP,asub,aval);
+		}
+	}
 }
 
 void TaskSpaceControllerB::Optimize() {
@@ -344,7 +361,8 @@ void TaskSpaceControllerB::Optimize() {
 		MSKrescodee trmcode;
 		
 
-		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_REL_GAP, 10e-04);
+		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_REL_GAP, 1e-04);
+		MSK_putintparam(task, MSK_IPAR_PRESOLVE_USE, MSK_PRESOLVE_MODE_OFF);
 		//MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_DFEAS, 10e-04);
 		//MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_MU_RED, 10e-08);
 		//MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_PFEAS, 10e-08);
@@ -422,6 +440,8 @@ void TaskSpaceControllerB::Optimize() {
 				case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:  
 					printf("Primal or dual infeasibility certificate found.\n");
 					cout << "time = " <<setprecision(5) << simThread->sim_time << endl;
+					int a;
+					cin >> a;
 					break;
 					
 				case MSK_SOL_STA_UNKNOWN:
@@ -468,4 +488,5 @@ void TaskSpaceControllerB::Optimize() {
 			fs.segment(6*i,6) += PointForceXforms[i][j].rightCols(3)*floc;
 		}
 	}
+	//cout << fs.transpose()<< endl;
 }

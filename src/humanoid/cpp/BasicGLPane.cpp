@@ -259,31 +259,6 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	(dmEnvironment::getEnvironment())->draw();
 	
 	// =========
-	glEnable(GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	//cout << "User Graphics" << endl;
-	userGraphics();
-	//cout << "Complete" << endl;;
-	
-	// Draw Robot!
-	{
-		glPushAttrib(GL_ALL_ATTRIB_BITS);
-		if (IsWireframe == false )
-		{
-			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-		}
-		else
-		{   
-			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-		}
-		//cout << "Draw Robot" << endl;
-		G_robot->draw();
-		//cout << "Robot Drawn" << endl;
-		glPopAttrib();
-	}
-	
-	// ===============================================================
 	
 	glDisable (GL_LIGHTING);
 	
@@ -307,6 +282,39 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
 	}
+	glEnable(GL_LIGHTING);
+	
+	
+	//cout << "User Graphics" << endl;
+	userGraphics();
+	//cout << "Complete" << endl;;
+	if(glIsEnabled(GL_BLEND)) {
+		glDepthMask(GL_FALSE);
+	}
+	
+	// Draw Robot!
+	{
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		if (IsWireframe == false )
+		{
+			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+		}
+		else
+		{   
+			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+		}
+		//cout << "Draw Robot" << endl;
+		G_robot->draw();
+		//cout << "Robot Drawn" << endl;
+		glPopAttrib();
+	}
+	if(glIsEnabled(GL_BLEND)) {
+		glDepthMask(GL_TRUE);
+	}
+	
+	// ===============================================================
+	
+	
 	
 	
 	//glEnable (GL_LIGHTING);
@@ -399,9 +407,9 @@ void BasicGLPane::glInit()
 		//glEnable(GL_POLYGON_SMOOTH);
 		
 		// Enable Blending
-		glEnable(GL_BLEND);
+		//glEnable(GL_BLEND);
 		// Specifies pixel arithmetic
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 		//glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 		//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);

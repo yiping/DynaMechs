@@ -413,6 +413,7 @@ void TaskSpaceControllerA::UpdateHPTConstraintBounds()
 	MSKidxt       i;
 	
 	//cout << "Loading Hpt Constraints Bounds " << endl;
+	//cout << TaskBias.rows() << " vs. " << taskConstrActive.rows() << endl;
 	int k = 0;
 	// Bounds on Constraints
 	for (i=hptConstrStart; i<hptConstrStart+TaskBias.rows(); i++) {

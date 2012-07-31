@@ -42,7 +42,7 @@ public:
 	
 	~TaskSpaceControllerB();
 	
-	static const int tauStart, tauEnd, fStart,fEnd,zStart,eStart,eEnd,eConstrStart,eConstrEnd;
+	static const int tauStart, tauEnd, fStart,fEnd,zStart,eStart,eEnd,eConstrStart,eConstrEnd,fNormConstrStart,fNormConstrEnd;
 private:
 	VectorXF eBiasCandG;
 };

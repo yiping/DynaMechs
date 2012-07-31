@@ -1,5 +1,5 @@
 /*
- *  MainFrame.cpp
+ *  HumanoidMainFrame.cpp
  *  DynaMechs
  *
  *  Created by Patrick Wensing on 6/25/12.
@@ -8,33 +8,34 @@
  */
 
 #include "GlobalDefines.h"
-#include "MainFrame.h"
+#include "HumanoidMainFrame.h"
 #include "HumanoidDataLogger.h"
 #include "wxBoxSlider.h"
 
 
-BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-//EVT_BUTTON  (wxID_OK,   MainFrame::OnAbout)
-EVT_BUTTON  (BUTTON_SaveView,   MainFrame::OnSaveView)
-EVT_BUTTON  (BUTTON_ApplyView,   MainFrame::OnApplyView)
-EVT_BUTTON  (BUTTON_SaveData,   MainFrame::OnSaveData)
+BEGIN_EVENT_TABLE(HumanoidMainFrame, wxFrame)
+//EVT_BUTTON  (wxID_OK,   HumanoidMainFrame::OnAbout)
+EVT_BUTTON  (BUTTON_SaveView,   HumanoidMainFrame::OnSaveView)
+EVT_BUTTON  (BUTTON_ApplyView,   HumanoidMainFrame::OnApplyView)
+EVT_BUTTON  (BUTTON_SaveData,   HumanoidMainFrame::OnSaveData)
 
-EVT_MENU  (MENU_Apply_View,   MainFrame::OnApplyView)
-EVT_MENU  (MENU_Save_View,   MainFrame::OnSaveView)
+EVT_MENU  (MENU_Apply_View,   HumanoidMainFrame::OnApplyView)
+EVT_MENU  (MENU_Save_View,   HumanoidMainFrame::OnSaveView)
 
 
-EVT_CLOSE   (MainFrame::OnClose)
-EVT_MENU	(MENU_Pause_Sim, MainFrame::OnPauseSim)
-EVT_MENU	(MENU_Log_Data, MainFrame::OnLogData)
-EVT_MENU	(MENU_Save_Data,MainFrame::OnSaveData)
-EVT_MENU    (MENU_Save_Directory, MainFrame::OnSaveDirectory)
-EVT_MENU	(MENU_Control_Step, MainFrame::OnControlStep)
-EVT_MENU	(MENU_Display_Freq, MainFrame::OnDisplayFreq)
-EVT_MENU	(MENU_Integration_Step, MainFrame::OnIntegrationStep)
+EVT_CLOSE   (HumanoidMainFrame::OnClose)
+EVT_MENU	(MENU_Pause_Sim, HumanoidMainFrame::OnPauseSim)
+EVT_MENU	(MENU_Log_Data, HumanoidMainFrame::OnLogData)
+EVT_MENU	(MENU_Save_Data,HumanoidMainFrame::OnSaveData)
+EVT_MENU    (MENU_Save_Directory, HumanoidMainFrame::OnSaveDirectory)
+EVT_MENU	(MENU_Control_Step, HumanoidMainFrame::OnControlStep)
+EVT_MENU	(MENU_Display_Freq, HumanoidMainFrame::OnDisplayFreq)
+EVT_MENU	(MENU_Integration_Step, HumanoidMainFrame::OnIntegrationStep)
+EVT_MENU	(MENU_Slow_Motion, HumanoidMainFrame::OnSlowMotion)
 END_EVENT_TABLE()
 
 
-MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
+HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame(NULL, -1, title, pos, size) {
     CreateStatusBar();
     SetStatusText( _("Welcome to DynaMechs wxViewr!") );
@@ -57,7 +58,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 						 _T("Change the display frequency."));
 		graphicsMenu->Append(MENU_Save_View, _T("Save View\tCtrl-Shift-S"));
 		graphicsMenu->Append(MENU_Apply_View, _T("Apply View\tCtrl-Shift-A"));
-							 
+		
+		graphicsMenu->AppendCheckItem(MENU_Slow_Motion, _T("Slow Motion\tCtrl-Shift-M"));
+		
 		
 		wxMenu * dataMenu = new wxMenu;
 		
@@ -73,6 +76,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		menuBar->Append(dataMenu, _T("&Data"));
 
 		menuBar->Check(MENU_Pause_Sim, true);
+		menuBar->Check(MENU_Slow_Motion,false);
 		
 		SetMenuBar(menuBar);
 		cout << "Created Menus" << endl;
@@ -91,12 +95,17 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		//cout << "Pane " << endl;
 		glPane = new BasicGLPane( (wxFrame*) this, args, wxSize(400,400));
 		
-		saveViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_SaveView, wxT("Save View"));
-		applyViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_ApplyView, wxT("Apply View"));
-		showCoM = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowCoM,wxT("Show CoM"));
-		showGRF = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowGRF,wxT("Show GRF"));
-		showNetForceAtGround = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
-		showNetForceAtCoM	 = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
+		saveViewbutton = new wxButton( toolpanel, HumanoidMainFrame::BUTTON_SaveView, wxT("Save View"));
+		applyViewbutton = new wxButton( toolpanel, HumanoidMainFrame::BUTTON_ApplyView, wxT("Apply View"));
+		showCoM = new wxCheckBox(toolpanel,HumanoidMainFrame::CHECKBOX_ShowCoM,wxT("Show CoM"));
+		showGRF = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowGRF,wxT("Show GRF"));
+		showNetForceAtGround = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
+		showNetForceAtCoM	 = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
+		showTraces           = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowTraces,wxT("Show Traces"));
+		slowMotion           = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowTraces,wxT("Slow Motion"));
+		
+		slowMoRatio = new wxBoxSlider(toolpanel,-1,.3,4,100);
+		slowMoRatio->setValue(1);
 		
 		// Camera Options
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Camera Options")),0,wxALL,2);
@@ -110,6 +119,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		toolpanel_sizer->Add(showGRF, 0 ,wxALL ,2);
 		toolpanel_sizer->Add(showNetForceAtGround, 0,wxALL,2 );
 		toolpanel_sizer->Add(showNetForceAtCoM, 0,wxALL,2 );
+		toolpanel_sizer->Add(showTraces,0,wxALL,2);
+		toolpanel_sizer->Add(slowMotion,0,wxALL,2);
+		toolpanel_sizer->Add(slowMoRatio,0,wxALL,2);
+		
 		
 		toolpanel_sizer->AddSpacer(15);					 
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Control Options")),0,wxALL,2);	
@@ -121,8 +134,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		toolpanel_sizer->AddSpacer(15);					 
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Data Logging")),0,wxALL,2);
 		
-		logDataCheckBox = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_LogData,wxT("Log Data"));
-		saveDataButton = new wxButton(toolpanel,MainFrame::BUTTON_SaveData,wxT("Save Data"));
+		logDataCheckBox = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_LogData,wxT("Log Data"));
+		saveDataButton = new wxButton(toolpanel ,HumanoidMainFrame::BUTTON_SaveData,wxT("Save Data"));
 		toolpanel_sizer->Add(logDataCheckBox,0,wxALL,2);
 		toolpanel_sizer->Add(saveDataButton,0,wxALL,2);
 		
@@ -150,20 +163,29 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	}
 }
 
-void MainFrame::OnClose(wxCloseEvent & event)
+void HumanoidMainFrame::OnSlowMotion(wxCommandEvent & event)
+{
+	bool state = slowMotion->IsChecked();
+	state = !state;
+	cout << "Changed Log state to " << state << endl;
+	slowMotion->SetValue(state);
+	menuBar->Check(MENU_Slow_Motion, state);
+}
+
+void HumanoidMainFrame::OnClose(wxCloseEvent & event)
 {
 	simThread->requestStop();
 	delete simThread;
 	delete glPane;
 	event.Skip();
 }
-void MainFrame::OnSaveData(wxCommandEvent & event)
+void HumanoidMainFrame::OnSaveData(wxCommandEvent & event)
 {
 	humanoid->saveData();
 }
 
 
-void MainFrame::OnPauseSim(wxCommandEvent &event) {
+void HumanoidMainFrame::OnPauseSim(wxCommandEvent &event) {
 	simThread->paused_flag = !simThread->paused_flag;
 	menuBar->Check(MENU_Pause_Sim, simThread->paused_flag);
 	if (!simThread->paused_flag) {
@@ -171,14 +193,14 @@ void MainFrame::OnPauseSim(wxCommandEvent &event) {
 	}
 	
 }
-void MainFrame::OnLogData(wxCommandEvent &event) {
+void HumanoidMainFrame::OnLogData(wxCommandEvent &event) {
 	bool logState = logDataCheckBox->IsChecked();
 	logState = !logState;
 	cout << "Changed Log state to " << logState << endl;
 	logDataCheckBox->SetValue(logState);
 	menuBar->Check(MENU_Log_Data, logState);
 }
-void MainFrame::OnControlStep(wxCommandEvent &event)
+void HumanoidMainFrame::OnControlStep(wxCommandEvent &event)
 {
 	wxTextEntryDialog dialog(this,wxT("Control Step Size"),
 							 wxT("Please enter the control step size"),wxString::Format(wxT("%.5lf"), simThread->cdt));
@@ -191,7 +213,7 @@ void MainFrame::OnControlStep(wxCommandEvent &event)
 		}
 	}
 }
-void MainFrame::OnDisplayFreq(wxCommandEvent &event)
+void HumanoidMainFrame::OnDisplayFreq(wxCommandEvent &event)
 {
 	wxTextEntryDialog dialog(this,wxT("Display Frequency"),
 							 wxT("Please enter the display freuency (Hz)"),wxString::Format(wxT("%.2lf"), glPane->render_rate));
@@ -205,7 +227,7 @@ void MainFrame::OnDisplayFreq(wxCommandEvent &event)
 		}
 	}
 }
-void MainFrame::OnIntegrationStep(wxCommandEvent &event)
+void HumanoidMainFrame::OnIntegrationStep(wxCommandEvent &event)
 {
 	wxTextEntryDialog dialog(this,wxT("Integration Step Size"),
 							 wxT("Please enter the integration step size"),wxString::Format(wxT("%.5lf"), simThread->idt));
@@ -219,7 +241,7 @@ void MainFrame::OnIntegrationStep(wxCommandEvent &event)
 		}
 	}
 }
-void MainFrame::OnSaveDirectory(wxCommandEvent &event)
+void HumanoidMainFrame::OnSaveDirectory(wxCommandEvent &event)
 {
 	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(humanoid->dataSaveDirectory.c_str(),wxConvUTF8));
 	dir += wxT("/");
@@ -228,7 +250,7 @@ void MainFrame::OnSaveDirectory(wxCommandEvent &event)
 }
 
 
-void MainFrame::OnSaveView(wxCommandEvent& WXUNUSED(event))
+void HumanoidMainFrame::OnSaveView(wxCommandEvent& WXUNUSED(event))
 {
 	float x, y, z;
 	glPane->camera->getCOI(x, y, z);
@@ -266,7 +288,7 @@ void MainFrame::OnSaveView(wxCommandEvent& WXUNUSED(event))
 	
 }
 
-void MainFrame::OnApplyView(wxCommandEvent& WXUNUSED(event))
+void HumanoidMainFrame::OnApplyView(wxCommandEvent& WXUNUSED(event))
 {
 	cout<<"read..."<<endl;
 	ifstream reader;
@@ -300,7 +322,7 @@ void MainFrame::OnApplyView(wxCommandEvent& WXUNUSED(event))
 
 
 
-void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
+void HumanoidMainFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
 	// Note wxMessageBox might crash under Windows OS.
     wxMessageBox( _("This is a wxWidgets Hello world sample"),
 				 _("About Hello World"),

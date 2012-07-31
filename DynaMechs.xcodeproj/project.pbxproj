@@ -316,7 +316,7 @@
 		197B845E15070B530064753B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876B14D2EDF400778EA7 /* OpenGL.framework */; };
 		197B846415070B6C0064753B /* functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 197B842715070B450064753B /* functions.cpp */; };
 		197B846515070B6C0064753B /* kurmet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 197B842A15070B450064753B /* kurmet.cpp */; };
-		19801739159955E500DB8AD5 /* MainFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801738159955E500DB8AD5 /* MainFrame.cpp */; };
+		19801739159955E500DB8AD5 /* HumanoidMainFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801738159955E500DB8AD5 /* HumanoidMainFrame.cpp */; };
 		1980177515995A8500DB8AD5 /* SimulationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1980177315995A8500DB8AD5 /* SimulationThread.cpp */; };
 		19801C4B159B44AF00DB8AD5 /* R2D2.icns in Resources */ = {isa = PBXBuildFile; fileRef = 19801C4A159B44AF00DB8AD5 /* R2D2.icns */; };
 		19801DB4159B623A00DB8AD5 /* BasicGLPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB3159B623A00DB8AD5 /* BasicGLPane.cpp */; };
@@ -393,7 +393,7 @@
 		19B1ECB915AF2C25005FCEE4 /* globalFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECAE15AF2C25005FCEE4 /* globalFunctions.cpp */; };
 		19B1ECBA15AF2C25005FCEE4 /* globals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB015AF2C25005FCEE4 /* globals.cpp */; };
 		19B1ECBB15AF2C25005FCEE4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB215AF2C25005FCEE4 /* main.cpp */; };
-		19B1ECBC15AF2C25005FCEE4 /* MainFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB315AF2C25005FCEE4 /* MainFrame.cpp */; };
+		19B1ECBC15AF2C25005FCEE4 /* ContactMainFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB315AF2C25005FCEE4 /* ContactMainFrame.cpp */; };
 		19B1ECBD15AF2C25005FCEE4 /* SimulationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB515AF2C25005FCEE4 /* SimulationThread.cpp */; };
 		19B1ECBE15AF2C25005FCEE4 /* user_graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B1ECB715AF2C25005FCEE4 /* user_graphics.cpp */; };
 		19B1ECC215AF2C9B005FCEE4 /* dmContactSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 199267E615AC986100E51313 /* dmContactSystem.cpp */; };
@@ -881,8 +881,8 @@
 		197B842915070B450064753B /* global_typedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global_typedef.h; path = src/kurmet/global_typedef.h; sourceTree = "<group>"; };
 		197B842A15070B450064753B /* kurmet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kurmet.cpp; path = src/kurmet/kurmet.cpp; sourceTree = "<group>"; };
 		197B846215070B530064753B /* kurmet */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kurmet; sourceTree = BUILT_PRODUCTS_DIR; };
-		19801737159955E500DB8AD5 /* MainFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainFrame.h; path = src/humanoid/h/MainFrame.h; sourceTree = "<group>"; };
-		19801738159955E500DB8AD5 /* MainFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainFrame.cpp; path = src/humanoid/cpp/MainFrame.cpp; sourceTree = "<group>"; };
+		19801737159955E500DB8AD5 /* HumanoidMainFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HumanoidMainFrame.h; path = src/humanoid/h/HumanoidMainFrame.h; sourceTree = "<group>"; };
+		19801738159955E500DB8AD5 /* HumanoidMainFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidMainFrame.cpp; path = src/humanoid/cpp/HumanoidMainFrame.cpp; sourceTree = "<group>"; };
 		1980177315995A8500DB8AD5 /* SimulationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimulationThread.cpp; path = src/humanoid/cpp/SimulationThread.cpp; sourceTree = "<group>"; };
 		19801C4A159B44AF00DB8AD5 /* R2D2.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = R2D2.icns; path = src/humanoid/resources/R2D2.icns; sourceTree = "<group>"; };
 		19801CE1159B56D400DB8AD5 /* humanoidWx-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "humanoidWx-Info.plist"; path = "src/humanoid/resources/humanoidWx-Info.plist"; sourceTree = "<group>"; };
@@ -926,11 +926,13 @@
 		19B1ECB015AF2C25005FCEE4 /* globals.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = globals.cpp; path = src/contact_demo/srcs/globals.cpp; sourceTree = "<group>"; };
 		19B1ECB115AF2C25005FCEE4 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = globals.h; path = src/contact_demo/srcs/globals.h; sourceTree = "<group>"; };
 		19B1ECB215AF2C25005FCEE4 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/contact_demo/srcs/main.cpp; sourceTree = "<group>"; };
-		19B1ECB315AF2C25005FCEE4 /* MainFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainFrame.cpp; path = src/contact_demo/srcs/MainFrame.cpp; sourceTree = "<group>"; };
-		19B1ECB415AF2C25005FCEE4 /* MainFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainFrame.h; path = src/contact_demo/srcs/MainFrame.h; sourceTree = "<group>"; };
+		19B1ECB315AF2C25005FCEE4 /* ContactMainFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ContactMainFrame.cpp; path = src/contact_demo/srcs/ContactMainFrame.cpp; sourceTree = "<group>"; };
+		19B1ECB415AF2C25005FCEE4 /* ContactMainFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactMainFrame.h; path = src/contact_demo/srcs/ContactMainFrame.h; sourceTree = "<group>"; };
 		19B1ECB515AF2C25005FCEE4 /* SimulationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimulationThread.cpp; path = src/contact_demo/srcs/SimulationThread.cpp; sourceTree = "<group>"; };
 		19B1ECB615AF2C25005FCEE4 /* SimulationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimulationThread.h; path = src/contact_demo/srcs/SimulationThread.h; sourceTree = "<group>"; };
 		19B1ECB715AF2C25005FCEE4 /* user_graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = user_graphics.cpp; path = src/contact_demo/srcs/user_graphics.cpp; sourceTree = "<group>"; };
+		19B20A0D15C8472C005EA3A3 /* humanoid_box.env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = humanoid_box.env; path = src/humanoid/config/humanoid_box.env; sourceTree = "<group>"; };
+		19B20A1E15C8487D005EA3A3 /* humanoid_box.dm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = humanoid_box.dm; path = src/humanoid/config/humanoid_box.dm; sourceTree = "<group>"; };
 		19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = humanoidWx.cpp; path = src/humanoid/cpp/humanoidWx.cpp; sourceTree = "<group>"; };
 		19B85EB7158F7DA200788BE5 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxDMV/main.cpp; sourceTree = "<group>"; };
 		19B85EB8158F7DA200788BE5 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = src/wxDMV/main.h; sourceTree = "<group>"; };
@@ -2026,7 +2028,7 @@
 		19F8D61D158BB38400BC4671 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		19F8D709158BB7D100BC4671 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/wxTest/main.cpp; sourceTree = "<group>"; };
 		19F8D70A158BB7D100BC4671 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = src/wxTest/main.h; sourceTree = "<group>"; };
-		19F8D759158BB7D500BC4671 /* wxTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = wxTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		19F8D759158BB7D500BC4671 /* wxDMV */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = wxDMV; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F8D78D158BC04A00BC4671 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
 		19F8D7F8158BD2F600BC4671 /* wxTest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxTest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F8D884158BD83A00BC4671 /* wxTest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxTest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2553,9 +2555,9 @@
 			isa = PBXGroup;
 			children = (
 				19801DB5159B624000DB8AD5 /* BasicGLPane.h */,
-				19801737159955E500DB8AD5 /* MainFrame.h */,
+				19801737159955E500DB8AD5 /* HumanoidMainFrame.h */,
 				19801DB3159B623A00DB8AD5 /* BasicGLPane.cpp */,
-				19801738159955E500DB8AD5 /* MainFrame.cpp */,
+				19801738159955E500DB8AD5 /* HumanoidMainFrame.cpp */,
 				19B864721590D99800788BE5 /* wxExtensions */,
 			);
 			name = Gui;
@@ -2587,6 +2589,8 @@
 				19CECD5E15BEF1BB00CAC966 /* human.dm */,
 				1920046F15A61B830006A823 /* humanoid.dm */,
 				19801DB1159B621A00DB8AD5 /* humanoid.cfg */,
+				19B20A0D15C8472C005EA3A3 /* humanoid_box.env */,
+				19B20A1E15C8487D005EA3A3 /* humanoid_box.dm */,
 			);
 			name = Config;
 			sourceTree = "<group>";
@@ -2695,8 +2699,8 @@
 				19B1ECB015AF2C25005FCEE4 /* globals.cpp */,
 				19B1ECB115AF2C25005FCEE4 /* globals.h */,
 				19B1ECB215AF2C25005FCEE4 /* main.cpp */,
-				19B1ECB315AF2C25005FCEE4 /* MainFrame.cpp */,
-				19B1ECB415AF2C25005FCEE4 /* MainFrame.h */,
+				19B1ECB315AF2C25005FCEE4 /* ContactMainFrame.cpp */,
+				19B1ECB415AF2C25005FCEE4 /* ContactMainFrame.h */,
 				19B1ECB515AF2C25005FCEE4 /* SimulationThread.cpp */,
 				19B1ECB615AF2C25005FCEE4 /* SimulationThread.h */,
 				19B1ECB715AF2C25005FCEE4 /* user_graphics.cpp */,
@@ -4126,7 +4130,7 @@
 				19EE349F153C526D0029D664 /* windmill */,
 				19577E2B1541A01000B991DF /* mosekTest */,
 				19BA5C8A158A432100BC26DA /* wxDMV */,
-				19F8D759158BB7D500BC4671 /* wxTest */,
+				19F8D759158BB7D500BC4671 /* wxDMV */,
 				19F8D7F8158BD2F600BC4671 /* wxTest2.app */,
 				19F8D884158BD83A00BC4671 /* wxTest2.app */,
 				19F8D8FE158BDBAC00BC4671 /* wxDMVapp.app */,
@@ -4453,7 +4457,7 @@
 			);
 			name = wxTest;
 			productName = wxDMV;
-			productReference = 19F8D759158BB7D500BC4671 /* wxTest */;
+			productReference = 19F8D759158BB7D500BC4671 /* wxDMV */;
 			productType = "com.apple.product-type.tool";
 		};
 		19F8D7F7158BD2F600BC4671 /* wxTest2 */ = {
@@ -4956,7 +4960,7 @@
 				19B1ECB915AF2C25005FCEE4 /* globalFunctions.cpp in Sources */,
 				19B1ECBA15AF2C25005FCEE4 /* globals.cpp in Sources */,
 				19B1ECBB15AF2C25005FCEE4 /* main.cpp in Sources */,
-				19B1ECBC15AF2C25005FCEE4 /* MainFrame.cpp in Sources */,
+				19B1ECBC15AF2C25005FCEE4 /* ContactMainFrame.cpp in Sources */,
 				19B1ECBD15AF2C25005FCEE4 /* SimulationThread.cpp in Sources */,
 				19B1ECBE15AF2C25005FCEE4 /* user_graphics.cpp in Sources */,
 			);
@@ -5022,7 +5026,7 @@
 				19B85EF1158F7E2F00788BE5 /* dmSecondarySphericalJoint.cpp in Sources */,
 				19566F0D159121870014E039 /* wxBoxSlider.cpp in Sources */,
 				19566F0E159121870014E039 /* wxNumericTextCtrl.cpp in Sources */,
-				19801739159955E500DB8AD5 /* MainFrame.cpp in Sources */,
+				19801739159955E500DB8AD5 /* HumanoidMainFrame.cpp in Sources */,
 				1980177515995A8500DB8AD5 /* SimulationThread.cpp in Sources */,
 				19801DB4159B623A00DB8AD5 /* BasicGLPane.cpp in Sources */,
 				19801DC0159B629B00DB8AD5 /* GlobalFunctions.cpp in Sources */,

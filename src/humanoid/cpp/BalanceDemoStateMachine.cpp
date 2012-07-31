@@ -131,11 +131,11 @@ void BalanceDemoStateMachine::Drop() {
 	transitionFlag = false;
 }
 void BalanceDemoStateMachine::BalanceMiddle() {
-	if (stateTime > 1.8) {
+	/*if (stateTime > 1.8) {
 		state = DYN_STEP_LEFT;
 		transitionFlag = true;
 		return;
-	}
+	}*/
 	kpCM = 15;
 	kdCM = 25;
 	kdAM = 25;

@@ -151,7 +151,8 @@ private:
 		ZMP_F_Z,
 		ZMP_P_X,
 		ZMP_P_Y,
-	ZMP_N_Z;
+	ZMP_N_Z,
+	CONTROL_TIME;
 	
 	int
 		JOINT_ANGLES,

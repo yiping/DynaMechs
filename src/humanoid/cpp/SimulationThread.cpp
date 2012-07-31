@@ -51,9 +51,15 @@ void *SimulationThread::Entry()
 			humanoid->StateControl(ci);
 			//HumanoidControl(ci); 
 			//cout << ci.totalTime << "\t" << ci.calcTime << "\t" << ci.setupTime << "\t" << ci.optimTime << "\t" << ci.iter << endl;
+			
+			Float slowFactor = 2;
+			if (frame->slowMotion->IsChecked()) {
+				slowFactor = pow(10,frame->slowMoRatio->getValue());
+			}
+			
 			dmGetSysTime(&tv_now);
 			Float realTimeDiff = timeDiff(last_control_tv, tv_now);
-			Float sleepTime = 2*cdt - realTimeDiff;
+			Float sleepTime = slowFactor*cdt - realTimeDiff;
 			
 			if (sleepTime > 0) {
 				wxMicroSleep((unsigned long) (sleepTime * 1e6));

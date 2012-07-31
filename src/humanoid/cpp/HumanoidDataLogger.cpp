@@ -179,6 +179,7 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 	IntVector zmpGroup(zmpItems,zmpItems+sizeof(zmpItems)/sizeof(int));
 	ZMP_WRENCH = declareGroup("ZMP Wrench", zmpGroup);
 
+	CONTROL_TIME = addItem("Control Time", "controlTime");
 	
 	// Add Dynamic Groups
 	COM_POSITION = addGroup("CoM Pos (Act)", "pCom",3);
@@ -238,6 +239,7 @@ void HumanoidDataLogger::logData() {
 	newRecord();
 	assignItem(TIME, simThread->sim_time);
 	assignItem(STATE_CODE, state);
+	assignItem(CONTROL_TIME, controlTime);
 	
 	assignGroup(JOINT_ANGLES, q);
 	assignGroup(JOINT_RATES, qd);
@@ -301,10 +303,6 @@ void HumanoidDataLogger::logData() {
 	
 	assignGroup(RWRENCH_OPT, fs.head(6));
 	assignGroup(LWRENCH_OPT, fs.tail(6));
-	
-	
-	cout << grfInfo.footJacs.size() << endl;
-	cout << grfInfo.footJacs[0].rows() << "," << grfInfo.footJacs[0].cols() << endl;
 	
 	assignMatrixGroup(JRF, grfInfo.footJacs[0]);
 	assignMatrixGroup(JLF, grfInfo.footJacs[1]);

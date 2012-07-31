@@ -259,36 +259,42 @@ hold on
 plot(t,lFootPos(1,:),'r');
 plot(t,lFootPosDes(1,:),'r--');
 xlabel('Time (s)'); ylabel('Pos X');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(323)]
 hold on
 plot(t,lFootPos(2,:),'g');
 plot(t,lFootPosDes(2,:),'g--');
 xlabel('Time (s)'); ylabel('Pos Y');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(325)]
 hold on
 plot(t,lFootPos(3,:),'b');
 plot(t,lFootPosDes(3,:),'b--');
 xlabel('Time (s)'); ylabel('Pos Z');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(322)]
 hold on
 plot(t,lFootVel(4,:),'r');
 plot(t,lFootVelDes(4,:),'r--');
 xlabel('Time (s)'); ylabel('Vel X');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(324)]
 hold on
 plot(t,lFootVel(5,:),'g');
 plot(t,lFootVelDes(5,:),'g--');
 xlabel('Time (s)'); ylabel('Vel Y');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(326)]
 hold on
 plot(t,lFootVel(6,:),'b');
 plot(t,lFootVelDes(6,:),'b--');
 xlabel('Time (s)'); ylabel('Vel Z');
+drawTransitions(transitionTimes,transitionStates);
 
 
 

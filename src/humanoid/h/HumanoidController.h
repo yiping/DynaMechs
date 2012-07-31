@@ -11,11 +11,12 @@
 #define __HUMANOID_CONTROL_H__
 
 #include "TaskSpaceControllerA.h"
+#include "TaskSpaceControllerB.h"
 #include "Humanoid.h"
 
 #define COPY_P_TO_VEC(p,pvec) pvec << p[0], p[1], p[2]; 
 
-class HumanoidController : public Humanoid , public TaskSpaceControllerA {
+class HumanoidController : public Humanoid , public TaskSpaceControllerB {
 public:
 	HumanoidController(dmArticulation * robot);
 	void HumanoidControl(ControlInfo &);
@@ -32,7 +33,7 @@ public:
 	
 	GRFInfo grfInfo;
 	
-protected:
+
 	void InertialKinematicInfo(int index, Matrix3F & RtoICS, VectorXF & pICS, VectorXF & spatVelICS);
 	vector<Float > kpFoot, kdFoot;
 	vector<VectorXF > aDesFoot;
@@ -62,6 +63,8 @@ protected:
 	Vector3F zmpPosOpt;
 	
 	VectorXF aComDes, kComDes;
+	
+	Float controlTime;
 	
 private:
 	void computeActualQdd(VectorXF & qdd);

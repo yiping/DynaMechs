@@ -181,7 +181,7 @@ void executeGL_xan(ifstream &data_ptr)
    // // the following two lines are commented out by Yiping, 01/11/2012
    // // to allow users to switch betwee solid face and wireframe 
     glPolygonMode(GL_FRONT, GL_FILL);
-    glPolygonMode(GL_BACK, GL_LINE);
+    glPolygonMode(GL_BACK, GL_FILL);
 	//glEnable(GL_BLEND);
 
 //   GLfloat color[4] = {0.0, 0.0, 0.0, 1.0};
@@ -204,14 +204,16 @@ void executeGL_xan(ifstream &data_ptr)
 	
     // ****
     //since I have switched to use glColorMaterial - yiping
-    GLfloat color[4] = {0.0, 0.0, 0.0, 0.6};
-    data_ptr >> color[0] >> color[1] >> color[2];  // emission color
+    GLfloat color[4] = {0.0, 0.0, 0.0, 0.7};
+	GLfloat tmpColor[4];
+	
+    data_ptr >> tmpColor[0] >> tmpColor[1] >> tmpColor[2];  // emission color
     //
     data_ptr >> color[0] >> color[1] >> color[2];  // ambient color
-    glColor4f(color[0], color[1], color[2],color[3]);
-    data_ptr >> color[0] >> color[1] >> color[2];  // diffuse color
+	//
+    data_ptr >> tmpColor[0] >> tmpColor[1] >> tmpColor[2];  // diffuse color
     //
-    data_ptr >> color[0] >> color[1] >> color[2];  // specular color
+    data_ptr >> tmpColor[0] >> tmpColor[1] >> tmpColor[2];  // specular color
     //
     GLfloat alpha, shininess;
     data_ptr >> shininess;
@@ -246,6 +248,13 @@ void executeGL_xan(ifstream &data_ptr)
       data_ptr >> face_size[i];
       face_index[i] = new GLint[face_size[i]];
    }
+	
+	
+	
+	
+	
+	
+	
 
    for (i=0; i<num_faces; i++)
    {
@@ -275,6 +284,25 @@ void executeGL_xan(ifstream &data_ptr)
          }
       }
 
+	   if(!glIsEnabled(GL_BLEND) || 1)
+	   {
+		   if(face_size[i] == 4)
+		   {
+			   glColor4f(.1,.1, .1,.2);
+			   glBegin(GL_LINE_STRIP);
+			   glLineWidth(1.0f);
+			   glVertex3fv(vertex[face_index[i][0]]);
+			   glVertex3fv(vertex[face_index[i][2]]);
+			   glVertex3fv(vertex[face_index[i][3]]);
+			   glVertex3fv(vertex[face_index[i][1]]);
+			   glVertex3fv(vertex[face_index[i][0]]);
+			   glEnd();
+		   }
+	   }
+	   
+
+	   glColor4f(color[0], color[1], color[2],color[3]);
+	   
       GLfloat normal[3];
       compute_face_normal(vertex[face_index[i][0]],
                           vertex[face_index[i][1]],
@@ -291,7 +319,12 @@ void executeGL_xan(ifstream &data_ptr)
          }
       }
       glEnd();
+	   
+	   
+	   
    }
+	
+	
 	//glDisable(GL_BLEND);
 }
 

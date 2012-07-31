@@ -663,7 +663,8 @@ EXCLUDE                = /home/yiping/ros/DynaMechs/src/aquarobot \
                          /home/yiping/ros/DynaMechs/src/doublePendulum \
                          /home/yiping/ros/DynaMechs/src/flywheel_biped \
                          /home/yiping/ros/DynaMechs/src/catbot \
-                         /home/yiping/ros/DynaMechs/src/humanoid
+                         /home/yiping/ros/DynaMechs/src/humanoid \
+                         /home/yiping/ros/DynaMechs/src/contact_demo
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or 
 # directories that are symbolic links (a Unix filesystem feature) are excluded 

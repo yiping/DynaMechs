@@ -88,7 +88,7 @@ void dmEnvironment::drawInit()
 {
    register int i, j;
 
-  // GLfloat vertex[3][3], normal[3];
+   GLfloat vertex[3][3], normal[3];
 
    GLfloat vtex[4][3];//lyp
 
@@ -106,7 +106,7 @@ void dmEnvironment::drawInit()
 // ****
 // Currently only flat ground can have textures. If you want to work with uneven terrain, comment out the
 // following line. That will switch back to the McMillan's old code. - yiping
-#define TEXTURED_FLAT_GROUND
+// #define TEXTURED_FLAT_GROUND
 
     //NOTE: texture image has to be 16*16 or 64*64 or 128*128 or 256*256
 #ifdef TEXTURED_FLAT_GROUND
@@ -240,9 +240,9 @@ void dmEnvironment::drawInit()
       glPolygonMode(GL_FRONT, GL_FILL); //GL_LINE);
       glPolygonMode(GL_BACK, GL_FILL);
 
-      GLfloat color[4] = {0.5,0.5,0.5,1.0};
-      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
-
+      //GLfloat color[4] = {0.8,0.5,0.5,1.0};
+      //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
+      glColor4f(0.95,0.95,0.95,1.0);
       char buffer[200];
 
 
@@ -288,6 +288,57 @@ void dmEnvironment::drawInit()
          }
          glEnd();
       }
+
+      //GLfloat color2[4] = {0.1,0.1,0.1,1.0};
+      //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color2);
+      glColor4f(0.8,0.8,0.8,1.0);
+      for (j=0; j<m_y_dim-1; j++)
+      {
+         for (i=0; i<m_x_dim-1; i++)
+         {
+            vtex[0][0] = ((GLfloat) i)*m_grid_resolution;
+            vtex[0][1] = ((GLfloat) j)*m_grid_resolution;
+            vtex[0][2] = m_depth[i][j]+0.0001;
+
+            vtex[1][0] = ((GLfloat) i)*m_grid_resolution;
+            vtex[1][1] = ((GLfloat) j+1)*m_grid_resolution;
+            vtex[1][2] = m_depth[i][j+1]+0.0001;
+
+            vtex[2][0] = ((GLfloat) i+1)*m_grid_resolution;
+            vtex[2][1] = ((GLfloat) j)*m_grid_resolution;
+            vtex[2][2] = m_depth[i+1][j]+0.0001;
+
+            vtex[3][0] = ((GLfloat) i+1)*m_grid_resolution;
+            vtex[3][1] = ((GLfloat) j+1)*m_grid_resolution;
+            vtex[3][2] = m_depth[i+1][j+1]+0.0001;
+
+	        glBegin(GL_LINES);
+            {
+			   if (j == 0)
+               {
+                  glVertex3fv(vtex[0]);
+                  glVertex3fv(vtex[2]);
+               }
+
+			   if (i == 0)
+               {
+                  glVertex3fv(vtex[0]);
+                  glVertex3fv(vtex[1]);
+               }
+
+               glVertex3fv(vtex[0]);
+               glVertex3fv(vtex[3]);
+               glVertex3fv(vtex[1]);
+               glVertex3fv(vtex[3]);
+               glVertex3fv(vtex[2]);
+               glVertex3fv(vtex[3]);
+            }
+            glEnd();
+
+	     }
+      }
+      glColor4f(1.0,1.0,1.0,1.0);
+
    }
    glEndList();
 #endif

@@ -46,7 +46,7 @@
 #include <wxDMGLPolarCamera_zup.hpp>
 #include "wx/cmdline.h"
 #include "wx/dcclient.h"
-#include "globals.h"
+#include "globalVariables.h"
 
 //#include "mosek.h" /* Include the MOSEK definition file. */
 
@@ -168,6 +168,11 @@ bool MyApp::OnInit()
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
 		G_contact = new dmContactSystem();
 		G_contact-> scanRobot(G_robot);
+		if (G_contact->getNumDOFs())
+		{
+			cout<<"found total "<<G_contact->getNumDOFs()/2<<" dynamic contact points in robot"<<endl;
+		}
+		logger = new ContactDemoDataLogger();
 		
 
 		// set status bar
@@ -184,11 +189,14 @@ bool MyApp::OnInit()
 		char data_dir[FILENAME_SIZE];
 		readConfigParameterLabel(cfg_ptr, "Data_Save_Directory");
 		readFilename(cfg_ptr, data_dir);
+		logger->dataSaveDirectory = std::string(data_dir);
 		// ...
-		
+
+
+	
 		simThread->G_integrator->addSystem(G_robot);
 		simThread->G_integrator->addSystem(G_contact);
-		cout<<"checkpoint1"<<endl;
+		// cout<<"checkpoint1"<<endl;
 	}
 	
 

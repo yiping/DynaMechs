@@ -1,11 +1,11 @@
 
-//  globals.h
+//  globalVariables.h
 //  July 7, 2012
 //  YL
 
 
-#ifndef __GLOBAlS__
-#define __GLOBALS__
+#ifndef __GLOBAl_VARIABLES__
+#define __GLOBAL_VARIABLES__
 
 //This is a dirty workaround
 #undef Success
@@ -13,17 +13,10 @@
 #include <dm.h>
 #include <dmArticulation.hpp>
 #include <dmContactSystem.hpp>
-#include <vector>
-#include "wx/wx.h"
 
-#include <dmIntegEuler.hpp>
-#include <dmTime.h>
-#include <wxDMGLMouse.hpp>
-#include <wxDMGLPolarCamera_zup.hpp>
-#include "BasicGLPane.h"
 #include "SimulationThread.h"
 #include "MainFrame.h"
-
+#include "ContactDemoDataLogger.h"
 
 //#define EIGEN_NO_DEBUG
 //#define OPTIM_DEBUG
@@ -31,16 +24,17 @@
 
 
 
+
 extern dmArticulation *G_robot;
 extern dmContactSystem *G_contact;
 extern MainFrame *frame;
 extern SimulationThread * simThread;
+extern ContactDemoDataLogger * logger;
 
-
-extern wxMutex dataMutex;
+//extern wxMutex dataMutex;
 #define GROUP_FLAG 0x0800
 
-
+//#define USE_DYNAMIC_CONTACT_MODEL
 
 
 #endif

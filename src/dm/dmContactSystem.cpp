@@ -37,8 +37,9 @@ unsigned int dmContactSystem::getNumDOFs() const
 	}
 	else
 	{
+		//cout<<"warning! - No Dynamic contact has been set"<<endl;
 		return 0;
-		cout<<"warning! - No Dynamic contact has been set";
+		
 	}
 }
 
@@ -112,7 +113,7 @@ void dmContactSystem::setState(Float q[], Float qd[])
 void dmContactSystem::scanRobot(dmArticulation* robot)
 {
 	cout<<"scan robot ..."<<endl;
-	cout<<"robot has "<<robot->getNumLinks()<<" links."<<endl;
+	cout<<"robot has "<<robot->getNumLinks()<<" link(s)."<<endl;
 	for (unsigned int i =0; i< robot->getNumLinks(); i++)
 	{
 		dmLink* link;

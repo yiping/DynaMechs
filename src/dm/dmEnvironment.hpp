@@ -200,6 +200,8 @@ public:
    virtual Float getGroundElevation(CartesianVector contact_pos,
                                     CartesianVector ground_normal) const;
 
+   void getTerrainDepthsArray(Float ** & depths ) const;
+
 
    // Do these really make sense in the dmEnvironment
    ///

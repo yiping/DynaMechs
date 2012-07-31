@@ -2,7 +2,7 @@
 //  BasicGLPane.cpp
 //  July 7, 2012
 #include <dm.h>            
-#include "globals.h"
+#include "globalVariables.h"
 #include "globalFunctions.h"
 #include <dmTime.h>
 #include "BasicGLPane.h"
@@ -167,18 +167,18 @@ void BasicGLPane::keyReleased(wxKeyEvent& event) {
 
 		//cout<<"key event!"<<" "<<event.GetUnicodeKey()<<" "<<event.GetKeyCode()<<endl;
 
-	simThread->mutexProtectSharedData.Lock();
+	//simThread->mutexProtectSharedData.Lock();
 	switch ( event.GetKeyCode() )
     {
         case WXK_UP:
-			if (event.GetModifiers()== wxMOD_CONTROL)
+			if (event.GetModifiers()== wxMOD_CMD)
 				simThread->box_ext_f[3] += 5;  
 			else 
 				simThread->box_ext_f[3] += 1;      
             break;
 
 		case WXK_DOWN:
-			if (event.GetModifiers()== wxMOD_CONTROL)
+			if (event.GetModifiers()== wxMOD_CMD)
 				simThread->box_ext_f[3] -= 5;  
 			else 
 				simThread->box_ext_f[3] -= 1;
@@ -186,7 +186,7 @@ void BasicGLPane::keyReleased(wxKeyEvent& event) {
 			break;
     }
 	cout<<"ext_f: "<<simThread->box_ext_f[3]<<endl;
-	simThread->mutexProtectSharedData.Unlock(); 
+	//simThread->mutexProtectSharedData.Unlock(); 
 
 
 }
@@ -343,7 +343,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glColor3f (1,1,1);
 		glRasterPos2f(10, 40);
 		char buffer [50];
-		sprintf (buffer, "%.2f", simThread->sim_time);
+		sprintf (buffer, "sim time: %.6f s", simThread->sim_time);
 		len = (int) strlen(buffer);
 		for (int i = 0; i<len; ++i)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);  //GLUT_BITMAP_HELVETICA_10
@@ -382,9 +382,9 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	}
 
 	// auxiliary view ports
-	glScissor(0.7*getWidth(), 0.7*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight() );
+/*	glScissor(0.7*getWidth(), 0.7*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight() );
 	glViewport (0.7*getWidth(), 0.7*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight());
-	glClearColor (0.0, 0.0, 0.0,1.0); /* background colour */ //lyp
+	glClearColor (0.0, 0.0, 0.0,1.0); // background colour  lyp
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity ();
@@ -393,7 +393,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity ();
 
-	// red square
+	// red triangle
 	glColor4f(1, 0, 0, 1);
 	glBegin(GL_TRIANGLES);                      // Drawing Using Triangles
 	glVertex3f( 0.0f, 1.0f, 0.0f);              // Top
@@ -411,7 +411,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	for (int i = 0; i<len; ++i)
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, displaytext[i]); //GLUT_BITMAP_HELVETICA_18
 	glDepthFunc (GL_LESS);
-	glColor3f(1.0, 1.0, 1.0); 
+	glColor3f(1.0, 1.0, 1.0); */
 
 	glEnable (GL_LIGHTING);// ****
 
@@ -511,7 +511,17 @@ void BasicGLPane::updateSim(wxTimerEvent & event)
 	
 
 	Refresh(); // ask for repaint
+	Update(); // execute all the pending repaint events
 	
+	// TryLock() is especially important for the main (GUI) thread, 
+	// which should never be blocked because your application would become unresponsive to user input. 
+	// also, the main thread can still proceed if it cannot lock the mutex
+
+	if (simThread->re_mutex.TryLock()== wxMUTEX_NO_ERROR )// is simThread waiting for me?
+	{
+		simThread->refreshCondition->Signal();
+		simThread->re_mutex.Unlock();
+	}
 
 	timer_count++;
 	
@@ -521,8 +531,11 @@ void BasicGLPane::updateSim(wxTimerEvent & event)
 	if (update_time > 2.5)
 	{
 		timer_count ++;
-		cerr << "time/real_time: " << simThread->sim_time << '/' << rtime
-		<< "  frame_rate: " << (double) timer_count/rtime << endl;
+		//cerr << "time/real_time: " << simThread->sim_time << '/' << rtime
+		//<< "  frame_rate: " << (double) timer_count/rtime << endl;
+
+		cerr<<"Sim Time: \033[1;31m"<< simThread->sim_time<< "\033[0m\n";
+
 		dmGetSysTime(&update_tv);
 	}
 }

@@ -23,6 +23,7 @@ public:
 		CHECKBOX_ShowGRF,
 		CHECKBOX_ShowNetForceAtGround,
 		CHECKBOX_ShowNetForceAtCoM,
+		CHECKBOX_SyncGraphics,
 		CHECKBOX_LogData,
 		BUTTON_SaveData,
 		MENU_Control_Step,
@@ -51,7 +52,8 @@ public:
 	void OnIntegrationStep(wxCommandEvent &event);
 	void OnSaveDirectory(wxCommandEvent &event);
 	
-	wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM, *logDataCheckBox;
+	// wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
+	wxCheckBox *logDataCheckBox, *syncGraphicsCheckBox;
 	wxStaticText * realTimeRatioDisplay;
 	BasicGLPane * glPane;
 	

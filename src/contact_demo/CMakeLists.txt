@@ -11,9 +11,11 @@ SET(SRCS  srcs/main.cpp
 		  srcs/BasicGLPane.cpp
 		  srcs/MainFrame.cpp
 		  srcs/SimulationThread.cpp
-		  srcs/user_graphics.cpp
+		  srcs/userGraphics.cpp
 		  srcs/globalFunctions.cpp
-          srcs/globals.cpp)
+          srcs/globalVariables.cpp
+		  srcs/DataLogger.cpp
+		  srcs/ContactDemoDataLogger.cpp)
 ADD_EXECUTABLE(contact_demo ${SRCS})
 
 

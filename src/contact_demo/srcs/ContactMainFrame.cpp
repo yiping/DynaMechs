@@ -3,7 +3,7 @@
 //  July 7, 2012
 //  YL
 
-#include "globals.h"
+#include "globalVariables.h"
 #include "MainFrame.h"
 
 
@@ -87,10 +87,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		
 		saveViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_SaveView, wxT("Save View"));
 		applyViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_ApplyView, wxT("Apply View"));
-		showCoM = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowCoM,wxT("Show CoM"));
-		showGRF = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowGRF,wxT("Show GRF"));
-		showNetForceAtGround = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
-		showNetForceAtCoM	 = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
+		//showCoM = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowCoM,wxT("Show CoM"));
+		//showGRF = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowGRF,wxT("Show GRF"));
+		//showNetForceAtGround = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
+		//showNetForceAtCoM	 = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
+	
 		
 		// Camera Options
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Camera Options")),0,wxALL,2);
@@ -100,14 +101,15 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		// View Options
 		toolpanel_sizer->AddSpacer(15);
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("View Options")),0,wxALL,2);
-		toolpanel_sizer->Add(showCoM, 0 ,wxALL  ,2);
-		toolpanel_sizer->Add(showGRF, 0 ,wxALL ,2);
-		toolpanel_sizer->Add(showNetForceAtGround, 0,wxALL,2 );
-		toolpanel_sizer->Add(showNetForceAtCoM, 0,wxALL,2 );
+		//toolpanel_sizer->Add(showCoM, 0 ,wxALL  ,2);
+		//toolpanel_sizer->Add(showGRF, 0 ,wxALL ,2);
+		//toolpanel_sizer->Add(showNetForceAtGround, 0,wxALL,2 );
+		//toolpanel_sizer->Add(showNetForceAtCoM, 0,wxALL,2 );
 		
 		toolpanel_sizer->AddSpacer(15);					 
+		syncGraphicsCheckBox = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_SyncGraphics,wxT("Synchronize Graphics"));
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Control Options")),0,wxALL,2);	
-
+		toolpanel_sizer->Add(syncGraphicsCheckBox, 0 ,wxALL  ,2);
 		
 		// Data Logging
 		toolpanel_sizer->AddSpacer(15);					 
@@ -126,8 +128,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		realTimeRatioDisplay = new wxStaticText(toolpanel,-1,wxT("RT Ratio: "));
 		toolpanel_sizer->Add(realTimeRatioDisplay,0,wxALL,2);
 		
-		showCoM->SetValue(true);
-		showGRF->SetValue(true);
+		//showCoM->SetValue(true);
+		//showGRF->SetValue(true);
+		syncGraphicsCheckBox->SetValue(true);
 		
 		toolpanel->SetSizer(toolpanel_sizer);
 		
@@ -151,7 +154,8 @@ void MainFrame::OnClose(wxCloseEvent & event)
 
 void MainFrame::OnSaveData(wxCommandEvent & event)
 {
-	//
+	// saving data
+	logger->saveToFile();
 }
 
 
@@ -235,11 +239,11 @@ void MainFrame::OnIntegrationStep(wxCommandEvent &event)
 
 void MainFrame::OnSaveDirectory(wxCommandEvent &event)
 {
-	string dataSaveDirectory = "";
-	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(dataSaveDirectory.c_str(),wxConvUTF8));
+	//string dataSaveDirectory = "";
+	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(logger->dataSaveDirectory.c_str(),wxConvUTF8));
 	dir += wxT("/");
-	dataSaveDirectory = dir.mb_str();
-	cout << "Data Directory Changed to " << dataSaveDirectory << endl;
+	logger->dataSaveDirectory = dir.mb_str();
+	cout << "Data Directory Changed to " << logger->dataSaveDirectory << endl;
 }
 
 

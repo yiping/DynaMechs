@@ -127,29 +127,31 @@ void setContactParameters40(dmRigidBody *body, ifstream &cfg_ptr)
    }
 
 
-	// DM 5.0 | for extended contact model
-	/*readConfigParameterLabel(cfg_ptr, "Number_of_Dynamic_Contact_Points");
-	cfg_ptr >> num_points;
-
-	if (num_points > 0)
+	// DM 5.0 | for dynamic contact model | maintain backward compatibility
+	if(readConfigParameterLabelNonRecursive(cfg_ptr, "Number_of_Dynamic_Contact_Points"))
 	{
-	  readConfigParameterLabel(cfg_ptr, "Dynamic_Contact_Locations");
+		cfg_ptr >> num_points;
 
-	  CartesianVector *pos = new CartesianVector[num_points];
+		if (num_points > 0)
+		{
+			readConfigParameterLabel(cfg_ptr, "Dynamic_Contact_Locations");
 
-	  for (unsigned int i=0; i<num_points; i++)
-	  {
-		 cfg_ptr >> pos[i][0]
-		         >> pos[i][1]
-		         >> pos[i][2];
-	  }
+		  	CartesianVector *pos = new CartesianVector[num_points];
 
-	  dmDynamicContactModel *c_model = new dmDynamicContactModel();
-	  c_model->setContactPoints(num_points, pos);
-	  body->addForce(c_model);
+		  	for (unsigned int i=0; i<num_points; i++)
+			{
+				cfg_ptr >> pos[i][0]
+					 	>> pos[i][1]
+					 	>> pos[i][2];
+			}
 
-	  delete [] pos;
-	} */
+		 	dmDynamicContactModel *c_model = new dmDynamicContactModel();
+		  	c_model->setContactPoints(num_points, pos);
+		  	body->addForce(c_model);
+
+		  	delete [] pos;
+		} 
+	}
 }
 
 //----------------------------------------------------------------------------

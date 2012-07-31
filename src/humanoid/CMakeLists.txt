@@ -10,6 +10,7 @@ include( "${wxWidgets_USE_FILE}" )
 SET(SRCS  cpp/humanoidWx.cpp
 		  cpp/StateMachine.cpp
 		  cpp/BalanceDemoStateMachine.cpp
+		  cpp/JumpingStateMachine.cpp
 		  cpp/BasicGLPane.cpp
 		  cpp/MainFrame.cpp
 		  cpp/Humanoid.cpp
@@ -23,6 +24,7 @@ SET(SRCS  cpp/humanoidWx.cpp
           cpp/GlobalDefines.cpp
 		  cpp/GlobalFunctions.cpp
           cpp/TaskSpaceController.cpp
+		  cpp/TaskSpaceControllerA.cpp
 		  cpp/wxBoxSlider.cpp
           cpp/wxNumericTextCtrl.cpp)
 ADD_EXECUTABLE(humanoid ${SRCS})

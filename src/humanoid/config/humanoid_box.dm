@@ -11,9 +11,9 @@ Articulation {
 		Name	"Torso"
 		Graphics_Model	"./humanoid_box_model/torso.xan"
 		Mass				12.100000
-		Inertia				0.315003	0.000000	0.000000
-							0.000000	0.474421	0.000000
-							0.000000	0.000000	0.179584
+		Inertia				0.218000	0.000000	0.000000
+							0.000000	0.257000	0.000000
+							0.000000	0.000000	0.121000
 		Center_of_Gravity	0.000000	0.000000	0.150000
 		Number_of_Contact_Points	0
 		Position	2.000000	2.000000	0.620000
@@ -36,14 +36,14 @@ Articulation {
 				Name	"RightThigh"
 				Graphics_Model	"./humanoid_box_model/thigh.xan"
 				Mass				0.810000
-				Inertia				0.000486	0.000000	0.000000
-									0.000000	0.009440	0.000000
-									0.000000	0.000000	0.009440
+				Inertia				0.000390	-0.000016	-0.000210
+									-0.000016	0.012700	0.000000
+									-0.000210	0.000000	0.012700
 				Center_of_Gravity	0.078400	0.000000	0.000000
 				Number_of_Contact_Points	1
 				Contact_Locations	0.250000	0.000000	0.000000
 				Position_From_Inboard_Link	0.000000	-0.090000	0.000000
-				Orientation_Quat	-0.514773	0.484777	0.484777	0.514773
+				Orientation_Quat	-0.547419	0.447585	0.447585	0.547419
 				Initial_Angular_Velocity	0	0	0
 				Joint_Friction	0
 			}
@@ -53,13 +53,13 @@ Articulation {
 				Name	"RightShank"
 				Graphics_Model	"./humanoid_box_model/shank.xan"
 				Mass				0.630000
-				Inertia				0.000378	0.000000	0.000000
-									0.000000	0.009325	0.000000
-									0.000000	0.000000	0.009325
+				Inertia				0.000238	-0.000002	-0.000001
+									-0.000002	0.011600	0.000000
+									-0.000001	0.000000	0.011600
 				Center_of_Gravity	0.096400	0.000000	0.000000
 				Number_of_Contact_Points	1
 				Contact_Locations	0.250000	0.000000	0.000000
-				MDH_Parameters	0.250000	0.000000	0.000000	0.150000
+				MDH_Parameters	0.250000	0.000000	0.000000	0.500000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
 				Joint_Limit_Spring_Constant	0
@@ -78,7 +78,7 @@ Articulation {
 									0.000000	0.000000	0.000000
 				Center_of_Gravity	0.000000	0.000000	0.000000
 				Number_of_Contact_Points	0
-				MDH_Parameters	0.250000	0.000000	0.000000	-0.090000
+				MDH_Parameters	0.250000	0.000000	0.000000	-0.300000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
 				Joint_Limit_Spring_Constant	0
@@ -119,14 +119,14 @@ Articulation {
 				Name	"LeftThigh"
 				Graphics_Model	"./humanoid_box_model/thigh.xan"
 				Mass				0.810000
-				Inertia				0.000486	0.000000	0.000000
-									0.000000	0.009440	0.000000
-									0.000000	0.000000	0.009440
+				Inertia				0.000390	-0.000016	-0.000210
+									-0.000016	0.012700	0.000000
+									-0.000210	0.000000	0.012700
 				Center_of_Gravity	0.078400	0.000000	0.000000
 				Number_of_Contact_Points	1
 				Contact_Locations	0.250000	0.000000	0.000000
 				Position_From_Inboard_Link	0.000000	0.090000	0.000000
-				Orientation_Quat	-0.514773	0.484777	0.484777	0.514773
+				Orientation_Quat	-0.547419	0.447585	0.447585	0.547419
 				Initial_Angular_Velocity	0	0	0
 				Joint_Friction	0
 			}
@@ -136,13 +136,13 @@ Articulation {
 				Name	"LeftShank"
 				Graphics_Model	"./humanoid_box_model/shank.xan"
 				Mass				0.630000
-				Inertia				0.000378	0.000000	0.000000
-									0.000000	0.009325	0.000000
-									0.000000	0.000000	0.009325
+				Inertia				0.000238	-0.000002	-0.000001
+									-0.000002	0.011600	0.000000
+									-0.000001	0.000000	0.011600
 				Center_of_Gravity	0.096400	0.000000	0.000000
 				Number_of_Contact_Points	1
 				Contact_Locations	0.250000	0.000000	0.000000
-				MDH_Parameters	0.250000	0.000000	0.000000	0.150000
+				MDH_Parameters	0.250000	0.000000	0.000000	0.500000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
 				Joint_Limit_Spring_Constant	0
@@ -161,7 +161,7 @@ Articulation {
 									0.000000	0.000000	0.000000
 				Center_of_Gravity	0.000000	0.000000	0.000000
 				Number_of_Contact_Points	0
-				MDH_Parameters	0.250000	0.000000	0.000000	-0.090000
+				MDH_Parameters	0.250000	0.000000	0.000000	-0.300000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
 				Joint_Limit_Spring_Constant	0
@@ -204,10 +204,10 @@ Articulation {
 			Name	"RightArm"
 			Graphics_Model	"./humanoid_box_model/upperArm.xan"
 			Mass				0.535360
-			Inertia				0.000143	0.000000	0.000000
-								0.000000	0.009220	0.000000
-								0.000000	0.000000	0.009220
-			Center_of_Gravity	0.109000	0.000000	0.000000
+			Inertia				0.000390	-0.000016	-0.000210
+								-0.000016	0.012700	0.000000
+								-0.000210	0.000000	0.012700
+			Center_of_Gravity	0.078400	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.250000	0.000000	0.000000
 			Position_From_Inboard_Link	0.000000	-0.090000	0.410000
@@ -221,10 +221,10 @@ Articulation {
 			Name	"RightForeArm"
 			Graphics_Model	"./humanoid_box_model/foreArm.xan"
 			Mass				0.420640
-			Inertia				0.000112	0.000000	0.000000
-								0.000000	0.014475	0.000000
-								0.000000	0.000000	0.014475
-			Center_of_Gravity	0.170500	0.000000	0.000000
+			Inertia				0.000238	-0.000002	-0.000001
+								-0.000002	0.011600	0.000000
+								-0.000001	0.000000	0.011600
+			Center_of_Gravity	0.096400	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.250000	0.000000	0.000000
 			MDH_Parameters	0.250000	0.000000	0.000000	0.500000
@@ -245,10 +245,10 @@ Articulation {
 			Name	"LeftArm"
 			Graphics_Model	"./humanoid_box_model/upperArm.xan"
 			Mass				0.535360
-			Inertia				0.000143	0.000000	0.000000
-								0.000000	0.009220	0.000000
-								0.000000	0.000000	0.009220
-			Center_of_Gravity	0.109000	0.000000	0.000000
+			Inertia				0.000390	-0.000016	-0.000210
+								-0.000016	0.012700	0.000000
+								-0.000210	0.000000	0.012700
+			Center_of_Gravity	0.078400	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.250000	0.000000	0.000000
 			Position_From_Inboard_Link	0.000000	0.090000	0.410000
@@ -262,10 +262,10 @@ Articulation {
 			Name	"RightArm"
 			Graphics_Model	"./humanoid_box_model/foreArm.xan"
 			Mass				0.420640
-			Inertia				0.000112	0.000000	0.000000
-								0.000000	0.014475	0.000000
-								0.000000	0.000000	0.014475
-			Center_of_Gravity	0.170500	0.000000	0.000000
+			Inertia				0.000238	-0.000002	-0.000001
+								-0.000002	0.011600	0.000000
+								-0.000001	0.000000	0.011600
+			Center_of_Gravity	0.096400	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.250000	0.000000	0.000000
 			MDH_Parameters	0.250000	0.000000	0.000000	0.500000

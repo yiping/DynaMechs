@@ -23,11 +23,7 @@ Articulation {
 		Number_of_Contact_Points	0
 
 		Position 2 2 .62
-		#Orientation_Quat  .707 .707 0 0
-		#Orientation_Quat  0 0 0 1
 		Orientation_Quat  0 0 0 1
-		#Orientation_Quat  .707 0 0 .707
-		#Orientation_Quat  .2 .3 -.2 .4
 		Velocity 0 0 0 0 0 0
 	}
 	# End Mobile Base

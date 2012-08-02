@@ -121,7 +121,7 @@ bool MyApp::OnInit()
 		else {
 			filename = (char *) "config.cfg";
 		}
-		filename = "humanoid.cfg";//configFileName.mb_str();
+		filename = "humanoid_box.cfg";//configFileName.mb_str();
 		cout<<filename<<endl;
 		
 		ifstream cfg_ptr;
@@ -193,14 +193,16 @@ bool MyApp::OnInit()
 		readConfigParameterLabel(cfg_ptr, "Data_Save_Directory");
 		readFilename(cfg_ptr, data_dir);
 		humanoid->dataSaveDirectory = std::string(data_dir);
-		humanoid->grfInfo.localContacts = 2;
+		
+		
+		/*humanoid->grfInfo.localContacts = 2;
 		humanoid->grfInfo.pCoPs.resize(2);
 		humanoid->grfInfo.pCoPs[0]<<2,2-.09,0;
 		humanoid->grfInfo.pCoPs[1]<<2,2+.09,0;
 		
 		humanoid->grfInfo.fCoPs.resize(2);
 		humanoid->grfInfo.fCoPs[0]<<0,-50,100;
-		humanoid->grfInfo.fCoPs[1]<<0,50,100;
+		humanoid->grfInfo.fCoPs[1]<<0,50,100;*/
 		
 		
 		
@@ -246,6 +248,7 @@ bool MyApp::OnInit()
 } 
 
 int MyApp::OnExit() {
+	cout << "Trying to Exit" << endl;
 	//simThread->requestStop();
 	return 1;
 }
@@ -630,12 +633,15 @@ void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, doubl
 	gluCylinder(frame->glPane->quadratic,lineWidth,lineWidth,cylinderLength,detail,detail);
 	
 	//Draw Cylinder Base
+	glRotated(180, 1, 0, 0);
 	gluDisk(frame->glPane->quadratic,0,lineWidth,detail,detail);
+	glRotated(180, 1, 0, 0);
 	
 	glTranslatef(0, 0, cylinderLength);
 	//Draw Arrowhead
 	gluCylinder(frame->glPane->quadratic,headWidth,0.0f,headLength,detail,detail);
 	
+	glRotated(180, 1, 0, 0);
 	//Draw Arrowhead Base
 	gluDisk(frame->glPane->quadratic,lineWidth,headWidth,detail,detail);
 	

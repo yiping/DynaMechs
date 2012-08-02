@@ -268,8 +268,10 @@
 								<string>08FB7795FE84155DC02AAC07</string>
 								<string>19F8D860158BD79400BC4671</string>
 								<string>1940A4981507C5FE00CD4386</string>
+								<string>19801DB2159B621E00DB8AD5</string>
 								<string>198017C415995FAD00DB8AD5</string>
-								<string>1925868014D2E96B00778EA7</string>
+								<string>198016D215994F9F00DB8AD5</string>
+								<string>19C6AAC21588ED1100298257</string>
 								<string>1925863E14D2E93300778EA7</string>
 								<string>19A6F432157E4D2400ED6631</string>
 								<string>1C37FBAC04509CD000000102</string>
@@ -279,15 +281,15 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>21</integer>
-									<integer>18</integer>
+									<integer>33</integer>
+									<integer>31</integer>
 									<integer>15</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {341, 901}}</string>
+							<string>{{0, 194}, {341, 901}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -306,7 +308,7 @@
 							<real>341</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>-1590 -135 1168 960 -1680 -198 1680 1050 </string>
+						<string>-1675 -116 1168 960 -1680 -198 1680 1050 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -324,7 +326,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>BasicGLPane.cpp</string>
+								<string>JumpingStateMachine.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -332,23 +334,23 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>BasicGLPane.cpp</string>
+										<string>JumpingStateMachine.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>19AB173F15CACEC7000B9114</string>
+										<string>19AB181B15CB0D80000B9114</string>
 										<key>history</key>
 										<array>
-											<string>19B20ADE15C86102005EA3A3</string>
-											<string>1959E31B15C9F8AF0043E424</string>
-											<string>198B3F9615C9F9DD000570F1</string>
-											<string>198B3FD915CA1C90000570F1</string>
-											<string>198B3FDA15CA1C90000570F1</string>
-											<string>198B3FE215CA2672000570F1</string>
-											<string>198B3FE915CA2B66000570F1</string>
-											<string>198B3FF015CA2B8E000570F1</string>
-											<string>19AB173D15CACEC7000B9114</string>
-											<string>19AB173E15CACEC7000B9114</string>
+											<string>19AB17B615CB06C1000B9114</string>
+											<string>19AB17C815CB0794000B9114</string>
+											<string>19AB17E815CB093E000B9114</string>
+											<string>19AB17EF15CB0971000B9114</string>
+											<string>19AB17F015CB0971000B9114</string>
+											<string>19AB17F215CB0971000B9114</string>
+											<string>19AB17FA15CB09C5000B9114</string>
+											<string>19AB181215CB0CD2000B9114</string>
+											<string>19AB181915CB0D80000B9114</string>
+											<string>19AB181A15CB0D80000B9114</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -362,7 +364,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {805, 736}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-1590 -135 1168 960 -1680 -198 1680 1050 </string>
+								<string>-1675 -116 1168 960 -1680 -198 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -382,7 +384,7 @@
 								<key>Frame</key>
 								<string>{{0, 741}, {805, 178}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-1590 -135 1168 960 -1680 -198 1680 1050 </string>
+								<string>-1675 -116 1168 960 -1680 -198 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -546,16 +548,16 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>19AB174015CACEC7000B9114</string>
+		<string>19AB181C15CB0D80000B9114</string>
 		<string>19AB173715CACE01000B9114</string>
 		<string>19AB173815CACE01000B9114</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>1925863714D2E86400778EA7</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>1925863714D2E86400778EA7</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>-1590 -135 1168 960 -1680 -198 1680 1050 </string>
+	<string>-1675 -116 1168 960 -1680 -198 1680 1050 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -571,12 +573,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>HumanoidMainFrame.h</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -645,7 +649,7 @@
 			<key>WindowToolGUID</key>
 			<string>1925863714D2E86400778EA7</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

@@ -32,6 +32,8 @@ EVT_MENU	(MENU_Control_Step, HumanoidMainFrame::OnControlStep)
 EVT_MENU	(MENU_Display_Freq, HumanoidMainFrame::OnDisplayFreq)
 EVT_MENU	(MENU_Integration_Step, HumanoidMainFrame::OnIntegrationStep)
 EVT_MENU	(MENU_Slow_Motion, HumanoidMainFrame::OnSlowMotion)
+
+EVT_MENU    (wxID_EXIT, HumanoidMainFrame::OnQuit)
 END_EVENT_TABLE()
 
 
@@ -42,6 +44,10 @@ HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, 
 	
 	// Create menus
 	{
+		wxMenu * fileMenu = new wxMenu();
+		
+		fileMenu->Append(wxID_EXIT, _T("Quit\tCtrl-Q"));
+		
 		wxMenu * editMenu = new wxMenu();
 		
 		editMenu->AppendCheckItem(MENU_Pause_Sim,_T("&Pause Simulation\tCtrl-P"));
@@ -71,6 +77,11 @@ HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, 
 		
 		// now append the freshly created menu to the menu bar...
 		menuBar = new wxMenuBar;
+
+#ifndef __WXMAC__
+		menuBar->Append(fileMenu,_T("&File"));
+#endif
+		
 		menuBar->Append(editMenu, _T("&Simulation"));
 		menuBar->Append(graphicsMenu, _T("&Graphics"));
 		menuBar->Append(dataMenu, _T("&Data"));
@@ -159,6 +170,7 @@ HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, 
 		SetSizer(sizer);
 		
 		SetAutoLayout(true);
+		SendSizeEvent();
 		cout << "Created Panel" << endl;
 	}
 }
@@ -174,11 +186,18 @@ void HumanoidMainFrame::OnSlowMotion(wxCommandEvent & event)
 
 void HumanoidMainFrame::OnClose(wxCloseEvent & event)
 {
+	cout << "Requesting Sim Stop" << endl;
 	simThread->requestStop();
 	delete simThread;
 	delete glPane;
 	event.Skip();
 }
+
+void HumanoidMainFrame::OnQuit(wxCommandEvent & event)
+{
+	Close(true);
+}
+
 void HumanoidMainFrame::OnSaveData(wxCommandEvent & event)
 {
 	humanoid->saveData();

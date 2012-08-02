@@ -41,7 +41,7 @@ links{13}.pos = [0 torsoLink.width/2 torsoLink.length];
 
 % Initial Orientation for Legs
 R = [0 0 -1;-1 0 0;0 1 0]';
-rotFact = .3;
+rotFact = 1;
 % Rotate about y axis for initial fore/aft hip angle
 R2 = expm(cross([0 -.2 0]*rotFact));
 quat = RtoQuat(R2*R);

@@ -50,6 +50,7 @@ public:
 	void OnApplyView(wxCommandEvent& event);
 	void OnSaveData(wxCommandEvent& event);
 	void OnClose(wxCloseEvent &event);
+	void OnQuit(wxCommandEvent &event);
 	
 	void OnPauseSim(wxCommandEvent &event);
 	void OnLogData(wxCommandEvent &event);

@@ -684,7 +684,7 @@ void dmQuaternionLink::draw() const
 {
 
    // draw skeleton 
-   glLineWidth (2.0);
+   /*glLineWidth (2.0);
 
    glColor4f(0.8,0.5,0.9,1.0);
    glBegin(GL_LINES);
@@ -692,7 +692,7 @@ void dmQuaternionLink::draw() const
    glVertex3f(m_p[0], m_p[1], m_p[2]);
    glEnd();
    glColor4f(1.0,1.0,1.0,1.0);
-   glLineWidth (1.5);
+   glLineWidth (1.5);*/
 
    glTranslatef(m_p[0], m_p[1], m_p[2]);
 
@@ -723,10 +723,10 @@ void dmMobileBaseLink::draw() const
       glRotatef(angle*RADTODEG, m_quat[0]/len, m_quat[1]/len, m_quat[2]/len);
    }
 
-   glColor4f(0.0,0.1,0.9,1.0);
-   gluSphere(quadric,.01f,16,16);
-   glColor4f(1.0,1.0,1.0,1.0);
-   //glCallList(*((GLuint *) getUserData()));
+   //glColor4f(0.0,0.1,0.9,1.0);
+   //gluSphere(quadric,.01f,16,16);
+   //glColor4f(1.0,1.0,1.0,1.0);
+   glCallList(*((GLuint *) getUserData()));
 }
 
 //----------------------------------------------------------------------------

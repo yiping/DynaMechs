@@ -354,7 +354,7 @@ void TaskSpaceControllerB::UpdateConstraintMatrix() {
 		}
 	}
 }
-
+wxCommandEvent dummyPauseEvent;
 void TaskSpaceControllerB::Optimize() {
 	xx.resize(NUMVAR);
 	if ( r==MSK_RES_OK ) {
@@ -440,8 +440,8 @@ void TaskSpaceControllerB::Optimize() {
 				case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:  
 					printf("Primal or dual infeasibility certificate found.\n");
 					cout << "time = " <<setprecision(5) << simThread->sim_time << endl;
-					int a;
-					cin >> a;
+					
+					simThread->paused_flag = true;
 					break;
 					
 				case MSK_SOL_STA_UNKNOWN:

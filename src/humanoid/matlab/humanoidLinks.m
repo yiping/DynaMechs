@@ -5,11 +5,15 @@ link.mass = 12.1;
 link.length = .41;
 link.width  = .18;
 link.depth  = .1;
-%link.com    = [0 0 link.length*.66];
-link.com    = [0 0 .15];
+link.com    = [0 0 link.length*.66];
+%link.com    = [0 0 .15];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
                     link.length^2+link.width^2, link.length^2+link.depth^2]);
 link.Ibar   = link.I + link.mass*cross(link.com)*cross(link.com)';
+% link.Ibar = [0.218	0	0
+% 						0	0.257	0
+% 						0	0	0.121];
+
 link.hipWidth = .18;
 link.type   = 'MobileBaseLink';
 link.model  = '"./humanoid_box_model/torso.xan"';
@@ -49,11 +53,14 @@ totalMass = totalMass + 2*link.mass;
 link.length = .25;
 link.width  = .04*1.5;
 link.depth  = .04*1.5;
-%link.com    = [.433*link.length 0 0];
-link.com    = [.0784 0 0];
+link.com    = [.433*link.length 0 0];
+% link.com    = [.0784 0 0];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
                     link.length^2+link.width^2, link.length^2+link.depth^2]);
 link.Ibar   = link.I + link.mass*cross(link.com)*cross(link.com)';
+% link.Ibar = [0.00039	-1.6e-005	-0.00021
+% 							-1.6e-005	0.0127	0
+% 							-0.00021	0	0.0127]
 link.contacts = [link.length	0	0];
 link.type   = 'QuaternionLink';
 link.quat   = [0 0 0 1];
@@ -72,11 +79,15 @@ totalMass = totalMass + 2*link.mass;
 link.length = .25;
 link.width  = .04*1.5;
 link.depth  = .04*1.5;
-%link.com    = [.433*link.length 0 0];
-link.com    = [0.0964	0 0];
+link.com    = [.433*link.length 0 0];
+% link.com    = [0.0964	0 0];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
                     link.length^2+link.width^2, link.length^2+link.depth^2]);
 link.Ibar   = link.I + link.mass*cross(link.com)*cross(link.com)';
+% link.Ibar = [0.000238	-2e-006	-1e-006
+% 							-2e-006	0.0116	0
+% 							-1e-006	0	0.0116]
+
 link.contacts = [link.length	0	0];
 link.mdh    = [hipLink.length 0 0 0];
 link.type   = 'RevoluteLink';
@@ -115,9 +126,13 @@ link.contacts = [link.depth	link.width/2	0; ...
                 [link.ankleLocation;link.ankleLocation; ...
                     link.ankleLocation;link.ankleLocation];
 link.com    = [.5*link.depth 0 .5*link.length] - link.ankleLocation;
+%link.com = [0.0964	0 0];
 link.I      = 1/12 * link.mass * diag([link.length^2 + link.width^2, ...
                     link.length^2+link.depth^2, link.width^2+link.depth^2]);
 link.Ibar   = link.I + link.mass*cross(link.com)*cross(link.com)';
+% link.Ibar = [0.000238	-2e-006	-1e-006
+% 							-2e-006	0.0116	0
+% 							-1e-006	0	0.0116];
 link.type   = 'RevoluteLink';
 link.mdh    = [0	pi/2	0	0];
 link.model  = '"./humanoid_box_model/foot.xan"';
@@ -134,9 +149,14 @@ link.length = .25;
 link.width  = .04;
 link.depth  = .04;
 link.com    = [.436*link.length 0 0];
+% link.com = [0.0784	0 0];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
                     link.length^2+link.depth^2, link.length^2+link.width^2]);
 link.Ibar   = link.I + link.mass*cross(link.com)*cross(link.com)';
+% link.Ibar = [0.00039	-1.6e-005	-0.00021
+% 							-1.6e-005	0.0127	0
+% 							-0.00021	0	0.0127];
+                        
 link.contacts = [link.length	0	0];
 link.type   = 'QuaternionLink';
 link.quat   = [0 0 0 1];
@@ -154,9 +174,14 @@ link.length = .25;
 link.width  = .04;
 link.depth  = .04;
 link.com    = [.682*link.length 0 0];
+% link.com = [0.0964	0 0];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
                     link.length^2+link.depth^2, link.length^2+link.width^2]);
 link.Ibar   = link.I + link.mass*cross(link.com)*cross(link.com)';
+% link.Ibar = [0.000238	-2e-006	-1e-006
+% 							-2e-006	0.0116	0
+% 							-1e-006	0	0.0116];
+                        
 link.contacts = [link.length	0	0];
 link.type   = 'RevoluteLink';
 link.mdh    = [upperArmLink.length	0	0	0];

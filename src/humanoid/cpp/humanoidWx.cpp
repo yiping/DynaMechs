@@ -121,6 +121,7 @@ bool MyApp::OnInit()
 		else {
 			filename = (char *) "config.cfg";
 		}
+		filename = "humanoid.cfg";//configFileName.mb_str();
 		cout<<filename<<endl;
 		
 		ifstream cfg_ptr;
@@ -189,6 +190,16 @@ bool MyApp::OnInit()
 		readConfigParameterLabel(cfg_ptr, "Data_Save_Directory");
 		readFilename(cfg_ptr, data_dir);
 		humanoid->dataSaveDirectory = std::string(data_dir);
+		humanoid->grfInfo.localContacts = 2;
+		humanoid->grfInfo.pCoPs.resize(2);
+		humanoid->grfInfo.pCoPs[0]<<2,2-.09,0;
+		humanoid->grfInfo.pCoPs[1]<<2,2+.09,0;
+		
+		humanoid->grfInfo.fCoPs.resize(2);
+		humanoid->grfInfo.fCoPs[0]<<0,-50,100;
+		humanoid->grfInfo.fCoPs[1]<<0,50,100;
+		
+		
 		
 		
 		simThread->G_integrator->addSystem(G_robot);
@@ -290,7 +301,7 @@ void BasicGLPane::userGraphics()
 			if (frame->showTraces->IsChecked()) {
 			
 				// Index Based Drawing
-				/*for (int j=0; j<NumTraces; j++) {
+				for (int j=0; j<NumTraces; j++) {
 					glBegin(GL_LINES);
 					glLineWidth(1.0);
 					glColor4f(0.0, 0.0, 0.0,1.0);
@@ -303,10 +314,10 @@ void BasicGLPane::userGraphics()
 						
 					}
 					glEnd();
-				}*/
+				}
 				
 				// Distance Based Drawing
-				for (int j=0; j<NumTraces; j++) {
+				/*for (int j=0; j<NumTraces; j++) {
 					glBegin(GL_LINES);
 					glLineWidth(2);
 					
@@ -364,7 +375,7 @@ void BasicGLPane::userGraphics()
 						
 					}
 					glEnd();
-				}
+				}*/
 			}
 			
 			

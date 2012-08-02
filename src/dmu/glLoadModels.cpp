@@ -204,7 +204,7 @@ void executeGL_xan(ifstream &data_ptr)
 	
     // ****
     //since I have switched to use glColorMaterial - yiping
-    GLfloat color[4] = {0.0, 0.0, 0.0, 0.7};
+    GLfloat color[4] = {0.0, 0.0, 0.0, .6};
 	GLfloat tmpColor[4];
 	
     data_ptr >> tmpColor[0] >> tmpColor[1] >> tmpColor[2];  // emission color
@@ -288,7 +288,7 @@ void executeGL_xan(ifstream &data_ptr)
 	   {
 		   if(face_size[i] == 4)
 		   {
-			   glColor4f(.1,.1, .1,.2);
+			   glColor4f(.1,.1, .1,.4);
 			   glBegin(GL_LINE_STRIP);
 			   glLineWidth(1.0f);
 			   glVertex3fv(vertex[face_index[i][0]]);

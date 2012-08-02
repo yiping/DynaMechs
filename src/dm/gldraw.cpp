@@ -106,7 +106,7 @@ void dmEnvironment::drawInit()
 // ****
 // Currently only flat ground can have textures. If you want to work with uneven terrain, comment out the
 // following line. That will switch back to the McMillan's old code. - yiping
-// #define TEXTURED_FLAT_GROUND
+ #define TEXTURED_FLAT_GROUND
 
     //NOTE: texture image has to be 16*16 or 64*64 or 128*128 or 256*256
 #ifdef TEXTURED_FLAT_GROUND

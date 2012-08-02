@@ -12,8 +12,8 @@ Articulation {
 		Graphics_Model	"./humanoid_box_model/torso.xan"
 		Mass				12.100000
 		Inertia				0.315003	0.000000	0.000000
-							0.000000	0.466253	0.000000
-							0.000000	0.000000	0.171417
+							0.000000	0.474421	0.000000
+							0.000000	0.000000	0.179584
 		Center_of_Gravity	0.000000	0.000000	0.150000
 		Number_of_Contact_Points	0
 		Position	2.000000	2.000000	0.620000
@@ -92,15 +92,15 @@ Articulation {
 				Name	"RightAnkle2"
 				Graphics_Model	"./humanoid_box_model/foot.xan"
 				Mass				0.630000
-				Inertia				0.002100	0.000000	-0.000079
-									0.000000	0.001596	0.000000
-									-0.000079	0.000000	0.000546
-				Center_of_Gravity	0.005000	0.000000	0.025000
+				Inertia				0.002814	0.000000	-0.000110
+									0.000000	0.002310	0.000000
+									-0.000110	0.000000	0.000546
+				Center_of_Gravity	0.005000	0.000000	0.035000
 				Number_of_Contact_Points	4
 				Contact_Locations	0.010000	0.050000	-0.050000
 									0.010000	-0.050000	-0.050000
-									0.010000	0.050000	0.100000
-									0.010000	-0.050000	0.100000
+									0.010000	0.050000	0.120000
+									0.010000	-0.050000	0.120000
 				MDH_Parameters	0.000000	1.570796	0.000000	0.000000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
@@ -175,15 +175,15 @@ Articulation {
 				Name	"LeftAnkle2"
 				Graphics_Model	"./humanoid_box_model/foot.xan"
 				Mass				0.630000
-				Inertia				0.002100	0.000000	-0.000079
-									0.000000	0.001596	0.000000
-									-0.000079	0.000000	0.000546
-				Center_of_Gravity	0.005000	0.000000	0.025000
+				Inertia				0.002814	0.000000	-0.000110
+									0.000000	0.002310	0.000000
+									-0.000110	0.000000	0.000546
+				Center_of_Gravity	0.005000	0.000000	0.035000
 				Number_of_Contact_Points	4
 				Contact_Locations	0.010000	0.050000	-0.050000
 									0.010000	-0.050000	-0.050000
-									0.010000	0.050000	0.100000
-									0.010000	-0.050000	0.100000
+									0.010000	0.050000	0.120000
+									0.010000	-0.050000	0.120000
 				MDH_Parameters	0.000000	1.570796	0.000000	0.000000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
@@ -210,7 +210,7 @@ Articulation {
 			Center_of_Gravity	0.109000	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.250000	0.000000	0.000000
-			Position_From_Inboard_Link	0.000000	-0.090000	0.400000
+			Position_From_Inboard_Link	0.000000	-0.090000	0.410000
 			Orientation_Quat	0.411088	0.481323	-0.588681	0.502781
 			Initial_Angular_Velocity	0	0	0
 			Joint_Friction	0
@@ -251,7 +251,7 @@ Articulation {
 			Center_of_Gravity	0.109000	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.250000	0.000000	0.000000
-			Position_From_Inboard_Link	0.000000	0.090000	0.400000
+			Position_From_Inboard_Link	0.000000	0.090000	0.410000
 			Orientation_Quat	0.502781	0.588681	-0.481323	0.411088
 			Initial_Angular_Velocity	0	0	0
 			Joint_Friction	0

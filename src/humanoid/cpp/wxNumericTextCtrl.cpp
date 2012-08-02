@@ -28,24 +28,24 @@ void wxNumericTextCtrl::OnChar(wxKeyEvent & event) {
 		event.Skip();
 		return;
 	}
-	if (!isdigit(event.KeyCode())) {
-		if (!(	 event.KeyCode() == 46 // period
-			  || event.KeyCode() == 45 // dash
-			  || event.KeyCode() == 8  // delete
-			  || event.KeyCode() == 127 // backspace
-			  || event.KeyCode() == 314 // left
-			  || event.KeyCode() == 316 // right
+	if (!isdigit(event.GetKeyCode())) {
+		if (!(	 event.GetKeyCode() == 46 // period
+			  || event.GetKeyCode() == 45 // dash
+			  || event.GetKeyCode() == 8  // delete
+			  || event.GetKeyCode() == 127 // backspace
+			  || event.GetKeyCode() == 314 // left
+			  || event.GetKeyCode() == 316 // right
 		)) 
 		{
-			cout << "Invalid Key! " << event.KeyCode() << endl;
+			cout << "Invalid Key! " << event.GetKeyCode() << endl;
 			return;
 		}
-		if (event.KeyCode() == 46) {
+		if (event.GetKeyCode() == 46) {
 			if (!(this->GetValue().Find('.') == wxNOT_FOUND)) {
 				return;
 			}
 		}
-		if (event.KeyCode() == 45) {
+		if (event.GetKeyCode() == 45) {
 			if (!(this->GetValue().Find('-') == wxNOT_FOUND)) {
 				return;
 			}

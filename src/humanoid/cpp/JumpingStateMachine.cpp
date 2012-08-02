@@ -123,7 +123,7 @@ void JumpingStateMachine::Drop() {
 			if (dof != 0) {
 				if (dof == 6) {
 					Vector3F om;
-					om << 0,pi/20,0;
+					om << 0,M_PI/20,0;
 					matrixExpOmegaCross(om,RDesJoint[i]);
 				}
 				else if (dof ==3)

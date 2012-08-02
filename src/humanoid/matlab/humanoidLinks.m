@@ -2,7 +2,7 @@
 clear link;
 %link.mass = .578 * Mass;
 link.mass = 12.1;
-link.length = .4;
+link.length = .41;
 link.width  = .18;
 link.depth  = .1;
 %link.com    = [0 0 link.length*.66];
@@ -20,7 +20,7 @@ link.offset = [-link.depth/2 -link.width/2 0];
 link.scale  = [link.depth link.width link.length];
 
 link.neckWidth = .04;
-link.neckHeight = .04;
+link.neckHeight = .02;
 link.neckDepth = .04;
 link.headHeight = .12;
 link.headWidth = .1;
@@ -103,7 +103,7 @@ clear link;
 %link.mass = .0145 * Mass;
 link.mass = .63;
 totalMass = totalMass + 2*link.mass;
-link.length = .15;
+link.length = .17;
 link.width  = .1;
 link.depth  = .01;
 %%%%%%%%%%%%%%

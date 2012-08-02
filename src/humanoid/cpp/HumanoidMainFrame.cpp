@@ -90,7 +90,7 @@ HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, 
 		wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 		wxBoxSizer *toolpanel_sizer = new wxBoxSizer( wxVERTICAL);
 		
-		int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0};
+		int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, WX_GL_SAMPLE_BUFFERS, GL_TRUE, WX_GL_SAMPLES, 4,0};
 		
 		//cout << "Pane " << endl;
 		glPane = new BasicGLPane( (wxFrame*) this, args, wxSize(400,400));

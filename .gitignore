@@ -3,5 +3,6 @@ src/testdm/crank
 src/testdm/carts
 src/kurmet/sim_data.txt
 src/mosek/6
+src/wxWidgets-2.9.4
 .DS_Store
 */.DS_Store

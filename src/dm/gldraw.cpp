@@ -41,9 +41,13 @@
 
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
 #else
 #include <GL/gl.h>
+#include <GL/glu.h>
 #endif
+
+GLUquadricObj *quadric;
 
 // yeah I know this is in other places but I really want to limit its scope
 const float RADTODEG = (float)(180.0/M_PI);    // M_PI is defined in math.h
@@ -349,10 +353,198 @@ void dmEnvironment::drawInit()
 // draw environment and robot
 //============================================================================
 
+/*
+// functions to draw skeletons of the robot
+// func 1.
+void dmArticulation::drawSkeleton() const
+{
+	
+   glPushMatrix();
+
+   glTranslatef(m_p_ICS[0], m_p_ICS[1], m_p_ICS[2]);
+
+   Float len = sqrt(m_quat_ICS[0]*m_quat_ICS[0] +
+                    m_quat_ICS[1]*m_quat_ICS[1] +
+                    m_quat_ICS[2]*m_quat_ICS[2]);
+   if (len > 1.0e-6)
+   {
+      float angle = 2.0*atan2(len, m_quat_ICS[3]);
+      glRotatef(angle*RADTODEG,
+                m_quat_ICS[0]/len, m_quat_ICS[1]/len, m_quat_ICS[2]/len);
+   }
+
+   // render some sort of base element
+   if (getUserData())
+      glCallList(*((GLuint *) getUserData()));
+
+   for (unsigned int j=0; j<m_link_list.size(); j++)
+   {
+      if (m_link_list[j]->parent == NULL)
+      {
+         glPushMatrix();
+
+         // draw base link
+         m_link_list[j]->link->drawSkeleton();
+
+         // recurse through the children
+         for (unsigned int i=0; i<m_link_list[j]->child_list.size(); i++)
+         {
+            glPushMatrix();
+            drawSkeletonTraversal(m_link_list[j]->child_list[i]);
+            glPopMatrix();
+         }
+
+         glPopMatrix();
+      }
+   }
+
+   glPopMatrix();
+}
+
+// func 2.
+void dmArticulation::drawSkeletonTraversal(LinkInfoStruct *node) const
+{
+   if (node && node->parent)
+   {
+      if (node->child_list.size())
+         node->link->drawSkeleton(0);
+      else
+         node->link->drawSkeleton(1);
+
+      for (unsigned int i=0; i<node->child_list.size(); i++)
+      {
+         if (node->child_list.size() > 1)
+         {
+            glPushMatrix();
+            drawSkeletonTraversal(node->child_list[i]);
+            glPopMatrix();
+         }
+         else
+         {
+            drawSkeletonTraversal(node->child_list[i]);
+         }
+      }
+   }
+}
+
+// func 3.
+void dmQuaternionLink::drawSkeleton(bool isTip) const
+{
+
+   glLineWidth (1.5);
+   glColor4f(0.0,0.1,0.9,1.0);
+   glBegin(GL_LINES);
+   glVertex3f(0,0,0);
+   glVertex3f(m_p[0], m_p[1], m_p[2]);
+   glEnd();
+   glColor4f(1.0,1.0,1.0,1.0);
+   glLineWidth (1.5);
+
+   glTranslatef(m_p[0], m_p[1], m_p[2]);
+
+   Float len = sqrt(m_q[0]*m_q[0] + m_q[1]*m_q[1] + m_q[2]*m_q[2]);
+   if (len > 1.0e-6)
+   {
+      float angle = 2.0*atan2(len, m_q[3]);
+      glRotatef(angle*RADTODEG, m_q[0]/len, m_q[1]/len, m_q[2]/len);
+   }
+
+   // if the link is at the tip, draw an extra stub.
+   if (isTip)
+   {
+	  glLineWidth (1.5);
+	  glColor4f(0.0,0.1,0.9,1.0);
+	  glBegin(GL_LINES);
+	  glVertex3f(0,0,0);
+	  glVertex3f(m_cg_pose[0], m_cg_pose[1], m_cg_pose[2] );
+	  glEnd();
+	  glColor4f(1.0,1.0,1.0,1.0);
+	  glLineWidth (1.5);      
+   }
+
+}
+
+// func 4.
+void dmRevoluteLink::drawSkeleton(bool isTip) const
+{
+   Matrix3F Rot;
+   Rot<< 1, 0, 0,
+         0, cos(m_alphaMDH), -sin(m_alphaMDH),
+         0, sin(m_alphaMDH), cos(m_alphaMDH);
+   Vector3F p, p1;
+   p<< m_aMDH, 0.0, m_dMDH;
+   p1 = Rot.transpose() * p; 
+
+   glLineWidth (1.5);
+   glColor4f(0.0,0.1,0.9,1.0);
+   glBegin(GL_LINES);
+   glVertex3f(0,0,0);
+   glVertex3f(p1(0), p1(1), p1(2) );
+   glEnd();
+   glColor4f(1.0,1.0,1.0,1.0);
+   glLineWidth (1.5);
+
+   // set static portion of the MDH transformation.
+
+   if (m_alphaMDH != 0.0)
+   {
+      glRotatef(m_alphaMDH*RADTODEG, 1.0, 0.0, 0.0);
+   }
+
+   if ((m_aMDH != 0.0) || (m_dMDH != 0.0))
+   {
+      glTranslatef(m_aMDH, 0.0, m_dMDH);
+   }
+
+   // set dynamic z-axis transformation.
+   glRotatef(m_thetaMDH*RADTODEG, 0.0, 0.0, 1.0);
+
+   // if the link is at the tip, draw an extra stub.
+   if (isTip)
+   {
+	  glLineWidth (1.5);
+	  glColor4f(0.0,0.1,0.9,1.0);
+	  glBegin(GL_LINES);
+	  glVertex3f(0,0,0);
+	  glVertex3f(m_cg_pose[0], m_cg_pose[1], m_cg_pose[2] );
+	  glEnd();
+	  glColor4f(1.0,1.0,1.0,1.0);
+	  glLineWidth (1.5);
+   }
+
+}
+
+
+// func 5.
+void dmMobileBaseLink::drawSkeleton() const
+{
+
+   glTranslatef(m_p[0], m_p[1], m_p[2]);
+
+   Float le   gluSphere(quadric,.03f,32,32);n = sqrt(m_quat[0]*m_quat[0] +
+                    m_quat[1]*m_quat[1] +
+                    m_quat[2]*m_quat[2]);
+   if (len > 1.0e-6)
+   {
+      float angle = 2.0*atan2(len, m_quat[3]);
+      glRotatef(angle*RADTODEG, m_quat[0]/len, m_quat[1]/len, m_quat[2]/len);
+   }
+
+   gluSphere(quadric,.03f,32,32);
+
+}*/
+
+
+
+
+
+
+
+
 //----------------------------------------------------------------------------
 void dmArticulation::draw() const
 {
-	
+   quadric = gluNewQuadric();
    glPushMatrix();
 
    glTranslatef(m_p_ICS[0], m_p_ICS[1], m_p_ICS[2]);
@@ -435,6 +627,8 @@ void dmStaticRootLink::draw() const
 //----------------------------------------------------------------------------
 void dmRevoluteLink::draw() const
 {
+
+
    // set static portion of the MDH transformation.
    if (m_alphaMDH != 0.0)
    {
@@ -488,6 +682,18 @@ void dmSphericalLink::draw() const
 //----------------------------------------------------------------------------
 void dmQuaternionLink::draw() const
 {
+
+   // draw skeleton 
+   glLineWidth (2.0);
+
+   glColor4f(0.8,0.5,0.9,1.0);
+   glBegin(GL_LINES);
+   glVertex3f(0,0,0);
+   glVertex3f(m_p[0], m_p[1], m_p[2]);
+   glEnd();
+   glColor4f(1.0,1.0,1.0,1.0);
+   glLineWidth (1.5);
+
    glTranslatef(m_p[0], m_p[1], m_p[2]);
 
    Float len = sqrt(m_q[0]*m_q[0] + m_q[1]*m_q[1] + m_q[2]*m_q[2]);
@@ -496,8 +702,11 @@ void dmQuaternionLink::draw() const
       float angle = 2.0*atan2(len, m_q[3]);
       glRotatef(angle*RADTODEG, m_q[0]/len, m_q[1]/len, m_q[2]/len);
    }
-
+glEnable(GL_POLYGON_SMOOTH);
    glCallList(*((GLuint *) getUserData()));
+
+
+
 }
 
 //----------------------------------------------------------------------------
@@ -514,7 +723,10 @@ void dmMobileBaseLink::draw() const
       glRotatef(angle*RADTODEG, m_quat[0]/len, m_quat[1]/len, m_quat[2]/len);
    }
 
-   glCallList(*((GLuint *) getUserData()));
+   glColor4f(0.0,0.1,0.9,1.0);
+   gluSphere(quadric,.01f,16,16);
+   glColor4f(1.0,1.0,1.0,1.0);
+   //glCallList(*((GLuint *) getUserData()));
 }
 
 //----------------------------------------------------------------------------

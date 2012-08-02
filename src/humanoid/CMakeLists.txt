@@ -40,7 +40,7 @@ SET(SRCS  cpp/humanoidWx.cpp
 		  cpp/BalanceDemoStateMachine.cpp
 		  cpp/JumpingStateMachine.cpp
 		  cpp/BasicGLPane.cpp
-		  cpp/MainFrame.cpp
+		  cpp/HumanoidMainFrame.cpp
 		  cpp/Humanoid.cpp
           cpp/HumanoidController.cpp 
 		  cpp/HumanoidDataLogger.cpp
@@ -53,6 +53,7 @@ SET(SRCS  cpp/humanoidWx.cpp
 		  cpp/GlobalFunctions.cpp
           cpp/TaskSpaceController.cpp
 		  cpp/TaskSpaceControllerA.cpp
+		  cpp/TaskSpaceControllerB.cpp
 		  cpp/wxBoxSlider.cpp
           cpp/wxNumericTextCtrl.cpp)
 ADD_EXECUTABLE(humanoid ${SRCS})

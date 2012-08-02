@@ -270,6 +270,7 @@ public:
    // rendering function:
    ///
    void draw() const;
+   void drawSkeleton() const;
 
    //! DM v5.0 change: Now made public, use with caution!
    vector<LinkInfoStruct*> m_link_list;
@@ -313,7 +314,7 @@ protected:
 //   };
 
    void drawTraversal(LinkInfoStruct *node) const;
-
+   void drawSkeletonTraversal(LinkInfoStruct *node) const;
 protected:
 //   vector<LinkInfoStruct*> m_link_list;
    unsigned int m_num_state_vars;

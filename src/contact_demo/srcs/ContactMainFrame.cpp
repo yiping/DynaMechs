@@ -4,7 +4,7 @@
 //  YL
 
 #include "globalVariables.h"
-#include "MainFrame.h"
+#include "ContactMainFrame.h"
 
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)

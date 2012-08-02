@@ -344,6 +344,7 @@ public:
 // rendering functions:
    ///
    virtual void draw() const = 0;
+   virtual void drawSkeleton(bool isTip) const = 0;
 	
 private:   // not implemented
    dmLink(const dmLink &);

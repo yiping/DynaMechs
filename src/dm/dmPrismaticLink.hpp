@@ -64,6 +64,7 @@ public:
 // Rendering functions:
    ///
    void draw() const;
+   void drawSkeleton(bool isTip) const;
 
 private:
    // not implemented

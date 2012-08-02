@@ -164,7 +164,7 @@ public:
 // rendering functions:
    ///
    void draw() const;
-
+   void drawSkeleton(bool isTip) const;
 private:
    // not implemented
    dmMobileBaseLink(const dmMobileBaseLink &);

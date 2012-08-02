@@ -143,6 +143,7 @@ public:
 // rendering function:
    ///
    virtual void draw() const;
+   virtual void drawSkeleton(bool isTip) const;
 
 private:
    dmStaticRootLink(const dmStaticRootLink &);

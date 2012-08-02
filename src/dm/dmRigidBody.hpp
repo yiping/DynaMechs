@@ -247,10 +247,12 @@ protected:
    // list of force objects that act on rigid body like compliant contacts
    vector<dmForce*> m_force;
 
+   CartesianVector m_cg_pos; 
+
 private:
    // This are variables that only the rigid body object seems to use:
    Float           m_mass;
-   CartesianVector m_cg_pos;    // position of center of gravity in BCS
+   // CartesianVector m_cg_pos;    // position of center of gravity in BCS  // now protected
    CartesianVector m_h;         // first mass moment = mass*cg_pos.
    CartesianTensor m_I_bar;     // 3x3 inertia tensor about body axes.
 

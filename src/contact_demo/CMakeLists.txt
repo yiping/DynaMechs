@@ -9,7 +9,7 @@ include( "${wxWidgets_USE_FILE}" )
 
 SET(SRCS  srcs/main.cpp
 		  srcs/BasicGLPane.cpp
-		  srcs/MainFrame.cpp
+		  srcs/ContactMainFrame.cpp
 		  srcs/SimulationThread.cpp
 		  srcs/userGraphics.cpp
 		  srcs/globalFunctions.cpp

@@ -375,7 +375,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 void BasicGLPane::glInit()
 {
 	//glEnable(GL_MULTISAMPLE);
-	//glHint(GL_MULTISAMPLE_FILTER_HINT_NV,GL_NICEST);
+	glHint(GL_MULTISAMPLE_FILTER_HINT_NV,GL_NICEST);
 	glEnable(GL_SCISSOR_TEST);
 	
 		GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };

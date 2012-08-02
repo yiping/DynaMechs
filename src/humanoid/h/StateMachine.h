@@ -19,9 +19,9 @@ class StateMachine
 public:
 	StateMachine(int size);
 	virtual void StateControl(ControlInfo & ci) = 0;
-
-protected:
 	int state;
+protected:
+	
 	double stateTime;
 	bool transitionFlag;
 	const int numStates;

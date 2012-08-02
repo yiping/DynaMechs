@@ -16,17 +16,17 @@
 #include <wxDMGLMouse.hpp>
 #include "BasicGLPane.h"
 #include "SimulationThread.h"
-#include "MainFrame.h"
+#include "HumanoidMainFrame.h"
 #include "HumanoidDataLogger.h"
 
 dmArticulation *G_robot;
 volatile Float ComPos[3];
 volatile Float ComDes[3];
-GRFInfo grfInfo;
+
 
 
 SimulationThread * simThread;
-MainFrame *frame;
+HumanoidMainFrame *frame;
 wxMutex dataMutex;
 
 HumanoidDataLogger * humanoid;

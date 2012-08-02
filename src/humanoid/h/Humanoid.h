@@ -16,7 +16,7 @@ class Humanoid : public virtual ArticulationSpecializer {
 
 public:
 	
-protected:
+
 	Matrix6XF CentMomMat;
 	Matrix6F IC0;
 	Matrix3F IBarC0;
@@ -24,6 +24,7 @@ protected:
 	Vector3F pCom, vCom;
 	Vector6F cmBias;
 	VectorXF q, qdDm, qd, qddA;
+protected:
 	
 private:
 	

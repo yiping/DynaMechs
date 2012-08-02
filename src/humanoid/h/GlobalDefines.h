@@ -25,7 +25,7 @@
 #include <wxDMGLPolarCamera_zup.hpp>
 #include "BasicGLPane.h"
 #include "SimulationThread.h"
-#include "MainFrame.h"
+#include "HumanoidMainFrame.h"
 #include "HumanoidDataLogger.h"
 
 //#define EIGEN_NO_DEBUG
@@ -36,9 +36,8 @@
 extern volatile Float ComPos[3];
 extern volatile Float ComDes[3];
 
-extern GRFInfo grfInfo;
 extern dmArticulation *G_robot;
-extern MainFrame *frame;
+extern HumanoidMainFrame *frame;
 extern SimulationThread * simThread;
 extern HumanoidDataLogger * humanoid;
 

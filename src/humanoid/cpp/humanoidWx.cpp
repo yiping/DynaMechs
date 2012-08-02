@@ -7,7 +7,7 @@
 #undef Success
 
 #include "BasicGLPane.h"
-#include "MainFrame.h"
+#include "HumanoidMainFrame.h"
 
 #include <dm.h>            // DynaMechs typedefs, globals, etc.
 #include <dmu.h>
@@ -48,6 +48,7 @@
 #include "HumanoidController.h"
 #include "SimulationThread.h"
 #include "JumpingStateMachine.h"
+#include "BalanceDemoStateMachine.h"
 //#define KURMET_DEBUG
 
 #define OUTPUT_DEBUG_INFO
@@ -69,7 +70,9 @@ class MyApp: public wxApp
 public:
     
 };
- 
+
+GLuint neckList, headList;
+
 IMPLEMENT_APP(MyApp)
  
  
@@ -91,7 +94,7 @@ bool MyApp::OnInit()
 	// Populate GUI
 	{
 		//cout << "Frame" << endl;
-		frame = new MainFrame(wxT("Hello GL World"), wxPoint(50,50), wxSize(600,400));
+		frame = new HumanoidMainFrame(wxT("Hello GL World"), wxPoint(50,50), wxSize(600,400));
 		
 		
 	}
@@ -111,11 +114,14 @@ bool MyApp::OnInit()
 		wxString configFileName;
 		if(parser.Found(wxT("c"), &configFileName))
 		{
-			filename = "humanoid.cfg";//configFileName.mb_str();
+			//filename = "human.cfg";//configFileName.mb_str();
+			//filename = "humanoid.cfg";//configFileName.mb_str();
+			filename = "humanoid_box.cfg";//configFileName.mb_str();
 		}
 		else {
 			filename = (char *) "config.cfg";
 		}
+		filename = "humanoid.cfg";//configFileName.mb_str();
 		cout<<filename<<endl;
 		
 		ifstream cfg_ptr;
@@ -166,11 +172,17 @@ bool MyApp::OnInit()
 
 		cout << "Creating Robot" << endl;
 		
+		glEnable(GL_BLEND);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
 		
 		humanoid = (HumanoidDataLogger *) new JumpingStateMachine(G_robot);
+		//humanoid = (HumanoidDataLogger *) new BalanceDemoStateMachine(G_robot);
 		
 		cout << "Robot Created" << endl;
+		
+		
 		
 		// --------
 		// Read in data directory
@@ -178,11 +190,27 @@ bool MyApp::OnInit()
 		readConfigParameterLabel(cfg_ptr, "Data_Save_Directory");
 		readFilename(cfg_ptr, data_dir);
 		humanoid->dataSaveDirectory = std::string(data_dir);
+		humanoid->grfInfo.localContacts = 2;
+		humanoid->grfInfo.pCoPs.resize(2);
+		humanoid->grfInfo.pCoPs[0]<<2,2-.09,0;
+		humanoid->grfInfo.pCoPs[1]<<2,2+.09,0;
+		
+		humanoid->grfInfo.fCoPs.resize(2);
+		humanoid->grfInfo.fCoPs[0]<<0,-50,100;
+		humanoid->grfInfo.fCoPs[1]<<0,50,100;
+		
+		
 		
 		
 		simThread->G_integrator->addSystem(G_robot);
 		
-		grfInfo.localContacts = 0;
+		/*cout << "Initial state" << endl;
+		Float qInit[31], qdInit[31];
+		G_robot->getState(qInit,qdInit);
+		for (int i =0; i<31; i++) {
+			cout << setprecision(6) << endl;
+			cout << qInit[i] << "\t" << qdInit[i] << endl;
+		}*/
 	}
 	
 	
@@ -222,8 +250,140 @@ int MyApp::OnExit() {
 
 void BasicGLPane::userGraphics()
 {
+	typedef vector<Vector3F > PositionList;
+	static deque<PositionList *> traces;
+	static deque<FloatVector *> distanceList;
+	static deque<int> traceIds;
+	
+	const int MaxTraceSize = 2000;
+	const Float DashSize = .05;
+	const int NumTraces = 3;
+	
 	// Plot User Stuff
 	{
+		// Traces
+		
+		if (humanoid->state > 0) {
+			PositionList * curr = new PositionList;
+			FloatVector  * distances = new FloatVector(NumTraces,0);
+			
+			curr->resize(NumTraces);
+			
+			curr->at(0) = humanoid->pCom;
+			curr->at(1) = humanoid->pFoot[0];
+			curr->at(2) = humanoid->pFoot[1];
+			
+			if (traceIds.size() > 0) {
+				traceIds.push_back(1- (traceIds.back() % 2));
+				for (int j=0; j<NumTraces; j++) {
+					Vector3F relPos = curr->at(j) - traces.back()->at(j);
+					distances->at(j) = distanceList.back()->at(j) + relPos.norm();
+				}
+			}
+			else {
+				traceIds.push_back(1);
+				for (int j=0; j<NumTraces; j++) {
+					distances->at(j) = 0;
+				}
+			}
+			traces.push_back(curr);
+			distanceList.push_back(distances);
+			
+			
+			if (traces.size() > MaxTraceSize) {
+				delete traces.front();
+				delete distanceList.front();
+				traces.pop_front();
+				traceIds.pop_front();
+				distanceList.pop_front();
+			}
+			
+			if (frame->showTraces->IsChecked()) {
+			
+				// Index Based Drawing
+				for (int j=0; j<NumTraces; j++) {
+					glBegin(GL_LINES);
+					glLineWidth(1.0);
+					glColor4f(0.0, 0.0, 0.0,1.0);
+					for (int i=1; i<traces.size(); i++) {
+						if (traceIds[i]) {
+							glVertex3f(traces[i-1]->at(j)(0), traces[i-1]->at(j)(1), traces[i-1]->at(j)(2));
+							glVertex3f(traces[i]->at(j)(0), traces[i]->at(j)(1), traces[i]->at(j)(2));
+						}
+
+						
+					}
+					glEnd();
+				}
+				
+				// Distance Based Drawing
+				/*for (int j=0; j<NumTraces; j++) {
+					glBegin(GL_LINES);
+					glLineWidth(2);
+					
+					
+					for (int i=1; i<traces.size(); i++) {
+						Float normSegLength = (distanceList[i]->at(j)-distanceList[i-1]->at(j))/DashSize;
+						Float tmp, id, idEnd, gamma = 0, gammaEnd = 0;
+						bool drawing;
+						tmp = (distanceList[i-1]->at(j))/(2*DashSize);
+						id = tmp - floor(tmp);
+						if (id < .5) {
+							drawing = true;
+						}
+						else {
+							drawing = false;
+							id-=.5;
+						}
+						id *=2;
+						
+						Vector3F startPoint, relPos,pointA, pointB;
+						startPoint = traces[i-1]->at(j);
+						relPos = traces[i]->at(j) - traces[i-1]->at(j);
+						pointA = startPoint;
+						
+						while (gamma < 1) {
+							idEnd = id + (1-gamma)*normSegLength;
+							if (idEnd > 1) {
+								idEnd = 1;
+								gammaEnd = gamma + (idEnd-id)/normSegLength;
+							}
+							else {
+								gammaEnd = 1;
+							}
+							pointB = startPoint + gammaEnd*relPos;
+							
+							if (drawing) {
+								glColor4f(1.0, 0.1, 0.1,1.0);
+								glVertex3f(pointA(0)-.01*relPos(0),pointA(1)-.01*relPos(1),pointA(2)-.01*relPos(2));
+								glVertex3f(pointB(0)+.01*relPos(0), pointB(1)+.01*relPos(1), pointB(2)+.01*relPos(2));
+							}
+							else {
+								glColor4f(0.2, 0.2, 0.2,1.0);
+								glVertex3f(pointA(0)-.01*relPos(0),pointA(1)-.01*relPos(1),pointA(2)-.01*relPos(2));
+								glVertex3f(pointB(0)+.01*relPos(0), pointB(1)+.01*relPos(1), pointB(2)+.01*relPos(2));
+							}
+							
+							gamma = gammaEnd;
+							id = idEnd;
+							pointA.swap(pointB);
+							if (id==1) {
+								id = 0;
+								drawing = !drawing;
+							}
+						}
+						
+					}
+					glEnd();
+				}*/
+			}
+			
+			
+			
+			
+		}
+		
+		
 		if (frame->showCoM->IsChecked()) {
 			// Draw COM Info
 			glBegin(GL_LINES);
@@ -251,9 +411,9 @@ void BasicGLPane::userGraphics()
 		
 		if (frame->showGRF->IsChecked()) {
 			// Draw GRF Info
-			for (int i=0; i< grfInfo.localContacts; i++) {
-				Vector3F footPoint = grfInfo.pCoPs[i];
-				Vector3F grf = grfInfo.fCoPs[i]/forceScale;
+			for (int i=0; i< humanoid->grfInfo.localContacts; i++) {
+				Vector3F footPoint = humanoid->grfInfo.pCoPs[i];
+				Vector3F grf = humanoid->grfInfo.fCoPs[i]/forceScale;
 				
 				drawArrow(footPoint, grf, .005, .01, .03);
 				
@@ -262,12 +422,12 @@ void BasicGLPane::userGraphics()
 		
 		if (frame->showNetForceAtGround->IsChecked()) {
 			//Draw ZMPInfo
-			Vector3F footPoint = grfInfo.pZMP;
-			Vector3F grf = grfInfo.fZMP/forceScale;
+			Vector3F footPoint = humanoid->grfInfo.pZMP;
+			Vector3F grf = humanoid->grfInfo.fZMP/forceScale;
 			drawArrow(footPoint, grf, .005, .01, .03);
 		}
 		
-		if (simThread->sim_time>7) {
+		/*if (simThread->sim_time>7) {
 			glPushMatrix();
 			glColor4f(1.0, 0.0, 0.0,0.75);
 			glTranslatef(2.18, 2, .15);
@@ -277,8 +437,109 @@ void BasicGLPane::userGraphics()
 			gluDisk(quadratic,0.0,.05f,32,32);
 			
 			glPopMatrix();
-		}
+		}*/
 		frame->realTimeRatioDisplay->SetLabel(wxString::Format(wxT("RT Ratio: %.2lf"), real_time_ratio));
+		
+		
+		Float qBase[7], qdBase[7];
+		G_robot->getLink(0)->getState(qBase,qdBase);
+		
+		Float theta = acos(qBase[3])*2 * 180 / M_PI;
+
+		glPushMatrix();
+		glTranslatef(qBase[4], qBase[5], qBase[6]);
+		glRotatef(theta, qBase[0], qBase[1], qBase[2]);
+		glTranslatef(0, 0, .4);
+		glColor4f(0.700, 0.700, 0.700,.6);
+		
+		
+		/*Float cylRad = .02;
+		Float cylHeight = .04;
+		Float headRad = .06;
+		
+		gluQuadricOrientation(frame->glPane->quadratic,GLU_INSIDE);
+		gluCylinder(frame->glPane->quadratic,cylRad,cylRad,cylHeight,16,16);
+		
+		
+		gluQuadricOrientation(frame->glPane->quadratic,GLU_OUTSIDE);
+		gluCylinder(frame->glPane->quadratic,cylRad,cylRad,cylHeight,16,16);
+		
+		
+		glTranslatef(0, 0, cylHeight + sqrt(headRad*headRad - cylRad*cylRad));
+		gluSphere(quadratic,headRad,32,32);
+		
+		//glEnd();
+		glPopMatrix();*/
+		 
+		
+		/*const Float neckHeight = .03, neckWidth =.04/2, neckDepth = neckWidth;
+		const Float headHeight = .12, headDepth = .1/2, headWidth = .1/2;
+		
+		glPolygonMode(GL_FRONT, GL_FILL);
+		glPolygonMode(GL_BACK, GL_FILL);
+		
+		glBegin(GL_QUAD_STRIP);
+		
+		glVertex3f(neckDepth, -neckWidth, neckHeight);
+		glVertex3f(neckDepth, -neckWidth, 0);
+		glVertex3f(neckDepth, neckWidth, neckHeight);
+		glVertex3f(neckDepth, neckWidth, 0);
+		
+		glVertex3f(-neckDepth, neckWidth, neckHeight);
+		glVertex3f(-neckDepth, neckWidth, 0);
+		
+		glVertex3f(-neckDepth, -neckWidth, neckHeight);
+		glVertex3f(-neckDepth, -neckWidth, 0);
+		
+		glVertex3f(neckDepth, -neckWidth, neckHeight);
+		glVertex3f(neckDepth, -neckWidth, 0);
+		
+		glEnd();
+		
+		glTranslatef(0, 0, neckHeight);
+		
+		glBegin(GL_QUAD_STRIP);
+		
+		glVertex3f(headDepth, -headWidth, headHeight);
+		glVertex3f(headDepth, -headWidth, 0);
+		glVertex3f(headDepth, headWidth, headHeight);
+		glVertex3f(headDepth, headWidth, 0);
+		
+		glVertex3f(-headDepth, headWidth, headHeight);
+		glVertex3f(-headDepth, headWidth, 0);
+		
+		glVertex3f(-headDepth, -headWidth, headHeight);
+		glVertex3f(-headDepth, -headWidth, 0);
+		
+		glVertex3f(headDepth, -headWidth, headHeight);
+		glVertex3f(headDepth, -headWidth, 0);
+		
+		glEnd();
+		
+		glBegin(GL_QUADS);
+		
+		glVertex3f(-headDepth, headWidth, headHeight);
+		glVertex3f(-headDepth, -headWidth, headHeight);
+		glVertex3f(headDepth, -headWidth, headHeight);
+		glVertex3f(headDepth, headWidth, headHeight);
+		
+		
+		
+		glVertex3f(-headDepth, -headWidth, 0);
+		glVertex3f(-headDepth, headWidth, 0);
+		glVertex3f(headDepth, headWidth, 0);
+		glVertex3f(headDepth, -headWidth, 0);
+		
+		
+		
+		
+		glEnd();*/
+		
+		
+		
+		
+		
+		glPopMatrix();
 		
 	}
 	

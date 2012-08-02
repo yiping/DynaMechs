@@ -190,7 +190,7 @@ f=figure('Name','Contact States','Position',figPos); figs = [figs f];
 a=[a subplot(211)];
 hold on
 plot(t,lContState,'r');
-plot(t,rContState,'b');
+plot(t,rContState+.1,'b');
 xlabel('Time (s)');
 ylabel('Contact State');
 
@@ -259,36 +259,42 @@ hold on
 plot(t,lFootPos(1,:),'r');
 plot(t,lFootPosDes(1,:),'r--');
 xlabel('Time (s)'); ylabel('Pos X');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(323)]
 hold on
 plot(t,lFootPos(2,:),'g');
 plot(t,lFootPosDes(2,:),'g--');
 xlabel('Time (s)'); ylabel('Pos Y');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(325)]
 hold on
 plot(t,lFootPos(3,:),'b');
 plot(t,lFootPosDes(3,:),'b--');
 xlabel('Time (s)'); ylabel('Pos Z');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(322)]
 hold on
 plot(t,lFootVel(4,:),'r');
 plot(t,lFootVelDes(4,:),'r--');
 xlabel('Time (s)'); ylabel('Vel X');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(324)]
 hold on
 plot(t,lFootVel(5,:),'g');
 plot(t,lFootVelDes(5,:),'g--');
 xlabel('Time (s)'); ylabel('Vel Y');
+drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(326)]
 hold on
 plot(t,lFootVel(6,:),'b');
 plot(t,lFootVelDes(6,:),'b--');
 xlabel('Time (s)'); ylabel('Vel Z');
+drawTransitions(transitionTimes,transitionStates);
 
 
 
@@ -303,6 +309,70 @@ plot(t,q(19,:),'r');
 plot(t,q(12,:),'b');
 xlabel('Time (s)');
 ylabel('Angle (rad)');
+
+drawTransitions(transitionTimes,transitionStates);
+
+f = figure('Name','Elbow Angles','Position',figPos); figs = [figs f];
+a=[a axes];
+hold on
+plot(t,q(26,:),'r');
+plot(t,q(31,:),'b');
+xlabel('Time (s)');
+ylabel('Angle (rad)');
+
+drawTransitions(transitionTimes,transitionStates);
+
+
+f = figure('Name','Shoulder Angles','Position',figPos); figs = [figs f];
+a=[a axes];
+hold on
+plot(t,sum(q(22:24,:).^2),'r');
+plot(t,sum(q(27:29,:).^2),'b');
+xlabel('Time (s)');
+ylabel('Angle (rad)');
+
+drawTransitions(transitionTimes,transitionStates);
+
+
+
+f = figure('Name','Force Diff','Position',figPos); figs = [figs f];
+a=[a axes];
+hold on
+plot(t,lCopForce(1,:)-rCopForce(1,:),'r');
+plot(t,lCopForce(2,:)-rCopForce(2,:),'g');
+plot(t,lCopForce(3,:)-rCopForce(3,:),'b');
+
+xlabel('Time (s)');
+ylabel('Angle (rad)');
+
+
+f = figure('Name','Foot Pos Diff','Position',figPos); figs = [figs f];
+a=[a axes];
+hold on
+plot(t,lFootPos(1,:)-rFootPos(1,:),'r');
+plot(t,lFootPos(2,:)-.18-rFootPos(2,:),'g');
+plot(t,lFootPos(3,:)-rFootPos(3,:),'b');
+
+
+f = figure('Name','Foot Vel Diff','Position',figPos); figs = [figs f];
+a=[a axes];
+hold on
+plot(t,lFootVel(1,:)-rFootVel(1,:),'r');
+plot(t,lFootVel(2,:)-rFootVel(2,:),'g');
+plot(t,lFootVel(3,:)-rFootVel(3,:),'b');
+
+plot(t,lFootVel(4,:)-rFootVel(4,:),'r--');
+plot(t,lFootVel(5,:)-rFootVel(5,:),'g--');
+plot(t,lFootVel(6,:)-rFootVel(6,:),'b--');
+
+
+
+
+%f = figure('Name','Foot Force','Position',figPos); figs = [figs f];
+
+
+
+
 
 
 

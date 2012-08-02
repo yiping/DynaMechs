@@ -39,7 +39,7 @@ Float totalMass;
 
 CubicSplineTrajectory ComTrajectory;*/
 
-HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerA(robot) {
+HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerB(robot) {
 	q.resize(STATE_SIZE);
 	qdDm.resize(STATE_SIZE);
 	qd.resize(RATE_SIZE);
@@ -102,6 +102,7 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 			PointForceXforms[i][j].block(0,3,3,3) = cr3(pRel);
 		}
 	}
+	grfInfo.localContacts = 0;
 	
 	pFoot.resize(NS);
 	pDesFoot.resize(NS);
@@ -202,9 +203,9 @@ void HumanoidController::ControlInit()
 	
 	// Initialize Task Quantities
 	{
-		TaskJacobian.resize(6+NJ+12,NJ+6);
+		TaskJacobian.resize(6+(NJ+6)+12,NJ+6);
 		TaskJacobian.setZero();
-		TaskBias.resize(6+NJ+12);
+		TaskBias.resize(6+(NJ+6)+12);
 	}
 	
 	// Init Centroidal State
@@ -475,10 +476,6 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 	}
 	#endif
 	
-	if (frame->logDataCheckBox->IsChecked()) {
-		humanoid->logData();
-	}
-	
 	//exit(-1);
 }
 		
@@ -618,14 +615,21 @@ void HumanoidController::ComputeGrfInfo(GRFInfo & grf) {
 	grf.pCoPs.resize(NS);
 	grf.fCoPs.resize(NS);
 	grf.nCoPs.resize(NS);
+	grf.footWrenches.resize(NS);
+	grf.footJacs.resize(NS);
 
 	
 	for (int k1 = 0; k1 < NS; k1++) {
 		dmRigidBody * body = (dmRigidBody *) artic->getLink(SupportIndices[k1]);
 		LinkInfoStruct * listruct = artic->m_link_list[SupportIndices[k1]];
 		
+		artic->computeJacobian(SupportIndices[k1], Matrix6F::Identity(), grf.footJacs[k1]);
+		
 		for (int k2 = 0; k2 < body->getNumForces(); k2++) {
 			body->getForce(k2)->computeForce(listruct->link_val2,localForce);
+			grf.footWrenches[k1] << localForce[0],localForce[1],localForce[2],
+									localForce[3],localForce[4],localForce[5];
+			
 			
 			//Float * p = localForce;
 			//cout << "Local Force " << tsc->SupportIndices[k1];

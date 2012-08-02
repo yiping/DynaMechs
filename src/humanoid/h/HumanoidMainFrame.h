@@ -1,5 +1,5 @@
 /*
- *  MainFrame.h
+ *  HumanoidMainFrame.h
  *  DynaMechs
  *
  *  Created by Patrick Wensing on 6/25/12.
@@ -13,9 +13,10 @@
 #include "wx/wx.h"
 #include "wx/menu.h"
 #include "BasicGLPane.h"
+#include "wxBoxSlider.h"
 
 
-class MainFrame: public wxFrame
+class HumanoidMainFrame: public wxFrame
 {
 public:
 	enum
@@ -27,6 +28,8 @@ public:
 		CHECKBOX_ShowNetForceAtGround,
 		CHECKBOX_ShowNetForceAtCoM,
 		CHECKBOX_LogData,
+		CHECKBOX_ShowTraces,
+		CHECKBOX_SlowMotion,
 		BUTTON_SaveData,
 		MENU_Control_Step,
 		MENU_Display_Freq,
@@ -36,10 +39,11 @@ public:
 		MENU_Save_Data,
 		MENU_Save_Directory,
 		MENU_Apply_View,
-		MENU_Save_View
+		MENU_Save_View,
+		MENU_Slow_Motion
 	};
 	
-    MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+    HumanoidMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 	
     void OnAbout(wxCommandEvent& event);
 	void OnSaveView(wxCommandEvent& event);
@@ -53,10 +57,14 @@ public:
 	void OnDisplayFreq(wxCommandEvent &event);
 	void OnIntegrationStep(wxCommandEvent &event);
 	void OnSaveDirectory(wxCommandEvent &event);
+	void OnSlowMotion(wxCommandEvent &event);
 	
-	wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM, *logDataCheckBox;
+	
+	wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
+	wxCheckBox * showTraces, *logDataCheckBox,*slowMotion;
 	wxStaticText * realTimeRatioDisplay;
 	BasicGLPane * glPane;
+	wxBoxSlider * slowMoRatio;
 	
 private:
 	wxMenuBar * menuBar;

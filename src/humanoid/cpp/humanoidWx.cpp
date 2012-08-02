@@ -628,7 +628,51 @@ void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, doubl
 		cylinderLength = 0;
 	}
 
-	const int detail = 16;
+	const int detail = 8;
+
+/*	double w, h;
+	w = lineWidth;
+	h =cylinderLength;
+	GLfloat v1tex[8][3];
+	v1tex[0][0] = -w; v1tex[0][1] = -w; v1tex[0][2] = 0; 
+	v1tex[1][0] = w;  v1tex[1][1] = -w; v1tex[1][2] = 0; 
+	v1tex[2][0] = w;  v1tex[2][1] = w; v1tex[2][2] = 0; 
+	v1tex[3][0] = -w;  v1tex[3][1] = w; v1tex[3][2] = 0; 
+
+	v1tex[4][0] = -w; v1tex[4][1] = -w; v1tex[4][2] = h; 
+	v1tex[5][0] = w;  v1tex[5][1] = -w; v1tex[5][2] = h; 
+	v1tex[6][0] = w;  v1tex[6][1] = w; v1tex[6][2] = h; 
+	v1tex[7][0] = -w;  v1tex[7][1] = w; v1tex[7][2] = h; 
+	
+	// quadric | base radius | top radius | height | slices | stacks	
+	glBegin(GL_QUADS);
+	glVertex3fv(v1tex[0]); glVertex3fv(v1tex[1]);glVertex3fv(v1tex[2]);glVertex3fv(v1tex[3]);
+	glVertex3fv(v1tex[0]); glVertex3fv(v1tex[4]);glVertex3fv(v1tex[5]);glVertex3fv(v1tex[1]);
+	glVertex3fv(v1tex[1]); glVertex3fv(v1tex[5]);glVertex3fv(v1tex[6]);glVertex3fv(v1tex[2]);
+	glVertex3fv(v1tex[2]); glVertex3fv(v1tex[6]);glVertex3fv(v1tex[7]);glVertex3fv(v1tex[3]);
+	glVertex3fv(v1tex[3]); glVertex3fv(v1tex[7]);glVertex3fv(v1tex[4]);glVertex3fv(v1tex[0]);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3fv(v1tex[0]); glVertex3fv(v1tex[1]);
+	glVertex3fv(v1tex[1]); glVertex3fv(v1tex[2]);
+	glVertex3fv(v1tex[2]);glVertex3fv(v1tex[3]);
+	glVertex3fv(v1tex[3]);glVertex3fv(v1tex[0]);
+
+	glVertex3fv(v1tex[0]); glVertex3fv(v1tex[4]);
+	glVertex3fv(v1tex[1]);glVertex3fv(v1tex[5]);
+
+	glVertex3fv(v1tex[2]); glVertex3fv(v1tex[6]);
+	glVertex3fv(v1tex[3]); glVertex3fv(v1tex[7]);
+
+	glVertex3fv(v1tex[4]); glVertex3fv(v1tex[5]);
+	glVertex3fv(v1tex[5]); glVertex3fv(v1tex[6]);
+	glVertex3fv(v1tex[6]);glVertex3fv(v1tex[7]);
+	glVertex3fv(v1tex[7]);glVertex3fv(v1tex[4]);
+
+	glEnd();*/
+
+	//glPolygonMode(GL_FRONT, GL_FILL);
 	//Draw Cylinder
 	gluCylinder(frame->glPane->quadratic,lineWidth,lineWidth,cylinderLength,detail,detail);
 	
@@ -644,9 +688,33 @@ void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, doubl
 	glRotated(180, 1, 0, 0);
 	//Draw Arrowhead Base
 	gluDisk(frame->glPane->quadratic,lineWidth,headWidth,detail,detail);
-	
-	glEnd();
+
+
 	glPopMatrix();
+
+
+	//again!
+	glPushMatrix();
+	glTranslatef(location(0), location(1), location(2));
+	glRotated(RADTODEG * theta, rX, rY, rZ);
 	
+	cylinderLength = direction.norm();
+	if (cylinderLength > headLength) {
+		cylinderLength -= headLength;
+	}
+	else {
+		headLength = cylinderLength ;
+		cylinderLength = 0;
+	}
+
+	glPolygonMode(GL_FRONT, GL_LINE);
+	gluCylinder(frame->glPane->quadratic,lineWidth,lineWidth,cylinderLength,detail,detail);
+	gluDisk(frame->glPane->quadratic,0,lineWidth,detail,detail);
+	glTranslatef(0, 0, cylinderLength);
+	gluCylinder(frame->glPane->quadratic,headWidth,0.0f,headLength,detail,detail);
+	gluDisk(frame->glPane->quadratic,lineWidth,headWidth,detail,detail);
+	glLineWidth(1);
+	glPolygonMode(GL_FRONT, GL_FILL);
+	glPopMatrix();
 }
 

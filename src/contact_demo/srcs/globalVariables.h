@@ -15,7 +15,7 @@
 #include <dmContactSystem.hpp>
 
 #include "SimulationThread.h"
-#include "MainFrame.h"
+#include "ContactMainFrame.h"
 #include "ContactDemoDataLogger.h"
 
 //#define EIGEN_NO_DEBUG

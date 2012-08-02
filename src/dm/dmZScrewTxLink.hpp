@@ -211,7 +211,7 @@ public:
 // rendering function:
    ///
    virtual void draw() const;
-
+   virtual void drawSkeleton(bool isTip) const;
 private:
    dmZScrewTxLink();                // default construction prohibited
    dmZScrewTxLink(const dmZScrewTxLink &);

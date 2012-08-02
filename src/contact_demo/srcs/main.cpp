@@ -11,7 +11,7 @@
 #undef Success
 
 #include "BasicGLPane.h"
-#include "MainFrame.h"
+#include "ContactMainFrame.h"
 
 #include <dm.h>            // DynaMechs typedefs, globals, etc.
 #include <dmu.h>

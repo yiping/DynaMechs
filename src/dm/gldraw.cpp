@@ -353,12 +353,12 @@ void dmEnvironment::drawInit()
 // draw environment and robot
 //============================================================================
 
-/*
+
 // functions to draw skeletons of the robot
 // func 1.
 void dmArticulation::drawSkeleton() const
 {
-	
+   quadric = gluNewQuadric();
    glPushMatrix();
 
    glTranslatef(m_p_ICS[0], m_p_ICS[1], m_p_ICS[2]);
@@ -384,7 +384,9 @@ void dmArticulation::drawSkeleton() const
          glPushMatrix();
 
          // draw base link
-         m_link_list[j]->link->drawSkeleton();
+		 //cout<<"draw base link ... - "<<j<<endl;
+         m_link_list[j]->link->drawSkeleton(0); 
+         //cout<<"base link drawn."<<endl;
 
          // recurse through the children
          for (unsigned int i=0; i<m_link_list[j]->child_list.size(); i++)
@@ -453,13 +455,17 @@ void dmQuaternionLink::drawSkeleton(bool isTip) const
    if (isTip)
    {
 	  glLineWidth (1.5);
-	  glColor4f(0.0,0.1,0.9,1.0);
+	  glColor4f(0.0,0.0,1.0,1.0);
 	  glBegin(GL_LINES);
 	  glVertex3f(0,0,0);
-	  glVertex3f(m_cg_pose[0], m_cg_pose[1], m_cg_pose[2] );
+	  glVertex3f(m_cg_pos[0], m_cg_pos[1], m_cg_pos[2] );
 	  glEnd();
-	  glColor4f(1.0,1.0,1.0,1.0);
-	  glLineWidth (1.5);      
+	  glLineWidth (1.5);     
+
+	  glTranslatef(m_cg_pos[0], m_cg_pos[1], m_cg_pos[2]);
+	  glColor4f(0.0,0.0,1.0,1.0);
+	  gluSphere(quadric,.01f,16,16);
+	  glColor4f(1.0,1.0,1.0,1.0); 
    }
 
 }
@@ -499,29 +505,37 @@ void dmRevoluteLink::drawSkeleton(bool isTip) const
    // set dynamic z-axis transformation.
    glRotatef(m_thetaMDH*RADTODEG, 0.0, 0.0, 1.0);
 
+   glColor4f(0.0,0.0,1.0,1.0);
+   gluSphere(quadric,.01f,16,16);
+   glColor4f(1.0,1.0,1.0,1.0);
+
    // if the link is at the tip, draw an extra stub.
    if (isTip)
    {
 	  glLineWidth (1.5);
-	  glColor4f(0.0,0.1,0.9,1.0);
+	  glColor4f(0.0,0.0,1.0,1.0);
 	  glBegin(GL_LINES);
 	  glVertex3f(0,0,0);
-	  glVertex3f(m_cg_pose[0], m_cg_pose[1], m_cg_pose[2] );
+	  glVertex3f(m_cg_pos[0], m_cg_pos[1], m_cg_pos[2] );
 	  glEnd();
-	  glColor4f(1.0,1.0,1.0,1.0);
 	  glLineWidth (1.5);
+
+	  glTranslatef(m_cg_pos[0], m_cg_pos[1], m_cg_pos[2]);
+	  glColor4f(0.0,0.0,1.0,1.0);
+	  gluSphere(quadric,.01f,16,16);
+	  glColor4f(1.0,1.0,1.0,1.0);
    }
 
 }
 
 
 // func 5.
-void dmMobileBaseLink::drawSkeleton() const
+void dmMobileBaseLink::drawSkeleton(bool isTip) const
 {
-
+   //cout<<"draw mobile base skeleton"<<endl;
    glTranslatef(m_p[0], m_p[1], m_p[2]);
 
-   Float le   gluSphere(quadric,.03f,32,32);n = sqrt(m_quat[0]*m_quat[0] +
+   Float len = sqrt(m_quat[0]*m_quat[0] +
                     m_quat[1]*m_quat[1] +
                     m_quat[2]*m_quat[2]);
    if (len > 1.0e-6)
@@ -530,11 +544,122 @@ void dmMobileBaseLink::drawSkeleton() const
       glRotatef(angle*RADTODEG, m_quat[0]/len, m_quat[1]/len, m_quat[2]/len);
    }
 
-   gluSphere(quadric,.03f,32,32);
+   glColor4f(0.0,0.0,1.0,1.0);
+   gluSphere(quadric,.01f,32,32);
+   glColor4f(1.0,1.0,1.0,1.0);
 
-}*/
+}
 
 
+// func 6.
+void dmPrismaticLink::drawSkeleton(bool isTip) const
+{
+
+   Matrix3F Rot;
+   Rot<< 1, 0, 0,
+         0, cos(m_alphaMDH), -sin(m_alphaMDH),
+         0, sin(m_alphaMDH), cos(m_alphaMDH);
+   Vector3F p, p1;
+   p<< m_aMDH, 0.0, m_dMDH;
+   p1 = Rot.transpose() * p; 
+
+   glLineWidth (1.5);
+   glColor4f(0.0,0.1,0.9,1.0);
+   glBegin(GL_LINES);
+   glVertex3f(0,0,0);
+   glVertex3f(p1(0), p1(1), p1(2) );
+   glEnd();
+   glColor4f(1.0,1.0,1.0,1.0);
+   glLineWidth (1.5);
+
+   // set static portion of the MDH transformation.
+   if (m_alphaMDH != 0.0)
+   {
+      glRotatef(m_alphaMDH*RADTODEG, 1.0, 0.0, 0.0);
+   }
+
+   if ((m_aMDH != 0.0) || (m_dMDH != 0.0))
+   {
+      glTranslatef(m_aMDH, 0.0, m_dMDH);
+   }
+
+   if (m_thetaMDH != 0.0)
+   {
+      glRotatef(m_thetaMDH*RADTODEG, 0.0, 0.0, 1.0);
+   }
+
+   glColor4f(0.0,0.0,1.0,1.0);
+   gluSphere(quadric,.01f,16,16);
+   glColor4f(1.0,1.0,1.0,1.0);
+
+   // if the link is at the tip, draw an extra stub.
+   if (isTip)
+   {
+	  glLineWidth (1.5);
+	  glColor4f(0.0,0.0,1.0,1.0);
+	  glBegin(GL_LINES);
+	  glVertex3f(0,0,0);
+	  glVertex3f(m_cg_pos[0], m_cg_pos[1], m_cg_pos[2] );
+	  glEnd();
+	  glLineWidth (1.5);
+
+	  glTranslatef(m_cg_pos[0], m_cg_pos[1], m_cg_pos[2]);
+	  glColor4f(0.0,0.0,1.0,1.0);
+	  gluSphere(quadric,.01f,16,16);
+	  glColor4f(1.0,1.0,1.0,1.0);
+   }
+}
+
+
+// func 7.
+void dmZScrewTxLink::drawSkeleton(bool isTip) const
+{
+   glTranslatef(0.0, 0.0, m_dMDH);
+   glRotatef(m_thetaMDH*RADTODEG, 0.0, 0.0, 1.0);
+}
+
+// func 8.
+void dmStaticRootLink::drawSkeleton(bool isTip) const
+{
+   cout<<"dmStaticRootLink::drawSkeleton() not implemented !"<<endl;
+   exit(1);
+}
+
+// func 9.
+void dmSphericalLink::drawSkeleton(bool isTip) const
+{
+   glLineWidth (1.5);
+
+   glColor4f(0.0,0.0,1.0,1.0);
+   glBegin(GL_LINES);
+   glVertex3f(0,0,0);
+   glVertex3f(m_p[0], m_p[1], m_p[2]);
+   glEnd();
+   glColor4f(1.0,1.0,1.0,1.0);
+   glLineWidth (1.5);
+
+   glTranslatef(m_p[0], m_p[1], m_p[2]);
+   glRotatef(m_q[2]*RADTODEG, 0.0, 0.0, 1.0);
+   glRotatef(m_q[1]*RADTODEG, 0.0, 1.0, 0.0);
+   glRotatef(m_q[0]*RADTODEG, 1.0, 0.0, 0.0);
+
+   // if the link is at the tip, draw an extra stub.
+   if (isTip)
+   {
+	  glLineWidth (1.5);
+	  glColor4f(0.0,0.0,1.0,1.0);
+	  glBegin(GL_LINES);
+	  glVertex3f(0,0,0);
+	  glVertex3f(m_cg_pos[0], m_cg_pos[1], m_cg_pos[2] );
+	  glEnd();
+	  glLineWidth (1.5);     
+
+	  glTranslatef(m_cg_pos[0], m_cg_pos[1], m_cg_pos[2]);
+	  glColor4f(0.0,0.0,1.0,1.0);
+	  gluSphere(quadric,.01f,16,16);
+	  glColor4f(1.0,1.0,1.0,1.0); 
+   }
+}
 
 
 
@@ -544,7 +669,7 @@ void dmMobileBaseLink::drawSkeleton() const
 //----------------------------------------------------------------------------
 void dmArticulation::draw() const
 {
-   quadric = gluNewQuadric();
+   
    glPushMatrix();
 
    glTranslatef(m_p_ICS[0], m_p_ICS[1], m_p_ICS[2]);
@@ -682,18 +807,6 @@ void dmSphericalLink::draw() const
 //----------------------------------------------------------------------------
 void dmQuaternionLink::draw() const
 {
-
-   // draw skeleton 
-   /*glLineWidth (2.0);
-
-   glColor4f(0.8,0.5,0.9,1.0);
-   glBegin(GL_LINES);
-   glVertex3f(0,0,0);
-   glVertex3f(m_p[0], m_p[1], m_p[2]);
-   glEnd();
-   glColor4f(1.0,1.0,1.0,1.0);
-   glLineWidth (1.5);*/
-
    glTranslatef(m_p[0], m_p[1], m_p[2]);
 
    Float len = sqrt(m_q[0]*m_q[0] + m_q[1]*m_q[1] + m_q[2]*m_q[2]);
@@ -702,7 +815,7 @@ void dmQuaternionLink::draw() const
       float angle = 2.0*atan2(len, m_q[3]);
       glRotatef(angle*RADTODEG, m_q[0]/len, m_q[1]/len, m_q[2]/len);
    }
-glEnable(GL_POLYGON_SMOOTH);
+
    glCallList(*((GLuint *) getUserData()));
 
 
@@ -723,9 +836,6 @@ void dmMobileBaseLink::draw() const
       glRotatef(angle*RADTODEG, m_quat[0]/len, m_quat[1]/len, m_quat[2]/len);
    }
 
-   //glColor4f(0.0,0.1,0.9,1.0);
-   //gluSphere(quadric,.01f,16,16);
-   //glColor4f(1.0,1.0,1.0,1.0);
    glCallList(*((GLuint *) getUserData()));
 }
 

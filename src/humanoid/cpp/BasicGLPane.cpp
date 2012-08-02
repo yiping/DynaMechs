@@ -304,6 +304,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		}
 		//cout << "Draw Robot" << endl;
+		G_robot->drawSkeleton();
 		G_robot->draw();
 		//cout << "Robot Drawn" << endl;
 		glPopAttrib();

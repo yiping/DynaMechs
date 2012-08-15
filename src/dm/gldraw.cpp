@@ -897,3 +897,271 @@ void dmTreadmill::draw() const
               m_position[2] - dzl + dzf);
    glEnd();
 }
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+// A special drawInit for demo purpose
+void dmEnvironment::drawInitSpecial()
+{
+	cout<<"entering drawInitSpecial"<<endl;
+	register int i, j;
+
+	GLfloat vertex[3][3], normal[3];
+	GLfloat vtex[4][3];
+
+	m_terrain_model_index = glGenLists(1);
+	if (m_terrain_model_index == 0)
+	{
+	  cerr << "loadModel_grid: Error unable to allocate dlist index." << endl;
+	}
+
+
+
+	// Load texture [texture image has to be 16*16 or 64*64 or 128*128 or 256*256]
+
+	GLuint texture_ID_1;
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glGenTextures( 1, &texture_ID_1 );
+
+	FILE* f = fopen("checker1.bmp","rb");
+
+	int tw;
+	int th;
+	unsigned char* data;
+
+	if (f != NULL)
+	{
+		unsigned char info[54];
+		fread(info, sizeof(unsigned char), 54, f); // read the 54-byte header
+
+		// extract texture image height and width from header
+		tw = *(int*)&info[18];
+		th = *(int*)&info[22];
+		cout<< "texture file is "<< tw <<"x" <<th <<" ."<<endl;
+		int size = 4 * tw * th;
+		data = new unsigned char[size]; // allocate 4 bytes per pixel
+		fread(data, sizeof(unsigned char), size, f); // read the rest of the data at once!
+			   //Size in bytes of each element to be read.
+		fclose(f);
+
+		for(i = 0; i < size; i += 4) // swap the first and third pixal, possibly necessary.
+		{
+			unsigned char tmp = data[i];
+			data[i] = data[i+2];
+			data[i+2] = tmp;
+		}
+
+	}
+	else
+	{
+		cout<<"Texture not loaded! "<<endl;
+	}
+
+	glBindTexture (GL_TEXTURE_2D, texture_ID_1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D,
+			  0, // level of detail 0-base level
+			  GL_RGBA, // number of color components in texture
+			  tw, // texture width
+			  th, // texture height,
+			  0, // border
+			  GL_RGBA,// number of color components of image pixels
+			  GL_UNSIGNED_BYTE,// image data type
+			  data);
+
+
+	cout<<"covering flat ground with texture"<<endl;
+	// cover flat terrain patches with texture
+	glNewList(m_terrain_model_index, GL_COMPILE);
+	{
+
+		glEnable(GL_TEXTURE_2D);
+		//glShadeModel(GL_SMOOTH);
+
+		glPolygonMode(GL_FRONT, GL_FILL); //GL_LINE
+		glPolygonMode(GL_BACK, GL_FILL);
+
+		cout<<m_x_dim<<" "<<m_y_dim<<endl;
+		for (i=0; i<m_x_dim-1; i++)//
+		{
+            for (j=0; j<m_y_dim-1; j++)//
+            {
+				cout<<"["<<i<<","<<j<<"]: "<<m_depth[i][j]<<" "<<m_depth[i+1][j]<<" "<<m_depth[i+1][j+1]<<" "<<m_depth[i][j+1]<<endl;
+				if ( (abs(m_depth[i][j])    <0.000001) & 
+                     (abs(m_depth[i+1][j])  <0.000001) &
+                     (abs(m_depth[i+1][j+1])<0.000001) &
+                     (abs(m_depth[i][j+1])  <0.000001)   )
+				{
+		            vtex[0][0] = ((GLfloat) i)*m_grid_resolution;
+		            vtex[0][1] = ((GLfloat) j)*m_grid_resolution;
+		            vtex[0][2] = 0.0001;
+
+		            vtex[1][0] = ((GLfloat) i+ 1.0)*m_grid_resolution;
+		            vtex[1][1] = ((GLfloat) j )*m_grid_resolution;
+		            vtex[1][2] = 0.0001;
+
+		            vtex[2][0] = ((GLfloat) i + 1.0)*m_grid_resolution;
+		            vtex[2][1] = ((GLfloat) j + 1.0)*m_grid_resolution;
+		            vtex[2][2] = 0.0001;
+
+		            vtex[3][0] = ((GLfloat) i )*m_grid_resolution;
+		            vtex[3][1] = ((GLfloat) j+ 1.0 )*m_grid_resolution;
+		            vtex[3][2] = 0.0001;
+
+					if ( (i+j)%2 ==  0 )
+					{
+				        glBegin (GL_QUADS);
+				        glNormal3d(0, 0, 1);
+				        glTexCoord2f (0.0, 0.0);
+				        glVertex3fv (vtex[0]);
+				        glTexCoord2f (0.5, 0.0);
+				        glVertex3fv (vtex[1]);
+				        glTexCoord2f (0.5, 0.5);
+				        glVertex3fv (vtex[2]);
+				        glTexCoord2f (0.0, 0.5);
+				        glVertex3fv (vtex[3]);
+				        glEnd ();
+					}
+					else
+					{
+					    glBegin (GL_QUADS);
+					    glNormal3d(0, 0, 1);
+					    glTexCoord2f (0.5, 0.0);
+					    glVertex3fv (vtex[0]);
+					    glTexCoord2f (1.0, 0.0);
+					    glVertex3fv (vtex[1]);
+					    glTexCoord2f (1.0, 0.5);
+					    glVertex3fv (vtex[2]);
+					    glTexCoord2f (0.5, 0.5);
+					    glVertex3fv (vtex[3]);
+					    glEnd ();
+					}
+				}
+            }
+		}
+		glDisable(GL_TEXTURE_2D);
+
+	
+		
+
+
+		// render terrain triangles (single color)
+
+		glPolygonMode(GL_FRONT, GL_FILL); //GL_LINE
+		glPolygonMode(GL_BACK, GL_FILL);
+
+		glColor4f(0.95,0.95,0.95,1.0);
+		char buffer[200];
+
+		for (j=0; j<m_y_dim-1; j++)
+		{
+			glBegin(GL_TRIANGLE_STRIP);
+			{
+				for (i=0; i<m_x_dim; i++)
+				{
+					vertex[0][0] = ((GLfloat) i)*m_grid_resolution;
+					vertex[0][1] = ((GLfloat) j + 1.0)*m_grid_resolution;
+					vertex[0][2] = m_depth[i][j+1];
+
+					if (i > 0)
+					{
+						vertex[1][0] = ((GLfloat) i - 1.0)*m_grid_resolution;
+						vertex[1][1] = ((GLfloat) j + 1.0)*m_grid_resolution;
+						vertex[1][2] = m_depth[i-1][j+1];
+
+						vertex[2][0] = ((GLfloat) i - 1.0)*m_grid_resolution;
+						vertex[2][1] = ((GLfloat) j)*m_grid_resolution;
+						vertex[2][2] = m_depth[i-1][j];
+
+						compute_face_normal(vertex[1], vertex[2], vertex[0], normal);
+						glNormal3fv(normal);
+					}
+					glVertex3fv(vertex[0]);
+
+					vertex[1][0] = ((GLfloat) i)*m_grid_resolution;
+					vertex[1][1] = ((GLfloat) j)*m_grid_resolution;
+					vertex[1][2] = m_depth[i][j];
+
+					if (i > 0)
+					{
+						compute_face_normal(vertex[1], vertex[0], vertex[2], normal);
+						glNormal3fv(normal);
+					}
+					glVertex3fv(vertex[1]);
+				}
+			}
+			glEnd();
+		}
+
+		// render terrain wireframe 
+		glColor4f(0.8,0.8,0.8,1.0);
+		for (j=0; j<m_y_dim-1; j++)
+		{
+			for (i=0; i<m_x_dim-1; i++)
+			{
+
+				if ( !( (abs(m_depth[i][j])  <0.000001) & 
+                      (abs(m_depth[i+1][j])  <0.000001) &
+                      (abs(m_depth[i+1][j+1])<0.000001) &
+                      (abs(m_depth[i][j+1])  <0.000001)  )   )
+				{
+					vtex[0][0] = ((GLfloat) i)*m_grid_resolution;
+					vtex[0][1] = ((GLfloat) j)*m_grid_resolution;
+					vtex[0][2] = m_depth[i][j]+0.0001;
+
+					vtex[1][0] = ((GLfloat) i)*m_grid_resolution;
+					vtex[1][1] = ((GLfloat) j+1)*m_grid_resolution;
+					vtex[1][2] = m_depth[i][j+1]+0.0001;
+
+					vtex[2][0] = ((GLfloat) i+1)*m_grid_resolution;
+					vtex[2][1] = ((GLfloat) j)*m_grid_resolution;
+					vtex[2][2] = m_depth[i+1][j]+0.0001;
+
+					vtex[3][0] = ((GLfloat) i+1)*m_grid_resolution;
+					vtex[3][1] = ((GLfloat) j+1)*m_grid_resolution;
+					vtex[3][2] = m_depth[i+1][j+1]+0.0001;
+
+					glBegin(GL_LINES);
+					{
+						if (j == 0)
+						{
+							glVertex3fv(vtex[0]);
+							glVertex3fv(vtex[2]);
+						}
+
+						if (i == 0)
+						{
+							glVertex3fv(vtex[0]);
+							glVertex3fv(vtex[1]);
+						}
+
+						glVertex3fv(vtex[0]);
+						glVertex3fv(vtex[3]);
+						glVertex3fv(vtex[1]);
+						glVertex3fv(vtex[3]);
+						glVertex3fv(vtex[2]);
+						glVertex3fv(vtex[3]);
+					}
+					glEnd();
+				}
+			}
+		}
+		glColor4f(1.0,1.0,1.0,1.0);
+	}
+	glEndList();
+
+
+
+	cout<<"exiting drawInitSpecial"<<endl;
+}

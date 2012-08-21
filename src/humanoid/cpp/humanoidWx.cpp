@@ -231,7 +231,7 @@ bool MyApp::OnInit()
 		
 		frame->glPane->glInit();
 		
-		dmEnvironment::getEnvironment()->drawInit();
+		dmEnvironment::getEnvironment()->drawInitSpecial();
 		
 		frame->glPane->model_loaded = true;
 		cout << "Environment Drawn" << endl;

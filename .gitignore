@@ -4,6 +4,7 @@ src/testdm/carts
 src/kurmet/sim_data.txt
 src/mosek/6
 src/wxWidgets-2.9.4
+src/wxWidgets-2.8.12
 src/wxWidgets
 .DS_Store
 */.DS_Store

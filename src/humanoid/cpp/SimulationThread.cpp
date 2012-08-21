@@ -57,6 +57,7 @@ void *SimulationThread::Entry()
 				slowFactor = pow(10,frame->slowMoRatio->getValue());
 			}
 			
+			
 			dmGetSysTime(&tv_now);
 			Float realTimeDiff = timeDiff(last_control_tv, tv_now);
 			Float sleepTime = slowFactor*cdt - realTimeDiff;

@@ -10,6 +10,7 @@
 
 #include "BasicGLPane.h"
 #include <dmEnvironment.hpp>
+using namespace Eigen;
 
 BEGIN_EVENT_TABLE(BasicGLPane, wxGLCanvas)
 EVT_MOTION(BasicGLPane::mouseMoved)
@@ -264,23 +265,109 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	
 	// Draw Axes
 	{
+		Float AxisLength = .5;
 		glBegin(GL_LINES);
 		glColor3f(1.0, 0.0, 0.0);
-		glVertex3f(2.0, 0.0, 0.0);
+		glVertex3f(AxisLength, 0.0, 0.0);
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
 		
 		glBegin(GL_LINES);
 		glColor3f(0.0, 1.0, 0.0);
-		glVertex3f(0.0, 2.0, 0.0);
+		glVertex3f(0.0, AxisLength, 0.0);
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
 		
 		glBegin(GL_LINES);
 		glColor3f(0.0, 0.0, 1.0);
-		glVertex3f(0.0, 0.0, 2.0);
+		glVertex3f(0.0, 0.0, AxisLength);
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
+		
+		Float qBase[7], qdBase[7];
+		G_robot->getLink(0)->getState(qBase,qdBase);
+		
+		Eigen::Matrix<GLfloat,3,1> p0,p1,p2,pStart,pEnd,zup;
+		p0<< 0,0,0;
+		p1<< 0,0,.7;
+		p2<< qBase[4], qBase[5], qBase[6];
+		
+		pStart = p0;
+		glBegin(GL_LINES);
+		glColor3f(0.0, 0.0, 0.0);
+		
+		for (Float t=.01; t<=1; t+=.01) {
+			Float tc = 1-t;
+			pEnd = tc*tc*p0+2*(1-t)*t*p1 + t*t*p2;
+			glVertex3fv(pStart.data());
+			glVertex3fv(pEnd.data());
+			pStart.swap(pEnd);
+		}
+		glEnd();
+		
+		pStart = p2-p1;
+		pStart /= pStart.norm();
+		
+		glPushMatrix();
+		glTranslatef(p2(0), p2(1), p2(2));
+		
+		zup << 0,0,1;
+		
+		const double cosTheta = zup.dot(pStart);
+		double theta = acos(cosTheta);
+		const double sinTheta = sin(theta);
+		
+		// Exploit the special form of the rotation matrix (explained above) for find the axis of rotation
+		double rX,rY,rZ;
+		if(theta > 0) {	
+			rX = - pStart(1)/sinTheta;
+			rY =   pStart(0)/sinTheta;
+			rZ = 0;
+		}
+		else {
+			rX = 0;
+			rY = 0;
+			rZ = 1;
+		}
+		glRotated(180/M_PI * theta, rX, rY, rZ);
+		
+		Float div = 4;
+		glTranslatef(0.0, 0.0, -.15f/div);
+		gluCylinder(frame->glPane->quadratic,.05f/div,0.0f,.15f/div,16,16);
+		
+		
+		glPopMatrix();
+		
+		
+		
+		theta = acos(qBase[3])*2 * 180 / M_PI;
+		
+		glPushMatrix();
+		glTranslatef(qBase[4], qBase[5], qBase[6]);
+		glRotatef(theta, qBase[0], qBase[1], qBase[2]);
+		
+		AxisLength = .25;
+		glBegin(GL_LINES);
+		glColor4f(1.0, 0.0, 0.0,1.0);
+		glVertex3f(AxisLength, 0.0, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glEnd();
+		
+		glBegin(GL_LINES);
+		glColor4f(0.0, 1.0, 0.0,1.0);
+		glVertex3f(0.0, AxisLength, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glEnd();
+		
+		glBegin(GL_LINES);
+		glColor4f(0.0, 0.0, 1.0,1.0);
+		glVertex3f(0.0, 0.0, AxisLength);
+		glVertex3f(0.0, 0.0, 0.0);
+		glEnd();
+		glPopMatrix();
+		
+		
+		
 	}
 	glEnable(GL_LIGHTING);
 	
@@ -289,7 +376,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	userGraphics();
 	//cout << "Complete" << endl;;
 	if(glIsEnabled(GL_BLEND)) {
-		glDepthMask(GL_FALSE);
+		//glDepthMask(GL_FALSE);
 	}
 	
 	// Draw Robot!
@@ -304,13 +391,16 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		}
 		//cout << "Draw Robot" << endl;
-		G_robot->drawSkeleton();
+		if (frame->showSkeleton->IsChecked()) {
+			G_robot->drawSkeleton();
+		}
+		
 		G_robot->draw();
 		//cout << "Robot Drawn" << endl;
 		glPopAttrib();
 	}
 	if(glIsEnabled(GL_BLEND)) {
-		glDepthMask(GL_TRUE);
+		//glDepthMask(GL_TRUE);
 	}
 	
 	// ===============================================================

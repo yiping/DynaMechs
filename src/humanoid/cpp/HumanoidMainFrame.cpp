@@ -102,6 +102,7 @@ HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, 
 		wxBoxSizer *toolpanel_sizer = new wxBoxSizer( wxVERTICAL);
 		
 		int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, WX_GL_SAMPLE_BUFFERS, GL_TRUE, WX_GL_SAMPLES, 4,0};
+		//int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0};
 		
 		//cout << "Pane " << endl;
 		glPane = new BasicGLPane( (wxFrame*) this, args, wxSize(400,400));
@@ -113,6 +114,8 @@ HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, 
 		showNetForceAtGround = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
 		showNetForceAtCoM	 = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
 		showTraces           = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowTraces,wxT("Show Traces"));
+		showSkeleton           = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowSkeleton,wxT("Show Skeleton"));
+		
 		slowMotion           = new wxCheckBox(toolpanel ,HumanoidMainFrame::CHECKBOX_ShowTraces,wxT("Slow Motion"));
 		
 		slowMoRatio = new wxBoxSlider(toolpanel,-1,.3,4,100);
@@ -131,6 +134,8 @@ HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, 
 		toolpanel_sizer->Add(showNetForceAtGround, 0,wxALL,2 );
 		toolpanel_sizer->Add(showNetForceAtCoM, 0,wxALL,2 );
 		toolpanel_sizer->Add(showTraces,0,wxALL,2);
+		toolpanel_sizer->Add(showSkeleton,0,wxALL,2);
+		
 		toolpanel_sizer->Add(slowMotion,0,wxALL,2);
 		toolpanel_sizer->Add(slowMoRatio,0,wxALL,2);
 		

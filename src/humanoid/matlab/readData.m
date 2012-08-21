@@ -24,6 +24,7 @@ a=[];
 figs=[];
 figPos = [176          36        1104         671];
 
+
 %%%%%%%%%%%%%
 % CoM
 %%%%%%%%%%%%%
@@ -50,6 +51,26 @@ plot(t,pCom(3,:),'b');
 plot(t,pComDes(3,:),'b--');
 drawTransitions(transitionTimes,transitionStates);
 title('CoM Z'); xlabel('Time (s)'); ylabel('Z Position (m)');
+
+
+f = figure('Name','Pelvis Position','Position',figPos); figs = [figs f];
+clf
+title('CoM Position');
+a=[a subplot(131)];
+hold on
+plot(t,q(7,:),'r');
+drawTransitions(transitionTimes,transitionStates);
+title('Hip Z'); xlabel('Time (s)'); ylabel('Z Position (m)');
+
+
+f = figure('Name','Knee Torques','Position',figPos); figs = [figs f];
+clf
+hold on
+plot(t,tau(4,:),'r');
+plot(t,tau(10,:),'b');
+drawTransitions(transitionTimes,transitionStates);
+xlabel('Time (s)'); ylabel('Knee Torques (Nm)');
+
 
 
 f = figure('Name','Ang Momentum Tracking','Position',figPos); figs = [figs f];

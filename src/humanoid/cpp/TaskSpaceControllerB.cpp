@@ -270,6 +270,7 @@ void TaskSpaceControllerB::UpdateHPTConstraintBounds() {
 
 
 void TaskSpaceControllerB::UpdateConstraintMatrix() {
+	
 	//dmTimespec tv1,tv2;
 	//dmGetSysTime(&tv1);
 	MSKidxt       asub[NUMVAR],asubtmp[NUMVAR];
@@ -277,18 +278,18 @@ void TaskSpaceControllerB::UpdateConstraintMatrix() {
 	//cout << setprecision(2);
 	//cout << "H= " << endl << artic->H << endl;
 	
-	LDLT<MatrixXF> decomp(artic->H);
-	MatrixXF invHJt = decomp.solve(TaskJacobian.transpose());
+	Hdecomp.compute(artic->H);
+	MatrixXF invHJt = Hdecomp.solve(TaskJacobian.transpose());
 	MatrixXF JinvH = invHJt.transpose();
 	int m = TaskJacobian.rows();
 	
-	MatrixXF LambdaInvTau = JinvH.block(0,6,m,NJ);
+	LambdaInvTau = JinvH.block(0,6,m,NJ);
 	LambdaInvTau.topRows(6).setZero();
 	
-	MatrixXF LambdaInvF(m,3*NS*NP);
+	LambdaInvF.setZero(m,3*NS*NP);
 	
 	eBiasCandG.resize(m);
-	eBiasCandG = TaskJacobian*decomp.solve(artic->CandG);
+	eBiasCandG = TaskJacobian*Hdecomp.solve(artic->CandG);
 	
 	// Compute the LamndaInvF using one leg at a time, exploiting common structure.
 	for (int i = 0; i<NS; i++) {
@@ -356,11 +357,26 @@ void TaskSpaceControllerB::UpdateConstraintMatrix() {
 }
 wxCommandEvent dummyPauseEvent;
 void TaskSpaceControllerB::Optimize() {
+	static VectorXF f(NS*NP);
+	
 	xx.resize(NUMVAR);
 	if ( r==MSK_RES_OK ) {
 		MSKrescodee trmcode;
 		
 
+		/*for (int i=0; i<taskConstrActive.size(); i++) {
+			if (taskConstrActive(i) > 0) {
+				Float val = LambdaInvF.row(i).dot(f) + LambdaInvTau.row(i).dot(tau);
+				cout << "Const " << i << " " << val << " =? " << TaskBias(i)+eBiasCandG(i) << " (" << TaskBias(i) << " + " << eBiasCandG(i) << ") " << endl;
+				
+			}
+			else if (taskOptimActive(i) > 0)
+			{
+				cout << "Optim " << i << " bias " << TaskBias(i)+eBiasCandG(i) << " (" << TaskBias(i) << " + " << eBiasCandG(i) << endl;
+				
+			}
+		}*/
+		
 		MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_REL_GAP, 1e-04);
 		MSK_putintparam(task, MSK_IPAR_PRESOLVE_USE, MSK_PRESOLVE_MODE_OFF);
 		//MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_DFEAS, 10e-04);
@@ -435,8 +451,11 @@ void TaskSpaceControllerB::Optimize() {
 					
 					break;
 				case MSK_SOL_STA_DUAL_INFEAS_CER:
+					printf("d");
 				case MSK_SOL_STA_PRIM_INFEAS_CER:
+					printf("P");
 				case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
+					printf("nd");
 				case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:  
 					printf("Primal or dual infeasibility certificate found.\n");
 					cout << "time = " <<setprecision(5) << simThread->sim_time << endl;
@@ -478,8 +497,13 @@ void TaskSpaceControllerB::Optimize() {
 	qdd = VectorXF::Zero(NJ+6);
 	fs = VectorXF::Zero(6*NS);
 	lambda = VectorXF::Zero(1);
-	VectorXF f(NS*NP);
+	
+	
 	f = xx.segment(fStart,3*NS*NP);
+	TaskError = xx.segment(eStart,(eEnd-eStart)+1);
+	for (int i=0; i<TaskError.size(); i++) {
+		TaskError(i)/=TaskWeight(i);
+	}
 	
 	for (int i=0; i<NS; i++) {
 		for (int j=0; j<NP ; j++) {
@@ -488,5 +512,15 @@ void TaskSpaceControllerB::Optimize() {
 			fs.segment(6*i,6) += PointForceXforms[i][j].rightCols(3)*floc;
 		}
 	}
+	
+	//cout << "f = " << endl << f << endl;
+	
+	/*for (int i=0; i<taskConstrActive.size(); i++) {
+		if (taskOptimActive(i) > 0) {
+			Float val = LambdaInvF.row(i).dot(f) + LambdaInvTau.row(i).dot(tau);
+			cout << "Post " << i << " " << val << " =? " << TaskBias(i)+eBiasCandG(i) << " e=(" << TaskError(i) << " vs " << -val+TaskBias(i)+eBiasCandG(i) << ") " << endl;
+			
+		}
+	}*/
 	//cout << fs.transpose()<< endl;
 }

@@ -247,14 +247,54 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 	// Perform Optimization
 	{
 		dmGetSysTime(&tv2);
-		UpdateObjective();
 		UpdateConstraintMatrix();
 		
-		UpdateHPTConstraintBounds();
+		int maxPriorityLevels = OptimizationSchedule.maxCoeff();
+		const int numTasks = OptimizationSchedule.size();
+		
+		if (maxPriorityLevels > 0) {
+			for (int level=1; level<=maxPriorityLevels; level++) {
+				taskConstrActive.setZero(numTasks);
+				taskOptimActive.setZero(numTasks);
+				bool runOpt = false;
+				for (int i=0; i<numTasks;i ++) {
+					if (OptimizationSchedule(i) == level) {
+						taskOptimActive(i) = 1;
+						runOpt = true;
+					}
+					else if ((OptimizationSchedule(i) < level) && (OptimizationSchedule(i) > -1)) {
+						taskConstrActive(i) = 1;
+					}
+				}
+				
+				if (runOpt) {
+					UpdateObjective();
+					UpdateHPTConstraintBounds();
+					dmGetSysTime(&tv3);
+					//cout << "Optimizing level " << level << endl;
+					Optimize();
+					for (int i=0; i<numTasks;i ++) {
+						if (OptimizationSchedule(i) == level) {
+							TaskBias(i) += TaskError(i);
+							//cout << "Optimization Level " << level << " task error " << i << " = " << TaskError(i) << endl; 
+						}
+					}
+				}
+			}
+		}
+		else {
+			UpdateObjective();
+			UpdateHPTConstraintBounds();
+			dmGetSysTime(&tv3);
+			Optimize();
+		}
+		//exit(-1);
 		
 		
-		dmGetSysTime(&tv3);
-		Optimize();
+		
+			
+		
+		
 
 		
 		// Extract Results
@@ -475,6 +515,34 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 		}
 	}
 	#endif
+	
+	/*{
+		MatrixXF H = artic->H;
+		VectorXF CandG = artic->CandG;
+		
+		MatrixXF S = MatrixXF::Zero(NJ,NJ+6);
+		S.block(0,6,NJ,NJ) = MatrixXF::Identity(NJ,NJ);
+		
+		VectorXF generalizedContactForce = VectorXF::Zero(NJ+6);
+		for (int i=0; i<NS; i++) {
+			generalizedContactForce += SupportJacobians[i].transpose()*fs.segment(6*i,6);
+		}
+		
+		qdd = H.inverse()*(S.transpose() * tau + generalizedContactForce- CandG);
+		cout << setprecision(8);
+		cout << "fs " << endl << fs << endl;
+		cout << "qdd " << endl << qdd << endl;
+	}
+	
+	exit(-1);*/
+	static int numTimes = 0;
+	numTimes++;
+	
+	//Float dummy;
+	//cin >> dummy;
+	//if (numTimes == 2) {
+	//	exit(-1);
+	//}
 	
 	//exit(-1);
 }

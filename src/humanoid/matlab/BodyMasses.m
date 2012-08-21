@@ -6,6 +6,8 @@ Mass = 72.5748; % 160 pounds
 
 Height = Height*70/Mass; % 5' 9.5"
 %Mass = 70;               %
+
+Height = 1.0500;
 Mass = 19.12;
 totalMass = 0;
 
@@ -30,10 +32,10 @@ links{13}= upperArmLink;    links{13}.name='"LeftArm"';         links{13}.parent
 links{14}= foreArmLink;     links{14}.name='"RightArm"';        links{14}.parent = 13;
 
 
-links{3}.pos = [0 -torsoLink.hipWidth/2 0];
-links{7}.pos = [0  torsoLink.hipWidth/2 0];
-links{11}.pos = [0 -torsoLink.width/2 torsoLink.length];
-links{13}.pos = [0 torsoLink.width/2 torsoLink.length];
+links{3}.pos = [0 -torsoLink.hipWidth/2 torsoLink.hipOffset];
+links{7}.pos = [0  torsoLink.hipWidth/2 torsoLink.hipOffset];
+links{11}.pos = [0 -torsoLink.shoulderWidth/2 torsoLink.length-torsoLink.shoulderOffset];
+links{13}.pos = [0 torsoLink.shoulderWidth/2 torsoLink.length-torsoLink.shoulderOffset];
 
 
 %addpath ../DynamicsLibrary
@@ -59,6 +61,8 @@ R = [1 0 0;0 0 1;0 -1 0]';
 R2 = expm(cross([0 1.1*pi/2 0]));
 R3 = expm(cross([-.2 0 0]));
 quat = RtoQuat(R3*R2*R);
+% R4 = expm(cross([0 0 -pi/2]));
+% quat = RtoQuat(R4*R);
 dmQuat = [quat(2:4) quat(1)];
 links{11}.quat = dmQuat;
 links{12}.mdh(4) = 0.50000;
@@ -68,6 +72,8 @@ R = [1 0 0;0 0 1;0 -1 0]';
 R2 = expm(cross([0 1.1*pi/2 0]));
 R3 = expm(cross([.2 0 0]));
 quat = RtoQuat(R3*R2*R);
+% R4 = expm(cross([0 0 pi/2]));
+% quat = RtoQuat(R4*R);
 dmQuat = [quat(2:4) quat(1)];
 links{13}.quat = dmQuat;
 links{14}.mdh(4) = 0.50000;
@@ -113,7 +119,7 @@ fclose(fid);
 
 createXanTorso('../config/humanoid_box_model/torso.xan',torsoLink);
 createXan('../config/humanoid_box_model/upperArm.xan',upperArmLink);
-createXan('../config/humanoid_box_model/foreArm.xan',foreArmLink);
+createXanLowerArm('../config/humanoid_box_model/foreArm.xan',foreArmLink);
 createXan('../config/humanoid_box_model/thigh.xan',hipLink);
 createXan('../config/humanoid_box_model/shank.xan',shankLink);
 createXan('../config/humanoid_box_model/foot.xan',footLink);

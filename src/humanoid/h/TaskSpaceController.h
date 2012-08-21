@@ -45,9 +45,12 @@ public:
 	MatrixXF TaskJacobian;
 	VectorXF TaskBias;
 	VectorXF TaskWeight;
+	VectorXF TaskError;
 	
 	VectorXF taskConstrActive;
 	VectorXF taskOptimActive;
+	
+	VectorXF OptimizationSchedule;
 	
 	
 	XformVector SupportXforms;

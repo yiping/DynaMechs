@@ -43,8 +43,10 @@ public:
 	~TaskSpaceControllerB();
 	
 	static const int tauStart, tauEnd, fStart,fEnd,zStart,eStart,eEnd,eConstrStart,eConstrEnd,fNormConstrStart,fNormConstrEnd;
+	MatrixXF LambdaInvTau,LambdaInvF; 
 private:
 	VectorXF eBiasCandG;
+	LDLT<MatrixXF> Hdecomp;
 };
 
 #endif

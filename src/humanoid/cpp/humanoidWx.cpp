@@ -173,8 +173,6 @@ bool MyApp::OnInit()
 		cout << "Creating Robot" << endl;
 		
 		glEnable(GL_BLEND);
-		glBlendFunc (GL_ONE, GL_ONE);
-		
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		//glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
 		
@@ -243,6 +241,7 @@ bool MyApp::OnInit()
 	frame->glPane->restartTimer();
 	
 	cout << "Starting Sim Thread" << endl;
+	simThread->paused_flag = true;
 	simThread->Run();
     return true;
 } 
@@ -415,6 +414,18 @@ void BasicGLPane::userGraphics()
 		const Float forceScale = 250;
 		glColor4f(0.0, 0.0, 0.0,0.75);
 		
+		humanoid->grfInfo.localContacts = 2;
+		
+		humanoid->grfInfo.pCoPs.resize(2);
+		humanoid->grfInfo.pCoPs[0] << .54 + .07*cos(M_PI/4),.54-.07*cos(M_PI/4) ,0;
+		humanoid->grfInfo.pCoPs[1] << .54 - .07*cos(M_PI/4),.54+.07*cos(M_PI/4), 0;
+		
+		humanoid->grfInfo.fCoPs.resize(2);
+		humanoid->grfInfo.fCoPs[0] << 10,10,19.2*9.81/2;
+		humanoid->grfInfo.fCoPs[1] << 10,10,19.2*9.81/2;
+		
+		
+		
 		if (frame->showGRF->IsChecked()) {
 			// Draw GRF Info
 			for (int i=0; i< humanoid->grfInfo.localContacts; i++) {
@@ -447,6 +458,7 @@ void BasicGLPane::userGraphics()
 		frame->realTimeRatioDisplay->SetLabel(wxString::Format(wxT("RT Ratio: %.2lf"), real_time_ratio));
 		
 		
+		/*
 		Float qBase[7], qdBase[7];
 		G_robot->getLink(0)->getState(qBase,qdBase);
 		
@@ -455,11 +467,13 @@ void BasicGLPane::userGraphics()
 		glPushMatrix();
 		glTranslatef(qBase[4], qBase[5], qBase[6]);
 		glRotatef(theta, qBase[0], qBase[1], qBase[2]);
+		
+		
 		glTranslatef(0, 0, .4);
 		glColor4f(0.700, 0.700, 0.700,.6);
 		
 		
-		/*Float cylRad = .02;
+		Float cylRad = .02;
 		Float cylHeight = .04;
 		Float headRad = .06;
 		
@@ -545,7 +559,7 @@ void BasicGLPane::userGraphics()
 		
 		
 		
-		glPopMatrix();
+		//glPopMatrix();
 		
 	}
 	

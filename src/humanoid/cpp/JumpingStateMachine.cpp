@@ -10,6 +10,7 @@
 #include "GlobalDefines.h"
 #include "JumpingStateMachine.h"
 #include "CustomTaskSpaceController.h"
+#include "BezierCurve.h"
 
 JumpingStateMachine::JumpingStateMachine(dmArticulation * robot) 
 	: HumanoidDataLogger(robot, NUM_JUMP_STATES), ComTrajectory(3)
@@ -33,6 +34,14 @@ JumpingStateMachine::JumpingStateMachine(dmArticulation * robot)
 	
 	stateNames[LAND] = "Land";
 	stateFunctions[LAND] = &JumpingStateMachine::Land;
+	
+	stateNames[BALANCE_LEFT] = "Balance Left";
+	stateFunctions[BALANCE_LEFT] = &JumpingStateMachine::BalanceLeft;
+	
+	stateNames[KICK] = "Kick";
+	stateFunctions[KICK] = &JumpingStateMachine::Kick;
+	
+	
 	
 
 	ComTrajectory.setSize(3);
@@ -157,7 +166,7 @@ void JumpingStateMachine::BalanceMiddle() {
 		cout << pCom << endl;
 	}
 	if (stateTime > 1) {
-		state = SQUAT;
+		state = BALANCE_LEFT;
 		transitionFlag = true;
 		return;
 	}
@@ -343,220 +352,108 @@ void JumpingStateMachine::Land()
 	
 }
 
-void logBarrier(const VectorXF & x, Float &b, VectorXF & bs)
+void JumpingStateMachine::Kick()
 {
-	bs.resize(4);
+	static CubicSplineTrajectory footSpline(3);
+	static VectorXF vDes3(3), aDes3(3), pAct(3), vAct(6);
+	static bool raisedFlag = true;
 	
-	bs(0)=x(3)*x(3)-x(2)*x(2)-x(1)*x(1);
-	bs(1)=10-x(0);
-	bs(2)=x(0)+10;
-	bs(3)=x(8)*x(8)-x(7)*x(7)-x(6)*x(6)-x(5)*x(5)-x(4)*x(4);
+	static Vector3F pCenter,pRel;
 	
-	b = -log(bs(0))-log(bs(1))-log(bs(2))-log(bs(3));
-}
-
-void evalBarrier(const VectorXF & x, VectorXF & bs, VectorXF& grad, MatrixXF& H, MatrixXF & iH)
-{
-	grad.setZero(9);
-	H.setZero(9,9);
-	Float b;
-	logBarrier(x,b,bs);
+	static Float r, theta;
 	
-	MatrixXF grads(9,4);
-	grads.setZero();
-	vector<MatrixXF> Hs;
-	Hs.resize(4);
-	
-	int startInds[] = {1,0,0,4};
-	int lengths[] = {3,1,1,5};
-	
-	grads.block(1,0,3,1) << 2*x(1), 2*x(2), -2*x(3);
-	grads(0,1) = 1;
-	grads(0,2) = -1;
-	grads.block(4,3,5,1) << 2*x(4), 2*x(5), 2*x(6), 2*x(7), -2*x(8);
-	
-	Hs[0] = MatrixXF::Identity(3,3)*2;
-	Hs[0](2,2) =-2;
-	
-	Hs[1].setZero(1,1);
-	Hs[2].setZero(1,1);
-	
-	Hs[3] = MatrixXF::Identity(5,5)*2;
-	Hs[3](4,4)=-2;
-
-	
-	for (int i=0; i<4; i++) {
-		MatrixXF g = grads.block(startInds[i],i,lengths[i],1);
-		grad.segment(startInds[i],lengths[i]) += 1/bs(i)*g;
-		H.block(startInds[i],startInds[i],lengths[i],lengths[i])+=1/(bs(i)*bs(i)) * g*g.transpose() + 1/bs(i)*Hs[i];
+	Float raiseSplineTime = 1;
+	if (transitionFlag) {
+		VectorXF pFootEnd(3);
+		
+		VectorXF vFootEnd(3);
+		vFootEnd.setZero();
+		
+		pFootEnd << pFoot[0](0),pFoot[0](1),pFoot[0](2)+.05; 
+		footSpline.init(pFoot[0], vFoot[0].tail(3), pFootEnd, vFootEnd,raiseSplineTime);
+		
+		pCenter(0) = artic->m_link_list[2]->link_val2.p_ICS[0];
+		pCenter(1) = artic->m_link_list[2]->link_val2.p_ICS[1];
+		pCenter(2) = artic->m_link_list[2]->link_val2.p_ICS[2];
+		
+		pRel = pFoot[0] - pCenter;
+		
+		cout << "Rel Pos " << pRel.transpose() << endl;
+		
+		pRel(2) +=.05;
+		
+		r = sqrt(pRel(0)*pRel(0) + pRel(2)*pRel(2));
+		theta = atan2(pRel(0), -pRel(2));
+		
+		cout << "r =  " << r << " theta = " << theta << endl;
+		
+		
+		transitionFlag = false;
 	}
 	
-}
-
-void evalResidual(const VectorXF & x, const VectorXF & v, const MatrixXF & Aeq, const VectorXF & beq, Float t, VectorXF & rd, VectorXF & rp, VectorXF & bs, VectorXF& grad, MatrixXF & H, MatrixXF & iH)
-{
-	evalBarrier(x, bs, grad, H,iH);
-	VectorXF rdInit;
-	rdInit.setZero(9);
-	rdInit(8) = 1;
+	if (stateTime > raiseSplineTime && !raisedFlag) {
+		
+		raisedFlag = true;
+		
+	}
 	
-	rd = rdInit + grad/t + Aeq.transpose()*v;
-	rp = Aeq*x-beq;
+	
+	OptimizationSchedule.segment(0,3).setConstant(4);
+	AssignFootMaxLoad(0,0);
+	
+	kpFoot[0] = 50;
+	kdFoot[0] = 150;
+	VectorXF pDes3(3);
+	footSpline.eval(stateTime, pDes3, vDes3, aDes3);
+	
+	vDesFoot[0].setZero();
+	aDesFoot[0].setZero();
+	
+	pDesFoot[0] = pDes3;
+	vDesFoot[0].tail(3) = vDes3;
+	aDesFoot[0].tail(3) = aDes3;
+	
+	
 }
 
-Float norm(const VectorXF & a,const VectorXF & b)
+void JumpingStateMachine::BalanceLeft()
 {
-	return sqrt(pow(a.norm(),2) + pow(b.norm(),2));
+	static Float MaxFootLoad;
+	if (transitionFlag) {
+		VectorXF pComEnd(3);
+		VectorXF vComEnd = VectorXF::Zero(3);
+		VectorXF pComInit = pCom;
+		VectorXF vComInit = centMom.tail(3)/totalMass;
+		
+		pComEnd  << pCom(0)+.06, pCom(1)+.06, pCom(2)+.08;
+		
+		ComTrajectory.init(pComInit, vComInit, pComEnd, vComEnd,.8);
+		transitionFlag = false;
+		
+		MaxFootLoad = grfInfo.fCoPs[0](2);
+	}
+	if (stateTime > 1.2) {
+		state = KICK;
+		transitionFlag =true;
+		return;
+	}
+	
+	OptimizationSchedule.segment(0,3).setConstant(4);
+	Float footLoad = MaxFootLoad * (.8-stateTime)/.8;
+	if (footLoad<0) {
+		footLoad = 0;
+	}
+	
+	AssignFootMaxLoad(0,footLoad);
+	
+	
+	ComTrajectory.eval(stateTime, pComDes, vComDes, aComDes);
 }
+
+
 
 void JumpingStateMachine::StateControl(ControlInfo & ci)
 {
-	
-	//MatrixXF Lctau(2,1), Lttau(4,1), Lcf(2,3), Ltf(4,3);
-//	Lcf << 1,1,-.2, 0,1,0;
-//	Ltf << 1,0,0,0,1,0,0,0,1,0,0,1;
-//	
-//	Lctau << .1, .2;
-//	Lttau << 0,0,1,0;
-//	
-// 	VectorXF bt(4), bc(2);
-//	bt << 1,1,0,5;
-//	bc << 0,2;
-//	
-//	MatrixXF Aeq(6,9);
-//	Aeq.setZero();
-//	Aeq.block(0,0,2,1) = Lctau;
-//	Aeq.block(2,0,4,1) = Lttau;
-//	Aeq.block(0,1,2,3) = Lcf;
-//	Aeq.block(2,1,4,3) = Ltf;
-//	
-//	Aeq.block(2,4,4,4) = - MatrixXF::Identity(4,4);
-//	
-//	VectorXF beq(6);
-//	beq.segment(0,2) = bc;
-//	beq.segment(2,4) = bt;
-//	
-//	VectorXF x(9), v(6);
-//	
-//	x << 5,1.5,1,15,.5,0,20,10,100;
-//	v << 0,0,0,0,0,0;
-//	
-//	Float tBar = 1000;
-//	
-////	cout << "Aeq = " << endl << Aeq << endl;
-////	cout << "beq = " << endl << beq << endl;
-////	exit(-1);
-//	cout << setprecision(5);
-//	VectorXF rd(6), rp(2), grad(9), rdHat(6), rpHat(2), gradHat(9), bars(4), barsHat(4);
-//	MatrixXF H(9,9), Hhat(9,9);
-//	
-//	int totalSteps = 0;
-//	
-//	Float mu = 50;
-//	dmTimespec tm1,tm2;
-//	dmGetSysTime(&tm1);
-//	MatrixXF iH(9,9),iHhat(9,9);
-//	MatrixXF iHAt(9,6), Khat(6,6);
-//	VectorXF dv(6),dx(9);
-//	while (tBar < 1000000) {
-//		int iter = 0;
-//		rd.setOnes();
-//		while (rd.norm() > 1e-8) {
-//			evalResidual(x, v, Aeq, beq, tBar, rd, rp, bars, grad, H,iH);
-//			
-//			/*cout << "bars " << endl << bars << endl;
-//			cout << "grad " << endl << grad << endl;
-//			cout << "H " << endl << H << endl;
-//			
-//			exit(-1);*/
-//			H/=tBar;
-//			
-//			Float redNorm = norm(rd,rp);
-//			LDLT<MatrixXF> Hdecomp(H);
-//			iHAt = Hdecomp.solve(Aeq.transpose());
-//			Khat = Aeq*iHAt;
-//			
-//			dv = Khat.partialPivLu().solve(rp - iHAt.transpose()*rd);
-//			dx = -Hdecomp.solve(rd+Aeq.transpose()*dv);
-//			totalSteps ++;
-//			//cout << "dx "<< endl << dx << endl;
-//			//cout << "dv "<< endl << dv << endl;
-//			//exit(-1);
-//			
-//			
-//			
-//	//		cout << "K " << endl << K << endl;
-//	//		cout << "rd " << endl << rd << endl;
-//	//		cout << "rp " << endl << rp << endl;
-//	//		
-//	//		cout << "rednorm = " << redNorm << endl;
-//			Float gamma = 1;
-//			Float beta = .5;
-//			Float alpha = .1;
-//			
-//	//		cout << "dx " << endl << dx << endl;
-//	//		cout << "dv " << endl << dv << endl;
-//			
-//			evalResidual(x+gamma*dx, v+gamma*dv, Aeq, beq, tBar, rdHat, rpHat, barsHat, gradHat, Hhat,iHhat);
-//			Float redNormHat = norm(rdHat,rpHat);
-//			
-//	//		cout << "redNormHat " << redNormHat << endl;
-//	//		cin >> beta;
-//	//		exit(-1);
-//			int k=0;
-//			while ((redNormHat > (1-alpha*gamma)*redNorm) || (barsHat.minCoeff()<0)) {
-//				gamma *=beta;
-//				evalResidual(x+gamma*dx, v+gamma*dv, Aeq, beq, tBar, rdHat, rpHat, barsHat, gradHat, Hhat,iHhat);
-//				redNormHat = norm(rdHat,rpHat);
-//	//			cout << "k=" << k++ << " rd = " << rd.norm() << endl;
-//			}
-//			
-//			x+=gamma*dx;
-//			v+=gamma*dv;
-//			//cout << "iter = " << iter++ << " rd = " << rd.norm() << " rp = " << rp.norm() << endl;
-//			
-//		}
-//		tBar *= mu;
-//		//cout << "tBar = " << tBar << endl;
-//	}
-//	dmGetSysTime(&tm2);
-//	cout << "time " << timeDiff(tm1, tm2) << endl;
-//	
-//	cout << "x= " << x.transpose() << endl;
-//	cout << "v= " << v.transpose() << endl;
-//	cout << "Total Steps = " << totalSteps << endl;
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-//	exit(-1);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	dmTimespec controlStart, controlEnd;
 	dmGetSysTime(&controlStart);
 	
@@ -614,7 +511,7 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 			TaskBias.segment(0,3) += angMomDotDes;
 			TaskBias.segment(3,3) += linMomDotDes;
 			
-			TaskWeight.segment(0,3).setConstant(100);
+			TaskWeight.segment(0,3).setConstant(10);
 			TaskWeight.segment(3,3).setConstant(100);
 			
 	#ifdef CONTROL_DEBUG
@@ -651,17 +548,17 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 				kpKnee = 240;
 				wKnee   = 1;
 				
-				kpHip = 120;
+				kpHip = 120/3.;
 				wHip  = 1;
 				
-				kpShould = 200;
-				wShould  = 1.5;
+				kpShould = 220;
+				wShould  = 30.0;
 				
 				kpElbow = 240;
-				wElbow  = 1;
+				wElbow  = 10;
 				
-				kpTorso = 120./10.;
-				wTorso = 1/2.;
+				kpTorso = 120.;
+				wTorso = 10.;
 				
 				{
 					kpJoint[0] = kpTorso;
@@ -746,7 +643,7 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 					Float Kp = kpJoint[i];
 					Float Kd = kdJoint[i];
 					if (i == 0) {
-						TaskWeight.segment(taskRow,3).setConstant(10);
+						TaskWeight.segment(taskRow,3).setConstant(80);
 						//taskOptimActive.segment(taskRow+3,3).setZero();
 					}
 					else if (bodyi->dof == 1) {

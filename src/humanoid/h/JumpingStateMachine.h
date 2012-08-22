@@ -26,6 +26,8 @@ class JumpingStateMachine : public HumanoidDataLogger
 		THRUST,
 		FLIGHT,
 		LAND,
+		BALANCE_LEFT,
+		KICK,
 		NUM_JUMP_STATES
 	};
 	virtual void StateControl(ControlInfo & ci);
@@ -38,7 +40,11 @@ class JumpingStateMachine : public HumanoidDataLogger
 	void Squat();
 	void Thrust();
 	void Flight();
+	
+	void BalanceLeft();
 	void Land();
+	
+	void Kick();
 	
 	
 	typedef void (JumpingStateMachine::*JumpStateFuncPtr)();

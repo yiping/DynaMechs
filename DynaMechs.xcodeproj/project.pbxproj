@@ -271,6 +271,7 @@
 		1959E12515C9F2860043E424 /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = 1959E12115C9F2860043E424 /* trackball.c */; };
 		1959E2FB15C9F5970043E424 /* libwx_osx_cocoa.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1959E11A15C9F2500043E424 /* libwx_osx_cocoa.dylib */; };
 		195C3FF9159DD8B80073AA71 /* HumanoidDataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */; };
+		1974711615E521FE00E7AA0A /* BezierCurve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1974711515E521FE00E7AA0A /* BezierCurve.cpp */; };
 		197608FD15D43DC600E29C68 /* CustomTaskSpaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 197608A415D41D7400E29C68 /* CustomTaskSpaceController.cpp */; };
 		197B842D15070B530064753B /* dmGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869114D2E9A800778EA7 /* dmGLCamera.cpp */; };
 		197B842E15070B530064753B /* dmGLFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869314D2E9A800778EA7 /* dmGLFlyCamera.cpp */; };
@@ -855,6 +856,8 @@
 		1959E12015C9F2860043E424 /* penguin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = penguin.h; path = "src/wxWidgets-2.9.4/samples/opengl/penguin/penguin.h"; sourceTree = "<group>"; };
 		1959E12115C9F2860043E424 /* trackball.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = trackball.c; path = "src/wxWidgets-2.9.4/samples/opengl/penguin/trackball.c"; sourceTree = "<group>"; };
 		1959E12215C9F2860043E424 /* trackball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = trackball.h; path = "src/wxWidgets-2.9.4/samples/opengl/penguin/trackball.h"; sourceTree = "<group>"; };
+		1974711415E521FE00E7AA0A /* BezierCurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BezierCurve.h; sourceTree = "<group>"; };
+		1974711515E521FE00E7AA0A /* BezierCurve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BezierCurve.cpp; sourceTree = "<group>"; };
 		197608A315D41D7400E29C68 /* CustomTaskSpaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTaskSpaceController.h; sourceTree = "<group>"; };
 		197608A415D41D7400E29C68 /* CustomTaskSpaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomTaskSpaceController.cpp; sourceTree = "<group>"; };
 		197B842715070B450064753B /* functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = functions.cpp; path = src/kurmet/functions.cpp; sourceTree = "<group>"; };
@@ -1615,6 +1618,8 @@
 		19C6AABF1588ED0600298257 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				1974711415E521FE00E7AA0A /* BezierCurve.h */,
+				1974711515E521FE00E7AA0A /* BezierCurve.cpp */,
 				19801DD9159B62EE00DB8AD5 /* CubicSpline.h */,
 				19801DDA159B62EE00DB8AD5 /* CubicSplineTrajectory.h */,
 				19801DDB159B62EE00DB8AD5 /* DataLogger.h */,
@@ -2564,6 +2569,7 @@
 				198B440D15C9BF7C00458DC4 /* TaskSpaceControllerA.cpp in Sources */,
 				198B440E15C9BF7C00458DC4 /* JumpingStateMachine.cpp in Sources */,
 				19EC853415D1639900874729 /* TaskSpaceControllerC.cpp in Sources */,
+				1974711615E521FE00E7AA0A /* BezierCurve.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

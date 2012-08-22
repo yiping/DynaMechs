@@ -360,7 +360,7 @@ void JumpingStateMachine::RaiseFoot()
 	static bool raisedFlag = true;
 	static Vector3F pCenter,pRel;
 	
-	Float raiseSplineTime = .4;
+	Float raiseSplineTime = .3;
 	if (transitionFlag) {
 		VectorXF pFootEnd(3);
 		
@@ -408,8 +408,12 @@ void JumpingStateMachine::Kick()
 	
 	static Float r0, theta0;
 	
-	Float kickTime = 13;
+	static Vector3F pFootEnd;
+	
+	
+	Float kickTime = 1.1;
 	if (transitionFlag) {
+		pFootEnd = pFoot[0];
 		
 		cout << "pFoot init = " << pFoot[0].transpose() << endl;
 		
@@ -444,8 +448,8 @@ void JumpingStateMachine::Kick()
 	OptimizationSchedule.segment(0,3).setConstant(4);
 	AssignFootMaxLoad(0,0);
 	
-	kpFoot[0] = 50;
-	kdFoot[0] = 150;
+	kpFoot[0] = 50*5;
+	kdFoot[0] = 2*sqrt(kpFoot[0]);
 	VectorXF gDes(2),gdDes(2),gddDes(2);
 	
 	rthetaCurve.eval(stateTime, gDes, gdDes, gddDes);
@@ -466,6 +470,7 @@ void JumpingStateMachine::Kick()
 	
 	Vector3F pDes,vDes,aDes;
 	
+	
 	pDes = pCenter;
 	pDes(0) += r*st;
 	pDes(2) -= r*ct;
@@ -477,6 +482,26 @@ void JumpingStateMachine::Kick()
 	
 	vDes(2) -= rd*ct - r*st*td;
 	aDes(2) -= rdd*ct -2*rd*st*td-r*ct*pow(td,2) - r*st*tdd;
+	
+	
+	/*kpFoot[0] = 50;
+	kdFoot[0] = 150;
+	
+	VectorXF vDes3(3), aDes3(3);
+	
+	Float om = -.2 * (2*M_PI);
+	Float ampz = .4, ampy = .05;
+	Float som = sin(om*stateTime);
+	Float com = cos(om*stateTime);
+	
+	pDesFoot[0] << ampy*som , 0, -ampz*com+ampz;
+	pDesFoot[0]+=pFootEnd;
+	
+	vDes3 << ampy*com,0,ampz*som;
+	vDes3 *=om;
+	
+	aDes3 << -ampy*som,0,ampz*com;
+	aDes3 *= om*om;*/
 	
 	
 	

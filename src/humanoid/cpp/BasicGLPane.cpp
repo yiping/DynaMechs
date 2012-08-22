@@ -396,6 +396,28 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		}
 		
 		G_robot->draw();
+		
+		ball->draw();
+		
+		
+		Float qBase[7], qdBase[7];
+		ball->getLink(0)->getState(qBase,qdBase);
+		
+		Eigen::Matrix<GLfloat,3,1> zup;
+		glPushMatrix();
+		Float theta = acos(qBase[3])*2 * 180 / M_PI;
+		
+		glTranslatef(qBase[4], qBase[5], qBase[6]);
+		glRotatef(theta, qBase[0], qBase[1], qBase[2]);
+		
+		glColor4f(1.0, 0.0, 0.0, 1.0);
+		gluSphere(frame->glPane->quadratic, .07, 16, 16);
+		
+		glPopMatrix();
+		
+		
+		
+		
 		//cout << "Robot Drawn" << endl;
 		glPopAttrib();
 	}

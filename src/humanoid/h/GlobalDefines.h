@@ -37,6 +37,7 @@ extern volatile Float ComPos[3];
 extern volatile Float ComDes[3];
 
 extern dmArticulation *G_robot;
+extern dmArticulation *ball;
 extern HumanoidMainFrame *frame;
 extern SimulationThread * simThread;
 extern HumanoidDataLogger * humanoid;

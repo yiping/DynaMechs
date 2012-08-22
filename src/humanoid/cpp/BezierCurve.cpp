@@ -64,7 +64,12 @@ void BezierCurve::eval(Float t, VectorXF & x, VectorXF & xdot, VectorXF & xddot)
 {
 	eval(t,x);
 	deriv->eval(t,xdot);
+	xdot/=tMax;
 	deriv->evalRate(t, xddot);
+	xddot/=pow(tMax,2);
+	if (t>tMax) {
+		xddot.setZero();
+	}
 }
 
  long BezierCurve::nchoosek(const long n, const long k) {

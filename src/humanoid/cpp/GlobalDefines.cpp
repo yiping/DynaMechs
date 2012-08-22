@@ -20,6 +20,7 @@
 #include "HumanoidDataLogger.h"
 
 dmArticulation *G_robot;
+dmArticulation *ball;
 volatile Float ComPos[3];
 volatile Float ComDes[3];
 

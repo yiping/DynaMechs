@@ -183,7 +183,7 @@ bool MyApp::OnInit()
 		
 		cout << "Robot Created" << endl;
 		
-		
+		ball = dynamic_cast<dmArticulation*>(dmuLoadFile_dm("ball.dm"));
 		
 		// --------
 		// Read in data directory
@@ -206,6 +206,8 @@ bool MyApp::OnInit()
 		
 		
 		simThread->G_integrator->addSystem(G_robot);
+		simThread->G_integrator->addSystem(ball);
+		
 		
 		/*cout << "Initial state" << endl;
 		Float qInit[31], qdInit[31];

@@ -16,9 +16,10 @@ Articulation {
 							0.000000	0.000000	0.123410
 		Center_of_Gravity	0.000000	0.000000	0.232848
 		Number_of_Contact_Points	0
-		#Position	2.000000	2.000000	0.620000
-		Position	0.500000	.5000000	0.512
-		Orientation_Quat	0.000000	0.000000	0.3827	0.9239
+		Position	2.000000	2.000000	0.620000
+		#Position	0.500000	.5000000	0.512
+		#Orientation_Quat	0.000000	0.000000	0.3827	0.9239
+		Orientation_Quat	0.000000	0.000000	0	1
 		Velocity 0 0 0 0 0 0
 	}
 	# End "Torso"

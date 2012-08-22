@@ -414,7 +414,7 @@ void BasicGLPane::userGraphics()
 		const Float forceScale = 250;
 		glColor4f(0.0, 0.0, 0.0,0.75);
 		
-		humanoid->grfInfo.localContacts = 2;
+		/*humanoid->grfInfo.localContacts = 2;
 		
 		humanoid->grfInfo.pCoPs.resize(2);
 		humanoid->grfInfo.pCoPs[0] << .54 + .07*cos(M_PI/4),.54-.07*cos(M_PI/4) ,0;
@@ -422,7 +422,7 @@ void BasicGLPane::userGraphics()
 		
 		humanoid->grfInfo.fCoPs.resize(2);
 		humanoid->grfInfo.fCoPs[0] << 10,10,19.2*9.81/2;
-		humanoid->grfInfo.fCoPs[1] << 10,10,19.2*9.81/2;
+		humanoid->grfInfo.fCoPs[1] << 10,10,19.2*9.81/2;*/
 		
 		
 		

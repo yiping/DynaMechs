@@ -41,7 +41,8 @@ JumpingStateMachine::JumpingStateMachine(dmArticulation * robot)
 	stateNames[KICK] = "Kick";
 	stateFunctions[KICK] = &JumpingStateMachine::Kick;
 	
-	
+	stateNames[RAISE_FOOT] = "Raise Foot";
+	stateFunctions[RAISE_FOOT] = &JumpingStateMachine::RaiseFoot;
 	
 
 	ComTrajectory.setSize(3);
@@ -352,17 +353,14 @@ void JumpingStateMachine::Land()
 	
 }
 
-void JumpingStateMachine::Kick()
+void JumpingStateMachine::RaiseFoot()
 {
 	static CubicSplineTrajectory footSpline(3);
 	static VectorXF vDes3(3), aDes3(3), pAct(3), vAct(6);
 	static bool raisedFlag = true;
-	
 	static Vector3F pCenter,pRel;
 	
-	static Float r, theta;
-	
-	Float raiseSplineTime = 1;
+	Float raiseSplineTime = .4;
 	if (transitionFlag) {
 		VectorXF pFootEnd(3);
 		
@@ -372,29 +370,11 @@ void JumpingStateMachine::Kick()
 		pFootEnd << pFoot[0](0),pFoot[0](1),pFoot[0](2)+.05; 
 		footSpline.init(pFoot[0], vFoot[0].tail(3), pFootEnd, vFootEnd,raiseSplineTime);
 		
-		pCenter(0) = artic->m_link_list[2]->link_val2.p_ICS[0];
-		pCenter(1) = artic->m_link_list[2]->link_val2.p_ICS[1];
-		pCenter(2) = artic->m_link_list[2]->link_val2.p_ICS[2];
-		
-		pRel = pFoot[0] - pCenter;
-		
-		cout << "Rel Pos " << pRel.transpose() << endl;
-		
-		pRel(2) +=.05;
-		
-		r = sqrt(pRel(0)*pRel(0) + pRel(2)*pRel(2));
-		theta = atan2(pRel(0), -pRel(2));
-		
-		cout << "r =  " << r << " theta = " << theta << endl;
-		
-		
 		transitionFlag = false;
 	}
-	
-	if (stateTime > raiseSplineTime && !raisedFlag) {
-		
-		raisedFlag = true;
-		
+	if (stateTime > raiseSplineTime) {
+		state = KICK;
+		transitionFlag = true;
 	}
 	
 	
@@ -416,6 +396,95 @@ void JumpingStateMachine::Kick()
 	
 }
 
+void JumpingStateMachine::Kick()
+{
+	static BezierCurve rthetaCurve;
+	
+	static MatrixXF A(2,9);
+	
+	static bool raisedFlag = true;
+	
+	static Vector3F pCenter,pRel;
+	
+	static Float r0, theta0;
+	
+	Float kickTime = 13;
+	if (transitionFlag) {
+		
+		cout << "pFoot init = " << pFoot[0].transpose() << endl;
+		
+		A.row(1) <<	0.000000,0.000000,1.295157,-6.481478,1.844407,4.495988,-1.512786,0.300000,0.300000;
+		
+		pCenter(0) = artic->m_link_list[2]->link_val2.p_ICS[0];
+		pCenter(1) = artic->m_link_list[2]->link_val2.p_ICS[1];
+		pCenter(2) = artic->m_link_list[2]->link_val2.p_ICS[2];
+		
+		pRel = pFoot[0] - pCenter;
+		
+		cout << "Rel Pos " << pRel.transpose() << endl;
+		
+		r0 = sqrt(pRel(0)*pRel(0) + pRel(2)*pRel(2));
+		theta0 = atan2(pRel(0), -pRel(2));
+		
+		A.row(0) << r0,r0,r0,r0,r0,r0,r0,r0,r0;
+		
+		cout << "r =  " << r0 << " theta = " << theta0 << endl;
+		
+		WayPointVector Ps;
+		Ps.resize(9);
+		for (int i=0; i<9; i++) {
+			Ps[i].resize(2);
+			Ps[i] = A.col(i);
+		}
+		rthetaCurve.init(Ps, kickTime);
+		transitionFlag = false;
+	}
+		
+	
+	OptimizationSchedule.segment(0,3).setConstant(4);
+	AssignFootMaxLoad(0,0);
+	
+	kpFoot[0] = 50;
+	kdFoot[0] = 150;
+	VectorXF gDes(2),gdDes(2),gddDes(2);
+	
+	rthetaCurve.eval(stateTime, gDes, gdDes, gddDes);
+	
+	Float r = gDes(0);
+	Float rd = gdDes(0);
+	Float rdd = gddDes(0);
+	
+	Float t = theta0+gDes(1);
+	Float td = gdDes(1);
+	Float tdd = gddDes(1);
+	
+	Float ct = cos(t);
+	Float st = sin(t);
+	
+	vDesFoot[0].setZero();
+	aDesFoot[0].setZero();
+	
+	Vector3F pDes,vDes,aDes;
+	
+	pDes = pCenter;
+	pDes(0) += r*st;
+	pDes(2) -= r*ct;
+	
+	vDes.setZero(); aDes.setZero();
+	
+	vDes(0) += rd*st + r*ct*td;
+	aDes(0) += rdd*st + 2 *rd*ct*td - r*st*pow(td,2) + r*ct*tdd;
+	
+	vDes(2) -= rd*ct - r*st*td;
+	aDes(2) -= rdd*ct -2*rd*st*td-r*ct*pow(td,2) - r*st*tdd;
+	
+	
+	
+	pDesFoot[0] = pDes;
+	vDesFoot[0].tail(3) = vDes;
+	aDesFoot[0].tail(3) = aDes;
+	cout << "t = " << stateTime << " (r,t) = " << r << ", " << t << " pDes = " << pDes.transpose() << endl;
+}
 void JumpingStateMachine::BalanceLeft()
 {
 	static Float MaxFootLoad;
@@ -433,7 +502,7 @@ void JumpingStateMachine::BalanceLeft()
 		MaxFootLoad = grfInfo.fCoPs[0](2);
 	}
 	if (stateTime > 1.2) {
-		state = KICK;
+		state = RAISE_FOOT;
 		transitionFlag =true;
 		return;
 	}

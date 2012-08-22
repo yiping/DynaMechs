@@ -27,6 +27,7 @@ class JumpingStateMachine : public HumanoidDataLogger
 		FLIGHT,
 		LAND,
 		BALANCE_LEFT,
+		RAISE_FOOT,
 		KICK,
 		NUM_JUMP_STATES
 	};
@@ -44,6 +45,7 @@ class JumpingStateMachine : public HumanoidDataLogger
 	void BalanceLeft();
 	void Land();
 	
+	void RaiseFoot();
 	void Kick();
 	
 	

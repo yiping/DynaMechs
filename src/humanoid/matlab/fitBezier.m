@@ -1,5 +1,5 @@
-tDes = [0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1]
-pDes = [0,-.1,-.3,-.4,-.5,-.1,.3,.25,.22,.2,.2];
+tDes = [0,.1,.2,.3,.45,.5,.55,.7,.8,.9,1]
+pDes = [0,-.1,-.3,-.4,-.5,0,.6,.35,.25,.22,.2]*1.5;
 
 length(tDes)
 length(pDes)
@@ -8,7 +8,7 @@ clf
 hold on
 plot(tDes,pDes)
 
-order = 5;
+order = 8;
 n=order;
 A = zeros(length(tDes),order+1);
 
@@ -35,7 +35,7 @@ Ps = a(1:(order+1));
 
 %Ps = pinv(A)*pDes';
 
-T = 0:.01:1;
+T = 0:.01:1.1;
 
 Pos = 0*T;
 
@@ -46,4 +46,9 @@ for tsub = 1:length(T)
     end
 end
 plot(T,Pos,'r')
+
+for i=1:length(Ps)
+   fprintf(1,'%f,',Ps(i)); 
+end
+fprintf(1,'\n');
 

@@ -318,13 +318,20 @@ void JumpingStateMachine::Land()
 		
 		cout << pCom << endl;
 		
-		pComDes = pCom;
-		pComDes(0) +=.05;
-		pComDes(2) = (pFoot[0](2) + pFoot[1](2))/2 + .49; 
+		//pComDes = pCom;
+		//pComDes(0) +=.05;
+		//pComDes(2) = (pFoot[0](2) + pFoot[1](2))/2 + .49; 
 		vComDes.setZero();
 		aComDes.setZero();
 		transitionFlag = false;
 	}
+	
+	pComDes = pCom;
+	pComDes(0) =(pFoot[0](0) + pFoot[1](0))/2;
+	pComDes(1) =(pFoot[0](1) + pFoot[1](1))/2;
+	pComDes(2) = (pFoot[0](2) + pFoot[1](2))/2 + .49; 
+	
+	
 	//kpCM = 15;
 	//kdCM = 25;
 	

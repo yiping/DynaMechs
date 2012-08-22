@@ -679,13 +679,13 @@ void HumanoidController::ComputeGrfInfo(GRFInfo & grf) {
 	Float * fLoc =nLoc + 3;
 	CartesianVector tmp;
 	
+		
 	grf.localContacts = NS;
 	grf.pCoPs.resize(NS);
 	grf.fCoPs.resize(NS);
 	grf.nCoPs.resize(NS);
 	grf.footWrenches.resize(NS);
 	grf.footJacs.resize(NS);
-
 	
 	for (int k1 = 0; k1 < NS; k1++) {
 		dmRigidBody * body = (dmRigidBody *) artic->getLink(SupportIndices[k1]);
@@ -717,9 +717,36 @@ void HumanoidController::ComputeGrfInfo(GRFInfo & grf) {
 			
 			fZMP+=icsForce;
 			
-			transformToZMP(icsForce,grf.pCoPs[k1]);
-			grf.fCoPs[k1] = icsForce.tail(3);
-			grf.nCoPs[k1] = icsForce(2);
+			{
+				Matrix3F RtoICS;
+				copyRtoMat(listruct->link_val2.R_ICS, RtoICS);
+				
+				grfInfo.fCoPs[k1] = RtoICS * grf.footWrenches[k1].tail(3);
+				
+				
+				Vector6F supportFrameWrench = SupportXforms[k1].inverse().transpose()*grf.footWrenches[k1];
+				Vector3F supportFrameCoP;
+				
+				
+				transformToZMP(supportFrameWrench,supportFrameCoP);
+				
+				grfInfo.nCoPs[k1] = supportFrameWrench(2);
+				
+				Vector3F pRel;
+				((dmContactModel *) body->getForce(k2))->getContactPoint(0,pRel.data());
+				pRel(1) = 0; pRel(2) = 0;
+				
+				Vector3F footFrameCoP = pRel + SupportXforms[k1].block(0,0,3,3).transpose()*supportFrameCoP;
+				
+				grfInfo.pCoPs[k1] = RtoICS*footFrameCoP;
+				
+				grfInfo.pCoPs[k1](0) += listruct->link_val2.p_ICS[0];
+				grfInfo.pCoPs[k1](1) += listruct->link_val2.p_ICS[1];
+				grfInfo.pCoPs[k1](2) += listruct->link_val2.p_ICS[2];
+			
+			}
+			
+			
 		}
 	}
 	transformToZMP(fZMP,grf.pZMP);

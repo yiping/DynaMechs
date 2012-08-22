@@ -284,7 +284,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
 		
-		Float qBase[7], qdBase[7];
+		/*Float qBase[7], qdBase[7];
 		G_robot->getLink(0)->getState(qBase,qdBase);
 		
 		Eigen::Matrix<GLfloat,3,1> p0,p1,p2,pStart,pEnd,zup;
@@ -364,7 +364,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glVertex3f(0.0, 0.0, AxisLength);
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
-		glPopMatrix();
+		glPopMatrix();*/
 		
 		
 		

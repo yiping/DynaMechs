@@ -856,8 +856,8 @@
 		1959E12015C9F2860043E424 /* penguin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = penguin.h; path = "src/wxWidgets-2.9.4/samples/opengl/penguin/penguin.h"; sourceTree = "<group>"; };
 		1959E12115C9F2860043E424 /* trackball.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = trackball.c; path = "src/wxWidgets-2.9.4/samples/opengl/penguin/trackball.c"; sourceTree = "<group>"; };
 		1959E12215C9F2860043E424 /* trackball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = trackball.h; path = "src/wxWidgets-2.9.4/samples/opengl/penguin/trackball.h"; sourceTree = "<group>"; };
-		1974711415E521FE00E7AA0A /* BezierCurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BezierCurve.h; sourceTree = "<group>"; };
-		1974711515E521FE00E7AA0A /* BezierCurve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BezierCurve.cpp; sourceTree = "<group>"; };
+		1974711415E521FE00E7AA0A /* BezierCurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BezierCurve.h; path = src/humanoid/h/BezierCurve.h; sourceTree = "<group>"; };
+		1974711515E521FE00E7AA0A /* BezierCurve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BezierCurve.cpp; path = src/humanoid/cpp/BezierCurve.cpp; sourceTree = "<group>"; };
 		197608A315D41D7400E29C68 /* CustomTaskSpaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTaskSpaceController.h; sourceTree = "<group>"; };
 		197608A415D41D7400E29C68 /* CustomTaskSpaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomTaskSpaceController.cpp; sourceTree = "<group>"; };
 		197B842715070B450064753B /* functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = functions.cpp; path = src/kurmet/functions.cpp; sourceTree = "<group>"; };

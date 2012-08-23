@@ -420,7 +420,7 @@ void JumpingStateMachine::Kick()
 	
 	Float kickTime = 1.1;
 	Float swingBackTime =.5;
-	Float swingForwardTime = .13;
+	Float swingForwardTime = .25;
 	Float slowTime = .5;
 	Float returnTime = .6;
 	static Float splineTime = 0;
@@ -497,7 +497,7 @@ void JumpingStateMachine::Kick()
 	
 		
 	
-	OptimizationSchedule.segment(0,3).setConstant(4);
+	
 	AssignFootMaxLoad(0,0);
 	
 	
@@ -609,10 +609,16 @@ void JumpingStateMachine::Kick()
 	kDotDes.setZero();
 	
 	if (subState <= 2) {
-		TaskWeight.segment(0,3).setConstant(10);
-		//kComDes(1) = -IBarC0_init(1,1) * td*.8;
-		//kDotDes(1) = -IBarC0_init(1,1) * tdd*.8;		
+		OptimizationSchedule.segment(0,3).setConstant(4);
+		TaskWeight.segment(0,3).setConstant(200);
+		//TaskWeight.segment(0,3).setConstant(50);
+		kComDes(1) = -IBarC0_init(1,1) * td*.8;
+		kDotDes(1) = -IBarC0_init(1,1) * tdd*.8;		
 	}
+	else {
+		OptimizationSchedule.segment(0,3).setConstant(4);
+	}
+
 	
 	Vector3F angAx;
 	angAx << 0,-t,0;
@@ -766,7 +772,7 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 				wHip  = 1;
 				
 				kpShould = 220;
-				wShould  = 30.0;
+				wShould  = 10.0;
 				
 				kpElbow = 240;
 				wElbow  = 10;
@@ -857,7 +863,7 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 					Float Kp = kpJoint[i];
 					Float Kd = kdJoint[i];
 					if (i == 0) {
-						TaskWeight.segment(taskRow,3).setConstant(20);
+						TaskWeight.segment(taskRow,3).setConstant(100);
 						//taskOptimActive.segment(taskRow+3,3).setZero();
 					}
 					else if (bodyi->dof == 1) {

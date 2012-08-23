@@ -324,6 +324,18 @@
 			1958B1E015E6C262008EDD11 /* PBXTextBookmark */ = 1958B1E015E6C262008EDD11 /* PBXTextBookmark */;
 			1958B1E815E6C2C7008EDD11 /* PBXTextBookmark */ = 1958B1E815E6C2C7008EDD11 /* PBXTextBookmark */;
 			1958B1F615E6C3F5008EDD11 /* PBXTextBookmark */ = 1958B1F615E6C3F5008EDD11 /* PBXTextBookmark */;
+			1958B20015E6C4DF008EDD11 /* PBXTextBookmark */ = 1958B20015E6C4DF008EDD11 /* PBXTextBookmark */;
+			1958B20415E6C503008EDD11 /* PBXTextBookmark */ = 1958B20415E6C503008EDD11 /* PBXTextBookmark */;
+			1958B20815E6C534008EDD11 /* PBXTextBookmark */ = 1958B20815E6C534008EDD11 /* PBXTextBookmark */;
+			1958B20C15E6C570008EDD11 /* PBXTextBookmark */ = 1958B20C15E6C570008EDD11 /* PBXTextBookmark */;
+			1958B22C15E6C99A008EDD11 /* PBXTextBookmark */ = 1958B22C15E6C99A008EDD11 /* PBXTextBookmark */;
+			1958B22D15E6C99A008EDD11 /* PBXTextBookmark */ = 1958B22D15E6C99A008EDD11 /* PBXTextBookmark */;
+			1958B22E15E6C99A008EDD11 /* PBXTextBookmark */ = 1958B22E15E6C99A008EDD11 /* PBXTextBookmark */;
+			1958B22F15E6C99A008EDD11 /* PBXTextBookmark */ = 1958B22F15E6C99A008EDD11 /* PBXTextBookmark */;
+			1958B23015E6C99A008EDD11 /* PBXTextBookmark */ = 1958B23015E6C99A008EDD11 /* PBXTextBookmark */;
+			1958B24815E6CD8E008EDD11 /* PBXTextBookmark */ = 1958B24815E6CD8E008EDD11 /* PBXTextBookmark */;
+			1958B24C15E6CDB8008EDD11 /* PBXTextBookmark */ = 1958B24C15E6CDB8008EDD11 /* PBXTextBookmark */;
+			1958B25015E6CDF1008EDD11 /* PBXTextBookmark */ = 1958B25015E6CDF1008EDD11 /* PBXTextBookmark */;
 			19F8C47D15E582E100B64683 = 19F8C47D15E582E100B64683 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
@@ -1725,7 +1737,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 513";
 		rLen = 0;
-		rLoc = 11742;
+		rLoc = 11693;
 		rType = 0;
 		vrLen = 1331;
 		vrLoc = 9928;
@@ -1775,7 +1787,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 513";
 		rLen = 0;
-		rLoc = 11742;
+		rLoc = 11693;
 		rType = 0;
 		vrLen = 1304;
 		vrLoc = 9928;
@@ -1865,7 +1877,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 509";
 		rLen = 0;
-		rLoc = 11631;
+		rLoc = 11582;
 		rType = 0;
 		vrLen = 1252;
 		vrLoc = 10015;
@@ -1875,7 +1887,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 526";
 		rLen = 0;
-		rLoc = 12088;
+		rLoc = 12039;
 		rType = 0;
 		vrLen = 1266;
 		vrLoc = 10119;
@@ -1885,7 +1897,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 536";
 		rLen = 0;
-		rLoc = 12600;
+		rLoc = 12551;
 		rType = 0;
 		vrLen = 1286;
 		vrLoc = 10140;
@@ -1935,7 +1947,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 537";
 		rLen = 0;
-		rLoc = 12600;
+		rLoc = 12551;
 		rType = 0;
 		vrLen = 1346;
 		vrLoc = 10397;
@@ -1945,7 +1957,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 535";
 		rLen = 0;
-		rLoc = 12254;
+		rLoc = 12205;
 		rType = 0;
 		vrLen = 1356;
 		vrLoc = 10423;
@@ -1965,7 +1977,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 534";
 		rLen = 0;
-		rLoc = 12219;
+		rLoc = 12170;
 		rType = 0;
 		vrLen = 1074;
 		vrLoc = 10218;
@@ -2005,7 +2017,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 534";
 		rLen = 0;
-		rLoc = 12219;
+		rLoc = 12170;
 		rType = 0;
 		vrLen = 1163;
 		vrLoc = 10357;
@@ -2015,7 +2027,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 534";
 		rLen = 0;
-		rLoc = 12219;
+		rLoc = 12170;
 		rType = 0;
 		vrLen = 1126;
 		vrLoc = 10394;
@@ -2025,7 +2037,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 528";
 		rLen = 0;
-		rLoc = 12154;
+		rLoc = 12105;
 		rType = 0;
 		vrLen = 1148;
 		vrLoc = 10396;
@@ -2066,7 +2078,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 542";
 		rLen = 0;
-		rLoc = 12488;
+		rLoc = 12439;
 		rType = 0;
 		vrLen = 1765;
 		vrLoc = 10272;
@@ -2076,7 +2088,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 539";
 		rLen = 0;
-		rLoc = 12301;
+		rLoc = 12252;
 		rType = 0;
 		vrLen = 1682;
 		vrLoc = 10357;
@@ -2086,7 +2098,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 550";
 		rLen = 0;
-		rLoc = 12697;
+		rLoc = 12648;
 		rType = 0;
 		vrLen = 1781;
 		vrLoc = 10376;
@@ -2096,7 +2108,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 550";
 		rLen = 0;
-		rLoc = 12697;
+		rLoc = 12648;
 		rType = 0;
 		vrLen = 1781;
 		vrLoc = 10376;
@@ -2133,7 +2145,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 530";
 		rLen = 0;
-		rLoc = 12153;
+		rLoc = 12104;
 		rType = 0;
 		vrLen = 1799;
 		vrLoc = 10394;
@@ -2143,7 +2155,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 453";
 		rLen = 0;
-		rLoc = 10495;
+		rLoc = 10446;
 		rType = 0;
 		vrLen = 1412;
 		vrLoc = 8862;
@@ -2153,7 +2165,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 453";
 		rLen = 0;
-		rLoc = 10495;
+		rLoc = 10446;
 		rType = 0;
 		vrLen = 1414;
 		vrLoc = 8947;
@@ -2243,7 +2255,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 453";
 		rLen = 0;
-		rLoc = 10495;
+		rLoc = 10446;
 		rType = 0;
 		vrLen = 1497;
 		vrLoc = 8142;
@@ -2253,7 +2265,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 556";
 		rLen = 0;
-		rLoc = 12818;
+		rLoc = 12769;
 		rType = 0;
 		vrLen = 1804;
 		vrLoc = 10488;
@@ -2263,7 +2275,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 561";
 		rLen = 0;
-		rLoc = 13138;
+		rLoc = 13247;
 		rType = 0;
 		vrLen = 1731;
 		vrLoc = 10398;
@@ -2273,7 +2285,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 565";
 		rLen = 0;
-		rLoc = 13213;
+		rLoc = 13322;
 		rType = 0;
 		vrLen = 1761;
 		vrLoc = 10424;
@@ -2283,7 +2295,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 563";
 		rLen = 0;
-		rLoc = 13138;
+		rLoc = 13247;
 		rType = 0;
 		vrLen = 1795;
 		vrLoc = 10702;
@@ -2293,7 +2305,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 567";
 		rLen = 0;
-		rLoc = 13213;
+		rLoc = 13322;
 		rType = 0;
 		vrLen = 1794;
 		vrLoc = 10733;
@@ -2323,7 +2335,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 567";
 		rLen = 0;
-		rLoc = 13213;
+		rLoc = 13322;
 		rType = 0;
 		vrLen = 1785;
 		vrLoc = 10889;
@@ -2399,7 +2411,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 567";
 		rLen = 0;
-		rLoc = 13213;
+		rLoc = 13322;
 		rType = 0;
 		vrLen = 1785;
 		vrLoc = 10889;
@@ -2588,7 +2600,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 846";
 		rLen = 0;
-		rLoc = 19485;
+		rLoc = 19594;
 		rType = 0;
 		vrLen = 2105;
 		vrLoc = 18014;
@@ -2628,7 +2640,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 608";
 		rLen = 0;
-		rLoc = 12973;
+		rLoc = 13020;
 		rType = 0;
 		vrLen = 1557;
 		vrLoc = 11425;
@@ -2638,7 +2650,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 610";
 		rLen = 0;
-		rLoc = 13022;
+		rLoc = 13067;
 		rType = 0;
 		vrLen = 1480;
 		vrLoc = 11510;
@@ -2648,7 +2660,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 613";
 		rLen = 0;
-		rLoc = 13017;
+		rLoc = 13062;
 		rType = 0;
 		vrLen = 1607;
 		vrLoc = 11583;
@@ -2658,7 +2670,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12972;
+		rLoc = 13019;
 		rType = 0;
 		vrLen = 1707;
 		vrLoc = 11609;
@@ -2668,7 +2680,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12925;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1744;
 		vrLoc = 12155;
@@ -2678,7 +2690,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12925;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1787;
 		vrLoc = 12214;
@@ -2688,7 +2700,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12925;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1781;
 		vrLoc = 12254;
@@ -2698,7 +2710,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12927;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1647;
 		vrLoc = 12426;
@@ -2718,7 +2730,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12925;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1781;
 		vrLoc = 12033;
@@ -2728,7 +2740,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 614";
 		rLen = 0;
-		rLoc = 13017;
+		rLoc = 13062;
 		rType = 0;
 		vrLen = 1724;
 		vrLoc = 12175;
@@ -2737,8 +2749,8 @@
 		isa = PBXTextBookmark;
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
-		rLen = 2;
-		rLoc = 12925;
+		rLen = 0;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1771;
 		vrLoc = 12183;
@@ -2748,7 +2760,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 614";
 		rLen = 0;
-		rLoc = 13017;
+		rLoc = 13062;
 		rType = 0;
 		vrLen = 1810;
 		vrLoc = 12214;
@@ -2758,7 +2770,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12925;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1789;
 		vrLoc = 12254;
@@ -2768,7 +2780,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12925;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1754;
 		vrLoc = 12323;
@@ -2778,7 +2790,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12925;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1655;
 		vrLoc = 12426;
@@ -2788,7 +2800,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 614";
 		rLen = 0;
-		rLoc = 13017;
+		rLoc = 13062;
 		rType = 0;
 		vrLen = 1651;
 		vrLoc = 12491;
@@ -2798,7 +2810,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 614";
 		rLen = 0;
-		rLoc = 13017;
+		rLoc = 13062;
 		rType = 0;
 		vrLen = 1598;
 		vrLoc = 12605;
@@ -2808,7 +2820,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 614";
 		rLen = 0;
-		rLoc = 13017;
+		rLoc = 13062;
 		rType = 0;
 		vrLen = 1497;
 		vrLoc = 12772;
@@ -2818,7 +2830,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 614";
 		rLen = 0;
-		rLoc = 13017;
+		rLoc = 13062;
 		rType = 0;
 		vrLen = 1533;
 		vrLoc = 12786;
@@ -2828,7 +2840,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 614";
 		rLen = 0;
-		rLoc = 12978;
+		rLoc = 13023;
 		rType = 0;
 		vrLen = 1649;
 		vrLoc = 12820;
@@ -2848,7 +2860,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 774";
 		rLen = 0;
-		rLoc = 17223;
+		rLoc = 17332;
 		rType = 0;
 		vrLen = 1670;
 		vrLoc = 16643;
@@ -2858,7 +2870,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 774";
 		rLen = 0;
-		rLoc = 17225;
+		rLoc = 17334;
 		rType = 0;
 		vrLen = 1829;
 		vrLoc = 16675;
@@ -2868,7 +2880,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 860";
 		rLen = 0;
-		rLoc = 19485;
+		rLoc = 19594;
 		rType = 0;
 		vrLen = 1891;
 		vrLoc = 18750;
@@ -2878,7 +2890,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 860";
 		rLen = 0;
-		rLoc = 19487;
+		rLoc = 19597;
 		rType = 0;
 		vrLen = 1613;
 		vrLoc = 21623;
@@ -2888,7 +2900,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 860";
 		rLen = 0;
-		rLoc = 19485;
+		rLoc = 19594;
 		rType = 0;
 		vrLen = 1959;
 		vrLoc = 18945;
@@ -2898,7 +2910,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 860";
 		rLen = 0;
-		rLoc = 19487;
+		rLoc = 19597;
 		rType = 0;
 		vrLen = 1958;
 		vrLoc = 18945;
@@ -2908,7 +2920,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 769";
 		rLen = 0;
-		rLoc = 17155;
+		rLoc = 17264;
 		rType = 0;
 		vrLen = 1769;
 		vrLoc = 16675;
@@ -2918,7 +2930,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 614";
 		rLen = 0;
-		rLoc = 12978;
+		rLoc = 13023;
 		rType = 0;
 		vrLen = 1766;
 		vrLoc = 11922;
@@ -2928,7 +2940,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12926;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1851;
 		vrLoc = 11926;
@@ -2938,7 +2950,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 12925;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1811;
 		vrLoc = 12007;
@@ -2948,7 +2960,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 614";
 		rLen = 0;
-		rLoc = 13017;
+		rLoc = 13062;
 		rType = 0;
 		vrLen = 1809;
 		vrLoc = 12034;
@@ -2958,7 +2970,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 613";
 		rLen = 0;
-		rLoc = 12929;
+		rLoc = 13017;
 		rType = 0;
 		vrLen = 1753;
 		vrLoc = 11875;
@@ -2972,6 +2984,126 @@
 		rType = 0;
 		vrLen = 2000;
 		vrLoc = 18178;
+	};
+	1958B20015E6C4DF008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 612";
+		rLen = 0;
+		rLoc = 12930;
+		rType = 0;
+		vrLen = 1760;
+		vrLoc = 12106;
+	};
+	1958B20415E6C503008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 612";
+		rLen = 0;
+		rLoc = 12930;
+		rType = 0;
+		vrLen = 1745;
+		vrLoc = 12156;
+	};
+	1958B20815E6C534008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 608";
+		rLen = 0;
+		rLoc = 12793;
+		rType = 0;
+		vrLen = 1618;
+		vrLoc = 11203;
+	};
+	1958B20C15E6C570008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 423";
+		rLen = 0;
+		rLoc = 8579;
+		rType = 0;
+		vrLen = 1740;
+		vrLoc = 8357;
+	};
+	1958B22C15E6C99A008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DBC159B627A00DB8AD5 /* SimulationThread.h */;
+		name = "SimulationThread.h: 25";
+		rLen = 0;
+		rLoc = 474;
+		rType = 0;
+		vrLen = 774;
+		vrLoc = 0;
+	};
+	1958B22D15E6C99A008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DC4159B62C100DB8AD5 /* TaskSpaceControllerB.h */;
+		name = "TaskSpaceControllerB.h: 1";
+		rLen = 1101;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1101;
+		vrLoc = 0;
+	};
+	1958B22E15E6C99A008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DC2159B62C100DB8AD5 /* TaskSpaceControllerB.cpp */;
+		name = "TaskSpaceControllerB.cpp: 214";
+		rLen = 0;
+		rLoc = 5517;
+		rType = 0;
+		vrLen = 1570;
+		vrLoc = 4958;
+	};
+	1958B22F15E6C99A008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 396";
+		rLen = 0;
+		rLoc = 8134;
+		rType = 0;
+		vrLen = 1470;
+		vrLoc = 7464;
+	};
+	1958B23015E6C99A008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 423";
+		rLen = 0;
+		rLoc = 8579;
+		rType = 0;
+		vrLen = 1728;
+		vrLoc = 8355;
+	};
+	1958B24815E6CD8E008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 618";
+		rLen = 0;
+		rLoc = 13126;
+		rType = 0;
+		vrLen = 1548;
+		vrLoc = 12724;
+	};
+	1958B24C15E6CDB8008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 614";
+		rLen = 0;
+		rLoc = 12975;
+		rType = 0;
+		vrLen = 1802;
+		vrLoc = 12131;
+	};
+	1958B25015E6CDF1008EDD11 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 612";
+		rLen = 0;
+		rLoc = 12887;
+		rType = 0;
+		vrLen = 1813;
+		vrLoc = 12166;
 	};
 	1959E11F15C9F2860043E424 /* penguin.cpp */ = {
 		uiCtxt = {
@@ -3145,7 +3277,7 @@
 	};
 	19801DBC159B627A00DB8AD5 /* SimulationThread.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {863, 716}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1060, 767}}";
 			sepNavSelRange = "{474, 0}";
 			sepNavVisRange = "{0, 774}";
 		};
@@ -3173,9 +3305,9 @@
 	};
 	19801DC2159B62C100DB8AD5 /* TaskSpaceControllerB.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1044, 5819}}";
-			sepNavSelRange = "{12854, 473}";
-			sepNavVisRange = "{11920, 1819}";
+			sepNavIntBoundsRect = "{{0, 0}, {1060, 6193}}";
+			sepNavSelRange = "{5517, 0}";
+			sepNavVisRange = "{4958, 1570}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
@@ -3188,7 +3320,7 @@
 	};
 	19801DC4159B62C100DB8AD5 /* TaskSpaceControllerB.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {951, 818}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1060, 767}}";
 			sepNavSelRange = "{0, 1101}";
 			sepNavVisRange = "{0, 1101}";
 		};
@@ -3464,9 +3596,9 @@
 	};
 	19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1060, 10703}}";
-			sepNavSelRange = "{8579, 0}";
-			sepNavVisRange = "{18178, 2000}";
+			sepNavIntBoundsRect = "{{0, 0}, {1060, 11264}}";
+			sepNavSelRange = "{12887, 0}";
+			sepNavVisRange = "{12166, 1813}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};

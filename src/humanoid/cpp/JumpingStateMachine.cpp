@@ -12,6 +12,8 @@
 #include "CustomTaskSpaceController.h"
 #include "BezierCurve.h"
 
+#include "dmRigidBody.hpp"
+
 JumpingStateMachine::JumpingStateMachine(dmArticulation * robot) 
 	: HumanoidDataLogger(robot, NUM_JUMP_STATES), ComTrajectory(3)
 {
@@ -367,7 +369,7 @@ void JumpingStateMachine::RaiseFoot()
 		VectorXF vFootEnd(3);
 		vFootEnd.setZero();
 		
-		pFootEnd << pFoot[0](0),pFoot[0](1),pFoot[0](2)+.05; 
+		pFootEnd << pFoot[0](0),pFoot[0](1),pFoot[0](2)+.02; 
 		footSpline.init(pFoot[0], vFoot[0].tail(3), pFootEnd, vFootEnd,raiseSplineTime);
 		
 		transitionFlag = false;
@@ -398,9 +400,10 @@ void JumpingStateMachine::RaiseFoot()
 
 void JumpingStateMachine::Kick()
 {
-	static BezierCurve rthetaCurve;
+	//static BezierCurve rthetaCurve;
+	//static MatrixXF A(2,9);
 	
-	static MatrixXF A(2,9);
+	static CubicSplineTrajectory rthetaSpline(2);
 	
 	static bool raisedFlag = true;
 	
@@ -408,51 +411,100 @@ void JumpingStateMachine::Kick()
 	
 	static Float r0, theta0;
 	
+	static Matrix3F RFoot0;
 	static Vector3F pFootEnd;
 	
+	static int subState = 0;
+	
+	Matrix3F IBarC0_init = IBarC0;
 	
 	Float kickTime = 1.1;
+	Float swingBackTime =.5;
+	Float swingForwardTime = .13;
+	Float slowTime = .5;
+	Float returnTime = .6;
+	static Float splineTime = 0;
+	kpFoot[0] = 50*5;
+	kdFoot[0] = 2*sqrt(kpFoot[0]);
+	
 	if (transitionFlag) {
 		pFootEnd = pFoot[0];
-		
 		cout << "pFoot init = " << pFoot[0].transpose() << endl;
-		
-		A.row(1) <<	0.000000,0.000000,1.295157,-6.481478,1.844407,4.495988,-1.512786,0.300000,0.300000;
 		
 		pCenter(0) = artic->m_link_list[2]->link_val2.p_ICS[0];
 		pCenter(1) = artic->m_link_list[2]->link_val2.p_ICS[1];
 		pCenter(2) = artic->m_link_list[2]->link_val2.p_ICS[2];
 		
 		pRel = pFoot[0] - pCenter;
-		
 		cout << "Rel Pos " << pRel.transpose() << endl;
 		
 		r0 = sqrt(pRel(0)*pRel(0) + pRel(2)*pRel(2));
 		theta0 = atan2(pRel(0), -pRel(2));
-		
-		A.row(0) << r0,r0,r0,r0,r0,r0,r0,r0,r0;
-		
 		cout << "r =  " << r0 << " theta = " << theta0 << endl;
 		
-		WayPointVector Ps;
-		Ps.resize(9);
-		for (int i=0; i<9; i++) {
-			Ps[i].resize(2);
-			Ps[i] = A.col(i);
-		}
-		rthetaCurve.init(Ps, kickTime);
+		RFoot0 = RFoot[0];
+		
+		VectorXF g0(2),gd0(2),gf(2),gdf(2);
+		g0 << r0,theta0;
+		gd0 << 0,0;
+		gf  << r0,-.93;
+		gdf << 0,0;
+		
+		rthetaSpline.init(g0, gd0, gf, gdf, swingBackTime);
+		//WayPointVector Ps;
+		//Ps.resize(9);
+		//A.row(1) <<	0.000000,0.000000,1.295157,-6.481478,1.844407,4.495988,-1.512786,0.300000,0.300000;
+		//A.row(0) << r0,r0,r0,r0,r0,r0,r0,r0,r0;
+		//for (int i=0; i<9; i++) {
+		//	Ps[i].resize(2);
+		//	Ps[i] = A.col(i);
+		//}
+		//rthetaCurve.init(Ps, kickTime);
 		transitionFlag = false;
 	}
+	if (subState == 0 && splineTime >swingBackTime) {
+		VectorXF g0(2),gd0(2),gf(2),gdf(2);
+		
+		gf  << r0,0;
+		gdf << 0,7;
+		
+		rthetaSpline.reInit(swingBackTime,gf, gdf, swingForwardTime);
+		subState = 1;
+		splineTime = 0;
+	}
+	if (subState == 1 && splineTime >swingForwardTime) {
+		
+		VectorXF g0(2),gd0(2),gf(2),gdf(2);
+		
+		gf  << r0+.055,.95;
+		gdf << 0,0;
+		
+		rthetaSpline.reInit(swingForwardTime,gf, gdf, slowTime);
+		subState = 2;
+		splineTime=0;
+	}
+	if (subState == 2 && splineTime >slowTime*.8) {
+		VectorXF g0(2),gd0(2),gf(2),gdf(2);
+		
+		gf  << r0,0;
+		gdf << 0,0;
+		
+		rthetaSpline.reInit(slowTime*.8,gf, gdf, returnTime);
+		subState = 3;
+		splineTime=0;
+	}
+	
+	
 		
 	
 	OptimizationSchedule.segment(0,3).setConstant(4);
 	AssignFootMaxLoad(0,0);
 	
-	kpFoot[0] = 50*5;
-	kdFoot[0] = 2*sqrt(kpFoot[0]);
+	
 	VectorXF gDes(2),gdDes(2),gddDes(2);
 	
-	rthetaCurve.eval(stateTime, gDes, gdDes, gddDes);
+	//rthetaCurve.eval(stateTime, gDes, gdDes, gddDes);
+	rthetaSpline.eval(splineTime, gDes, gdDes, gddDes);
 	
 	Float r = gDes(0);
 	Float rd = gdDes(0);
@@ -473,6 +525,7 @@ void JumpingStateMachine::Kick()
 	
 	pDes = pCenter;
 	pDes(0) += r*st;
+	pDes(1) = pFootEnd(1);
 	pDes(2) -= r*ct;
 	
 	vDes.setZero(); aDes.setZero();
@@ -483,32 +536,96 @@ void JumpingStateMachine::Kick()
 	vDes(2) -= rd*ct - r*st*td;
 	aDes(2) -= rdd*ct -2*rd*st*td-r*ct*pow(td,2) - r*st*tdd;
 	
+
+	Float ballState[7],ballStateDot[7];
+	ball->getState(ballState, ballStateDot);
+	Float ballRad = .07;
 	
-	/*kpFoot[0] = 50;
-	kdFoot[0] = 150;
+	Vector3F ballPos;
+	ballPos << ballState[4], ballState[5],ballState[6] ;
 	
-	VectorXF vDes3(3), aDes3(3);
+	Matrix3F ball_R_ics;
+	CartesianTensor ball_R_icsM;
+	CartesianVector pBall;
+	ball->getLink(0)->getPose(ball_R_icsM,pBall);
+	copyRtoMat(ball_R_icsM, ball_R_ics);
 	
-	Float om = -.2 * (2*M_PI);
-	Float ampz = .4, ampy = .05;
-	Float som = sin(om*stateTime);
-	Float com = cos(om*stateTime);
-	
-	pDesFoot[0] << ampy*som , 0, -ampz*com+ampz;
-	pDesFoot[0]+=pFootEnd;
-	
-	vDes3 << ampy*com,0,ampz*som;
-	vDes3 *=om;
-	
-	aDes3 << -ampy*som,0,ampz*com;
-	aDes3 *= om*om;*/
+	Vector6F force;
+	force.setZero();
 	
 	
+	Vector3F contactPoint;
 	
+	Vector6F sumForce;
+	sumForce.setZero();
+	
+	Vector6F footForce;
+	footForce.setZero();
+	
+	for (Float contacty = -.046 ; contacty <=.046; contacty+=.046/4)
+	{
+		contactPoint << 0,contacty,0.119;
+		contactPoint = RFoot[0] * contactPoint;
+		contactPoint += pFoot[0];
+		
+		Vector3F relPos = ballPos - contactPoint;
+
+		
+		if (relPos.norm() < ballRad) {
+			Float penetration = ballRad - relPos.norm();
+			relPos.normalize();
+			
+			cout << "Collision Force " << relPos*penetration * 2500/4. <<  endl;
+			
+			force.tail(3)=relPos*penetration * 2500/4;
+			sumForce+=force;
+			
+		}
+	}
+	if (sumForce.norm() > 0) {
+		//sumForce(1)=0;
+		//sumForce(2) = 0;
+		
+		footForce.head(3) = cr3(sumForce.tail(3)) * (ballPos-pFoot[0]);
+		footForce.tail(3) = -sumForce.tail(3);
+		footForce.head(3) = RFoot[0].transpose()*footForce.head(3);
+		footForce.tail(3) = RFoot[0].transpose()*footForce.tail(3);
+		
+		
+		cout << "Force = " << sumForce.transpose() << endl;
+		sumForce.tail(3) = ball_R_ics * sumForce.tail(3);
+	}
+	
+	
+	((dmRigidBody *) artic->getLink(SupportIndices[0]))->setExternalForce(footForce.data());
+	((dmRigidBody *) ball->getLink(0))->setExternalForce(sumForce.data());	
+	
+	
+	kpCM = 10;
+	kdCM = 2*sqrt(kpCM);
+	kdAM = 15;
+	
+	kComDes.setZero();
+	kDotDes.setZero();
+	
+	if (subState <= 2) {
+		TaskWeight.segment(0,3).setConstant(10);
+		//kComDes(1) = -IBarC0_init(1,1) * td*.8;
+		//kDotDes(1) = -IBarC0_init(1,1) * tdd*.8;		
+	}
+	
+	Vector3F angAx;
+	angAx << 0,-t,0;
+	matrixExpOmegaCross(angAx,RDesFoot[0]);
+	
+	RDesFoot[0] = RDesFoot[0]*RFoot0;
 	pDesFoot[0] = pDes;
+	vDesFoot[0](1) = -td;
 	vDesFoot[0].tail(3) = vDes;
+	aDesFoot[0](1) = -tdd;
 	aDesFoot[0].tail(3) = aDes;
 	cout << "t = " << stateTime << " (r,t) = " << r << ", " << t << " pDes = " << pDes.transpose() << endl;
+	splineTime+=simThread->cdt;
 }
 void JumpingStateMachine::BalanceLeft()
 {
@@ -568,6 +685,10 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 	//taskConstrActive.tail(12).setOnes();
 	
 	TaskWeight.setOnes(6+NJ+6+12);
+	
+	TaskWeight.segment(0,3).setConstant(10);
+	TaskWeight.segment(3,3).setConstant(100);
+	
 	TaskWeight.tail(12).setConstant(1000);
 	
 	
@@ -605,8 +726,7 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 			TaskBias.segment(0,3) += angMomDotDes;
 			TaskBias.segment(3,3) += linMomDotDes;
 			
-			TaskWeight.segment(0,3).setConstant(10);
-			TaskWeight.segment(3,3).setConstant(100);
+			
 			
 	#ifdef CONTROL_DEBUG
 			{
@@ -737,7 +857,7 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 					Float Kp = kpJoint[i];
 					Float Kd = kdJoint[i];
 					if (i == 0) {
-						TaskWeight.segment(taskRow,3).setConstant(80);
+						TaskWeight.segment(taskRow,3).setConstant(20);
 						//taskOptimActive.segment(taskRow+3,3).setZero();
 					}
 					else if (bodyi->dof == 1) {

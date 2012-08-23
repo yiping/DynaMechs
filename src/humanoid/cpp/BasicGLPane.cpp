@@ -397,7 +397,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		
 		G_robot->draw();
 		
-		ball->draw();
+		//ball->draw();
 		
 		
 		Float qBase[7], qdBase[7];
@@ -410,8 +410,54 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glTranslatef(qBase[4], qBase[5], qBase[6]);
 		glRotatef(theta, qBase[0], qBase[1], qBase[2]);
 		
-		glColor4f(1.0, 0.0, 0.0, 1.0);
-		gluSphere(frame->glPane->quadratic, .07, 16, 16);
+		glColor4f(1.0, 0.6, 0.6, 0.7);
+		Float sphereRad = .07;
+		gluSphere(frame->glPane->quadratic, sphereRad, 16, 16);
+		
+		/*Float AxisLength = .5;
+		glBegin(GL_LINES);
+		glColor3f(1.0, 0.0, 0.0);
+		glVertex3f(AxisLength, 0.0, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glEnd();
+		
+		glBegin(GL_LINES);
+		glColor3f(0.0, 1.0, 0.0);
+		glVertex3f(0.0, AxisLength, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glEnd();
+		
+		glBegin(GL_LINES);
+		glColor3f(0.0, 0.0, 1.0);
+		glVertex3f(0.0, 0.0, AxisLength);
+		glVertex3f(0.0, 0.0, 0.0);
+		glEnd();*/
+		
+		glColor4f(0.6, 0.6, 0.6, 0.7);
+		
+		glBegin(GL_LINE_LOOP);
+		Float radius = .071;
+		for (int i=0; i < 360; i++) {
+			float degInRad = i*M_PI/180.;
+			glVertex3f(cos(degInRad)*radius,sin(degInRad)*radius,0);
+		}
+		glEnd();
+		glBegin(GL_LINE_LOOP);
+		for (int i=0; i < 360; i++) {
+			float degInRad = i*M_PI/180.;
+			glVertex3f(0,cos(degInRad)*radius,sin(degInRad)*radius);
+		}
+		glEnd();
+		glBegin(GL_LINE_LOOP);
+		for (int i=0; i < 360; i++) {
+			float degInRad = i*M_PI/180.;
+			glVertex3f(cos(degInRad)*radius,0,sin(degInRad)*radius);
+		}
+		glEnd();
+		
+		
+		
+		
 		
 		glPopMatrix();
 		

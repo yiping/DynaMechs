@@ -1104,8 +1104,10 @@ void dmEnvironment::drawInitSpecial()
 			glEnd();
 		}
 
+		glLineWidth(1.);
 		// render terrain wireframe 
-		glColor4f(0.8,0.8,0.8,1.0);
+		glColor4f(0.3,0.3,0.3,1.0);
+		//glColor4f(0.8,0.8,0.8,1.0);
 		for (j=0; j<m_y_dim-1; j++)
 		{
 			for (i=0; i<m_x_dim-1; i++)

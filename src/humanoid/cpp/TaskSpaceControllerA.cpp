@@ -370,7 +370,10 @@ void TaskSpaceControllerA::UpdateVariableBounds() {
 
 void TaskSpaceControllerA::AssignFootMaxLoad(int index, double maxLoad) {
 	
-	r =  MSK_putbound(task, MSK_ACC_VAR, fStart+6*index+5, MSK_BK_UP, -MSK_INFINITY, maxLoad);	
+	r =  MSK_putbound(task, MSK_ACC_VAR, fStart+6*index+5, MSK_BK_UP, -MSK_INFINITY, maxLoad);
+	//if (maxLoad ==0) {
+	//	
+	//}
 }
 
 

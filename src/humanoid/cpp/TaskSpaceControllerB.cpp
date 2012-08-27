@@ -231,8 +231,13 @@ void TaskSpaceControllerB::UpdateVariableBounds() {
 void TaskSpaceControllerB::AssignFootMaxLoad(int index, double maxLoad) {
 	
 	r = MSK_putbound(task, MSK_ACC_CON, fNormConstrStart+index, MSK_BK_UP, -MSK_INFINITY, maxLoad);	
-	for (int i=fStart+3*NP*index+2; i<(fStart+3*NP*(index+1)+2); i+=3) {
-		MSK_putbound(task, MSK_ACC_VAR, i, MSK_BK_FR, -MSK_INFINITY, MSK_INFINITY);
+	//for (int i=fStart+3*NP*index+2; i<(fStart+3*NP*(index+1)+2); i+=3) {
+	//	MSK_putbound(task, MSK_ACC_VAR, i, MSK_BK_FR, -MSK_INFINITY, MSK_INFINITY);
+	//}
+	if (maxLoad == 0) {
+		for (int i=fStart+3*NP*index; i<(fStart+3*NP*(index+1)); i++) {
+			MSK_putbound(task, MSK_ACC_VAR, i, MSK_BK_FX, 0, 0);
+		}
 	}
 }
 
@@ -510,7 +515,7 @@ void TaskSpaceControllerB::Optimize() {
 	
 	
 	f = xx.segment(fStart,3*NS*NP);
-	cout << "f = " << f.transpose() << endl;
+	//cout << "f = " << f.transpose() << endl;
 	TaskError = xx.segment(eStart,(eEnd-eStart)+1);
 	for (int i=0; i<TaskError.size(); i++) {
 		TaskError(i)/=TaskWeight(i);

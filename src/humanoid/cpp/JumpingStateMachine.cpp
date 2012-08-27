@@ -429,18 +429,18 @@ void JumpingStateMachine::Kick()
 	
 	if (transitionFlag) {
 		pFootEnd = pFoot[0];
-		cout << "pFoot init = " << pFoot[0].transpose() << endl;
+		//cout << "pFoot init = " << pFoot[0].transpose() << endl;
 		
 		pCenter(0) = artic->m_link_list[2]->link_val2.p_ICS[0];
 		pCenter(1) = artic->m_link_list[2]->link_val2.p_ICS[1];
 		pCenter(2) = artic->m_link_list[2]->link_val2.p_ICS[2];
 		
 		pRel = pFoot[0] - pCenter;
-		cout << "Rel Pos " << pRel.transpose() << endl;
+		//cout << "Rel Pos " << pRel.transpose() << endl;
 		
 		r0 = sqrt(pRel(0)*pRel(0) + pRel(2)*pRel(2));
 		theta0 = atan2(pRel(0), -pRel(2));
-		cout << "r =  " << r0 << " theta = " << theta0 << endl;
+		//cout << "r =  " << r0 << " theta = " << theta0 << endl;
 		
 		RFoot0 = RFoot[0];
 		
@@ -575,7 +575,7 @@ void JumpingStateMachine::Kick()
 			Float penetration = ballRad - relPos.norm();
 			relPos.normalize();
 			
-			cout << "Collision Force " << relPos*penetration * 2500/4. <<  endl;
+			//cout << "Collision Force " << relPos*penetration * 2500/4. <<  endl;
 			
 			force.tail(3)=relPos*penetration * 2500/4;
 			sumForce+=force;
@@ -592,7 +592,7 @@ void JumpingStateMachine::Kick()
 		footForce.tail(3) = RFoot[0].transpose()*footForce.tail(3);
 		
 		
-		cout << "Force = " << sumForce.transpose() << endl;
+		//cout << "Force = " << sumForce.transpose() << endl;
 		sumForce.tail(3) = ball_R_ics * sumForce.tail(3);
 	}
 	
@@ -630,7 +630,7 @@ void JumpingStateMachine::Kick()
 	vDesFoot[0].tail(3) = vDes;
 	aDesFoot[0](1) = -tdd;
 	aDesFoot[0].tail(3) = aDes;
-	cout << "t = " << stateTime << " (r,t) = " << r << ", " << t << " pDes = " << pDes.transpose() << endl;
+	//cout << "t = " << stateTime << " (r,t) = " << r << ", " << t << " pDes = " << pDes.transpose() << endl;
 	splineTime+=simThread->cdt;
 }
 void JumpingStateMachine::BalanceLeft()
@@ -649,7 +649,7 @@ void JumpingStateMachine::BalanceLeft()
 		
 		MaxFootLoad = grfInfo.fCoPs[0](2);
 	}
-	if (stateTime > 1.2) {
+	if (stateTime > .81) {
 		state = RAISE_FOOT;
 		transitionFlag =true;
 		return;

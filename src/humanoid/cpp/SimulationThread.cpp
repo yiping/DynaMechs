@@ -62,9 +62,9 @@ void *SimulationThread::Entry()
 			Float realTimeDiff = timeDiff(last_control_tv, tv_now);
 			Float sleepTime = slowFactor*cdt - realTimeDiff;
 			
-			if (sleepTime > 0) {
-				wxMicroSleep((unsigned long) (sleepTime * 1e6));
-			}
+			//if (sleepTime > 0) {
+			//	wxMicroSleep((unsigned long) (sleepTime * 1e6));
+			//}
 			
 			//cout << "Control" << endl;
 			dmGetSysTime(&last_control_tv);

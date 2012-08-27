@@ -7,8 +7,8 @@ function drawStamps(tList,stateList)
         color=':k';
         w=1;
         if(stateList(i)==3)
-            color='k-.';
-            w=1;
+            %color='k-.';
+            %w=1;
         end
         plot([tList(i) tList(i)],[-1000,1000],color,'LineWidth',w);
     end

@@ -213,7 +213,8 @@ void JumpingStateMachine::Thrust()
 	}
 	//cout << pCom(2) << endl;
 	//cout << "Thrust" << endl;
-	if (q(11) < .85) {
+	//if (q(11) < .85) {
+	if (q(11) < .87) {
 	//if (pCom(2) > .485) {
 		state = FLIGHT;
 		transitionFlag = true;

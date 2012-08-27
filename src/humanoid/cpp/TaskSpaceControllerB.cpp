@@ -224,6 +224,11 @@ void TaskSpaceControllerB::UpdateVariableBounds() {
 void TaskSpaceControllerB::AssignFootMaxLoad(int index, double maxLoad) {
 	
 	r = MSK_putbound(task, MSK_ACC_CON, fNormConstrStart+index, MSK_BK_UP, -MSK_INFINITY, maxLoad);	
+	if (maxLoad == 0) {
+		for (int i=fStart+3*NP*index; i<(fStart+3*NP*(index+1)); i++) {
+			MSK_putbound(task, MSK_ACC_VAR, i, MSK_BK_FX, 0, 0);
+		}
+	}
 }
 
 

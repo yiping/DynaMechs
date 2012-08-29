@@ -172,7 +172,7 @@ bool MyApp::OnInit()
 
 		cout << "Creating Robot" << endl;
 		
-		//glEnable(GL_BLEND);
+		glEnable(GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		//glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
 		
@@ -458,6 +458,14 @@ void BasicGLPane::userGraphics()
 			glPopMatrix();
 		}*/
 		frame->realTimeRatioDisplay->SetLabel(wxString::Format(wxT("RT Ratio: %.2lf"), real_time_ratio));
+		
+		
+		static dmTimespec thisRenderTime, prevRenderTime;
+		dmGetSysTime(&thisRenderTime);
+		Float renderHz = 1/timeDiff(prevRenderTime, thisRenderTime);
+		dmGetSysTime(&prevRenderTime);
+		
+		frame->renderHzDisplay->SetLabel(wxString::Format(wxT("Render Hz: %.2lf"), renderHz));
 		
 		
 		/*

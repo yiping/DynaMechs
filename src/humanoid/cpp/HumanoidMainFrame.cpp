@@ -163,8 +163,11 @@ HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, 
 		realTimeRatioDisplay = new wxStaticText(toolpanel,-1,wxT("RT Ratio: "));
 		toolpanel_sizer->Add(realTimeRatioDisplay,0,wxALL,2);
 		
-		showCoM->SetValue(true);
-		showGRF->SetValue(true);
+		renderHzDisplay = new wxStaticText(toolpanel,-1,wxT("Render Hz: "));
+		toolpanel_sizer->Add(renderHzDisplay,0,wxALL,2);
+		
+		showCoM->SetValue(false);
+		showGRF->SetValue(false);
 		
 		toolpanel->SetSizer(toolpanel_sizer);
 		

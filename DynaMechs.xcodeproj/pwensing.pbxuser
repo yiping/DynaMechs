@@ -181,20 +181,20 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 367782713;
-			PBXWorkspaceStateSaveDate = 367782713;
+			PBXPerProjectTemplateStateSaveDate = 368126921;
+			PBXWorkspaceStateSaveDate = 368126921;
 		};
 		perUserProjectItems = {
-			193E3AC615EBF80C00E920CE /* PBXTextBookmark */ = 193E3AC615EBF80C00E920CE /* PBXTextBookmark */;
-			193E3AC715EBF80C00E920CE /* PBXTextBookmark */ = 193E3AC715EBF80C00E920CE /* PBXTextBookmark */;
-			193E3AC815EBF80C00E920CE /* PBXTextBookmark */ = 193E3AC815EBF80C00E920CE /* PBXTextBookmark */;
-			193E3AC915EBF80C00E920CE /* PBXTextBookmark */ = 193E3AC915EBF80C00E920CE /* PBXTextBookmark */;
-			193E3ACA15EBF80C00E920CE /* PBXTextBookmark */ = 193E3ACA15EBF80C00E920CE /* PBXTextBookmark */;
-			193E3ACB15EBF80C00E920CE /* PBXTextBookmark */ = 193E3ACB15EBF80C00E920CE /* PBXTextBookmark */;
-			193E3ACC15EBF80C00E920CE /* PBXTextBookmark */ = 193E3ACC15EBF80C00E920CE /* PBXTextBookmark */;
-			193E3ACD15EBF80C00E920CE /* PBXTextBookmark */ = 193E3ACD15EBF80C00E920CE /* PBXTextBookmark */;
-			193E3ACE15EBF80C00E920CE /* PBXTextBookmark */ = 193E3ACE15EBF80C00E920CE /* PBXTextBookmark */;
-			193E3ACF15EBF80C00E920CE /* PBXTextBookmark */ = 193E3ACF15EBF80C00E920CE /* PBXTextBookmark */;
+			193E3AC615EBF80C00E920CE = 193E3AC615EBF80C00E920CE /* PBXTextBookmark */;
+			193E3AC715EBF80C00E920CE = 193E3AC715EBF80C00E920CE /* PBXTextBookmark */;
+			193E3AC815EBF80C00E920CE = 193E3AC815EBF80C00E920CE /* PBXTextBookmark */;
+			193E3AC915EBF80C00E920CE = 193E3AC915EBF80C00E920CE /* PBXTextBookmark */;
+			193E3ACA15EBF80C00E920CE = 193E3ACA15EBF80C00E920CE /* PBXTextBookmark */;
+			193E3ACB15EBF80C00E920CE = 193E3ACB15EBF80C00E920CE /* PBXTextBookmark */;
+			193E3ACC15EBF80C00E920CE = 193E3ACC15EBF80C00E920CE /* PBXTextBookmark */;
+			193E3ACD15EBF80C00E920CE = 193E3ACD15EBF80C00E920CE /* PBXTextBookmark */;
+			193E3ACE15EBF80C00E920CE = 193E3ACE15EBF80C00E920CE /* PBXTextBookmark */;
+			193E3ACF15EBF80C00E920CE = 193E3ACF15EBF80C00E920CE /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
 		userBuildSettings = {
@@ -1627,9 +1627,9 @@
 	};
 	19801738159955E500DB8AD5 /* HumanoidMainFrame.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {840, 3542}}";
-			sepNavSelRange = "{3157, 0}";
-			sepNavVisRange = "{2266, 3181}";
+			sepNavIntBoundsRect = "{{0, 0}, {840, 3564}}";
+			sepNavSelRange = "{3501, 0}";
+			sepNavVisRange = "{2195, 3205}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
@@ -2006,9 +2006,9 @@
 	};
 	19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {713, 10296}}";
+			sepNavIntBoundsRect = "{{0, 0}, {713, 10219}}";
 			sepNavSelRange = "{4929, 0}";
-			sepNavVisRange = "{4171, 1432}";
+			sepNavVisRange = "{4171, 1431}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};

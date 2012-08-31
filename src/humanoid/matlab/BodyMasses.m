@@ -92,36 +92,36 @@ end
 
 
 
-fid = fopen('../config/humanoid_box.dm','w');
-links{1}.tabs = 1;
-fprintf(fid,'# DynaMechs V 4.0 ascii\n');
-fprintf(fid,'# humanoid parameter file\n\n');
-
-
-fprintf(fid,'Articulation {\n\t');
-fprintf(fid,'Name\t\t\t\t"Articulation"\n\t');
-fprintf(fid,'Graphics_Model\t\t""\n\t');
-fprintf(fid,'Position\t\t\t0\t0\t0\n\t');
-fprintf(fid,'Orientation_Quat\t0\t0\t0\t1\n');
-
-printHeaders(fid,links,1); 
-	
-fprintf(fid,'}\n');
-fprintf(fid,'# End Articulation\n\n');
-fclose(fid);
-
-%createXan('../config/humanoid_model/torso.xan',torsoLink);
-%createXan('../config/humanoid_model/upperArm.xan',upperArmLink);
-%createXan('../config/humanoid_model/foreArm.xan',foreArmLink);
-%createXan('../config/humanoid_model/thigh.xan',hipLink);
-%createXan('../config/humanoid_model/shank.xan',shankLink);
-%createXan('../config/humanoid_model/foot.xan',footLink);
-
-createXanTorso('../config/humanoid_box_model/torso.xan',torsoLink);
-createXan('../config/humanoid_box_model/upperArm.xan',upperArmLink);
-createXanLowerArm('../config/humanoid_box_model/foreArm.xan',foreArmLink);
-createXan('../config/humanoid_box_model/thigh.xan',hipLink);
-createXan('../config/humanoid_box_model/shank.xan',shankLink);
-createXan('../config/humanoid_box_model/foot.xan',footLink);
+% fid = fopen('../config/humanoid_box.dm','w');
+% links{1}.tabs = 1;
+% fprintf(fid,'# DynaMechs V 4.0 ascii\n');
+% fprintf(fid,'# humanoid parameter file\n\n');
+% 
+% 
+% fprintf(fid,'Articulation {\n\t');
+% fprintf(fid,'Name\t\t\t\t"Articulation"\n\t');
+% fprintf(fid,'Graphics_Model\t\t""\n\t');
+% fprintf(fid,'Position\t\t\t0\t0\t0\n\t');
+% fprintf(fid,'Orientation_Quat\t0\t0\t0\t1\n');
+% 
+% printHeaders(fid,links,1); 
+% 	
+% fprintf(fid,'}\n');
+% fprintf(fid,'# End Articulation\n\n');
+% fclose(fid);
+% 
+% %createXan('../config/humanoid_model/torso.xan',torsoLink);
+% %createXan('../config/humanoid_model/upperArm.xan',upperArmLink);
+% %createXan('../config/humanoid_model/foreArm.xan',foreArmLink);
+% %createXan('../config/humanoid_model/thigh.xan',hipLink);
+% %createXan('../config/humanoid_model/shank.xan',shankLink);
+% %createXan('../config/humanoid_model/foot.xan',footLink);
+% 
+% createXanTorso('../config/humanoid_box_model/torso.xan',torsoLink);
+% createXan('../config/humanoid_box_model/upperArm.xan',upperArmLink);
+% createXanLowerArm('../config/humanoid_box_model/foreArm.xan',foreArmLink);
+% createXan('../config/humanoid_box_model/thigh.xan',hipLink);
+% createXan('../config/humanoid_box_model/shank.xan',shankLink);
+% createXan('../config/humanoid_box_model/foot.xan',footLink);
 
 

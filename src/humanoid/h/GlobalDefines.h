@@ -49,7 +49,7 @@ extern wxMutex dataMutex;
 #define NS 2
 #define NP 4
 #define NF 4
-#define MU 1
+#define MU .6
 
 
 

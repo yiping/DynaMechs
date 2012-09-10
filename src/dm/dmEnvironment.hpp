@@ -239,6 +239,7 @@ public:
    // rendering functions: should be called with a graphics context current.
    ///
    virtual void drawInit();
+   virtual void drawInitSpecial();
    ///
    virtual void draw() const;
 

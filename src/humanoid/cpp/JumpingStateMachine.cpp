@@ -321,7 +321,7 @@ void JumpingStateMachine::Land()
 		
 		pComDes = pCom;
 		pComDes(0) +=.05;
-		pComDes(2) = .49; 
+		pComDes(2) = (pFoot[0](2) + pFoot[1](2))/2 + .49; 
 		vComDes.setZero();
 		aComDes.setZero();
 		transitionFlag = false;

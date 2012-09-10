@@ -37,6 +37,9 @@ public:
 	
 
 	void InertialKinematicInfo(int index, Matrix3F & RtoICS, VectorXF & pICS, VectorXF & spatVelICS);
+	
+	
+	
 	vector<Float > kpFoot, kdFoot;
 	vector<VectorXF > aDesFoot;
 	vector<Vector3F > pDesFoot;

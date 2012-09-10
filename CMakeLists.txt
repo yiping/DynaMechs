@@ -39,7 +39,8 @@ ADD_SUBDIRECTORY(src/testdm bin_testdm)
 #ADD_SUBDIRECTORY(src/flywheel_biped bin_flywheel_biped)
 ADD_SUBDIRECTORY(src/wxDMV bin_wxDMV)
 ADD_SUBDIRECTORY(src/humanoid bin_humanoid)
-ADD_SUBDIRECTORY(src/contact_demo bin_contact_demo)
+#ADD_SUBDIRECTORY(src/contact_demo bin_contact_demo)
+ADD_SUBDIRECTORY(src/optimization_test bin_optimization_test)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX is: " ${CMAKE_INSTALL_PREFIX})
 

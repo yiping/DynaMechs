@@ -1,0 +1,7 @@
+function [ output_args ] = IcmbarTransformToIbar(Icmbar, c_g )
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+
+
+end
+

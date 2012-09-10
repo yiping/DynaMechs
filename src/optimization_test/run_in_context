@@ -1,0 +1,45 @@
+
+proj_name=${PWD##*/}
+exe_name="opt_test"
+cfg_file_name="opt_test.cfg"
+
+
+#---------------------------------
+
+echo "executable name is:" $exe_name
+echo "run" $exe_name "in context ..."
+
+
+#cd ../../build/bin_${PWD##*/}
+#if [ $? -eq 0 ];then
+#	pwd
+#else
+#	echo "bin_${PWD##*/} not existed!"
+#fi
+
+if cd ../../build/bin_${PWD##*/}; then
+	pwd
+else 
+	echo "bin_${PWD##*/} not existed!"
+	exit 1
+fi
+
+cp $exe_name ../../src/$proj_name/config
+cd ../../src/$proj_name/config
+pwd
+./$exe_name -c $cfg_file_name
+
+
+
+
+# '#' and '##' : remove from the begining.
+# Examples: given B="/usr/local/doc/somefile.txt"
+
+# A=${B##*/} : A = "somefile.txt"
+# A=${B#*/} : A = "usr/local/doc/somefile.txt"
+
+# '%' and '%%' : remove from the end.
+
+# A=${B%%/*} : A = "" (empty, everything removed)
+# A=${B%/*} : A = "/usr/local/doc"
+

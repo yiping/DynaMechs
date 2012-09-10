@@ -1,0 +1,25 @@
+[comment]
+  test1 OPF
+[/comment]
+
+
+[variables]
+  x1 x2  
+[/variables]
+
+[objective minimize 'obj']
+   # The quadratic terms are often multiplied by 1/2, 
+   # but this is not required.
+
+   #(x1 - 0.5)^2 + (x2 - 2)^2
+   x1^2 + x2^2 - x1 - 4 x2 + 4.25
+
+[/objective]
+
+[constraints]
+  [con 'c1'] 0 = x1 - x2 [/con]
+[/constraints]
+
+[bounds]
+  [b] 0 <= * [/b]
+[/bounds]

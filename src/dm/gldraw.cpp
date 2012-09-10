@@ -473,13 +473,15 @@ void dmQuaternionLink::drawSkeleton(bool isTip) const
 // func 4.
 void dmRevoluteLink::drawSkeleton(bool isTip) const
 {
-   Matrix3F Rot;
+   // rendering method 1
+   /*Matrix3F Rot;
    Rot<< 1, 0, 0,
          0, cos(m_alphaMDH), -sin(m_alphaMDH),
          0, sin(m_alphaMDH), cos(m_alphaMDH);
    Vector3F p, p1;
    p<< m_aMDH, 0.0, m_dMDH;
-   p1 = Rot.transpose() * p; 
+   //p1 = Rot.transpose() * p; 
+   p1 = Rot * p;
 
    glLineWidth (1.5);
    glColor4f(0.0,0.1,0.9,1.0);
@@ -488,7 +490,30 @@ void dmRevoluteLink::drawSkeleton(bool isTip) const
    glVertex3f(p1(0), p1(1), p1(2) );
    glEnd();
    glColor4f(1.0,1.0,1.0,1.0);
+   glLineWidth (1.5);*/
+
+   // rendering method 2
+   Matrix3F Rot;
+   Rot<< 1, 0, 0,
+         0, cos(m_alphaMDH), -sin(m_alphaMDH),
+         0, sin(m_alphaMDH), cos(m_alphaMDH);
+   Vector3F p, p1;
+   p<< m_aMDH, 0.0, 0.0;
+   p1<<m_aMDH, 0.0, m_dMDH;
+   p1 = Rot * p1;
+
    glLineWidth (1.5);
+   glColor4f(0.0,0.1,0.9,1.0);
+   glBegin(GL_LINES);
+   glVertex3f(0,0,0);
+   glVertex3f(p(0), p(1), p(2) );
+   glVertex3f(p(0), p(1), p(2) );
+   glVertex3f(p1(0), p1(1), p1(2) );
+   glEnd();
+   glColor4f(1.0,1.0,1.0,1.0);
+   glLineWidth (1.5);
+
+
 
    // set static portion of the MDH transformation.
 
@@ -510,7 +535,7 @@ void dmRevoluteLink::drawSkeleton(bool isTip) const
    glColor4f(1.0,1.0,1.0,1.0);
 
    // if the link is at the tip, draw an extra stub.
-   if (isTip)
+   /*if (isTip)
    {
 	  glLineWidth (1.5);
 	  glColor4f(0.0,0.0,1.0,1.0);
@@ -524,8 +549,46 @@ void dmRevoluteLink::drawSkeleton(bool isTip) const
 	  glColor4f(0.0,0.0,1.0,1.0);
 	  gluSphere(quadric,.01f,16,16);
 	  glColor4f(1.0,1.0,1.0,1.0);
-   }
+   }*/
 
+
+   // If there are contact points, render them too.
+   if (getNumForces())
+   {
+      //dmContactModel *cm;
+      //cm = dynamic_cast<dmContactModel *>(getForce(0));
+      //for (int i=0; i<cm->getNumContactPoints(); i++)
+      //{
+      //   CartesianVector pos;
+      //   cm->getContactPoint(i, pos);
+      //   glLineWidth (1.5);
+      //   glColor4f(0.0,1.0,0.0,1.0);
+      //   glBegin(GL_LINES);
+      //   glVertex3f(0,0,0);
+      //   glVertex3f(pos[0], pos[1], pos[2] );
+      //   glEnd();
+      //   glColor4f(1.0,1.0,1.0,1.0);
+      //}
+
+      dmContactModel *cm;
+      cm = dynamic_cast<dmContactModel *>(getForce(0));
+      int num_cp = cm->getNumContactPoints();
+      for (int i=0; i<num_cp; i++)
+      {
+         CartesianVector pos, pos1;
+         cm->getContactPoint(i, pos);
+         cm->getContactPoint((i+1)%num_cp, pos1);
+         glLineWidth (1.5);
+         glColor4f(0.0,1.0,0.0,1.0);
+         glBegin(GL_LINES);
+         glVertex3f(0,0,0);
+         glVertex3f(pos[0], pos[1], pos[2] );
+         glVertex3f(pos[0], pos[1], pos[2] );
+         glVertex3f(pos1[0], pos1[1], pos1[2] );
+         glEnd();
+         glColor4f(1.0,1.0,1.0,1.0);
+      }
+   }
 }
 
 
@@ -561,7 +624,8 @@ void dmPrismaticLink::drawSkeleton(bool isTip) const
          0, sin(m_alphaMDH), cos(m_alphaMDH);
    Vector3F p, p1;
    p<< m_aMDH, 0.0, m_dMDH;
-   p1 = Rot.transpose() * p; 
+   //p1 = Rot.transpose() * p; 
+   p1 = Rot * p;
 
    glLineWidth (1.5);
    glColor4f(0.0,0.1,0.9,1.0);
@@ -614,6 +678,18 @@ void dmPrismaticLink::drawSkeleton(bool isTip) const
 // func 7.
 void dmZScrewTxLink::drawSkeleton(bool isTip) const
 {
+   Vector3F p;
+   p<< 0.0, 0.0, m_dMDH;
+
+   glLineWidth (1.5);
+   glColor4f(1.0,0.1,0.1,1.0);
+   glBegin(GL_LINES);
+   glVertex3f(0,0,0);
+   glVertex3f( p(0), p(1), p(2) );
+   glEnd();
+   glColor4f(1.0,1.0,1.0,1.0);
+
+
    glTranslatef(0.0, 0.0, m_dMDH);
    glRotatef(m_thetaMDH*RADTODEG, 0.0, 0.0, 1.0);
 }

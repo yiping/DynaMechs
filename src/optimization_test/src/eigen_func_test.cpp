@@ -140,6 +140,25 @@ int main()
 
 	cout<<"showDefiniteness function test:"<<endl;
 	showDefiniteness(z);
+
+	MatrixXF J = MatrixXF::Constant(6,8,1);
+
+	cout<<"Matrix J is "<<endl<<J<<endl;
+
+	J.setZero(10, 10);
+	cout<<"after setZero(), Matrix J now is "<<endl<<J<<endl;
+	
+	J = - MatrixXF::Constant(4,3,7);
+	cout<<"J has changed again, J now is "<<endl<<J<<endl;
+
+	//VectorXF d0(10);
+	VectorXF d0 = VectorXF::Zero(10);
+	d0.segment(0, 2) = VectorXF::Zero(2);
+	d0.segment(2, 3) = 3*VectorXF::Ones(3);
+	d0.segment(5, 5) = VectorXF::Ones(5);
+
+	cout<<" d0 = "<<endl;
+	cout<<d0<<endl;
 	
 	//LLT<Matrix3f> llt;
 	//llt.compute(z);

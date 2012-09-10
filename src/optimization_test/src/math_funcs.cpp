@@ -56,3 +56,16 @@ void showDefiniteness(const MatrixXF &A )
 			cout<<"matrix is indefinite"<<endl;
 	}
 }
+
+
+// A is square matrix
+void solveInverse(const MatrixXF & A, const VectorXF & rhs, VectorXF & x)
+{
+	// a positive definite matrix is always nonsingular.
+	x = A.partialPivLu().solve( rhs );
+}
+
+void solvePseudoInverse(const MatrixXF & A, const VectorXF & rhs, VectorXF & x)
+{
+	x = A.jacobiSvd(ComputeThinU | ComputeThinV).solve(rhs);
+}

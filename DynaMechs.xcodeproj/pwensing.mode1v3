@@ -340,7 +340,7 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>193E3ACF15EBF80C00E920CE</string>
+										<string>1950CA1015FE547000AF7525</string>
 										<key>history</key>
 										<array>
 											<string>193E3AC615EBF80C00E920CE</string>
@@ -351,7 +351,7 @@
 											<string>193E3ACB15EBF80C00E920CE</string>
 											<string>193E3ACC15EBF80C00E920CE</string>
 											<string>193E3ACD15EBF80C00E920CE</string>
-											<string>193E3ACE15EBF80C00E920CE</string>
+											<string>193E3ACF15EBF80C00E920CE</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -363,14 +363,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {774, 808}}</string>
+								<string>{{0, 0}, {774, 806}}</string>
 								<key>RubberWindowFrame</key>
 								<string>-1650 -129 1148 943 -1680 -198 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>808pt</string>
+							<string>806pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -383,14 +383,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 813}, {774, 89}}</string>
+								<string>{{0, 811}, {774, 91}}</string>
 								<key>RubberWindowFrame</key>
 								<string>-1650 -129 1148 943 -1680 -198 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>89pt</string>
+							<string>91pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -409,9 +409,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>193E3AD015EBF80C00E920CE</string>
+				<string>1950CA1115FE547000AF7525</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>193E3AD115EBF80C00E920CE</string>
+				<string>1950CA1215FE547000AF7525</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -549,12 +549,8 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>193E3ADA15EBF80C00E920CE</string>
-		<string>193E3ADB15EBF80C00E920CE</string>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>1925863714D2E86400778EA7</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
-		<string>1C78EAAD065D492600B07095</string>
 	</array>
 	<key>WindowString</key>
 	<string>-1650 -129 1148 943 -1680 -198 1680 1050 </string>
@@ -634,7 +630,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1925863714D2E86400778EA7</string>
-				<string>193E3AD215EBF80C00E920CE</string>
+				<string>1950CA1315FE547000AF7525</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

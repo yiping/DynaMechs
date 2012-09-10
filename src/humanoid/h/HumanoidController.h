@@ -16,7 +16,7 @@
 
 #define COPY_P_TO_VEC(p,pvec) pvec << p[0], p[1], p[2]; 
 
-class HumanoidController : public Humanoid , public TaskSpaceControllerB {
+class HumanoidController : public Humanoid , public TaskSpaceControllerA {
 public:
 	HumanoidController(dmArticulation * robot);
 	void HumanoidControl(ControlInfo &);

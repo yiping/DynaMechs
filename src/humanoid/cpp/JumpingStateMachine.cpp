@@ -9,6 +9,7 @@
 
 #include "GlobalDefines.h"
 #include "JumpingStateMachine.h"
+#include "CustomTaskSpaceController.h"
 
 JumpingStateMachine::JumpingStateMachine(dmArticulation * robot) 
 	: HumanoidDataLogger(robot, NUM_JUMP_STATES), ComTrajectory(3)
@@ -212,7 +213,8 @@ void JumpingStateMachine::Thrust()
 	}
 	//cout << pCom(2) << endl;
 	//cout << "Thrust" << endl;
-	if (q(11) < .75) {
+	//if (q(11) < .85) {
+	if (q(11) < .87) {
 	//if (pCom(2) > .485) {
 		state = FLIGHT;
 		transitionFlag = true;
@@ -255,12 +257,15 @@ void JumpingStateMachine::Flight()
 		//vInit = vFoot[0].tail(3) -vCom;
 		vInit.setZero();
 		
-		footSpline.init(pInit, vInit, pFinal, vZero, .2);
+		footSpline.init(pInit, vInit, pFinal, vZero, .3);
 		//transitionSpline.init(0, 0, 1, 0, .05);
 	}
-	taskOptimActive.head(6).setZero();
-	taskConstrActive.tail(12).setZero();
-	taskOptimActive.tail(12).setOnes();
+	OptimizationSchedule.head(6).setConstant(-1);
+	OptimizationSchedule.tail(12).setConstant(2);
+	
+	//taskOptimActive.head(6).setZero();
+	//taskConstrActive.tail(12).setZero();
+	//taskOptimActive.tail(12).setOnes();
 
 	//TaskWeight.tail(12).setConstant(10);
 	VectorXF p(3), pd(3), pdd(3);
@@ -316,7 +321,7 @@ void JumpingStateMachine::Land()
 		
 		pComDes = pCom;
 		pComDes(0) +=.05;
-		pComDes(2) = .49; 
+		pComDes(2) = (pFoot[0](2) + pFoot[1](2))/2 + .49; 
 		vComDes.setZero();
 		aComDes.setZero();
 		transitionFlag = false;
@@ -339,21 +344,243 @@ void JumpingStateMachine::Land()
 	
 }
 
+void logBarrier(const VectorXF & x, Float &b, VectorXF & bs)
+{
+	bs.resize(4);
+	
+	bs(0)=x(3)*x(3)-x(2)*x(2)-x(1)*x(1);
+	bs(1)=10-x(0);
+	bs(2)=x(0)+10;
+	bs(3)=x(8)*x(8)-x(7)*x(7)-x(6)*x(6)-x(5)*x(5)-x(4)*x(4);
+	
+	b = -log(bs(0))-log(bs(1))-log(bs(2))-log(bs(3));
+}
+
+void evalBarrier(const VectorXF & x, VectorXF & bs, VectorXF& grad, MatrixXF& H, MatrixXF & iH)
+{
+	grad.setZero(9);
+	H.setZero(9,9);
+	Float b;
+	logBarrier(x,b,bs);
+	
+	MatrixXF grads(9,4);
+	grads.setZero();
+	vector<MatrixXF> Hs;
+	Hs.resize(4);
+	
+	int startInds[] = {1,0,0,4};
+	int lengths[] = {3,1,1,5};
+	
+	grads.block(1,0,3,1) << 2*x(1), 2*x(2), -2*x(3);
+	grads(0,1) = 1;
+	grads(0,2) = -1;
+	grads.block(4,3,5,1) << 2*x(4), 2*x(5), 2*x(6), 2*x(7), -2*x(8);
+	
+	Hs[0] = MatrixXF::Identity(3,3)*2;
+	Hs[0](2,2) =-2;
+	
+	Hs[1].setZero(1,1);
+	Hs[2].setZero(1,1);
+	
+	Hs[3] = MatrixXF::Identity(5,5)*2;
+	Hs[3](4,4)=-2;
+
+	
+	for (int i=0; i<4; i++) {
+		MatrixXF g = grads.block(startInds[i],i,lengths[i],1);
+		grad.segment(startInds[i],lengths[i]) += 1/bs(i)*g;
+		H.block(startInds[i],startInds[i],lengths[i],lengths[i])+=1/(bs(i)*bs(i)) * g*g.transpose() + 1/bs(i)*Hs[i];
+	}
+	
+}
+
+void evalResidual(const VectorXF & x, const VectorXF & v, const MatrixXF & Aeq, const VectorXF & beq, Float t, VectorXF & rd, VectorXF & rp, VectorXF & bs, VectorXF& grad, MatrixXF & H, MatrixXF & iH)
+{
+	evalBarrier(x, bs, grad, H,iH);
+	VectorXF rdInit;
+	rdInit.setZero(9);
+	rdInit(8) = 1;
+	
+	rd = rdInit + grad/t + Aeq.transpose()*v;
+	rp = Aeq*x-beq;
+}
+
+Float norm(const VectorXF & a,const VectorXF & b)
+{
+	return sqrt(pow(a.norm(),2) + pow(b.norm(),2));
+}
+
 void JumpingStateMachine::StateControl(ControlInfo & ci)
 {
+	
+	//MatrixXF Lctau(2,1), Lttau(4,1), Lcf(2,3), Ltf(4,3);
+//	Lcf << 1,1,-.2, 0,1,0;
+//	Ltf << 1,0,0,0,1,0,0,0,1,0,0,1;
+//	
+//	Lctau << .1, .2;
+//	Lttau << 0,0,1,0;
+//	
+// 	VectorXF bt(4), bc(2);
+//	bt << 1,1,0,5;
+//	bc << 0,2;
+//	
+//	MatrixXF Aeq(6,9);
+//	Aeq.setZero();
+//	Aeq.block(0,0,2,1) = Lctau;
+//	Aeq.block(2,0,4,1) = Lttau;
+//	Aeq.block(0,1,2,3) = Lcf;
+//	Aeq.block(2,1,4,3) = Ltf;
+//	
+//	Aeq.block(2,4,4,4) = - MatrixXF::Identity(4,4);
+//	
+//	VectorXF beq(6);
+//	beq.segment(0,2) = bc;
+//	beq.segment(2,4) = bt;
+//	
+//	VectorXF x(9), v(6);
+//	
+//	x << 5,1.5,1,15,.5,0,20,10,100;
+//	v << 0,0,0,0,0,0;
+//	
+//	Float tBar = 1000;
+//	
+////	cout << "Aeq = " << endl << Aeq << endl;
+////	cout << "beq = " << endl << beq << endl;
+////	exit(-1);
+//	cout << setprecision(5);
+//	VectorXF rd(6), rp(2), grad(9), rdHat(6), rpHat(2), gradHat(9), bars(4), barsHat(4);
+//	MatrixXF H(9,9), Hhat(9,9);
+//	
+//	int totalSteps = 0;
+//	
+//	Float mu = 50;
+//	dmTimespec tm1,tm2;
+//	dmGetSysTime(&tm1);
+//	MatrixXF iH(9,9),iHhat(9,9);
+//	MatrixXF iHAt(9,6), Khat(6,6);
+//	VectorXF dv(6),dx(9);
+//	while (tBar < 1000000) {
+//		int iter = 0;
+//		rd.setOnes();
+//		while (rd.norm() > 1e-8) {
+//			evalResidual(x, v, Aeq, beq, tBar, rd, rp, bars, grad, H,iH);
+//			
+//			/*cout << "bars " << endl << bars << endl;
+//			cout << "grad " << endl << grad << endl;
+//			cout << "H " << endl << H << endl;
+//			
+//			exit(-1);*/
+//			H/=tBar;
+//			
+//			Float redNorm = norm(rd,rp);
+//			LDLT<MatrixXF> Hdecomp(H);
+//			iHAt = Hdecomp.solve(Aeq.transpose());
+//			Khat = Aeq*iHAt;
+//			
+//			dv = Khat.partialPivLu().solve(rp - iHAt.transpose()*rd);
+//			dx = -Hdecomp.solve(rd+Aeq.transpose()*dv);
+//			totalSteps ++;
+//			//cout << "dx "<< endl << dx << endl;
+//			//cout << "dv "<< endl << dv << endl;
+//			//exit(-1);
+//			
+//			
+//			
+//	//		cout << "K " << endl << K << endl;
+//	//		cout << "rd " << endl << rd << endl;
+//	//		cout << "rp " << endl << rp << endl;
+//	//		
+//	//		cout << "rednorm = " << redNorm << endl;
+//			Float gamma = 1;
+//			Float beta = .5;
+//			Float alpha = .1;
+//			
+//	//		cout << "dx " << endl << dx << endl;
+//	//		cout << "dv " << endl << dv << endl;
+//			
+//			evalResidual(x+gamma*dx, v+gamma*dv, Aeq, beq, tBar, rdHat, rpHat, barsHat, gradHat, Hhat,iHhat);
+//			Float redNormHat = norm(rdHat,rpHat);
+//			
+//	//		cout << "redNormHat " << redNormHat << endl;
+//	//		cin >> beta;
+//	//		exit(-1);
+//			int k=0;
+//			while ((redNormHat > (1-alpha*gamma)*redNorm) || (barsHat.minCoeff()<0)) {
+//				gamma *=beta;
+//				evalResidual(x+gamma*dx, v+gamma*dv, Aeq, beq, tBar, rdHat, rpHat, barsHat, gradHat, Hhat,iHhat);
+//				redNormHat = norm(rdHat,rpHat);
+//	//			cout << "k=" << k++ << " rd = " << rd.norm() << endl;
+//			}
+//			
+//			x+=gamma*dx;
+//			v+=gamma*dv;
+//			//cout << "iter = " << iter++ << " rd = " << rd.norm() << " rp = " << rp.norm() << endl;
+//			
+//		}
+//		tBar *= mu;
+//		//cout << "tBar = " << tBar << endl;
+//	}
+//	dmGetSysTime(&tm2);
+//	cout << "time " << timeDiff(tm1, tm2) << endl;
+//	
+//	cout << "x= " << x.transpose() << endl;
+//	cout << "v= " << v.transpose() << endl;
+//	cout << "Total Steps = " << totalSteps << endl;
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	exit(-1);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	dmTimespec controlStart, controlEnd;
 	dmGetSysTime(&controlStart);
 	
 	this->HumanoidController::ControlInit();
-	taskOptimActive.setOnes(6+NJ+6+12);
-	taskConstrActive.setZero(6+NJ+6+12);
 	
-	taskOptimActive.tail(12).setZero();
-	taskConstrActive.tail(12).setOnes();
+	OptimizationSchedule.setZero(6+NJ+6+12);
+	OptimizationSchedule.segment(0,6).setConstant(3);
+	//OptimizationSchedule.segment(0,6).setConstant(2);
+	OptimizationSchedule.segment(6,NJ+6).setConstant(4);
+	//OptimizationSchedule.segment(6,NJ+6).setConstant(2);
+	OptimizationSchedule.segment(6+3,3).setConstant(-1);
+	//OptimizationSchedule.tail(12).setConstant(0);
+	OptimizationSchedule.tail(12).setConstant(2);
+	
+	//taskOptimActive.setOnes(6+NJ+6+12);
+	//taskConstrActive.setZero(6+NJ+6+12);
+	//taskOptimActive.tail(12).setZero();
+	//taskConstrActive.tail(12).setOnes();
 	
 	TaskWeight.setOnes(6+NJ+6+12);
-	
 	TaskWeight.tail(12).setConstant(1000);
+	
+	
 	//TaskWeight.segment(taskRow  ,6).setConstant(10);
 	//TaskWeight.segment(taskRow+3,3).setConstant(1000);
 	
@@ -521,11 +748,22 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 					Float Kd = kdJoint[i];
 					if (i == 0) {
 						TaskWeight.segment(taskRow,3).setConstant(10);
-						taskOptimActive.segment(taskRow+3,3).setZero();
+						//taskOptimActive.segment(taskRow+3,3).setZero();
 					}
 					else if (bodyi->dof == 1) {
 						TaskBias(taskRow+jointIndex) = Kp * (posDesJoint[i](0) - q(jointIndexDm)) 
 															+ Kd * (rateDesJoint[i](0) - qd(jointIndex));
+						
+						if (i==3 || i==7) {
+							//cout << "Joint " << i << " = " << q(jointIndexDm) << " dot=" << qd(jointIndex) << endl;
+							if (q(jointIndexDm) < .05 && qd(jointIndex)<0)  {
+								//TaskBias(taskRow+jointIndex) = - pow(qd(jointIndex),2)/(2*q(jointIndexDm))*1.5;
+								//OptimizationSchedule(taskRow+jointIndex) = 1;
+								//cout << "Joint limit for " << i << endl;
+								int dummyVar;
+								//cin >> dummyVar;
+							}
+						}
 					}
 					else if (jointIndex < 18) {
 						TaskWeight.segment(taskRow+jointIndex,jointDof).setConstant(.1);
@@ -628,12 +866,23 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 		
 		controlTime = timeDiff(controlStart, controlEnd);
 		
-		if (frame->logDataCheckBox->IsChecked()) {
-			logData();
-		}
+		
 		//cout << "Control Complete " << simThread->sim_time << endl;
 		//exit(-1);
+		
 	}
+	else {
+		tau.setZero(26);
+		qdd.setZero(26);
+		qddA.setZero(26);
+		fs.setZero(12);
+	}
+
+	
+	if (frame->logDataCheckBox->IsChecked()) {
+		logData();
+	}
+	
 	
 	stateTime += simThread->cdt;
 }

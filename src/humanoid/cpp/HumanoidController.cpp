@@ -247,14 +247,54 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 	// Perform Optimization
 	{
 		dmGetSysTime(&tv2);
-		UpdateObjective();
 		UpdateConstraintMatrix();
 		
-		UpdateHPTConstraintBounds();
+		int maxPriorityLevels = OptimizationSchedule.maxCoeff();
+		const int numTasks = OptimizationSchedule.size();
+		
+		if (maxPriorityLevels > 0) {
+			for (int level=1; level<=maxPriorityLevels; level++) {
+				taskConstrActive.setZero(numTasks);
+				taskOptimActive.setZero(numTasks);
+				bool runOpt = false;
+				for (int i=0; i<numTasks;i ++) {
+					if (OptimizationSchedule(i) == level) {
+						taskOptimActive(i) = 1;
+						runOpt = true;
+					}
+					else if ((OptimizationSchedule(i) < level) && (OptimizationSchedule(i) > -1)) {
+						taskConstrActive(i) = 1;
+					}
+				}
+				
+				if (runOpt) {
+					UpdateObjective();
+					UpdateHPTConstraintBounds();
+					dmGetSysTime(&tv3);
+					//cout << "Optimizing level " << level << endl;
+					Optimize();
+					for (int i=0; i<numTasks;i ++) {
+						if (OptimizationSchedule(i) == level) {
+							TaskBias(i) += TaskError(i);
+							//cout << "Optimization Level " << level << " task error " << i << " = " << TaskError(i) << endl; 
+						}
+					}
+				}
+			}
+		}
+		else {
+			UpdateObjective();
+			UpdateHPTConstraintBounds();
+			dmGetSysTime(&tv3);
+			Optimize();
+		}
+		//exit(-1);
 		
 		
-		dmGetSysTime(&tv3);
-		Optimize();
+		
+			
+		
+		
 
 		
 		// Extract Results
@@ -476,6 +516,34 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 	}
 	#endif
 	
+	/*{
+		MatrixXF H = artic->H;
+		VectorXF CandG = artic->CandG;
+		
+		MatrixXF S = MatrixXF::Zero(NJ,NJ+6);
+		S.block(0,6,NJ,NJ) = MatrixXF::Identity(NJ,NJ);
+		
+		VectorXF generalizedContactForce = VectorXF::Zero(NJ+6);
+		for (int i=0; i<NS; i++) {
+			generalizedContactForce += SupportJacobians[i].transpose()*fs.segment(6*i,6);
+		}
+		
+		qdd = H.inverse()*(S.transpose() * tau + generalizedContactForce- CandG);
+		cout << setprecision(8);
+		cout << "fs " << endl << fs << endl;
+		cout << "qdd " << endl << qdd << endl;
+	}
+	
+	exit(-1);*/
+	static int numTimes = 0;
+	numTimes++;
+	
+	//Float dummy;
+	//cin >> dummy;
+	//if (numTimes == 2) {
+	//	exit(-1);
+	//}
+	
 	//exit(-1);
 }
 		
@@ -611,13 +679,13 @@ void HumanoidController::ComputeGrfInfo(GRFInfo & grf) {
 	Float * fLoc =nLoc + 3;
 	CartesianVector tmp;
 	
+		
 	grf.localContacts = NS;
 	grf.pCoPs.resize(NS);
 	grf.fCoPs.resize(NS);
 	grf.nCoPs.resize(NS);
 	grf.footWrenches.resize(NS);
 	grf.footJacs.resize(NS);
-
 	
 	for (int k1 = 0; k1 < NS; k1++) {
 		dmRigidBody * body = (dmRigidBody *) artic->getLink(SupportIndices[k1]);
@@ -649,9 +717,36 @@ void HumanoidController::ComputeGrfInfo(GRFInfo & grf) {
 			
 			fZMP+=icsForce;
 			
-			transformToZMP(icsForce,grf.pCoPs[k1]);
-			grf.fCoPs[k1] = icsForce.tail(3);
-			grf.nCoPs[k1] = icsForce(2);
+			{
+				Matrix3F RtoICS;
+				copyRtoMat(listruct->link_val2.R_ICS, RtoICS);
+				
+				grfInfo.fCoPs[k1] = RtoICS * grf.footWrenches[k1].tail(3);
+				
+				
+				Vector6F supportFrameWrench = SupportXforms[k1].inverse().transpose()*grf.footWrenches[k1];
+				Vector3F supportFrameCoP;
+				
+				
+				transformToZMP(supportFrameWrench,supportFrameCoP);
+				
+				grfInfo.nCoPs[k1] = supportFrameWrench(2);
+				
+				Vector3F pRel;
+				((dmContactModel *) body->getForce(k2))->getContactPoint(0,pRel.data());
+				pRel(1) = 0; pRel(2) = 0;
+				
+				Vector3F footFrameCoP = pRel + SupportXforms[k1].block(0,0,3,3).transpose()*supportFrameCoP;
+				
+				grfInfo.pCoPs[k1] = RtoICS*footFrameCoP;
+				
+				grfInfo.pCoPs[k1](0) += listruct->link_val2.p_ICS[0];
+				grfInfo.pCoPs[k1](1) += listruct->link_val2.p_ICS[1];
+				grfInfo.pCoPs[k1](2) += listruct->link_val2.p_ICS[2];
+			
+			}
+			
+			
 		}
 	}
 	transformToZMP(fZMP,grf.pZMP);

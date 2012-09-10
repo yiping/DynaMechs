@@ -12,6 +12,8 @@
 
 #include "TaskSpaceControllerA.h"
 #include "TaskSpaceControllerB.h"
+#include "TaskSpaceControllerC.h"
+#include "CustomTaskSpaceController.h"
 #include "Humanoid.h"
 
 #define COPY_P_TO_VEC(p,pvec) pvec << p[0], p[1], p[2]; 
@@ -35,6 +37,9 @@ public:
 	
 
 	void InertialKinematicInfo(int index, Matrix3F & RtoICS, VectorXF & pICS, VectorXF & spatVelICS);
+	
+	
+	
 	vector<Float > kpFoot, kdFoot;
 	vector<VectorXF > aDesFoot;
 	vector<Vector3F > pDesFoot;

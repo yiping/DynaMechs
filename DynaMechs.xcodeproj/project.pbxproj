@@ -271,6 +271,7 @@
 		1959E12515C9F2860043E424 /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = 1959E12115C9F2860043E424 /* trackball.c */; };
 		1959E2FB15C9F5970043E424 /* libwx_osx_cocoa.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1959E11A15C9F2500043E424 /* libwx_osx_cocoa.dylib */; };
 		195C3FF9159DD8B80073AA71 /* HumanoidDataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */; };
+		197608FD15D43DC600E29C68 /* CustomTaskSpaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 197608A415D41D7400E29C68 /* CustomTaskSpaceController.cpp */; };
 		197B842D15070B530064753B /* dmGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869114D2E9A800778EA7 /* dmGLCamera.cpp */; };
 		197B842E15070B530064753B /* dmGLFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869314D2E9A800778EA7 /* dmGLFlyCamera.cpp */; };
 		197B842F15070B530064753B /* dmGLMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869514D2E9A800778EA7 /* dmGLMouse.cpp */; };
@@ -551,6 +552,7 @@
 		19CECD7415BEF35C00CAC966 /* MosekTestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19CECD7315BEF35C00CAC966 /* MosekTestMain.cpp */; };
 		19CECD8115BEF48900CAC966 /* libmosek.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8CFA7158BADA500BC4671 /* libmosek.6.0.dylib */; };
 		19EAF03515A1F3F4007E4EC2 /* HumanoidDataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */; };
+		19EC853415D1639900874729 /* TaskSpaceControllerC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19EC853315D1639900874729 /* TaskSpaceControllerC.cpp */; };
 		19EE130F1545F46E00164D03 /* mosek.h in Sources */ = {isa = PBXBuildFile; fileRef = 19EE12F21545EEAE00164D03 /* mosek.h */; };
 		19EE13231545F4E000164D03 /* libmosek64.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19577E8B1541A61200B991DF /* libmosek64.dylib */; };
 		19EE3469153C526D0029D664 /* dmGLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925869114D2E9A800778EA7 /* dmGLCamera.cpp */; };
@@ -853,6 +855,8 @@
 		1959E12015C9F2860043E424 /* penguin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = penguin.h; path = "src/wxWidgets-2.9.4/samples/opengl/penguin/penguin.h"; sourceTree = "<group>"; };
 		1959E12115C9F2860043E424 /* trackball.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = trackball.c; path = "src/wxWidgets-2.9.4/samples/opengl/penguin/trackball.c"; sourceTree = "<group>"; };
 		1959E12215C9F2860043E424 /* trackball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = trackball.h; path = "src/wxWidgets-2.9.4/samples/opengl/penguin/trackball.h"; sourceTree = "<group>"; };
+		197608A315D41D7400E29C68 /* CustomTaskSpaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTaskSpaceController.h; sourceTree = "<group>"; };
+		197608A415D41D7400E29C68 /* CustomTaskSpaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomTaskSpaceController.cpp; sourceTree = "<group>"; };
 		197B842715070B450064753B /* functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = functions.cpp; path = src/kurmet/functions.cpp; sourceTree = "<group>"; };
 		197B842815070B450064753B /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = src/kurmet/functions.h; sourceTree = "<group>"; };
 		197B842915070B450064753B /* global_typedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global_typedef.h; path = src/kurmet/global_typedef.h; sourceTree = "<group>"; };
@@ -894,6 +898,7 @@
 		199267E815AC986100E51313 /* dmDynamicContactModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dmDynamicContactModel.cpp; path = src/dm/dmDynamicContactModel.cpp; sourceTree = "<group>"; };
 		199267E915AC986100E51313 /* dmDynamicContactModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dmDynamicContactModel.hpp; path = src/dm/dmDynamicContactModel.hpp; sourceTree = "<group>"; };
 		19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidController.cpp; path = src/humanoid/cpp/HumanoidController.cpp; sourceTree = "<group>"; };
+		19AB184D15CB1D22000B9114 /* humanoid_box.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = humanoid_box.cfg; path = src/humanoid/config/humanoid_box.cfg; sourceTree = "<group>"; };
 		19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JumpingStateMachine.cpp; path = src/humanoid/cpp/JumpingStateMachine.cpp; sourceTree = "<group>"; };
 		19B0331115B45FEB00025508 /* JumpingStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JumpingStateMachine.h; path = src/humanoid/h/JumpingStateMachine.h; sourceTree = "<group>"; };
 		19B1EB3015ADE57B005FCEE4 /* TaskSpaceControllerA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TaskSpaceControllerA.cpp; path = src/humanoid/cpp/TaskSpaceControllerA.cpp; sourceTree = "<group>"; };
@@ -927,6 +932,8 @@
 		19CECD5D15BEF1BB00CAC966 /* human.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = human.cfg; path = src/humanoid/config/human.cfg; sourceTree = "<group>"; };
 		19CECD5E15BEF1BB00CAC966 /* human.dm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = human.dm; path = src/humanoid/config/human.dm; sourceTree = "<group>"; };
 		19CECD7315BEF35C00CAC966 /* MosekTestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MosekTestMain.cpp; path = src/mosekTest/MosekTestMain.cpp; sourceTree = "<group>"; };
+		19EC853215D1639000874729 /* TaskSpaceControllerC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskSpaceControllerC.h; path = src/humanoid/h/TaskSpaceControllerC.h; sourceTree = "<group>"; };
+		19EC853315D1639900874729 /* TaskSpaceControllerC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TaskSpaceControllerC.cpp; path = src/humanoid/cpp/TaskSpaceControllerC.cpp; sourceTree = "<group>"; };
 		19EE12F21545EEAE00164D03 /* mosek.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mosek.h; path = src/mosek/6/tools/platform/osx64x86/h/mosek.h; sourceTree = "<group>"; };
 		19EE345B153C52670029D664 /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = src/windmill/functions.h; sourceTree = "<group>"; };
 		19EE345C153C52670029D664 /* global_typedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global_typedef.h; path = src/windmill/global_typedef.h; sourceTree = "<group>"; };
@@ -1463,6 +1470,7 @@
 				19801DB1159B621A00DB8AD5 /* humanoid.cfg */,
 				19B20A0D15C8472C005EA3A3 /* humanoid_box.env */,
 				19B20A1E15C8487D005EA3A3 /* humanoid_box.dm */,
+				19AB184D15CB1D22000B9114 /* humanoid_box.cfg */,
 			);
 			name = Config;
 			sourceTree = "<group>";
@@ -1625,6 +1633,10 @@
 				19801DC3159B62C100DB8AD5 /* TaskSpaceControllerA.h */,
 				19801DC4159B62C100DB8AD5 /* TaskSpaceControllerB.h */,
 				19B1EB3015ADE57B005FCEE4 /* TaskSpaceControllerA.cpp */,
+				19EC853215D1639000874729 /* TaskSpaceControllerC.h */,
+				19EC853315D1639900874729 /* TaskSpaceControllerC.cpp */,
+				197608A315D41D7400E29C68 /* CustomTaskSpaceController.h */,
+				197608A415D41D7400E29C68 /* CustomTaskSpaceController.cpp */,
 			);
 			name = Optimization;
 			sourceTree = "<group>";
@@ -2482,6 +2494,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				197608FD15D43DC600E29C68 /* CustomTaskSpaceController.cpp in Sources */,
 				198B43CB15C9BF7C00458DC4 /* TaskSpaceControllerB.cpp in Sources */,
 				198B43CC15C9BF7C00458DC4 /* GlobalDefines.cpp in Sources */,
 				198B43CD15C9BF7C00458DC4 /* DataLogger.cpp in Sources */,
@@ -2550,6 +2563,7 @@
 				198B440C15C9BF7C00458DC4 /* dmDynamicContactModel.cpp in Sources */,
 				198B440D15C9BF7C00458DC4 /* TaskSpaceControllerA.cpp in Sources */,
 				198B440E15C9BF7C00458DC4 /* JumpingStateMachine.cpp in Sources */,
+				19EC853415D1639900874729 /* TaskSpaceControllerC.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

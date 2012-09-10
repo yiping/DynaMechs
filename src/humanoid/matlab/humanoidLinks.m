@@ -1,10 +1,14 @@
 % Torso Link
 clear link;
-%link.mass = .578 * Mass;
-link.mass = 12.1;
-link.length = .41;
-link.width  = .18;
-link.depth  = .1;
+link.mass = .578 * Mass;
+%link.mass = 12.1;
+%link.length = .41;
+%link.width  = .18;
+%link.depth  = .1;
+link.length = .336*Height;
+link.width  = .186*Height;
+link.depth  = link.width/2;
+
 link.com    = [0 0 link.length*.66];
 %link.com    = [0 0 .15];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
@@ -14,7 +18,10 @@ link.Ibar   = link.I + link.mass*cross(link.com)*cross(link.com)';
 % 						0	0.257	0
 % 						0	0	0.121];
 
-link.hipWidth = .18;
+link.hipWidth = .139*Height;
+link.shoulderWidth = .205*Height;
+link.hipOffset = .029*Height;
+link.shoulderOffset = .015*Height;
 link.type   = 'MobileBaseLink';
 link.model  = '"./humanoid_box_model/torso.xan"';
 link.contacts = [];
@@ -23,12 +30,12 @@ link.pos    = [2 2 .62];
 link.offset = [-link.depth/2 -link.width/2 0];
 link.scale  = [link.depth link.width link.length];
 
-link.neckWidth = .04;
-link.neckHeight = .02;
-link.neckDepth = .04;
-link.headHeight = .12;
-link.headWidth = .1;
-link.headDepth = .1;
+link.neckHeight = .04*Height;
+link.neckWidth = .059*Height;
+link.neckDepth = .059*Height;
+link.headHeight = .118*Height;
+link.headWidth = .086*Height;
+link.headDepth = .086*Height;
 
 link.neckOffset = [-link.neckDepth/2 -link.neckWidth/2 link.length];
 link.neckScale  = [link.neckDepth, link.neckWidth, link.neckHeight];
@@ -47,12 +54,12 @@ zScrewLink = link;
 
 % Thigh Link
 clear link;
-%link.mass = .1 * Mass;
-link.mass = .81;
+link.mass = .1 * Mass;
+%link.mass = .81;
 totalMass = totalMass + 2*link.mass;
-link.length = .25;
-link.width  = .04*1.5;
-link.depth  = .04*1.5;
+link.length = .264*Height;
+link.width  = .07*Height;
+link.depth  = .08*Height;
 link.com    = [.433*link.length 0 0];
 % link.com    = [.0784 0 0];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
@@ -73,12 +80,12 @@ hipLink = link;
 
 % Shank Link
 clear link;
-%link.mass = .0465 * Mass;
-link.mass = .63;
+link.mass = .0465 * Mass;
+%link.mass = .63;
 totalMass = totalMass + 2*link.mass;
-link.length = .25;
-link.width  = .04*1.5;
-link.depth  = .04*1.5;
+link.length = .239*Height;
+link.width  = .058*Height;
+link.depth  = .058*Height;
 link.com    = [.433*link.length 0 0];
 % link.com    = [0.0964	0 0];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
@@ -111,14 +118,14 @@ ankleLink = link;
 
 % Foot Link
 clear link;
-%link.mass = .0145 * Mass;
-link.mass = .63;
+link.mass = .0145 * Mass;
+%link.mass = .63;
 totalMass = totalMass + 2*link.mass;
-link.length = .17;
-link.width  = .1;
-link.depth  = .01;
+link.length = .152*Height;
+link.width  = .055 * Height*1.6;
+link.depth  = .03 * Height;
 %%%%%%%%%%%%%%
-link.ankleLocation = [0 0 .05];
+link.ankleLocation = [0 0 .25*link.length];
 link.contacts = [link.depth	link.width/2	0; ...
                  link.depth -link.width/2   0; ...
                  link.depth link.width/2    link.length; ...
@@ -145,9 +152,14 @@ footLink = link;
 clear link;
 link.mass = .028 * Mass;
 totalMass = totalMass + 2*link.mass;
-link.length = .25;
-link.width  = .04;
-link.depth  = .04;
+%link.length = .25;
+%link.width  = .04;
+%link.depth  = .04;
+
+link.length = .148*Height;
+link.width = .048*Height;
+link.depth = .063*Height;
+
 link.com    = [.436*link.length 0 0];
 % link.com = [0.0784	0 0];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
@@ -170,9 +182,10 @@ upperArmLink = link;
 clear link;
 link.mass = .022 * Mass;
 totalMass = totalMass + 2*link.mass;
-link.length = .25;
-link.width  = .04;
-link.depth  = .04;
+link.length = (.139+.101)*Height;
+link.width  = .042*Height;
+link.depth  = .048*Height;
+
 link.com    = [.682*link.length 0 0];
 % link.com = [0.0964	0 0];
 link.I      = 1/12 * link.mass * diag([link.depth^2 + link.width^2, ...
@@ -186,6 +199,16 @@ link.contacts = [link.length	0	0];
 link.type   = 'RevoluteLink';
 link.mdh    = [upperArmLink.length	0	0	0];
 link.model  = '"./humanoid_box_model/foreArm.xan"';
+link.foreArmLength = .139*Height;
+
 link.offset = [0 -link.depth/2 -link.width/2];
-link.scale  = [link.length link.depth,link.width];
+link.scale  = [link.foreArmLength link.depth,link.width];
+
+link.handLength = .101*Height;
+link.handDepth = 1.3*link.depth;
+link.handWidth = .6*link.width;
+link.handOffset = [link.foreArmLength -link.handDepth/2 -link.handWidth/2];
+link.handScale  = [link.handLength link.handDepth link.handWidth];
+
+
 foreArmLink = link;

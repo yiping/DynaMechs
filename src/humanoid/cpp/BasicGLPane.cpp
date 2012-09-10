@@ -10,6 +10,7 @@
 
 #include "BasicGLPane.h"
 #include <dmEnvironment.hpp>
+using namespace Eigen;
 
 BEGIN_EVENT_TABLE(BasicGLPane, wxGLCanvas)
 EVT_MOTION(BasicGLPane::mouseMoved)
@@ -264,23 +265,25 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	
 	// Draw Axes
 	{
+		Float AxisLength = .5;
 		glBegin(GL_LINES);
 		glColor3f(1.0, 0.0, 0.0);
-		glVertex3f(2.0, 0.0, 0.0);
+		glVertex3f(AxisLength, 0.0, 0.0);
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
 		
 		glBegin(GL_LINES);
 		glColor3f(0.0, 1.0, 0.0);
-		glVertex3f(0.0, 2.0, 0.0);
+		glVertex3f(0.0, AxisLength, 0.0);
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
 		
 		glBegin(GL_LINES);
 		glColor3f(0.0, 0.0, 1.0);
-		glVertex3f(0.0, 0.0, 2.0);
+		glVertex3f(0.0, 0.0, AxisLength);
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();
+		
 	}
 	glEnable(GL_LIGHTING);
 	
@@ -289,7 +292,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	userGraphics();
 	//cout << "Complete" << endl;;
 	if(glIsEnabled(GL_BLEND)) {
-		glDepthMask(GL_FALSE);
+		//glDepthMask(GL_FALSE);
 	}
 	
 	// Draw Robot!
@@ -304,13 +307,16 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		}
 		//cout << "Draw Robot" << endl;
-		G_robot->drawSkeleton();
+		if (frame->showSkeleton->IsChecked()) {
+			G_robot->drawSkeleton();
+		}
+		
 		G_robot->draw();
 		//cout << "Robot Drawn" << endl;
 		glPopAttrib();
 	}
 	if(glIsEnabled(GL_BLEND)) {
-		glDepthMask(GL_TRUE);
+		//glDepthMask(GL_TRUE);
 	}
 	
 	// ===============================================================

@@ -412,6 +412,11 @@ void TaskSpaceControllerA::UpdateHPTConstraintBounds()
 	double        blc[MAXNUMCON], buc[MAXNUMCON]; 
 	MSKidxt       i;
 	
+	/*cout << "Constraints" << endl;
+	cout << taskConstrActive << endl;
+	cout << "Optims" << endl;
+	cout << taskOptimActive << endl;*/
+	
 	//cout << "Loading Hpt Constraints Bounds " << endl;
 	//cout << TaskBias.rows() << " vs. " << taskConstrActive.rows() << endl;
 	int k = 0;
@@ -615,6 +620,9 @@ void TaskSpaceControllerA::Optimize() {
 			MSK_getintinf(task, MSK_IINF_INTPNT_ITER, &iter);
 			//cout << "Iter = " << iter << endl;
 			
+			//MSKrealt primalObj;
+			//MSK_getprimalobj(task, MSK_SOL_ITR,&primalObj);
+			//cout << "Objective Val " << primalObj << endl;
 			switch(solsta)
 			{
 				case MSK_SOL_STA_OPTIMAL:   
@@ -667,4 +675,6 @@ void TaskSpaceControllerA::Optimize() {
 	qdd = xx.segment(qddStart,NJ+6);
 	fs = xx.segment(fStart,6*NS);
 	lambda = xx.segment(lambdaStart,NS*NP*NF);
+	TaskError = TaskJacobian*qdd-TaskBias;
+	
 }

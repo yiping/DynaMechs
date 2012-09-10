@@ -299,6 +299,10 @@ void executeGL_xan(ifstream &data_ptr)
 			   glEnd();
 		   }
 	   }
+   }
+	
+	for (i=0; i<num_faces; i++)
+	{
 	   
 
 	   glColor4f(color[0], color[1], color[2],color[3]);

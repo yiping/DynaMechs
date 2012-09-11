@@ -5,16 +5,13 @@
 #include "QPsolver.h"
 #include "math_funcs.h"
 
-#define NJ 20  //joints
-#define NS 2   //supports
-#define NP 4   //contact points on each support
-#define NF 4   //linearized friction cone vectors
+
 
 
 #define MAXNUMCON (NJ+6 + 6*NS )   // # of constraints           
-#define MAXNUMVAR (NJ + NJ+6 + 6*NS + NS*NP*NF)  // # of variables
+#define MAXNUMVAR (NJ + NJ+6 +  NS*NP*NF)  // # of variables  // 6*NS +
 #define MAXNUMANZ (MAXNUMCON * MAXNUMVAR )					  
-#define MAXNUMQNZ (MAXNUMVAR*MAXNUMVAR)            
+#define MAXNUMQNZ (MAXNUMVAR * MAXNUMVAR)            
 
 
 static void MSKAPI printstr(void *handle, char str[]) 

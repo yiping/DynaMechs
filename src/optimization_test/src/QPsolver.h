@@ -15,6 +15,7 @@
 #include <Eigen/Dense>
 #include <Eigen/LU>
 #include <Eigen/Eigenvalues> 
+#include "control_globals.h"
 
 using namespace std;
 using namespace Eigen;

@@ -72,6 +72,26 @@ void showDefiniteness(const MatrixXF &A )
 	}
 }
 
+int showRank(const MatrixXd &A)
+{
+
+	JacobiSVD<MatrixXd> svdA(A, ComputeThinU | ComputeThinV);
+	// cout << "The rank of A is " << svdA.nonzeroSingularValues()<<endl;
+	VectorXd sing_val_vec = svdA.singularValues() ;
+
+	int count = 0;
+	for (int i; i<sing_val_vec.size(); i++)
+	{
+		//cout<<"singular value "<< i<<" is: "<<sing_val_vec(i)<<endl;
+		if (sing_val_vec(i) >1e-14 )
+		{
+			count ++;
+		}
+	}
+
+	return count;
+}
+
 
 
 int main()
@@ -159,7 +179,44 @@ int main()
 
 	cout<<" d0 = "<<endl;
 	cout<<d0<<endl;
-	
+
+
+   	// rank-revealing: please pay attention to the precision: svd result accuracy depends on the machine precision. float and double make a big difference.
+
+	//MatrixXd AA(3,3); 
+   	//AA << 1, 2, 5,
+    //    2, 1, 4,
+     //   3, 0, 3;
+
+	//AA << 1, 2, 1,
+    //     -2, -3, 1,
+    //      3, 5, 0;
+
+	MatrixXd AA(4,4);
+	AA<<2, 4, 1, 3, -1, -2, 1, 0, 0, 0, 2, 2, 3, 6, 2, 5;
+
+	// Another application of the SVD is that it provides an explicit representation of the range and null space of a matrix M. 
+	// The right-singular vectors corresponding to vanishing singular values of M span the null space of M. 
+	// The left-singular vectors corresponding to the non-zero singular values of M span the range of M. 
+    // => the rank of M equals the number of non-zero singular values 
+   	cout << "Here is the matrix A:\n" << AA << endl;
+  	//FullPivLU<Matrix3f> lu_decomp(AA);
+   	//cout << "The rank of A is " << lu_decomp.rank() << endl;
+	JacobiSVD<MatrixXd> svdAA(AA, ComputeFullU | ComputeFullV);
+	cout << "The rank of A is " << svdAA.nonzeroSingularValues()<<endl;
+	cout << "Its singular values are:" << endl << svdAA.singularValues() << endl;
+	cout << "U matrix:" << endl << svdAA.matrixU() << endl;
+	cout << "V matrix:" << endl << svdAA.matrixV() << endl;
+
+	VectorXd sing_vec = svdAA.singularValues();
+
+	for (int i; i<sing_vec.size(); i++)
+	{
+		cout<<"singular value "<< i<<" is: "<<sing_vec(i)<<endl;
+	}
+
+	cout<<"my function shows the rank of A is: "<<showRank(AA)<<endl;
+
 	//LLT<Matrix3f> llt;
 	//llt.compute(z);
 	//cout << llt.isPositiveDefinite() << endl;

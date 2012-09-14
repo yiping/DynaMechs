@@ -25,7 +25,7 @@ public:
 	void UpdateObjective();
 	void UpdateVariableBounds();
 	void UpdateConstraintMatrix();
-
+	void UpdateInitialConstraintBounds();
 	void UpdateHPTConstraintBounds();
 	void Optimize();
 
@@ -39,7 +39,6 @@ public:
 	
 
 
-	static const int tauStart, tauEnd, qddStart,qddEnd,fStart,fEnd,lambdaStart,lambdaEnd,dynConstrStart,dynConstrEnd,fConstrStart,fConstrEnd,hptConstrStart;
 
 protected:
 	dmArticulation * robot;	
@@ -54,8 +53,7 @@ protected:
 	MatrixXF TaskJacobian;
 	VectorXF TaskBias;
 
-	MatrixXF C0;
-	VectorXF d0;
+
 
 	QPsolver solver;
 
@@ -64,8 +62,17 @@ private:
 	MatrixXF ST
 	MatrixXF DynCon;
 
+	MatrixXF C0;
+	VectorXF d0;
+
 	MatrixXF Cbar;
 	VectorXF dbar;
+
+	VectorXbk  bk;
+	VectorXF   bl;
+	VectorXF   bu;
+
+	MatrixXF C;
 	
 };
 

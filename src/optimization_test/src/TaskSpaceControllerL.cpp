@@ -18,6 +18,9 @@
 
 
 
+#define DEBUG_TSCL
+
+
 TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot) 
 {
 	artic = robot;
@@ -96,6 +99,8 @@ TaskSpaceControllerL::Reset()
 	d0.segment(NJ, NJ+6) = qddvec;
 	d0.segment(NJ+6, NS*NP*NF) = VectorXF::Ones(NS*NP*NF);
 
+	dBar = d0;
+	CBar = C0; 
 }
 
 
@@ -118,6 +123,13 @@ void TaskSpaceControllerL::UpdateObjective()
 		}
 	}
 	MatrixXd JtBar = Jt * CBar;
+	getNullSpace(JtBar, C);
+
+#ifdef DEBUG_TSCL
+	// check for the rank of JtBar
+	cout<<"Current JtBar has rank "<<showRank(JtBar)<<endl;
+#endif DEBUG_TSCL
+
 	MatrixXd JtBarT = JtBar.transpose();
 
 	MatrixXd Q = JtBarT * JtBar; 
@@ -138,47 +150,84 @@ void TaskSpaceControllerL::UpdateObjective()
 
 void TaskSpaceControllerL::UpdateConstraintMatrix()
 {
-	// for TSC-L, you basically do not need to do anything in this function.
+	solver.UpdateConstraintMatrix(CBar);
 }
 
 
-
-void TaskSpaceControllerL::UpdateVariableBounds() 
+void TaskSpaceControllerL::UpdateInitialConstraintBounds()
 {
-	VectorXbk  bkx(NVAR);
-	VectorXF   blx(NVAR);
-	VectorXF   bux(NVAR);
+	bk = VectorXbk::Zero(NVAR);
+	bl = VectorXF::Zero(NVAR);
+	bu = VectorXF::Zero(NVAR);
 	
 	// Set up 'tau' bounds (ranged)
 	for (i=TAU_START; i<=TAU_END; i++) 
 	{
-		bkx[i] = MSK_BK_RA;
-		blx[i] = -500;
-		bux[i] = +500;
+		bk[i] = MSK_BK_RA;
+		bl[i] = -500;
+		bu[i] = +500;
 	}
 	
 	// Set up 'qdd' bounds - (free) 
 	for (i=QDD_START; i<=QDD_END; i++) 
 	{
-		bkx[i] = MSK_BK_FR;
-		blx[i] = -MSK_INFINITY;
-		bux[i] = +MSK_INFINITY;
+		bk[i] = MSK_BK_FR;
+		bl[i] = -MSK_INFINITY;
+		bu[i] = +MSK_INFINITY;
 	}
 	
 	// Set up 'lambda' bounds - (lower bound)
 	for (i=LAMBDA_START; i<=LAMBDA_END; i++) 
 	{
-		bkx[i] = MSK_BK_LO;
-		blx[i] = 0;
-		bux[i] = +MSK_INFINITY;			
+		bk[i] = MSK_BK_LO;
+		bl[i] = 0;
+		bu[i] = +MSK_INFINITY;			
 	}	
 
-	solver.UpdateVariableBounds(bkx, blx, bux);
+	
 }
 
 
+void TaskSpaceControllerL::UpdateHPTConstraintBounds()
+{
+	solver.UpdateConstraintBounds(bk, bl-dBar, bu-dBar    );
+}
 
 
+void TaskSpaceControllerL::UpdateVariableBounds() 
+{
 
+// for TSC-L, you basically do not need to do anything in this function.
+
+
+}
+
+
+void TaskSpaceControllerL::AssignFootMaxLoad(int index, double maxLoad) 
+{
+	
+		
+}
+
+
+//! The index in this function refers to the index of support body
+void TaskSpaceControllerL::AssignFootMaxLoad(int index, double maxLoad) 
+{
+	for (int i = 0; i< NP*NF; i++)
+	{
+		solver.ModifySingleConstraintBound(LAMBDA_START + NP*NF*index, MSK_BK_UP, 0, maxLoad);
+	}
+}
+
+
+void TaskSpaceControllerL::Optimize() 
+{
+	solver.Optimize();
+	dBar = dBar + CBar * solver.xx;
+
+	CBar = CBar * C; 
+
+
+}
 
 

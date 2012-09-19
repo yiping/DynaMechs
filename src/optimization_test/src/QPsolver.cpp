@@ -5,16 +5,13 @@
 #include "QPsolver.h"
 #include "math_funcs.h"
 
-#define NJ 20  //joints
-#define NS 2   //supports
-#define NP 4   //contact points on each support
-#define NF 4   //linearized friction cone vectors
+
 
 
 #define MAXNUMCON (NJ+6 + 6*NS )   // # of constraints           
-#define MAXNUMVAR (NJ + NJ+6 + 6*NS + NS*NP*NF)  // # of variables
+#define MAXNUMVAR (NJ + NJ+6 +  NS*NP*NF)  // # of variables  // 6*NS +
 #define MAXNUMANZ (MAXNUMCON * MAXNUMVAR )					  
-#define MAXNUMQNZ (MAXNUMVAR*MAXNUMVAR)            
+#define MAXNUMQNZ (MAXNUMVAR * MAXNUMVAR)            
 
 
 static void MSKAPI printstr(void *handle, char str[]) 
@@ -245,7 +242,7 @@ void QPsolver::InspectQPproblem()
 //------------------------------------------------------------
 
 //! Update the optimization objective \n
-//! \f$ \frac{1}{2} x^T Q x + c^T x \f$ \n
+//! \f$ \frac{1}{2} x^T Q x + c^T x + c_{\mbox{\tiny fix}} \f$  \n
 //! \li Mosek assumes 1/2 in front of Q. Only lower triangular part of Q should be specified\n
 //! \li Q is assumed symmetric. Only non-zero elements are specified. \n
 //! \li However, in general case, we don't know which entries of Q are zeros, so we specify the entire lower triangle.\n  
@@ -526,5 +523,37 @@ void QPsolver::Optimize()
 	} 
 
 }
+
+
+void QPsolver::ModifySingleConstraintBound(int index, MSKboundkeye bkey, double new_lb, double new_ub)
+{
+	r =  MSK_putbound(task, MSK_ACC_CON, index, bkey, new_lb, new_ub);	
+
+	if (r != MSK_RES_OK) 
+	{	
+		// In case of an error, print error code and description.  
+		char symname[MSK_MAX_STR_LEN]; //1024 
+		char desc[MSK_MAX_STR_LEN]; 
+		printf("An error occurred while optimizing.\n"); 
+		MSK_getcodedesc (r, symname, desc); 
+		printf("Error %s - '%s'\n",symname,desc); 
+	}
+}
+
+void QPsolver::ModifySingleVariableBound(int index, MSKboundkeye bkey, double new_lb, double new_ub)
+{
+	r =  MSK_putbound(task, MSK_ACC_VAR, index, bkey, new_lb, new_ub);	
+
+	if (r != MSK_RES_OK) 
+	{	
+		// In case of an error, print error code and description.  
+		char symname[MSK_MAX_STR_LEN]; //1024 
+		char desc[MSK_MAX_STR_LEN]; 
+		printf("An error occurred while optimizing.\n"); 
+		MSK_getcodedesc (r, symname, desc); 
+		printf("Error %s - '%s'\n",symname,desc); 
+	}
+}
+
 
 

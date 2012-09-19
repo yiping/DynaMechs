@@ -39,7 +39,7 @@ Float totalMass;
 
 CubicSplineTrajectory ComTrajectory;*/
 
-HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerB(robot) {
+HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerA(robot) {
 	q.resize(STATE_SIZE);
 	qdDm.resize(STATE_SIZE);
 	qd.resize(RATE_SIZE);

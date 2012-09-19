@@ -37,5 +37,7 @@ int main()
 	s1.InspectQPproblem();
 
 	s1.Optimize();
+
+	// cout<<"+MSK_INFINITY  = "<<setprecision (35)<< +MSK_INFINITY +1.1 << "    sizeof(MSK_INFINITY) = "<<sizeof(MSK_INFINITY)<<endl;
 	return 1;
 }

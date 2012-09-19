@@ -56,3 +56,48 @@ void showDefiniteness(const MatrixXF &A )
 			cout<<"matrix is indefinite"<<endl;
 	}
 }
+
+
+// A is square matrix
+void solveInverse(const MatrixXF & A, const VectorXF & rhs, VectorXF & x)
+{
+	// a positive definite matrix is always nonsingular.
+	x = A.partialPivLu().solve( rhs );
+}
+
+void solvePseudoInverse(const MatrixXF & A, const VectorXF & rhs, VectorXF & x)
+{
+	x = A.jacobiSvd(ComputeThinU | ComputeThinV).solve(rhs);
+}
+
+
+int showRank(const MatrixXd &A)
+{
+	// Another application of the SVD is that it provides an explicit representation of the range and null space of a matrix M. 
+	// The right-singular vectors corresponding to vanishing singular values of M span the null space of M. 
+	// The left-singular vectors corresponding to the non-zero singular values of M span the range of M. 
+    // => the rank of M equals the number of non-zero singular values 
+
+	// rank-revealing: please pay attention to the precision: 
+	// in Eigen3 implementation, JacobiSVD result accuracy depends on the machine precision. float and double make a big difference.
+
+	JacobiSVD<MatrixXd> svdA(A, ComputeThinU | ComputeThinV);
+	// cout << "The rank of A is " << svdA.nonzeroSingularValues()<<endl;
+	VectorXd sing_val_vec = svdA.singularValues() ;
+
+	int count = 0;
+	for (int i; i<sing_val_vec.size(); i++)
+	{
+		//cout<<"singular value "<< i<<" is: "<<sing_val_vec(i)<<endl;
+		if (sing_val_vec(i) >1e-14 )
+		{
+			count ++;
+		}
+	}
+
+	return count;
+}
+
+
+
+

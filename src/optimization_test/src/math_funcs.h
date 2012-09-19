@@ -18,6 +18,7 @@ using namespace Eigen;
 
 void getNullSpace(const MatrixXF &A, MatrixXF &C);
 void showDefiniteness(const MatrixXF &A );
-
-
+void solveInverse(const MatrixXF & A, const VectorXF & rhs, VectorXF & x);
+void solvePseudoInverse(const MatrixXF & A, const VectorXF & rhs, VectorXF & x);
+int  showRank(const MatrixXd A);
 #endif

@@ -15,6 +15,7 @@
 #include <Eigen/Dense>
 #include <Eigen/LU>
 #include <Eigen/Eigenvalues> 
+#include "control_globals.h"
 
 using namespace std;
 using namespace Eigen;
@@ -38,6 +39,9 @@ public:
 	void UpdateConstraintMatrix(const MatrixXF &A);
 	void UpdateConstraintBounds(const VectorXbk &bkc, const VectorXF &blc, const VectorXF &buc);
 	void UpdateVariableBounds(const VectorXbk &boundkey_var, const VectorXF &lowerbound_var, const VectorXF &upperbound_var);
+
+	void ModifySingleConstraintBound(int index, MSKboundkeye bkey, double new_lb, double new_ub);
+	void ModifySingleVariableBound(int index, MSKboundkeye bkey, double new_lb, double new_ub);
 protected:
 
 

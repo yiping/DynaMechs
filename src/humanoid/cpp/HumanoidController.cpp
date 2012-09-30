@@ -116,6 +116,9 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 	aFoot.resize(NS);
 	aDesFoot.resize(NS);
 	
+	kpFoot.resize(NS);
+	kdFoot.resize(NS);
+	
 	for (int i=0; i<NS; i++) {
 		pFoot[i].resize(3);
 		pDesFoot[i].resize(3);
@@ -129,16 +132,20 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 		aDesFoot[i].setZero();
 		vDesFoot[i].setZero();
 		pDesFoot[i].setZero();
+		
+		RDesFoot[i].setZero();
+		
+		kpFoot[i] = 0;
+		kdFoot[i] = 0;
 	}
 	//ComTrajectory.setSize(3);
 	
 	
-	kpFoot.resize(NS);
-	kdFoot.resize(NS);
-	aDesFoot.resize(NS);
-	pDesFoot.resize(NS);
-	vDesFoot.resize(NS);
-	RDesFoot.resize(NS);
+
+	//aDesFoot.resize(NS);
+	//pDesFoot.resize(NS);
+	//vDesFoot.resize(NS);
+	//RDesFoot.resize(NS);
 
 	
 	aComDes.resize(3);
@@ -664,6 +671,10 @@ void HumanoidController::ComputeComInfo(Matrix6XF & Cmm, Vector6F & bias, Vector
 	
 	IC0 = XT*artic->H.block(0,0,6,6)*XT.transpose();
 	IBarC0 = IC0.block(0,0,3,3);
+	
+	// These quantities (f,a) for the floating base are the result of
+	// inverse dynamics with qdd=0. As a result, fb->link_val2.f 
+	// contains the first 6 rows of CandG!
 	
 	bias = XT * (fb->link_val2.f-artic->H.block(0,0,6,6)*fb->link_val2.a);
 }

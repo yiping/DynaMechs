@@ -79,7 +79,7 @@ IMPLEMENT_APP(MyApp)
 bool MyApp::OnInit()
 {	
 	wxCmdLineParser parser(argc,argv);
-	parser.AddOption(wxT("c"), wxT("Config File"));
+	parser.AddOption(wxT("c"), wxT("config-file"));
 	parser.Parse();
 	
 

@@ -39,14 +39,15 @@ Float totalMass;
 
 CubicSplineTrajectory ComTrajectory;*/
 
-HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerA(robot) {
+HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerA(robot) 
+{
 	q.resize(STATE_SIZE);
-	qdDm.resize(STATE_SIZE);
-	qd.resize(RATE_SIZE);
+	qdDm.resize(STATE_SIZE);	
+	qd.resize(RATE_SIZE);		// joint rate
 	
-	SupportIndices.resize(NS);
-	SupportIndices[0] = 5;
-	SupportIndices[1] = 9;
+	SupportIndices.resize(NS);	// number of support
+	SupportIndices[0] = 5;		// support body 0
+	SupportIndices[1] = 9;		// support body 1
 	
 	contactState.resize(NS);
 	slidingState.resize(NS);
@@ -55,8 +56,11 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 	Matrix3F RSup;
 	RSup << 0,0,1,0,1,0,-1,0,0;
 	
+
+	// initialize transform from ankle to support origin
 	XformVector Xforms(NS);
-	for (int k=0; k<NS; k++) {
+	for (int k=0; k<NS; k++) 
+	{
 		Xforms[k].resize(6,6);
 		
 		dmRigidBody * link = (dmRigidBody*) artic->getLink(SupportIndices[k]);
@@ -72,9 +76,10 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 	}
 	SupportXforms = Xforms;
 	
-	// Construct Point Force Transform
+	// Construct Force Transform from Each Contact Point to Support Origin
 	PointForceXforms.resize(NS);
-	for (int i=0; i<NS; i++) {
+	for (int i=0; i<NS; i++) 
+	{
 		PointForceXforms[i].resize(NJ);
 		
 		//cout << "Getting forces for link " << SupportIndices[i] << endl;
@@ -89,7 +94,8 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 		
 		//cout << "pirelsup " << endl << piRelSup << endl;
 		
-		for (int j=0; j<NP; j++) {
+		for (int j=0; j<NP; j++) 
+		{
 			Vector3F pRel, tmp;
 				
 			//Tmp is now the contact point location relative to the body coordinate
@@ -102,21 +108,24 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 			PointForceXforms[i][j].block(0,3,3,3) = cr3(pRel);
 		}
 	}
+
+
 	grfInfo.localContacts = 0;
 	
-	pFoot.resize(NS);
-	pDesFoot.resize(NS);
+	pFoot.resize(NS);		
+	pDesFoot.resize(NS);	
 	
-	vFoot.resize(NS);
-	vDesFoot.resize(NS);
+	vFoot.resize(NS);		
+	vDesFoot.resize(NS);	
 	
-	RFoot.resize(NS);
-	RDesFoot.resize(NS);
+	RFoot.resize(NS);		
+	RDesFoot.resize(NS);	
 	
-	aFoot.resize(NS);
-	aDesFoot.resize(NS);
+	aFoot.resize(NS);		
+	aDesFoot.resize(NS);	
 	
-	for (int i=0; i<NS; i++) {
+	for (int i=0; i<NS; i++) 
+	{
 		pFoot[i].resize(3);
 		pDesFoot[i].resize(3);
 		
@@ -135,10 +144,10 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 	
 	kpFoot.resize(NS);
 	kdFoot.resize(NS);
-	aDesFoot.resize(NS);
+/*	aDesFoot.resize(NS);
 	pDesFoot.resize(NS);
 	vDesFoot.resize(NS);
-	RDesFoot.resize(NS);
+	RDesFoot.resize(NS);  */ //YL?
 
 	
 	aComDes.resize(3);
@@ -155,14 +164,16 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 	
 }
 
+
+
 void HumanoidController::ControlInit()
 {
 	//Update State Variables for Control
 	{
-		artic->getState(q.data(),qdDm.data());
+		artic->getState(q.data(),qdDm.data());	// For Quaternion link, qdDM has an extra dummy entry
 		int N = artic->getTrueNumDOFs();
 		
-		extractQd(qdDm, qd);
+		extractQd(qdDm, qd);	// remove any dummy entry
 		
 		// Test code for velocity initialization
 		{
@@ -181,20 +192,25 @@ void HumanoidController::ControlInit()
 		artic->getLink(0)->rtxFromInboard(qdDm.data(),qd.data());
 		artic->getLink(0)->rtxFromInboard(qdDm.data()+3,qd.data()+3);
 		
-		ObtainArticulationData();
+		ObtainArticulationData();	// compute Support Jacobians, H, CandG
 		UpdateVariableBounds();
-		UpdateInitialConstraintBounds();
-		
-		for (int i =0; i<NS; i++) {
+		UpdateInitialConstraintBounds();	
+
+		// get contact and sliding state for each contact point		
+		for (int i =0; i<NS; i++) 
+		{
 			dmRigidBody * link = (dmRigidBody * ) artic->getLink(SupportIndices[i]);
 			dmContactModel * cont = (dmContactModel *) link->getForce(0);
 			contactState[i] = 0;
 			slidingState[i] = 0;
-			for (int j=0; j<NP; j++) {
-				if (cont->getContactState(j)) {
+			for (int j=0; j<NP; j++) 
+			{
+				if (cont->getContactState(j)) 
+				{
 					contactState[i]+=(int) pow(2.0,j);
 				}
-				if (cont->getSlidingState(j)) {
+				if (cont->getSlidingState(j)) 
+				{
 					slidingState[i]+=(int) pow(2.0,j);
 				}
 			}
@@ -225,6 +241,10 @@ void HumanoidController::ControlInit()
 	}
 }
 
+
+
+
+
 void HumanoidController::HumanoidControl(ControlInfo & ci) {
 	int taskRow = 0;
 	Float discountFactor = 1;
@@ -249,32 +269,40 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 		dmGetSysTime(&tv2);
 		UpdateConstraintMatrix();
 		
-		int maxPriorityLevels = OptimizationSchedule.maxCoeff();
+		int maxPriorityLevels = OptimizationSchedule.maxCoeff();		//OptimizationSchedule - VectorXF
 		const int numTasks = OptimizationSchedule.size();
 		
-		if (maxPriorityLevels > 0) {
-			for (int level=1; level<=maxPriorityLevels; level++) {
+		if (maxPriorityLevels > 0) 
+		{
+			for (int level=1; level<=maxPriorityLevels; level++) 
+			{
 				taskConstrActive.setZero(numTasks);
 				taskOptimActive.setZero(numTasks);
 				bool runOpt = false;
-				for (int i=0; i<numTasks;i ++) {
-					if (OptimizationSchedule(i) == level) {
+				for (int i=0; i<numTasks;i ++) 
+				{
+					if (OptimizationSchedule(i) == level) 
+					{
 						taskOptimActive(i) = 1;
 						runOpt = true;
 					}
-					else if ((OptimizationSchedule(i) < level) && (OptimizationSchedule(i) > -1)) {
+					else if ((OptimizationSchedule(i) < level) && (OptimizationSchedule(i) > -1)) 
+					{
 						taskConstrActive(i) = 1;
 					}
 				}
 				
-				if (runOpt) {
+				if (runOpt) 
+				{
 					UpdateObjective();
 					UpdateHPTConstraintBounds();
 					dmGetSysTime(&tv3);
 					//cout << "Optimizing level " << level << endl;
 					Optimize();
-					for (int i=0; i<numTasks;i ++) {
-						if (OptimizationSchedule(i) == level) {
+					for (int i=0; i<numTasks;i ++) 
+					{
+						if (OptimizationSchedule(i) == level) 
+						{
 							TaskBias(i) += TaskError(i);
 							//cout << "Optimization Level " << level << " task error " << i << " = " << TaskError(i) << endl; 
 						}
@@ -282,7 +310,8 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 				}
 			}
 		}
-		else {
+		else 
+		{
 			UpdateObjective();
 			UpdateHPTConstraintBounds();
 			dmGetSysTime(&tv3);
@@ -621,7 +650,8 @@ void HumanoidController::ComputeActualQdd(VectorXF & qddA)
 	
 }
 
-void HumanoidController::ComputeComInfo(Matrix6XF & Cmm, Vector6F & bias, Vector3F & pCom, Float & m) {
+void HumanoidController::ComputeComInfo(Matrix6XF & Cmm, Vector6F & bias, Vector3F & pCom, Float & m) 
+{
 	
 	LinkInfoStruct * fb = artic->m_link_list[0];
 	dmLink * fbLink = fb->link;
@@ -641,7 +671,7 @@ void HumanoidController::ComputeComInfo(Matrix6XF & Cmm, Vector6F & bias, Vector
 	m = fb->I_C.m;
 	pFBRelCoM(0) = -fb->I_C.h[0]/m;
 	pFBRelCoM(1) = -fb->I_C.h[1]/m;
-	pFBRelCoM(2) = -fb->I_C.h[2]/m;
+	pFBRelCoM(2) = -fb->I_C.h[2]/m;		//YL?
 	
 	//Matrix6F IC0;
 	//CrbToMat(fb->I_C, IC0);
@@ -665,10 +695,11 @@ void HumanoidController::ComputeComInfo(Matrix6XF & Cmm, Vector6F & bias, Vector
 	IC0 = XT*artic->H.block(0,0,6,6)*XT.transpose();
 	IBarC0 = IC0.block(0,0,3,3);
 	
-	bias = XT * (fb->link_val2.f-artic->H.block(0,0,6,6)*fb->link_val2.a);
+	bias = XT * (fb->link_val2.f-artic->H.block(0,0,6,6)*fb->link_val2.a);	//YL?
 }
 
-void HumanoidController::ComputeGrfInfo(GRFInfo & grf) {
+void HumanoidController::ComputeGrfInfo(GRFInfo & grf)
+{
 	
 	Vector6F fZMP = Vector6F::Zero();
 	Vector6F icsForce;
@@ -687,14 +718,16 @@ void HumanoidController::ComputeGrfInfo(GRFInfo & grf) {
 	grf.footWrenches.resize(NS);
 	grf.footJacs.resize(NS);
 	
-	for (int k1 = 0; k1 < NS; k1++) {
+	for (int k1 = 0; k1 < NS; k1++) 
+	{
 		dmRigidBody * body = (dmRigidBody *) artic->getLink(SupportIndices[k1]);
 		LinkInfoStruct * listruct = artic->m_link_list[SupportIndices[k1]];
 		
-		artic->computeJacobian(SupportIndices[k1], Matrix6F::Identity(), grf.footJacs[k1]);
+		artic->computeJacobian(SupportIndices[k1], Matrix6F::Identity(), grf.footJacs[k1]);	// get foot jacobian
 		
-		for (int k2 = 0; k2 < body->getNumForces(); k2++) {
-			body->getForce(k2)->computeForce(listruct->link_val2,localForce);
+		for (int k2 = 0; k2 < body->getNumForces(); k2++) 
+		{
+			body->getForce(k2)->computeForce(listruct->link_val2,localForce);	// get contact force in local coordinate
 			grf.footWrenches[k1] << localForce[0],localForce[1],localForce[2],
 									localForce[3],localForce[4],localForce[5];
 			
@@ -706,43 +739,44 @@ void HumanoidController::ComputeGrfInfo(GRFInfo & grf) {
 			
 			// Apply Spatial Force Transform Efficiently
 			// Rotate Quantities
-			APPLY_CARTESIAN_TENSOR(listruct->link_val2.R_ICS,nLoc,nICS);
-			APPLY_CARTESIAN_TENSOR(listruct->link_val2.R_ICS,fLoc,fICS);
+			APPLY_CARTESIAN_TENSOR(listruct->link_val2.R_ICS,nLoc,nICS);	// nICS = R_ICS * nLoc 
+			APPLY_CARTESIAN_TENSOR(listruct->link_val2.R_ICS,fLoc,fICS);	// fICS = R_ICS * fLoc	
 			
 			// Add the r cross f
-			CROSS_PRODUCT(listruct->link_val2.p_ICS,fICS,tmp);
-			ADD_CARTESIAN_VECTOR(nICS,tmp);
+			CROSS_PRODUCT(listruct->link_val2.p_ICS,fICS,tmp);	
+			ADD_CARTESIAN_VECTOR(nICS,tmp);							// nICS = pICS X fICS + nICS
 			
 			//cout << "ICS Force " << icsForce.transpose() << endl;
 			
-			fZMP+=icsForce;
+			fZMP+=icsForce;	// intermediate values
 			
 			{
 				Matrix3F RtoICS;
 				copyRtoMat(listruct->link_val2.R_ICS, RtoICS);
 				
 				grfInfo.fCoPs[k1] = RtoICS * grf.footWrenches[k1].tail(3);
-				
-				
+
+
+				// from ankle to support origin
 				Vector6F supportFrameWrench = SupportXforms[k1].inverse().transpose()*grf.footWrenches[k1];
 				Vector3F supportFrameCoP;
 				
 				
-				transformToZMP(supportFrameWrench,supportFrameCoP);
-				
+				transformToZMP(supportFrameWrench,supportFrameCoP);	// get foot COP in support frame
+																	// note supportFrameWrench is modified, it becomes wrenchZMP
 				grfInfo.nCoPs[k1] = supportFrameWrench(2);
+
 				
 				Vector3F pRel;
 				((dmContactModel *) body->getForce(k2))->getContactPoint(0,pRel.data());
 				pRel(1) = 0; pRel(2) = 0;
+				Vector3F footFrameCoP = pRel + SupportXforms[k1].block(0,0,3,3).transpose()*supportFrameCoP;	// express the foot COP in foot frame
 				
-				Vector3F footFrameCoP = pRel + SupportXforms[k1].block(0,0,3,3).transpose()*supportFrameCoP;
-				
-				grfInfo.pCoPs[k1] = RtoICS*footFrameCoP;
-				
+
+				grfInfo.pCoPs[k1] = RtoICS*footFrameCoP;	
 				grfInfo.pCoPs[k1](0) += listruct->link_val2.p_ICS[0];
 				grfInfo.pCoPs[k1](1) += listruct->link_val2.p_ICS[1];
-				grfInfo.pCoPs[k1](2) += listruct->link_val2.p_ICS[2];
+				grfInfo.pCoPs[k1](2) += listruct->link_val2.p_ICS[2];	// foot COP in ICS
 			
 			}
 			

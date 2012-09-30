@@ -9,7 +9,7 @@
 
 #include "GlobalDefines.h"
 #include "JumpingStateMachine.h"
-#include "CustomTaskSpaceController.h"
+//#include "CustomTaskSpaceController.h"
 
 JumpingStateMachine::JumpingStateMachine(dmArticulation * robot) 
 	: HumanoidDataLogger(robot, NUM_JUMP_STATES), ComTrajectory(3)

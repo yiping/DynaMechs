@@ -443,6 +443,9 @@ void dmQuaternionLink::drawSkeleton(bool isTip) const
    glLineWidth (1.5);
 
    glTranslatef(m_p[0], m_p[1], m_p[2]);
+   glColor4f(0.0,0.0,1.0,1.0);
+   gluSphere(quadric,.01f,16,16);
+   glColor4f(1.0,1.0,1.0,1.0);
 
    Float len = sqrt(m_q[0]*m_q[0] + m_q[1]*m_q[1] + m_q[2]*m_q[2]);
    if (len > 1.0e-6)
@@ -531,7 +534,17 @@ void dmRevoluteLink::drawSkeleton(bool isTip) const
    glRotatef(m_thetaMDH*RADTODEG, 0.0, 0.0, 1.0);
 
    glColor4f(0.0,0.0,1.0,1.0);
-   gluSphere(quadric,.01f,16,16);
+   //gluSphere(quadric,.01f,16,16);
+   glPushMatrix();
+   glTranslatef(0.0, 0.0, 0.005);
+   gluDisk(quadric, 0.0, 0.015, 16, 8);
+   glTranslatef(0.0, 0.0, -0.01);
+   gluCylinder(quadric, 0.015, 0.015, 0.01, 16, 2);
+   glTranslatef(0.0, 0.0, 0.005);
+   glRotatef(180, 1.0, 0.0, 0.0);
+   glTranslatef(0.0, 0.0, 0.005);
+   gluDisk(quadric, 0.0, 0.015, 16, 8);
+   glPopMatrix();
    glColor4f(1.0,1.0,1.0,1.0);
 
    // if the link is at the tip, draw an extra stub.

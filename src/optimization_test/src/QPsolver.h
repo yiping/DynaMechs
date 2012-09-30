@@ -42,6 +42,9 @@ public:
 
 	void ModifySingleConstraintBound(int index, MSKboundkeye bkey, double new_lb, double new_ub);
 	void ModifySingleVariableBound(int index, MSKboundkeye bkey, double new_lb, double new_ub);
+	void Reset();
+
+	int solnStatus; 
 protected:
 
 

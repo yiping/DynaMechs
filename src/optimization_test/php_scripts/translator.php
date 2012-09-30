@@ -248,6 +248,10 @@ $Rot = array(
 "rightKneeLower" => array( array(0,0,-1), array(-1,0,0), array(0,1,0) ),
 "rightAnklePitch" => array( array(0,0,-1), array(-1,0,0), array(0,1,0) ),
 "rightFoot" => array( array(0,0,-1), array(0,1,0), array(1,0,0) ),
+"Body_LSP" => array( array(1,0,0), array(0,0, -1), array(0, 1, 0 ) ),
+"Body_LSR" => array( array(0,0,-1), array(0,1,0), array( 1, 0,0 ) ),
+"Body_LSY" => array( array(0,1,0), array(-1,0,0), array( 0,0,1 ) ),
+"Body_LEP" => array( array(1,0,0), array(0,0, -1), array(0, 1, 0 ) ),
 );
 
 
@@ -256,7 +260,9 @@ $Rot = array(
 
 //$xml = simplexml_load_file("./trunk.kinbody.xml") 
 //$xml = simplexml_load_file("./leftleg.kinbody.xml") 
-$xml = simplexml_load_file("./rightleg.kinbody.xml") 
+//$xml = simplexml_load_file("./rightleg.kinbody.xml") 
+
+$xml = simplexml_load_file("./leftarm.kinbody.xml") 
        or die("Error: Cannot create object");
 	   
 foreach($xml->xpath('/KinBody/Body') as $Body)
@@ -284,6 +290,8 @@ foreach($xml->xpath('/KinBody/Body') as $Body)
 	$I_com = explode( ' ', $Body->Mass->inertia ); 
 	//var_dump($I_com);
 	//echo count($I_com);
+
+	$R = $Rot["".$BodyName];
 
 	if (count($I_com)>1)
 	{	
@@ -314,7 +322,7 @@ foreach($xml->xpath('/KinBody/Body') as $Body)
 		$_cg = Scalar_Mul(-1, $cg);
 		$Ibar = Matrix_Add($Icom, Scalar_Mul($mass, Matrix_Mul(Cross($_cg), Transpose(Cross($_cg)) )  )	);	
 
-		$R = $Rot["".$BodyName];
+		//$R = $Rot["".$BodyName];
 
 		$IbarDH = Matrix_Mul( Matrix_Mul($R, $Ibar), Transpose($R) );
 

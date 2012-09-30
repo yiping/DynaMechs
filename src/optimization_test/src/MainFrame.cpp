@@ -19,6 +19,7 @@ EVT_MENU  (MENU_Save_View,   MainFrame::OnSaveView)
 
 
 EVT_CLOSE   (MainFrame::OnClose)
+EVT_MENU    (wxID_EXIT, MainFrame::OnQuit)
 EVT_MENU	(MENU_Pause_Sim, MainFrame::OnPauseSim)
 EVT_MENU	(MENU_Log_Data, MainFrame::OnLogData)
 EVT_MENU	(MENU_Save_Data,MainFrame::OnSaveData)
@@ -37,6 +38,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	
 	// Create menus
 	{
+		wxMenu * fileMenu = new wxMenu();
+		
+		fileMenu->Append(wxID_EXIT, _T("Quit\tCtrl-Q"));
+
+
 		wxMenu * editMenu = new wxMenu();
 		
 		editMenu->AppendCheckItem(MENU_Pause_Sim,_T("&Pause Simulation\tCtrl-P"));
@@ -64,6 +70,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		
 		// now append the freshly created menu to the menu bar...
 		menuBar = new wxMenuBar;
+		menuBar->Append(fileMenu,_T("&File"));
 		menuBar->Append(editMenu, _T("&Simulation"));
 		menuBar->Append(graphicsMenu, _T("&Graphics"));
 		menuBar->Append(dataMenu, _T("&Data"));
@@ -88,7 +95,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		
 		saveViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_SaveView, wxT("Save View"));
 		applyViewbutton = new wxButton( toolpanel, MainFrame::BUTTON_ApplyView, wxT("Apply View"));
-		//showCoM = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowCoM,wxT("Show CoM"));
+		showCoM = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowCoM,wxT("Show CoM"));
 		//showGRF = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowGRF,wxT("Show GRF"));
 		//showNetForceAtGround = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
 		//showNetForceAtCoM	 = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
@@ -102,7 +109,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		// View Options
 		toolpanel_sizer->AddSpacer(15);
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("View Options")),0,wxALL,2);
-		//toolpanel_sizer->Add(showCoM, 0 ,wxALL  ,2);
+		toolpanel_sizer->Add(showCoM, 0 ,wxALL  ,2);
 		//toolpanel_sizer->Add(showGRF, 0 ,wxALL ,2);
 		//toolpanel_sizer->Add(showNetForceAtGround, 0,wxALL,2 );
 		//toolpanel_sizer->Add(showNetForceAtCoM, 0,wxALL,2 );
@@ -151,6 +158,12 @@ void MainFrame::OnClose(wxCloseEvent & event)
 	delete simThread;
 	delete glPane;
 	event.Skip();
+}
+
+
+void MainFrame::OnQuit(wxCommandEvent & event)
+{
+	Close(true);	// wxWindow::Close generates a wxCloseEvent whose handler tries to do clean-ups.
 }
 
 void MainFrame::OnSaveData(wxCommandEvent & event)

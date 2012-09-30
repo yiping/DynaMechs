@@ -8,11 +8,21 @@ void getNullSpace(const MatrixXF &A, MatrixXF &C)
 {
 	JacobiSVD<MatrixXF> svdA(A, ComputeFullU | ComputeFullV);
 	MatrixXF V = svdA.matrixV();	
-	int n = svdA.nonzeroSingularValues();
-	C = V.rightCols(n);
+	int m = svdA.nonzeroSingularValues();
+	int n = V.cols();
+	C = V.rightCols(n - m);
 
-	IOFormat OctaveFmt(FullPrecision, 0, ", ", ";\n", "", "", "[", "]");
-	cout<< " NullSpace of A is composed of "<<endl << C.format(OctaveFmt) <<endl;
+	
+
+	IOFormat OctaveFmt(FullPrecision, 0, ", ", ";\n", "", "", "[", "]\n");
+	cout<<"U = "<<endl<<svdA.matrixU().format(OctaveFmt) <<endl;
+	MatrixXd S = MatrixXd(svdA.singularValues().asDiagonal());
+	MatrixXd Sfull = MatrixXd::Zero(svdA.matrixU().cols(), svdA.matrixV().rows());
+	Sfull.block(0,0, S.rows(), S.cols()) = S;
+	cout<<"S = "<<endl<<Sfull.format(OctaveFmt)<<endl;
+	cout<<"V = "<<endl<<svdA.matrixV().format(OctaveFmt) <<endl;
+	
+	//cout<< " NullSpace of A is composed of "<<endl << C.format(OctaveFmt) <<endl;
 }
 
 void showDefiniteness(const MatrixXF &A )
@@ -86,7 +96,7 @@ int showRank(const MatrixXd &A)
 	VectorXd sing_val_vec = svdA.singularValues() ;
 
 	int count = 0;
-	for (int i; i<sing_val_vec.size(); i++)
+	for (int i=0; i<sing_val_vec.size(); i++)
 	{
 		//cout<<"singular value "<< i<<" is: "<<sing_val_vec(i)<<endl;
 		if (sing_val_vec(i) >1e-14 )
@@ -98,6 +108,35 @@ int showRank(const MatrixXd &A)
 	return count;
 }
 
+bool isFullRank(const MatrixXd &A)
+{
+	int r = showRank(A);
+	bool isFullRank;
+	if ( r==A.cols() || r==A.rows() )
+	{
+		isFullRank = true;
+	}	
+	else
+	{
+		isFullRank = false;
+	}
+
+	return isFullRank;
+
+}
+
+bool isFullColumnRank(const MatrixXd &A)
+{
+	bool isFullColRank = false;
+	int c = A.cols();
+	int r = showRank(A);
+	if (c==r)
+	{
+		isFullColRank = true;
+	}
+
+	return isFullColRank;
+}
 
 
 

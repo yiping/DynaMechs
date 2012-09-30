@@ -39,9 +39,18 @@ ADD_EXECUTABLE(func_test ${SRC1})
 
 SET(SRCS src/QPsolver.cpp
          src/math_funcs.cpp
-         src/main.cpp)
+         src/testOpt1.cpp)
 ADD_EXECUTABLE(test1 ${SRCS})
 TARGET_LINK_LIBRARIES(test1 ${wxWidgets_LIBRARIES} ${GLUT_LIBRARY} ${OPENGL_LIBRARY} dm dmu wxdmgl ${PROJECT_SOURCE_DIR}/src/mosek/6/tools/platform/linux64x86/bin/libmosek64.so ${PROJECT_SOURCE_DIR}/src/mosek/6/tools/platform/linux64x86/bin/libmoseknoomp64.so)
+
+
+SET(SRCS src/QPsolver.cpp
+         src/math_funcs.cpp
+         src/PrioritizedController.cpp
+         src/testOpt2.cpp)
+ADD_EXECUTABLE(test2 ${SRCS})
+TARGET_LINK_LIBRARIES(test2 ${wxWidgets_LIBRARIES} ${GLUT_LIBRARY} ${OPENGL_LIBRARY} dm dmu wxdmgl ${PROJECT_SOURCE_DIR}/src/mosek/6/tools/platform/linux64x86/bin/libmosek64.so ${PROJECT_SOURCE_DIR}/src/mosek/6/tools/platform/linux64x86/bin/libmoseknoomp64.so)
+
 
 
 SET(SRCS src/wxMain.cpp

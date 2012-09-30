@@ -34,6 +34,9 @@ extern OTDataLogger * logger;
 //extern wxMutex dataMutex;
 
 
+// variables for display 
+extern volatile Float _ComPos[3];
+extern volatile Float _ComPosDes[3];
 
 
 #endif

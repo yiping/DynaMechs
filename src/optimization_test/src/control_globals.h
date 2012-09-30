@@ -19,8 +19,11 @@
 typedef vector<int> IntVector;
 typedef vector<MatrixX6F> XformVector;
 typedef vector<string > StringVector;
+typedef vector<MatrixXF> MatXFVector;
+typedef vector<VectorXF> VecXFVector;
 
-typedef struct GRFInfoStruct {
+typedef struct GRFInfoStruct 
+{
 	Vector3F pZMP;
 	Vector3F fZMP;
 	Float nZMP;
@@ -35,7 +38,8 @@ typedef struct GRFInfoStruct {
 } GRFInfo;
 
 
-typedef struct ControlInfoStruct   {
+typedef struct ControlInfoStruct   
+{
 	int iter;
 	double calcTime;
 	double setupTime;

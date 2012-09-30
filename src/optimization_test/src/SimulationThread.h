@@ -28,7 +28,7 @@ public:
 	volatile bool paused_flag;
 
 
-	wxMutex mutexProtectSharedData;	
+	//wxMutex mutexProtectSharedData;	
 	wxMutex re_mutex;
 	wxCondition * refreshCondition;
 	

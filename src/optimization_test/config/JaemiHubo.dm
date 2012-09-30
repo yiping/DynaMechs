@@ -24,6 +24,103 @@ Articulation {
 
 	Branch {
 		RevoluteLink {
+		 	Name             		"Body_LSP"
+		 	Graphics_Model   		""
+		 	Mass             		0.696196989
+		 	Inertia          	 	0.003135 	0.000000 	-0.000855
+		 	                 	 	0.000000 	0.003717 	0.000000
+		 	                 	 	-0.000855 	0.000000 	0.001147
+
+		 	Center_of_Gravity    	 	0.017376 	0.000002 	0.056463
+		 	Number_of_Contact_Points	0
+		 	MDH_Parameters  			0	-1.5708		0.1425		0
+		 	Initial_Joint_Velocity   	0
+		 	Joint_Limits     	0 	0
+		 	Joint_Limit_Spring_Constant  	0
+		 	Joint_Limit_Damper_Constant  	0
+		 	Actuator_Type    	0
+		 	Joint_Friction   	0
+		}
+
+		ZScrewTxLink {
+			Name	"ZScrewLSP"
+			ZScrew_Parameters	0.072		1.5708
+		}
+
+		RevoluteLink {
+		 	Name             		"Body_LSR"
+		 	Graphics_Model   		""
+		 	Mass             		0.348180156
+		 	Inertia          	 	0.000588 	0.000014 	0.000040
+		 	                 	 	0.000014 	0.000623 	-0.000020
+		 	                 	 	0.000040 	-0.000020 	0.000282
+
+		 	Center_of_Gravity    	 	0.004361 	-0.002402 	-0.032544
+
+		 	Number_of_Contact_Points	0
+		 	MDH_Parameters  			0	1.5708		0.025	0
+		 	Initial_Joint_Velocity   	0
+		 	Joint_Limits     	0 	0
+		 	Joint_Limit_Spring_Constant  	0
+		 	Joint_Limit_Damper_Constant  	0
+		 	Actuator_Type    	0
+		 	Joint_Friction   	0
+		}
+
+		ZScrewTxLink {
+			Name	"ZScrewLSR"
+			ZScrew_Parameters	-0.0269		1.5708
+		}
+
+		RevoluteLink {
+		 	Name             		"Body_LSY"
+		 	Graphics_Model   		""
+		 	Mass             		1.40749333
+		 	Inertia         		0.01 	0.00 	0.00
+		 	                 	 	0.00 	0.01 	-0.00
+		 	                 	 	0.00 	-0.00 	0.002835
+		 	Center_of_Gravity    	 	-0.001889 	-0.007506 	-0.089713
+
+		 	Number_of_Contact_Points	0
+		 	MDH_Parameters  			0	-1.5708	-0.0245	0
+		 	Initial_Joint_Velocity   	0
+		 	Joint_Limits     	0 	0
+		 	Joint_Limit_Spring_Constant  	0
+		 	Joint_Limit_Damper_Constant  	0
+		 	Actuator_Type    	0
+		 	Joint_Friction   	0
+		}
+
+		ZScrewTxLink {
+			Name	"ZScrewLSY"
+			ZScrew_Parameters	-0.154441		-1.5708
+		}
+
+		RevoluteLink {
+		 	Name             		"Body_LEP"
+		 	Graphics_Model   		""
+		 	Mass             		0.090349046
+		 	Inertia          	 	0.000106 	0.000038 	-0.000011
+		 	                 	 	0.000038 	0.000099 	0.000016
+		 	                 	 	-0.000011 	0.000016 	0.000127
+
+		 	Center_of_Gravity    	 	-0.013771 	0.019735 	-0.006562
+
+		 	Number_of_Contact_Points	1
+			Contact_Locations  			0	0.163	0  
+		 	MDH_Parameters  			0.022279	-1.5708		0.0115	0
+		 	Initial_Joint_Velocity   	0
+		 	Joint_Limits     	0 	0
+		 	Joint_Limit_Spring_Constant  	0
+		 	Joint_Limit_Damper_Constant  	0
+		 	Actuator_Type    	0
+		 	Joint_Friction   	0
+		}
+	}
+
+
+	Branch {
+		RevoluteLink {
 		 	Name             		"Hip"
 		 	Graphics_Model   		""
 		 	Mass             		4.436339231

@@ -179,10 +179,11 @@ void executeGL_xan(ifstream &data_ptr)
    int i,j;
 
    // // the following two lines are commented out by Yiping, 01/11/2012
-   // // to allow users to switch betwee solid face and wireframe 
-    glPolygonMode(GL_FRONT, GL_FILL);
-    glPolygonMode(GL_BACK, GL_FILL);
-	//glEnable(GL_BLEND);
+   // // to allow users to switch between solid face and wireframe 
+   // glPolygonMode(GL_FRONT, GL_FILL);
+   // glPolygonMode(GL_BACK, GL_FILL);
+
+//   glEnable(GL_BLEND);
 
 //   GLfloat color[4] = {0.0, 0.0, 0.0, 1.0};
 //   data_ptr >> color[0] >> color[1] >> color[2];  // emission color
@@ -204,7 +205,7 @@ void executeGL_xan(ifstream &data_ptr)
 	
     // ****
     //since I have switched to use glColorMaterial - yiping
-    GLfloat color[4] = {0.0, 0.0, 0.0, .5};
+    GLfloat color[4] = {0.0, 0.0, 0.0, 1};
 	GLfloat tmpColor[4];
 	
     data_ptr >> tmpColor[0] >> tmpColor[1] >> tmpColor[2];  // emission color
@@ -284,50 +285,49 @@ void executeGL_xan(ifstream &data_ptr)
          }
       }
 
-	   if(!glIsEnabled(GL_BLEND) || 1)
-	   {
-		   if(face_size[i] == 4)
-		   {
-			   glColor4f(.1,.1, .1,.5);
-			   glBegin(GL_LINE_STRIP);
-			   glLineWidth(1.0f);
-			   glVertex3fv(vertex[face_index[i][0]]);
-			   glVertex3fv(vertex[face_index[i][2]]);
-			   glVertex3fv(vertex[face_index[i][3]]);
-			   glVertex3fv(vertex[face_index[i][1]]);
-			   glVertex3fv(vertex[face_index[i][0]]);
-			   glEnd();
-		   }
-	   }
+      // wireframes (rectangles only)
+	  if(1)
+	  {
+         if(face_size[i] == 4)
+         {
+            glColor4f(.1,.1, .1, 0.6);
+            glBegin(GL_LINE_STRIP);
+            glLineWidth(3.0f);
+            glVertex3fv(vertex[face_index[i][0]]);
+            glVertex3fv(vertex[face_index[i][2]]);
+            glVertex3fv(vertex[face_index[i][3]]);
+            glVertex3fv(vertex[face_index[i][1]]);
+            glVertex3fv(vertex[face_index[i][0]]);
+            glEnd();
+         }  
+      }
    }
-	
+
+#define NO_POLYGON	
+    // polygons
+#ifndef NO_POLYGON
 	for (i=0; i<num_faces; i++)
 	{
+		glColor4f(color[0], color[1], color[2],color[3]);
 	   
-
-	   glColor4f(color[0], color[1], color[2],color[3]);
-	   
-      GLfloat normal[3];
-      compute_face_normal(vertex[face_index[i][0]],
+    	GLfloat normal[3];
+    	compute_face_normal(vertex[face_index[i][0]],
                           vertex[face_index[i][1]],
                           vertex[face_index[i][2]],
                           normal);
     
 
-      glBegin(GL_TRIANGLE_STRIP);
-      {
-         glNormal3fv(normal);
-         for (j=0; j<face_size[i]; j++)
-         {
-            glVertex3fv(vertex[face_index[i][j]]);
-         }
-      }
-      glEnd();
-	   
-	   
-	   
-   }
-	
+   		glBegin(GL_TRIANGLE_STRIP);
+     	{
+     		glNormal3fv(normal);
+     		for (j=0; j<face_size[i]; j++)
+     		{
+     			glVertex3fv(vertex[face_index[i][j]]);
+        	}
+		}
+		glEnd();	   
+	}
+#endif
 	
 	//glDisable(GL_BLEND);
 }

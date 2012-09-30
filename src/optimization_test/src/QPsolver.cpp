@@ -23,7 +23,9 @@ static void MSKAPI printstr(void *handle, char str[])
 //------------------------------------------------------------
 QPsolver::QPsolver()
 {
-	cout<<"initializing QP solver"<<endl;
+	cout<<" -- initializing QP solver --"<<endl;
+	solnStatus = -1;
+
 	// Create the mosek environment. 
 	r = MSK_makeenv(&env,NULL,NULL,NULL,NULL); 
 	
@@ -79,6 +81,7 @@ QPsolver::QPsolver()
 //------------------------------------------------------------
 QPsolver::~QPsolver() 
 {
+	cout<<" -- QP solver destructor --"<<endl;
 	MSK_deletetask(&task);
 	MSK_deleteenv(&env);
 }
@@ -98,7 +101,15 @@ void QPsolver::InspectQPproblem()
 	ncon= ncon_[0];
 	if ( r==MSK_RES_OK )
 	{ 
-		cout<<"Current QP problem has: "<<endl;
+		cout<<endl<<"============================================="<<endl;
+		cout<<"bound key code:"<<endl;
+		cout<<"MSK_BK_FR: "<<MSK_BK_FR<<endl;
+		cout<<"MSK_BK_RA: "<<MSK_BK_RA<<endl;
+		cout<<"MSK_BK_LO: "<<MSK_BK_LO<<endl;
+		cout<<"MSK_BK_UP: "<<MSK_BK_UP<<endl;
+		cout<<"MSK_BK_FX: "<<MSK_BK_FX<<endl;
+
+		cout<<endl<<"Current QP problem : "<<endl;
 		cout<<"# of constraints: "<< ncon<<endl;
 
 		r =	MSK_getnumvar(task, nvar_);
@@ -135,7 +146,8 @@ void QPsolver::InspectQPproblem()
 					m(qosub_j[k], qosub_i[k] ) = qo_val[k]; // rebuild symmetric
 				}
 			}
-			cout<<"[objective]"<<endl <<"Quadratic coefficient matrix (Q) = "<<endl<<m<<endl;
+
+			cout<<endl<<"[objective]"<<endl <<"Quadratic coefficient matrix (Q) = "<<endl<<m<<endl;
 			showDefiniteness(m);
 
 			r = MSK_getc(task, co);
@@ -169,7 +181,7 @@ void QPsolver::InspectQPproblem()
 
 			if ( r==MSK_RES_OK )
 			{
-				r = MSK_getbound(task, MSK_ACC_CON, i, bk_con, bl_con, bu_con); 
+				r = MSK_getbound(task, MSK_ACC_CON, i, bk_con+i, bl_con+i, bu_con+i); 
 				if ( r==MSK_RES_OK )
 				{
 					for (int j =0; j< nzi[0];j ++)
@@ -205,7 +217,7 @@ void QPsolver::InspectQPproblem()
 		MSKintt i;
 		for (i =0; (i< nvar) && (r==MSK_RES_OK); i++)
 		{	
-			r = MSK_getbound(task, MSK_ACC_VAR, i, bk_var, bl_var, bu_var); 
+			r = MSK_getbound(task, MSK_ACC_VAR, i, bk_var+i, bl_var+i, bu_var+i); 
 		}
 		
 		if ( r==MSK_RES_OK )
@@ -213,11 +225,15 @@ void QPsolver::InspectQPproblem()
 			Map<VectorXbk> bkv_(bk_var,nvar);
 			Map<VectorXF>  blv_(bl_var,nvar);
 			Map<VectorXF>  buv_(bu_var,nvar);	
-			cout<<endl<<"[Variable bounds]"<<endl;
+			cout<<endl<<"[Variables]"<<endl;
+			cout<<"Variable bounds: "<<endl;
 			cout<<setw(15)<<"LO_V"<<setw(15)<<"UP_V"<<setw(15)<<"KEY_V"<<endl;
 			for (int i = 0; i<nvar; i++)
-				cout<<setw(15)<<blv_(i)<<setw(15)<<buv_(i)<<setw(15)<<bkv_(i)<<endl;		
+				cout<<setw(15)<<blv_(i)<<setw(15)<<buv_(i)<<setw(15)<<bkv_(i)<<endl;	
+			
+			cout<<endl<<"============================================="<<endl<<endl;	
 		}
+		
 	}
 
 
@@ -268,7 +284,7 @@ void QPsolver::UpdateObjective(const MatrixXF &Q, const VectorXF & c, double cfi
 	}
 	
 	m_num_var = Q.rows();
-	cout<<"m_num_var"<<m_num_var<<endl;
+	cout<<"m_num_var: "<<m_num_var<<endl;
 
 	// Append variables. 
 	// The variables will initially be fixed at zero (x=0)
@@ -343,7 +359,7 @@ void QPsolver::UpdateConstraintMatrix(const MatrixXF & A)
 	}
 
 	m_num_con = A.rows();
-	cout<<"m_num_con ="<<m_num_con <<endl;
+	cout<<"m_num_con: "<<m_num_con <<endl;
 
 	// Append 'NUMCON' empty constraints. The constraints will initially have no bounds. 
 	r = MSK_append(task,MSK_ACC_CON,m_num_con);
@@ -492,20 +508,24 @@ void QPsolver::Optimize()
 									 0,              // Index of first variable.    
 									 m_num_var,      // Index of last variable+1.   
 									 xx.data());
+				solnStatus = 0;
 				cout<<"The optimal solution is "<<endl<<xx<<endl;
 				break;
 			case MSK_SOL_STA_DUAL_INFEAS_CER:
 			case MSK_SOL_STA_PRIM_INFEAS_CER:
 			case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
-			case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:  
+			case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:
+				solnStatus = 1;  
 				printf("Primal or dual infeasibility certificate found.\n");
 				//cout<<"time"<<endl;
 				break;
 				
 			case MSK_SOL_STA_UNKNOWN:
 				printf("The status of the solution could not be determined.\n");
+				solnStatus = 2;
 				break;
 			default:
+				solnStatus = 3;
 				printf("Other solution status.");
 				break;
 		}
@@ -555,5 +575,37 @@ void QPsolver::ModifySingleVariableBound(int index, MSKboundkeye bkey, double ne
 	}
 }
 
+//! Should only be called after QP problem setup
+void QPsolver::Reset( )
+{
+	MSKintt	subv[m_num_var];
+	for (int k = 0; k<m_num_var;k++)
+	{
+		subv[k] = k;
+	}
+
+	MSKintt	subc[m_num_con];
+	for (int k = 0; k<m_num_con;k++)
+	{
+		subc[k] = k;
+	}
+	r = MSK_remove(task, MSK_ACC_VAR, m_num_var, subv);
+
+	if (r == MSK_RES_OK) 
+	{	
+		r = MSK_remove(task, MSK_ACC_CON, m_num_con, subc);
+	}
+
+	if (r != MSK_RES_OK) 
+	{	
+		// In case of an error, print error code and description.  
+		char symname[MSK_MAX_STR_LEN]; //1024 
+		char desc[MSK_MAX_STR_LEN]; 
+		printf("An error occurred while resetting.\n"); 
+		MSK_getcodedesc (r, symname, desc); 
+		printf("Error %s - '%s'\n",symname,desc); 
+	}
+
+}
 
 

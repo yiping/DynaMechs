@@ -79,7 +79,7 @@ IMPLEMENT_APP(MyApp)
 bool MyApp::OnInit()
 {	
 	wxCmdLineParser parser(argc,argv);
-	parser.AddOption(wxT("c"), wxT("Config File"));
+	parser.AddOption(wxT("c"), wxT("config-file"));
 	parser.Parse();
 	
 
@@ -221,7 +221,10 @@ bool MyApp::OnInit()
     return true;
 } 
 
-int MyApp::OnExit() {
+int MyApp::OnExit() 
+{
+	cout<<"Trying to Exit ... "<<endl;
+
 	//simThread->requestStop();
 	return 1;
 }

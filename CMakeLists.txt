@@ -13,9 +13,14 @@ SET(CMAKE_EXE_LINKER_FLAGS "-lglut -L/usr/X11/lib")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 
+MESSAGE(STATUS "c compiler is: " ${CMAKE_C_COMPILER} )
+MESSAGE(STATUS "c++ compiler is: " ${CMAKE_CXX_COMPILER} )
+
 # /usr/share/cmake-2.8/Modules
 find_package(GLUT)
 find_package(OpenGL)
+#override opengl path, using ATI implementation
+#set(OPENGL_LIBRARIES "/usr/lib/fglrx")
 MESSAGE(STATUS "OpenGL library path: " ${OPENGL_LIBRARIES})
 MESSAGE(STATUS "GLUT library path: " ${GLUT_LIBRARIES})
 MESSAGE(STATUS "OpenGL headers path: " ${OPENGL_INCLUDE_DIR})
@@ -31,15 +36,15 @@ ADD_SUBDIRECTORY(src/dm bin_dm)
 ADD_SUBDIRECTORY(src/dmu bin_dmu)
 ADD_SUBDIRECTORY(src/dmgl bin_dmgl)
 ADD_SUBDIRECTORY(src/wxdmgl bin_wxdmgl)
-ADD_SUBDIRECTORY(src/testdm bin_testdm)
+#ADD_SUBDIRECTORY(src/testdm bin_testdm)
 #ADD_SUBDIRECTORY(src/aquarobot bin_aquarobot)
 #ADD_SUBDIRECTORY(src/xan_viewer bin_xan_viewer)
 #ADD_SUBDIRECTORY(src/kurmet bin_kurmet)
 #ADD_SUBDIRECTORY(src/windmill bin_windmill)
 #ADD_SUBDIRECTORY(src/flywheel_biped bin_flywheel_biped)
-ADD_SUBDIRECTORY(src/wxDMV bin_wxDMV)
+#ADD_SUBDIRECTORY(src/wxDMV bin_wxDMV)
 ADD_SUBDIRECTORY(src/humanoid bin_humanoid)
-#ADD_SUBDIRECTORY(src/contact_demo bin_contact_demo)
+ADD_SUBDIRECTORY(src/contact_demo bin_contact_demo)
 ADD_SUBDIRECTORY(src/optimization_test bin_optimization_test)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX is: " ${CMAKE_INSTALL_PREFIX})

@@ -45,6 +45,7 @@ public:
 	void OnApplyView(wxCommandEvent& event);
 	void OnSaveData(wxCommandEvent& event);
 	void OnClose(wxCloseEvent &event);
+	void OnQuit(wxCommandEvent &event);
 	
 	void OnPauseSim(wxCommandEvent &event);
 	void OnLogData(wxCommandEvent &event);
@@ -53,8 +54,8 @@ public:
 	void OnIntegrationStep(wxCommandEvent &event);
 	void OnSaveDirectory(wxCommandEvent &event);
 	
-	// wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
-	wxCheckBox *logDataCheckBox, *syncGraphicsCheckBox;
+	// wxCheckBox * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
+	wxCheckBox * showCoM, *logDataCheckBox, *syncGraphicsCheckBox;
 	wxStaticText * realTimeRatioDisplay;
 	BasicGLPane * glPane;
 	

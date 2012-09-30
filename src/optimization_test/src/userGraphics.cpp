@@ -30,9 +30,14 @@ void BasicGLPane::userGraphics2DPrimary()
 void BasicGLPane::userGraphics()
 {
 	// Plot User Stuff
+	// w.r.t. ICS
+
+	if (frame->showCoM->IsChecked()) 
+	{
+		// Draw COM location
 
 
-		
+	}
 
 
 

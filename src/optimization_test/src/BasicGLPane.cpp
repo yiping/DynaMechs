@@ -452,11 +452,7 @@ void BasicGLPane::glInit()
 		glDepthFunc(GL_LESS);
 		glEnable(GL_DEPTH_TEST);
 		
-		// ****
-		glEnable(GL_LINE_SMOOTH);
-		//glEnable(GL_POINT_SMOOTH);
-		
-		//glEnable(GL_POLYGON_SMOOTH);
+
 		
 		// Enable Blending
 		glEnable(GL_BLEND);
@@ -465,6 +461,13 @@ void BasicGLPane::glInit()
 		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 		//glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 		//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+
+		// ****
+		// to enable LINE_SMOOTHing, you need to have blending enabled
+		glEnable(GL_LINE_SMOOTH);
+		//glEnable(GL_POINT_SMOOTH);
+		//glEnable(GL_POLYGON_SMOOTH);
+
 	
 		glLineWidth (1.5);
 		// ****

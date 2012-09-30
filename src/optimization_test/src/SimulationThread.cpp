@@ -22,14 +22,16 @@ SimulationThread::SimulationThread() : wxThread(wxTHREAD_JOINABLE)
 						// before the simThread start waiting on it!
 	G_integrator = new dmIntegEuler();
 	paused_flag = true;
-	mutexProtectSharedData.Unlock();
+	//mutexProtectSharedData.Unlock();
 
 }
 
 SimulationThread::~SimulationThread()
 {
+	cout<<"SimThread destructor "<<endl;
 	delete unPauseCondition;
 	delete refreshCondition;
+
 }
 
 void *SimulationThread::Entry()
@@ -40,10 +42,13 @@ void *SimulationThread::Entry()
 	
 	while (!stopRequested) 
 	{
-		if (paused_flag) {
+		if (paused_flag) 
+		{
+			cout<<"Sleeping for pause"<<endl;
 			mutex.Lock();
 			unPauseCondition->Wait(); // hold until unPause is signaled (broadcasted)
 			mutex.Unlock();
+			cout<<"Awake now"<<endl;
 		}
 	
 		// Check if it's time for control
@@ -88,13 +93,17 @@ void SimulationThread::unPause()
 	unPauseCondition->Broadcast();
 }
 
-void SimulationThread::requestStop()
+void SimulationThread::requestStop()	// Note: this function is to be called by main thread
 {
+	cout<<"SimThread stop requested ..."<<endl;
 	stopRequested = true;
 	unPause();
 	refreshCondition->Signal(); // unWait ... 
+	re_mutex.Unlock();		// Note: If pthread_mutex_destroy() is called on a mutex that is locked by another thread, the request fails with an EBUSY error. 
+
 	// waits for a joinable thread to terminate and returns the value
-	Wait();
+	Wait();		// wxThread::Wait
+	
 }
 
 

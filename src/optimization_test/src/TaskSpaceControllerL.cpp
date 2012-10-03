@@ -3,11 +3,14 @@
 //  YL
 //  8/14/12
 
+
 #include "TaskSpaceControllerL.h"
 #include "dmRigidBody.hpp"
+#include "dmContactModel.hpp"
 #include "math_funcs.h"
+#include "globalFunctions.h"
 
-#define NVAR (NJ+ NJ+6 + NS*NP*NF)
+
 
 #define TAU_START     0
 #define TAU_END       (NJ-1)
@@ -16,8 +19,7 @@
 #define LAMBDA_START  (2*NJ + 6)
 #define LAMBDA_END    (2*NJ+5 + NS*NP*NF)
 
-#define STATE_SIZE (NJ+7+4)
-#define RATE_SIZE  (NJ+6)
+
 
 #define DEBUG_TSCL
 
@@ -27,6 +29,7 @@ TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot)
 
 #ifdef DEBUG_TSCL
 	cout<<" -- TaskSpaceControllerL constructor --"<<endl;
+	cout<<"NVAR = "<<NVAR<<endl;
 #endif 
 	artic = robot;
 
@@ -50,7 +53,7 @@ TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot)
 
 	//
 	ST = MatrixXF::Zero(NJ+6, NJ);
-	ST.block(6, 0, NJ, NJ) = MatrixXF:Identity(NJ, NJ);
+	ST.block(6, 0, NJ, NJ) = MatrixXF::Identity(NJ, NJ);
 
 
 	// Indicate support bodies
@@ -58,9 +61,11 @@ TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot)
 	SupportIndices[0] = 5;		// support body 0
 	SupportIndices[1] = 9;		// support body 1
 
+	contactState.resize(NS);
+	slidingState.resize(NS);
 
 	// Construct transform from ankle frame to support frame
-	Matrix3F RSup;
+	Matrix3F RSup;	// Sup - support
 	RSup << 0,0,1,0,1,0,-1,0,0;
 	XformVector Xforms(NS);
 	for (int k=0; k<NS; k++) 
@@ -79,7 +84,7 @@ TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot)
 		Xforms[k].block(3,3,3,3) = RSup;
 	}
 	SupportXforms = Xforms;
-	
+
 	// Construct force transform from each contact point to support origin
 	PointForceXforms.resize(NS);
 	for (int i=0; i<NS; i++) 
@@ -93,9 +98,9 @@ TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot)
 		//cout << "Assigning Temporary Matricies" << endl;
 		Matrix3F RSup = SupportXforms[i].block(0,0,3,3);
 		Matrix3F tmpMat = SupportXforms[i].block(3,0,3,3)*RSup.transpose();
-		Vector3F piRelSup;
-		crossExtract(tmpMat,piRelSup);
-		//cout << "pirelsup " << endl << piRelSup << endl;
+		Vector3F pfRelSup;
+		crossExtract(tmpMat,pfRelSup);
+		//cout << "pfrelsup " << endl << pfRelSup << endl;
 		
 		for (int j=0; j<NP; j++) 
 		{
@@ -105,7 +110,7 @@ TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot)
 			dmContactLattice->getContactPoint(j,tmp.data());
 			
 			// Point of contact (relative to support origin) in support coordinates
-			pRel = RSup*tmp + piRelSup;
+			pRel = RSup*tmp + pfRelSup;
 			
 			PointForceXforms[i][j].setIdentity(6,6);
 			PointForceXforms[i][j].block(0,3,3,3) = cr3(pRel);
@@ -170,11 +175,13 @@ TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot)
 	RDesJoint.resize(numLinks);
 	posDesJoint.resize(numLinks);
 	rateDesJoint.resize(numLinks);
+	accDesJoint.resize(numLinks);
 
+	// cout<< " numLinks = "<<numLinks<<endl;
 	artic->getTrueNumDOFs();	// fill bodyi->index_ext, bodyi->dof
 	for (int i=0; i<numLinks; i++) 
 	{
-		LinkInfoStruct * bodyi = artic->m_link_list[i];
+		LinkInfoStruct * bodyi = artic->m_link_list[i];		
 		int dof = bodyi->dof;
 		if (dof != 0) 
 		{
@@ -197,10 +204,10 @@ TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot)
 
 
 
+	D0 = MatrixXF::Zero(NJ + NS*NP*NF, NVAR);	
+	D0.topLeftCorner(NJ,NJ) = MatrixXF::Identity(NJ,NJ);	
+	D0.bottomRightCorner(NS*NP*NF, NS*NP*NF) = MatrixXF::Identity(NS*NP*NF, NS*NP*NF);	
 
-	D0 = MatrixXF::Zero(NJ + NS*NP*NF, NVAR);
-	D0.topLeftCorner(NJ,NJ) = MatrixXF::Identity(NJ,NJ);
-	D0.bottomRightCorner(NS*NP*NF, NS*NP*NF) = MatrixXF::Identity(NS*NP*NF, NS*NP*NF);
 
 }
 
@@ -214,7 +221,7 @@ TaskSpaceControllerL::~TaskSpaceControllerL()
 }
 
 
-TaskSpaceControllerL::ObtainArticulationData()
+void TaskSpaceControllerL::ObtainArticulationData()
 {
 	artic->computeH();
 	artic->computeCandG();	// runs ID assuming qdd = 0
@@ -233,7 +240,7 @@ void TaskSpaceControllerL::ControlInit()
 {
 
 	artic->getState(q.data(),qdDm.data());	// For Quaternion link, qdDM has an extra dummy entry
-	int N = artic->getTrueNumDOFs();
+	int N = artic->getTrueNumDOFs();	// for Pat's humanoid: N = 26
 	extractQd(qdDm, qd);	// remove any dummy entry
 
 	// DynaMechs expresses the velocity of the FB in the ICS coordinate
@@ -280,18 +287,19 @@ void TaskSpaceControllerL::ControlInit()
 
 }
 
-void TaskSpaceControllerL::RobotControl(ControlInfo & ci) 
+void TaskSpaceControllerL::RobotControl() 
 {
 	
-	// Perform Optimization
+	/// Perform Optimization
 
 	SetInitialConstraintBounds();
 	SetInitialVariableBounds();
-
+		
+	Reset();
 	for(int i = 0; i<TaskSchedule.size();i++)
 	{
-		//cout<<"\n ------- Task "<<i<<" -------"<<endl;
-		Reset();
+		cout<<"\n ------- Task "<<i<<" -------"<<endl;
+
 		UpdateObjective(TaskJacobians[TaskSchedule[i]], TaskBiases[TaskSchedule[i]]);	
 		UpdateConstraintMatrix();
 		UpdateConstraintBounds();
@@ -299,9 +307,93 @@ void TaskSpaceControllerL::RobotControl(ControlInfo & ci)
 		//solver.InspectQPproblem();
 		OptimizeSingleTier();
 
-		cout<<" === "<<dBar.transpose()<<endl;
+		//cout<<" === "<<dBar.transpose()<<endl;
 	}
 
+	tauOpt = dBar.segment(TAU_START,NJ);
+	qddOpt = dBar.segment(QDD_START,NJ+6);
+	lambdaOpt = dBar.segment(LAMBDA_START,NS*NP*NF);
+
+
+	/// Compute optimal quantities
+	// desired change of centroidal momentum
+	hDotOpt = CentMomMat*qddOpt + cmBias;
+
+	// desired ZMP info
+	zmpWrenchOpt.setZero();
+	Vector6F icsForce, localForce;
+	Float * nICS = icsForce.data();		// ICS
+	Float * fICS =	nICS+3;
+	Float * nLoc = localForce.data();	// Local
+	Float * fLoc = nLoc+3;
+		
+	for (int k1 = 0; k1 < NS; k1++) 
+	{
+		LinkInfoStruct * listruct = artic->m_link_list[SupportIndices[k1]];
+		CartesianVector tmp;
+		
+		// localForce = SupportXforms[k1].transpose()*fs.segment(6*k1,6);	
+		Vector6F fSup = Vector6F::Zero();
+		for (int j = 0; j< NP; j++)
+		{
+			fSup += PointForceXforms[k1][j] * FrictionBasis * lambdaOpt.segment(NP*NF*k1 + NF*j, NF) ; 
+		}	
+		localForce = SupportXforms[k1].transpose() * fSup;	// contact force in foot(ankle) coordinate
+			
+		// Apply Spatial Force Transform Efficiently
+		// Rotate Quantities
+		APPLY_CARTESIAN_TENSOR(listruct->link_val2.R_ICS,nLoc,nICS);
+		APPLY_CARTESIAN_TENSOR(listruct->link_val2.R_ICS,fLoc,fICS);
+			
+		// Add the r cross f
+		CROSS_PRODUCT(listruct->link_val2.p_ICS,fICS,tmp);
+		ADD_CARTESIAN_VECTOR(nICS,tmp);
+		
+		zmpWrenchOpt+=icsForce;
+	}
+		
+	transformToZMP(zmpWrenchOpt,zmpPosOpt);
+
+		
+	// Form Joint Input and simulate
+	VectorXF jointInput = VectorXF::Zero(STATE_SIZE);		
+		
+	int k = 7;
+	// Skip over floating base (i=1 initially)
+	for (int i=1; i<artic->m_link_list.size(); i++) 
+	{
+		LinkInfoStruct * linki = artic->m_link_list[i];
+		if (linki->dof) 
+		{
+			//cout << "Link " << i << " dof = " << linki->dof << endl;
+			//cout << "qd = " << qdDm.segment(k,linki->dof).transpose() << endl;
+			jointInput.segment(k,linki->dof) = tauOpt.segment(linki->index_ext-6,linki->dof);
+			k += linki->link->getNumDOFs();	// fake dof
+		}
+	}
+		
+	//cout << "Tau = " << tau.transpose() << endl;
+	//cout << "Joint input = " << jointInput.transpose() << endl;
+	//exit(-1);
+	//jointInput.segment(7,NJ) = tau;
+	artic->setJointInput(jointInput.data());
+
+
+	/// verification
+
+	ComputeActualQdd(qddA);
+
+#ifdef DEBUG_TSCL
+	cout<<"totalMass = "<<totalMass<<endl;
+	cout<<"pCom        = "<<pCom.transpose()<<endl;
+	cout<<"PComDes     = "<<pComDes.transpose()<<endl;
+	cout<<"aDesFoot[0] = "<<aDesFoot[0].transpose()<<endl;
+	cout<<"aDesFoot[1] = "<<aDesFoot[1].transpose()<<endl;
+	cout<<"tauOpt:"<<endl<<tauOpt.transpose()<<endl;
+	cout<<"qddOpt:"<<endl<<qddOpt.transpose()<<endl;
+	cout<<"qddA: "<<endl<<qddA.transpose()<<endl;
+	cout<<"lambdaOpt:"<<endl<<lambdaOpt.transpose()<<endl;
+#endif 
 
 }
 
@@ -331,7 +423,7 @@ void TaskSpaceControllerL::Reset()
 	DynCon = MatrixXF::Zero(NJ+6, 2*NJ + 6 + NS*NP*NF);
 	DynCon.block(0, 0, NJ+6, NJ) = ST;
 	DynCon.block(0, NJ+6, NJ+6, NJ+6) = -artic->H; 
-	DynCon.block(0, 2*NJ+6, NJ+6, NS*NP*NF) = JTXTV);
+	DynCon.block(0, 2*NJ+6, NJ+6, NS*NP*NF) = JTXTV;
 
 
 	// compute C0
@@ -340,19 +432,28 @@ void TaskSpaceControllerL::Reset()
 
 
 	// compute d0
-	// assume all taus are zeros and all lambdas are 1s
-	VectorXF RHS = artic->CandG - JTXTV*VectorXF::Ones(NS*NP*NF);
+	// assume all taus are zeros and all lambdas are .1s
+	VectorXF RHS = artic->CandG - 0.0*JTXTV*VectorXF::Ones(NS*NP*NF);
 	VectorXF qddvec;
-	solveInverse(artic->H, RHS, qddvec);
+	solveInverse(-artic->H, RHS, qddvec);
 
 	VectorXF d0 = VectorXF::Zero(NJ+NJ+6+NS*NP*NF);
 	d0.segment(0, NJ) = VectorXF::Zero(NJ);
 	d0.segment(NJ, NJ+6) = qddvec;
-	d0.segment(NJ+6, NS*NP*NF) = VectorXF::Ones(NS*NP*NF);
+	d0.segment(NJ+NJ+6, NS*NP*NF) = 0.0*VectorXF::Ones(NS*NP*NF);
 
 	// Dynamic Constraint imposed 
 	dBar = d0;
 	CBar = C0; 
+
+#ifdef DEBUG_TSCL
+	cout<<"CBar is " <<CBar.rows()<<" x "<<CBar.cols()<<endl;
+	cout<<"d0 = "<<dBar.transpose()<<endl;
+	//cout<<"H = "<<endl<<-artic->H<<endl;
+	cout<<"DynCon = "<<endl<<DynCon<<endl;
+	cout<<"CandG = "<<endl<<artic->CandG.transpose()<<endl;
+	cout<<"CBar = "<<endl<<CBar<<endl;
+#endif
 }
 
 void TaskSpaceControllerL::SetInitialConstraintBounds()
@@ -360,9 +461,9 @@ void TaskSpaceControllerL::SetInitialConstraintBounds()
 #ifdef DEBUG_TSCL
 	cout<<" -- TaskSpaceControllerL::SetInitialConstraintBounds() --"<<endl;
 #endif 
-	c_bk = VectorXbk::Zero(NVAR);
-	c_bl = VectorXF::Zero(NVAR);
-	c_bu = VectorXF::Zero(NVAR);
+	c_bk = VectorXbk::Zero(NJ+NS*NP*NF);
+	c_bl = VectorXF::Zero(NJ+NS*NP*NF);
+	c_bu = VectorXF::Zero(NJ+NS*NP*NF);
 	
 	int i;
 	// 'tau' bounds - (ranged)
@@ -406,7 +507,7 @@ void TaskSpaceControllerL::UpdateObjective(const MatrixXF &TaskJacobian, const V
 	if ( isFullRank(JtBar))
 	{
 		//cout<<"\nJtBar is full rank! \n"<<endl;
-		JtBarFullRank = true;
+		JtBarFullColRank = true;
 	}
 
 	MatrixXd JtBarT = JtBar.transpose();
@@ -418,13 +519,13 @@ void TaskSpaceControllerL::UpdateObjective(const MatrixXF &TaskJacobian, const V
 	Qm.block(NJ+NJ+6, NJ+NJ+6, NS*NP*NF, NS*NP*NF) += MatrixXF::Identity(NS*NP*NF,NS*NP*NF) * 0.01;
 	Q += CBar.transpose()*Qm*CBar;
 
-	VectorXd btBar = TaskBias - Jt * dBar; 
+	VectorXd btBar = TaskBias - TaskJacobian * dBar; 
 	VectorXd c = -JtBarT*btBar; 
 
 	double cfix = 0.5*btBar.dot(btBar);
 
 #ifdef DEBUG_TSCL
-	cout<<endl<<"Update objective: "<<endl;
+/*	cout<<endl<<"Update objective: "<<endl;
 	IOFormat DisplayFmt(FullPrecision, 0, "  ","\n", "    ", " ", "", "\n");
 	cout<<"JtBarColFullRank (bool): "<<JtBarFullColRank<<endl;
 	cout<<"CBar =  "<<endl<<CBar.format(DisplayFmt)<<endl;
@@ -432,8 +533,8 @@ void TaskSpaceControllerL::UpdateObjective(const MatrixXF &TaskJacobian, const V
 	cout<<"btBar = "<<endl<<btBar.transpose().format(DisplayFmt)<<endl;
 	cout<<"Q = "<<endl<<Q.format(DisplayFmt)<<endl;
 	cout<<"Null space of JtBar (C): "<<endl<<C.format(DisplayFmt)<<endl;
-	cout<<"Current JtBar has rank "<<showRank(JtBar)<<endl<<endl;
-#endif DEBUG_TSCL
+	cout<<"Current JtBar has rank "<<showRank(JtBar)<<endl<<endl;*/
+#endif 
 
 	solver.UpdateObjective(Q, c, cfix);
 

@@ -2,20 +2,26 @@
 
 #include "StateMachineControllerA.h"
 
+#define DEBUG_SMC_A
 StateMachineControllerA::StateMachineControllerA(dmArticulation * robot) 
 	: TaskSpaceControllerL(robot)
 {
-
+#ifdef DEBUG_SMC_A
+	cout<<" -- StateMachineControllerA constructor --"<<endl;
+#endif
 	// initialize state machine
-	stateNames.resize(NUM_STATES);
+	cout<<"Total state machine states: "<<NUM_STATES<<endl;
+	stateNames.resize(NUM_STATES); 
 	stateNames[DROP] = "Drop";
-	stateNames[BALANCE_MIDDLE] = "Balance Middle";
-	stateFunctions[DROP] = &StateMachineControllerA::Drop;
-	stateFunctions[BALANCE_MIDDLE] = &StateMachineControllerA::BalanceMiddle;
+	stateNames[BALANCE_MIDDLE] = "Balance Middle";	
+	stateFunctions.resize(NUM_STATES);
+	stateFunctions[DROP] = &StateMachineControllerA::Drop;	
+	stateFunctions[BALANCE_MIDDLE] = &StateMachineControllerA::BalanceMiddle;	
 
 
 	state = DROP;
 	transitionFlag = true;
+
 }
 
 void StateMachineControllerA::Drop() 
@@ -101,7 +107,8 @@ void StateMachineControllerA::BalanceMiddle()
 		kComDes.setZero();
 	
 		TaskSchedule.resize(3);
-		TaskSechedule<<6, 3, 2;
+		TaskSchedule<<6, 2, 3;
+
 
 		transitionFlag = false;
 	}
@@ -142,10 +149,12 @@ void StateMachineControllerA::StateControl()
 
 	if (state != DROP) 
 	{
+		TaskJacobians.resize(7); // currently only 7 possible objectives
+		TaskBiases.resize(7);
 
 		// Task 0 - (Centroidal) Angular momentum (AM) objective
 		// Task 1 - (Centroidal) Linear momentum (LM) objective
-		// Task 3 - Combined momentum objective
+		// Task 2 - Combined momentum objective
 		{
 			hDes.head(3) = kComDes;
 			hDes.tail(3) = vComDes*totalMass;
@@ -180,7 +189,7 @@ void StateMachineControllerA::StateControl()
 			CentroidMomObj << AmObj, LmObj;
 			CentroidMomBias << AmBias, LmBias;
 			TaskJacobians[2] = CentroidMomObj;
-			TaskBiases[2] = CentoridModBias; 
+			TaskBiases[2] = CentroidMomBias; 
 		}
 
 		// Task 3 - Nominal pose objective 
@@ -305,7 +314,7 @@ void StateMachineControllerA::StateControl()
 						Vector3F omega = qd.segment(jointIndexE,3);
 					
 						// Note: Velocity bias accel is omega cross omega  // YL ?
-						NpBias.segment(jointIndex,3) = (i_R_pi_mat*(Kp *eOmega) + Kd * (rateDesJoint[i].head(3) - omega)); // - omega.cross(omega);
+						NpBias.segment(jointIndexE,3) = (i_R_pi_mat*(Kp *eOmega) + Kd * (rateDesJoint[i].head(3) - omega)); // - omega.cross(omega);
 					}
 
 					// override the weight for FB link
@@ -322,7 +331,7 @@ void StateMachineControllerA::StateControl()
 			NpObj.block(0,NJ,NJ+6,NJ+6) = NpWeight.asDiagonal() * NpObjTight;  
 	   
 			TaskJacobians[3] = NpObj;
-			TaskBiases[3] = NpWeight.dot(NpBias);
+			TaskBiases[3] = NpWeight.asDiagonal() * NpBias;
 		}
 
 
@@ -367,7 +376,7 @@ void StateMachineControllerA::StateControl()
 				X.block(0,0,3,3) = RFoot[i]; 	// from Ankle frame to ICS
 				X.block(3,3,3,3) = RFoot[i];
 				artic->computeJacobian(jointIndex,X,footJacobian);
-				computeAccBiasFromFwKin(link->link_val2,footAccBias);		// Acc bias (Jdot qdot)
+				computeAccBiasFromFwKin(link->link_val2,footAccBias);		// Acc bias (Jdot qdot)	[already been converted to classic acceleration]
 			
 				FObjs[i] = MatrixXF::Zero(6, NVAR);
 				FObjs[i].block(0,NJ, 6, NJ+6) = footJacobian;
@@ -376,12 +385,12 @@ void StateMachineControllerA::StateControl()
 
 			
 				aDesFoot[i] = aFootCmd;		// YL ?
-			
+	
 				// Option to Scale Linear/Angular Position Control
 
 			}
 
-			int cnt = TaskJacobians.size();
+			int cnt = 4;	// a quick workaround, need to be improved later
 			for (int i=0; i<NS; i++)
 			{
 				TaskJacobians[cnt + i ] = FObjs[i];
@@ -392,19 +401,20 @@ void StateMachineControllerA::StateControl()
 			TaskBiases[6] = VectorXF::Zero(12);
 			TaskJacobians[6].block(0,0, 6, NVAR) = TaskJacobians[4];
 			TaskJacobians[6].block(6,0, 6, NVAR) = TaskJacobians[5];
-			TaskJacobians[6].segment(0,6) = TaskBiases[4];
-			TaskJacobians[6].segment(6,6) = TaskBiases[5];
-		}
-		RobotControl(ci);
+			TaskBiases[6].segment(0,6) = TaskBiases[4];
+			TaskBiases[6].segment(6,6) = TaskBiases[5];		
+		} 
+
+		RobotControl();
 
 		dmGetSysTime(&controlEnd);
 		controlTime = timeDiff(controlStart, controlEnd);
 	}	
 	else 
 	{
-		tau.setZero(26);
+		//tau.setZero(26);
 
 	}
 
-	stateTime += simThread->cdt;
+	stateTime += sm_dt;
 }

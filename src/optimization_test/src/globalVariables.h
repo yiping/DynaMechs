@@ -16,7 +16,8 @@
 
 #include "SimulationThread.h"
 #include "MainFrame.h"
-#include "OTDataLogger.h"
+//#include "OTDataLogger.h"
+#include "TraceableStateMachineControllerA.h"
 
 //#define EIGEN_NO_DEBUG
 //#define OPTIM_DEBUG
@@ -26,17 +27,14 @@
 
 
 extern dmArticulation *G_robot;
-
 extern MainFrame *frame;
+
 extern SimulationThread * simThread;
-extern OTDataLogger * logger;
+//extern OTDataLogger * logger;
 
-//extern wxMutex dataMutex;
+extern wxMutex dataMutex;
+extern TraceableStateMachineControllerA * humanoidCtrl;
 
-
-// variables for display 
-extern volatile Float _ComPos[3];
-extern volatile Float _ComPosDes[3];
 
 
 #endif

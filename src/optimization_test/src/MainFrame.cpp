@@ -19,7 +19,7 @@ EVT_MENU  (MENU_Save_View,   MainFrame::OnSaveView)
 
 
 EVT_CLOSE   (MainFrame::OnClose)
-EVT_MENU    (wxID_EXIT, MainFrame::OnQuit)
+EVT_MENU    (wxID_EXIT, MainFrame::OnQuit)	// menu: file->quit
 EVT_MENU	(MENU_Pause_Sim, MainFrame::OnPauseSim)
 EVT_MENU	(MENU_Log_Data, MainFrame::OnLogData)
 EVT_MENU	(MENU_Save_Data,MainFrame::OnSaveData)
@@ -78,6 +78,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		menuBar->Check(MENU_Pause_Sim, true);
 		
 		SetMenuBar(menuBar);
+		// If the frame is destroyed, the menubar and its menus will be destroyed also
+		// therefore DO NOT delete the menubar explicitly
 	}
 	
 	
@@ -152,24 +154,39 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	}
 }
 
+// When the user clicks on the system close button (in a frame or a dialog),
+// wxWidgets calls wxWindow::Close(), This in turn generates an EVT_CLOSE event.
 void MainFrame::OnClose(wxCloseEvent & event)
 {
 	simThread->requestStop();
 	delete simThread;
-	delete glPane;
+
+	// The wxCloseEvent handler should only call wxWindow::Destroy()
+	// or wxWindow::Close() to delete the window, and NOT use the delete operator
+	//delete glPane;
+
+	// Child windows are automatically deleted from within the parent destructor. 
+	// This includes any children that are themselves frames or dialogs,
+	// so you may wish to close these child frame or dialog windows explicitly from within the parent close handler.
+	// http://docs.wxwidgets.org/trunk/overview_windowdeletion.html
+	glPane->Close(true);	//true: cannot be vetoed.
 	event.Skip();
 }
 
-
+// This is for closing from the menu.
 void MainFrame::OnQuit(wxCommandEvent & event)
 {
+	// A wxWidgets application automatically exits 
+	// when the last TopLevelWindow (wxFrame or wxDialog) is destroyed
+
 	Close(true);	// wxWindow::Close generates a wxCloseEvent whose handler tries to do clean-ups.
 }
 
 void MainFrame::OnSaveData(wxCommandEvent & event)
 {
 	// saving data
-	logger->saveToFile();
+	//logger->saveToFile();
+	humanoidCtrl->saveToFile();
 }
 
 
@@ -254,10 +271,10 @@ void MainFrame::OnIntegrationStep(wxCommandEvent &event)
 void MainFrame::OnSaveDirectory(wxCommandEvent &event)
 {
 	//string dataSaveDirectory = "";
-	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(logger->dataSaveDirectory.c_str(),wxConvUTF8));
+	wxString dir = wxDirSelector(wxT("Select the Data Save Directory"),wxString(humanoidCtrl->dataSaveDirectory.c_str(),wxConvUTF8));   // logger->dataSaveDirectory
 	dir += wxT("/");
-	logger->dataSaveDirectory = dir.mb_str();
-	cout << "Data Directory Changed to " << logger->dataSaveDirectory << endl;
+	humanoidCtrl->dataSaveDirectory = dir.mb_str();		// logger->dataSaveDirectory
+	cout << "Data Directory Changed to " << humanoidCtrl->dataSaveDirectory << endl;	// logger->dataSaveDirectory
 }
 
 
@@ -333,10 +350,11 @@ void MainFrame::OnApplyView(wxCommandEvent& WXUNUSED(event))
 
 
 
-void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
+void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) 
+{
 	// Note wxMessageBox might crash under Windows OS.
-    wxMessageBox( _("This is a wxWidgets Hello world sample"),
-				 _("About Hello World"),
+    wxMessageBox( _("This simulator program is built upon DynaMechs 5.0, a rigid body dynamic engine developed at Ohio State"),
+				 _("About DynaMechs Simulator"),
 				 wxOK | wxICON_INFORMATION, this );
 }
 

@@ -9,13 +9,18 @@
 #ifndef __TASK_SPACE_CONTROLLER_L_H__
 #define __TASK_SPACE_CONTROLLER_L_H__
 
+#define NVAR (NJ+ NJ+6 + NS*NP*NF)
+
+#define STATE_SIZE (NJ+7+4)
+#define RATE_SIZE  (NJ+6)
+
 #include "control_globals.h"
 #include "dmArticulation.hpp"
 #include "PrioritizedController.h"
 #include "QPsolver.h"
 
 
-class TaskSpaceControllerL: public PrioritzedController
+class TaskSpaceControllerL: public PrioritizedController
 {
 public:
 	TaskSpaceControllerL(dmArticulation * robot);
@@ -40,12 +45,8 @@ public:
 	virtual void UpdateVariableBounds();
 
 
-	ControlInit();
-	RobotControl() ;
-
-
-
-
+	void ControlInit();
+	void RobotControl();
 
 	
 
@@ -68,9 +69,11 @@ protected:
 	Vector3F pCom, vCom;
 	Vector6F centMom;	
 	Vector6F cmBias;		//  \dot{A}_G \dot{q}
+	Float totalMass;
 	VectorXF q;
 	VectorXF qdDm, qd;
 	VectorXF qddA;
+	
 
 	vector<VectorXF> pFoot;
 	vector<VectorXF> vFoot;
@@ -81,6 +84,12 @@ protected:
 	IntVector slidingState;
 
 	GRFInfo grfInfo;
+
+	// optimal quantitiies
+	VectorXF tauOpt, qddOpt, lambdaOpt;
+	Vector6F hDotOpt;
+	Vector6F zmpWrenchOpt;
+	Vector3F zmpPosOpt;
 
 
 	// PD gains
@@ -114,7 +123,7 @@ protected:
 
 private:
 
-	MatrixXF ST
+	MatrixXF ST;
 	MatrixXF DynCon;
 
 	

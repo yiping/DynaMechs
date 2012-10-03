@@ -47,6 +47,8 @@ typedef struct ControlInfoStruct
 	double totalTime;
 }  ControlInfo ;
 
+#define COPY_P_TO_VEC(p,pvec) pvec << p[0], p[1], p[2]; 
+
 #define NJ 20 //actuated DOF
 #define NS 2
 #define NP 4

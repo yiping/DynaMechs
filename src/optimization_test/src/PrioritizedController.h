@@ -28,7 +28,7 @@ public:
 	VectorXF dBar;
 	MatXFVector TaskJacobians;
 	VecXFVector TaskBiases;
-	IntVector TaskSchedule;
+	VectorXi TaskSchedule;
 	QPsolver solver;
 
 protected:

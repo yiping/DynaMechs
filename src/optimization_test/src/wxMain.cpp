@@ -167,14 +167,20 @@ bool MyApp::OnInit()
 
 		
 		G_robot = dynamic_cast<dmArticulation*>(dmuLoadFile_dm(robot_flname));
+		cout << "Robot created" << endl;
+
 		//G_contact = new dmContactSystem();
 		//G_contact-> scanRobot(G_robot);
 		//if (G_contact->getNumDOFs())
 		//{
 		//	cout<<"found total "<<G_contact->getNumDOFs()/2<<" dynamic contact points in robot"<<endl;
 		//}
-		logger = new OTDataLogger();
-		
+
+
+		//logger = new OTDataLogger();
+		humanoidCtrl = new TraceableStateMachineControllerA(G_robot);
+		humanoidCtrl->sm_dt = simThread->cdt;
+		cout << "Robot controller created" << endl;
 
 		// set status bar
     	wxString s;
@@ -190,11 +196,12 @@ bool MyApp::OnInit()
 		char data_dir[FILENAME_SIZE];
 		readConfigParameterLabel(cfg_ptr, "Data_Save_Directory");
 		readFilename(cfg_ptr, data_dir);
-		logger->dataSaveDirectory = std::string(data_dir);
+		//logger->dataSaveDirectory = std::string(data_dir);
+		humanoidCtrl->dataSaveDirectory = std::string(data_dir);
 		// ...
 
 
-	
+		cout<<"Add robot to integrator "<<endl;
 		simThread->G_integrator->addSystem(G_robot);
 		//simThread->G_integrator->addSystem(G_contact);
 
@@ -203,7 +210,7 @@ bool MyApp::OnInit()
 
 	// -----------------------
 	{
-		cout<<"initilize scene..."<<endl;
+		cout<<"Initilize scene..."<<endl;
 		
 		frame->glPane->camera->setRadius(8.0);
 		frame->glPane->camera->setCOI(3.0, 3.0, 0.0);
@@ -214,18 +221,25 @@ bool MyApp::OnInit()
 		dmEnvironment::getEnvironment()->drawInit();
 		
 		frame->glPane->model_loaded = true;
+
 	}
 
+	cout << "Restart Timer" << endl;
 	frame->glPane->restartTimer();
+
+	cout << "Start Sim Thread" << endl;
 	simThread->Run();
     return true;
 } 
 
+// OnExit is called after destroying all application windows and controls
 int MyApp::OnExit() 
 {
 	cout<<"Trying to Exit ... "<<endl;
-
-	//simThread->requestStop();
+	//Put any application-wide cleanup code here
+	
+	delete humanoidCtrl;
+	delete G_robot;
 	return 1;
 }
  

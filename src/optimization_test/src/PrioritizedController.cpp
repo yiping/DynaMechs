@@ -120,6 +120,8 @@ void PrioritizedController::OptimizeSingleTier()
 	else
 	{
 		isFeasible = false;
+		cout<<"Infeasible solution ... exiting "<<endl;
+		exit(1);
 	}
 
 	if (!JtBarFullColRank )

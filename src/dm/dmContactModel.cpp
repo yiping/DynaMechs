@@ -46,7 +46,7 @@ dmContactModel::dmContactModel() :
       m_sliding_flag_stored(NULL),
       m_initial_contact_pos_stored(NULL)
 {
-	cout<<"calling dmContactModel constructor ..."<<endl;
+	// cout<<"calling dmContactModel constructor ..."<<endl;
 
 	//for (int i =0; i<6;i++)
 	//	 cout<<m_last_computed_contact_force[i]<<endl;

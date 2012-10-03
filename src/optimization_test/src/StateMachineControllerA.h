@@ -6,6 +6,7 @@
 #include "control_globals.h"
 #include "dmArticulation.hpp"
 #include "TaskSpaceControllerL.h"
+#include "globalFunctions.h"
 
 class StateMachineControllerA : public TaskSpaceControllerL
 {
@@ -24,17 +25,18 @@ public:
 	void BalanceMiddle();
 
 	Float controlTime;
+	Float sm_dt;
 
 protected:
 	double stateTime;
 	bool transitionFlag;
 	StringVector stateNames;
 
-	typedef void (JumpingStateMachine::*JumpStateFuncPtr)();	// function pointer
-	vector<JumpStateFuncPtr> stateFunctions;
+	typedef void (StateMachineControllerA::*StateFuncPtr)();	// function pointer
+	vector<StateFuncPtr> stateFunctions;
 
 private:
 	
 
 };
-
+#endif

@@ -6,7 +6,7 @@
 
 #include "globalVariables.h"
 #include "SimulationThread.h"
-
+#include "TraceableStateMachineControllerA.h"
 #include <iostream>
 using namespace std;
 #include <stdio.h>
@@ -32,12 +32,16 @@ SimulationThread::~SimulationThread()
 	delete unPauseCondition;
 	delete refreshCondition;
 
+	delete G_integrator;
+
 }
 
 void *SimulationThread::Entry()
 {
-	dmTimespec tv_now;
-	dmGetSysTime(&tv_now);
+	//dmTimespec tv_now, last_control_tv;
+	//dmGetSysTime(&tv_now);
+	//dmGetSysTime(&last_control_tv);
+
 	stopRequested = false;
 	
 	while (!stopRequested) 
@@ -56,13 +60,12 @@ void *SimulationThread::Entry()
 		{
 			//wxMutexLocker lock(mutexProtectSharedData);
 			
-
-
+			humanoidCtrl->StateControl();
 
 			if (frame->logDataCheckBox->IsChecked()) 
 			{
 				//cout<<"log data!"<<endl;
-				logger->logData();
+				humanoidCtrl->logData();
 			}
 			
 			last_control_time = sim_time;
@@ -74,6 +77,8 @@ void *SimulationThread::Entry()
 		G_integrator->simulate(dt);
 
 		sim_time += idt;
+
+		// see whether to synchronize simulation with graphic updates
 		if (frame-> syncGraphicsCheckBox->IsChecked())
 		{
 			Integ_count++;
@@ -84,10 +89,13 @@ void *SimulationThread::Entry()
 										  // once signaled by Gui(main) thread, it then locks re_mutex again and returns
 			}
 		}
-		dmGetSysTime(&tv_now);
+
+		//dmGetSysTime(&tv_now);
 	}
 	return NULL;
 }
+
+
 void SimulationThread::unPause()
 {
 	unPauseCondition->Broadcast();

@@ -142,9 +142,10 @@ bool readConfigParameterLabelNonRecursive(ifstream &cfg_ptr, const char *label)
 			}
 			else
 			{
-				cerr << "Tried and didn't find ["<< label <<"] label"<< endl;
-				//cerr << "But, buddy, no worries, we can proceed without ["<<label<<"]"<<endl;
-				cerr << "Proceed without ["<<label<<"]"<<endl;	
+				//cerr << "Tried and didn't find ["<< label <<"] label"<< endl;
+				////cerr << "But, buddy, no worries, we can proceed without ["<<label<<"]"<<endl;
+				//cerr << "Proceed without ["<<label<<"]"<<endl;
+	
 				onceMore = false;
 				// wait, before you quit searching, put that label back in the stream!
 				// cout<<"rewinding ifstream ..."<<endl;
@@ -155,7 +156,7 @@ bool readConfigParameterLabelNonRecursive(ifstream &cfg_ptr, const char *label)
 					cfg_ptr.putback(line[sl-1-j]);
 					//cout<<line[sl-1-j];
 				}
-				cout<<endl<<"-------"<<endl;
+				// cout<<endl<<"-------"<<endl;
 				return false;
 			}
 		}

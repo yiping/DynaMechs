@@ -4,10 +4,10 @@
 #include "math_funcs.h"
 
 // math functions
-void getNullSpace(const MatrixXF &A, MatrixXF &C)
+void getNullSpace(const MatrixXd &A, MatrixXd &C)
 {
-	JacobiSVD<MatrixXF> svdA(A, ComputeFullU | ComputeFullV);
-	MatrixXF V = svdA.matrixV();	
+	JacobiSVD<MatrixXd> svdA(A, ComputeFullU | ComputeFullV);
+	MatrixXd V = svdA.matrixV();	
 	int m = svdA.nonzeroSingularValues();
 	int n = V.cols();
 	C = V.rightCols(n - m);
@@ -15,12 +15,12 @@ void getNullSpace(const MatrixXF &A, MatrixXF &C)
 	
 
 	IOFormat OctaveFmt(FullPrecision, 0, ", ", ";\n", "", "", "[", "]\n");
-	cout<<"U = "<<endl<<svdA.matrixU().format(OctaveFmt) <<endl;
+	//cout<<"U = "<<endl<<svdA.matrixU().format(OctaveFmt) <<endl;
 	MatrixXd S = MatrixXd(svdA.singularValues().asDiagonal());
 	MatrixXd Sfull = MatrixXd::Zero(svdA.matrixU().cols(), svdA.matrixV().rows());
 	Sfull.block(0,0, S.rows(), S.cols()) = S;
-	cout<<"S = "<<endl<<Sfull.format(OctaveFmt)<<endl;
-	cout<<"V = "<<endl<<svdA.matrixV().format(OctaveFmt) <<endl;
+	//cout<<"S = "<<endl<<Sfull.format(OctaveFmt)<<endl;
+	//cout<<"V = "<<endl<<svdA.matrixV().format(OctaveFmt) <<endl;
 	
 	//cout<< " NullSpace of A is composed of "<<endl << C.format(OctaveFmt) <<endl;
 }

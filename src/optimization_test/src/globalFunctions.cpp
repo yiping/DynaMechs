@@ -74,3 +74,22 @@ void transformToZMP(Vector6F & fZMP, Vector3F & pZMP) {
 }
 
 
+//! Be careful, this function only makes sense when used after dmArticulation::computeCandG()
+void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector6F & a) 
+{
+	// assuming dmArticulation::computeCandG() has been called first
+	Vector6F tmp;
+	tmp = infoStruct.a + infoStruct.ag;		// ag (in local coor.)  
+	ClassicAcceleration(tmp,infoStruct.v, a);	// in dm.h
+	// ( aSpatial, vSpatial --> aClassic )	 [6D]
+	a.swap(tmp);
+	Float * pa = a.data();
+	Float * ptmp = tmp.data();
+	APPLY_CARTESIAN_TENSOR(infoStruct.R_ICS,ptmp,pa);
+	ptmp+=3;
+	pa+=3;
+	APPLY_CARTESIAN_TENSOR(infoStruct.R_ICS,ptmp,pa);
+}
+
+
+

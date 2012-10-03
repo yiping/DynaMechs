@@ -53,6 +53,12 @@ public:
 	void OnDisplayFreq(wxCommandEvent &event);
 	void OnIntegrationStep(wxCommandEvent &event);
 	void OnSaveDirectory(wxCommandEvent &event);
+
+	// if you're creating a derived class that contains child windows,
+	// you should use a pointer to the child windows INSTEAD OF the objects themself
+	// as members of the main window.
+	// otherwise it would cause double-deletion problems
+	// http://wiki.wxwidgets.org/Avoiding_Memory_Leaks
 	
 	// wxCheckBox * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
 	wxCheckBox * showCoM, *logDataCheckBox, *syncGraphicsCheckBox;

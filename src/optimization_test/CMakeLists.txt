@@ -56,12 +56,17 @@ TARGET_LINK_LIBRARIES(test2 ${wxWidgets_LIBRARIES} ${GLUT_LIBRARY} ${OPENGL_LIBR
 SET(SRCS src/wxMain.cpp
          src/BasicGLPane.cpp
          src/DataLogger.cpp
-         src/OTDataLogger.cpp
          src/MainFrame.cpp
          src/SimulationThread.cpp
          src/globalVariables.cpp
          src/globalFunctions.cpp
          src/userGraphics.cpp
+         src/math_funcs.cpp
+         src/QPsolver.cpp
+         src/PrioritizedController.cpp
+         src/TaskSpaceControllerL.cpp
+         src/StateMachineControllerA.cpp
+         src/TraceableStateMachineControllerA.cpp
 )
 ADD_EXECUTABLE(opt_test ${SRCS})
 TARGET_LINK_LIBRARIES(opt_test ${wxWidgets_LIBRARIES} ${GLUT_LIBRARY} ${OPENGL_LIBRARY} dm dmu wxdmgl ${PROJECT_SOURCE_DIR}/src/mosek/6/tools/platform/linux64x86/bin/libmosek64.so ${PROJECT_SOURCE_DIR}/src/mosek/6/tools/platform/linux64x86/bin/libmoseknoomp64.so)

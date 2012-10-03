@@ -12,9 +12,8 @@ dmArticulation *G_robot;
 
 SimulationThread * simThread;
 MainFrame *frame;
-//wxMutex dataMutex;
-OTDataLogger *logger;
 
+wxMutex dataMutex;
+//OTDataLogger *logger;
 
-volatile Float _ComPos[3];
-volatile Float _ComPosDes[3];
+TraceableStateMachineControllerA * humanoidCtrl;

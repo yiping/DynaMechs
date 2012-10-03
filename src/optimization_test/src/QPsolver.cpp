@@ -300,7 +300,7 @@ void QPsolver::UpdateObjective(const MatrixXF &Q, const VectorXF & c, double cfi
 	const double* cc = c.data();
 	for(j=0; j<m_num_var && r == MSK_RES_OK; ++j) 
 	{	
-		cout<< j <<endl;
+		// cout<< j <<endl;
 		r = MSK_putcj(task,j,cc[j]);
 	}
 
@@ -378,7 +378,12 @@ void QPsolver::UpdateConstraintMatrix(const MatrixXF & A)
 		}
 		
 		r = MSK_putavec(task, MSK_ACC_CON,i,k,asub,aval);
-		cout<<"done putting a row of A"<<endl;
+		// cout<<"done putting a row of A"<<endl;
+	}
+
+	if (r == MSK_RES_OK)
+	{
+		cout<<"done putting all rows of A"<<endl;
 	}
 
 	if (r != MSK_RES_OK) 
@@ -416,7 +421,12 @@ void QPsolver::UpdateConstraintBounds(const VectorXbk & bkc, const VectorXF & bl
 	for (i=0; i<m_num_con && r == MSK_RES_OK; i++) // # of constraints 
 	{
 		r = MSK_putbound(task, MSK_ACC_CON, i, bkc[i], blc[i], buc[i]);
-		cout<<"done putting a row of constraint bounds"<<endl;
+		// cout<<"done putting a row of constraint bounds"<<endl;
+	}
+
+	if (r == MSK_RES_OK)
+	{
+		cout<<"done putting all rows of constraint bounds"<<endl;
 	}
 
 	if (r != MSK_RES_OK) 
@@ -509,7 +519,7 @@ void QPsolver::Optimize()
 									 m_num_var,      // Index of last variable+1.   
 									 xx.data());
 				solnStatus = 0;
-				cout<<"The optimal solution is "<<endl<<xx<<endl;
+				// cout<<"The optimal solution is "<<endl<<xx<<endl;
 				break;
 			case MSK_SOL_STA_DUAL_INFEAS_CER:
 			case MSK_SOL_STA_PRIM_INFEAS_CER:

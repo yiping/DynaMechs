@@ -208,6 +208,8 @@ TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot)
 	D0.topLeftCorner(NJ,NJ) = MatrixXF::Identity(NJ,NJ);	
 	D0.bottomRightCorner(NS*NP*NF, NS*NP*NF) = MatrixXF::Identity(NS*NP*NF, NS*NP*NF);	
 
+	//CBar = MatrixXF::Identity(NVAR, NVAR);
+	//dBar = VectorXF::Zero(NVAR);
 
 }
 
@@ -304,7 +306,7 @@ void TaskSpaceControllerL::RobotControl()
 		UpdateConstraintMatrix();
 		UpdateConstraintBounds();
 		UpdateVariableBounds();
-		//solver.InspectQPproblem();
+		solver.InspectQPproblem();
 		OptimizeSingleTier();
 
 		//cout<<" === "<<dBar.transpose()<<endl;
@@ -386,9 +388,13 @@ void TaskSpaceControllerL::RobotControl()
 #ifdef DEBUG_TSCL
 	cout<<"totalMass = "<<totalMass<<endl;
 	cout<<"pCom        = "<<pCom.transpose()<<endl;
-	cout<<"PComDes     = "<<pComDes.transpose()<<endl;
-	cout<<"aDesFoot[0] = "<<aDesFoot[0].transpose()<<endl;
-	cout<<"aDesFoot[1] = "<<aDesFoot[1].transpose()<<endl;
+	cout<<"zmpWrench   = "<<zmpWrenchOpt.transpose()<<endl;
+	cout<<"zmpPos      = "<<zmpPosOpt.transpose()<<endl;
+	//cout<<"PComDes     = "<<pComDes.transpose()<<endl;
+	//cout<<"aDesFoot[0] = "<<aDesFoot[0].transpose()<<endl;
+	//cout<<"aDesFoot[1] = "<<aDesFoot[1].transpose()<<endl;
+	cout<<"This one should be zero: "<< (DynCon*dBar - artic->CandG ).transpose()<<endl;
+	cout<<"hDotOpt:"<<endl<<hDotOpt<<endl;
 	cout<<"tauOpt:"<<endl<<tauOpt.transpose()<<endl;
 	cout<<"qddOpt:"<<endl<<qddOpt.transpose()<<endl;
 	cout<<"qddA: "<<endl<<qddA.transpose()<<endl;
@@ -422,7 +428,7 @@ void TaskSpaceControllerL::Reset()
 
 	DynCon = MatrixXF::Zero(NJ+6, 2*NJ + 6 + NS*NP*NF);
 	DynCon.block(0, 0, NJ+6, NJ) = ST;
-	DynCon.block(0, NJ+6, NJ+6, NJ+6) = -artic->H; 
+	DynCon.block(0, NJ, NJ+6, NJ+6) = -artic->H; 
 	DynCon.block(0, 2*NJ+6, NJ+6, NS*NP*NF) = JTXTV;
 
 
@@ -433,26 +439,27 @@ void TaskSpaceControllerL::Reset()
 
 	// compute d0
 	// assume all taus are zeros and all lambdas are .1s
-	VectorXF RHS = artic->CandG - 0.0*JTXTV*VectorXF::Ones(NS*NP*NF);
+	VectorXF RHS = artic->CandG - JTXTV*VectorXF::Ones(NS*NP*NF);
 	VectorXF qddvec;
 	solveInverse(-artic->H, RHS, qddvec);
 
 	VectorXF d0 = VectorXF::Zero(NJ+NJ+6+NS*NP*NF);
 	d0.segment(0, NJ) = VectorXF::Zero(NJ);
 	d0.segment(NJ, NJ+6) = qddvec;
-	d0.segment(NJ+NJ+6, NS*NP*NF) = 0.0*VectorXF::Ones(NS*NP*NF);
+	d0.segment(NJ+NJ+6, NS*NP*NF) = VectorXF::Ones(NS*NP*NF);
 
 	// Dynamic Constraint imposed 
 	dBar = d0;
 	CBar = C0; 
 
 #ifdef DEBUG_TSCL
+	IOFormat OctaveFmt(FullPrecision, 0, ", ", ";\n", "", "", "[", "]");
 	cout<<"CBar is " <<CBar.rows()<<" x "<<CBar.cols()<<endl;
-	cout<<"d0 = "<<dBar.transpose()<<endl;
-	//cout<<"H = "<<endl<<-artic->H<<endl;
-	cout<<"DynCon = "<<endl<<DynCon<<endl;
-	cout<<"CandG = "<<endl<<artic->CandG.transpose()<<endl;
-	cout<<"CBar = "<<endl<<CBar<<endl;
+	cout<<"d0 = (full precision)"<< endl<<(dBar.transpose()).format(OctaveFmt)<<endl;
+	cout<<"-H = (full precision)"<<endl<<(-artic->H).format(OctaveFmt)<<endl;
+	cout<<"DynCon = (full precision)"<<endl<<DynCon.format(OctaveFmt)<<endl;
+	cout<<"CandG = (full precision)"<<endl<<(artic->CandG.transpose()).format(OctaveFmt)<<endl;
+	cout<<"CBar = (full precision)"<<endl<<CBar.format(OctaveFmt)<<endl;
 #endif
 }
 
@@ -490,7 +497,7 @@ void TaskSpaceControllerL::SetInitialConstraintBounds()
 void TaskSpaceControllerL::SetInitialVariableBounds()
 {
 #ifdef DEBUG_TSCL
-	cout<<" -- SimpleTestController::SetInitialVariableBounds() --"<<endl;
+	cout<<" -- TaskSpaceControllerL::SetInitialVariableBounds() --"<<endl;
 #endif 
 
 

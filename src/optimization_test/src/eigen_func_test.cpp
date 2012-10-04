@@ -117,9 +117,15 @@ int main()
 	cout << "Its singular values are:" << endl << svd.singularValues() << endl;
 	cout << "U----- " << endl << svd.matrixU().format(OctaveFmt) << endl;
 	cout << "V----- " << endl << svd.matrixV().format(OctaveFmt) << endl;
+	MatrixXd S = MatrixXd(svd.singularValues().asDiagonal());
+	MatrixXd SExt(3,4); SExt<<S, VectorXd::Zero(3);
+	cout << "S----- " << endl <<SExt.format(OctaveFmt)<<endl;
+	cout << "verification: "<<endl;
+	cout << "U*S*V' = " <<endl << (svd.matrixU() * SExt * svd.matrixV().transpose()).format(OctaveFmt)<<endl;
 	cout << "number of non-zero singular values: "<< endl << svd.nonzeroSingularValues()<<endl;
 
-	cout<<"Machine epsilon: "<<NumTraits<MatrixXd::Scalar>::epsilon()<<endl;
+	cout<<"Machine epsilon (double): "<<NumTraits<MatrixXd::Scalar>::epsilon()<<endl;
+	cout<<"Machine epsilon (float) : "<<NumTraits<MatrixXf::Scalar>::epsilon()<<endl;
 
 	MatrixXF C;
 	getNullSpace(m,C);
@@ -210,12 +216,13 @@ int main()
 
 	VectorXd sing_vec = svdAA.singularValues();
 
-	for (int i; i<sing_vec.size(); i++)
+	for (int i=0; i<sing_vec.size(); i++)
 	{
 		cout<<"singular value "<< i<<" is: "<<sing_vec(i)<<endl;
 	}
 
 	cout<<"my function shows the rank of A is: "<<showRank(AA)<<endl;
+
 
 	//LLT<Matrix3f> llt;
 	//llt.compute(z);

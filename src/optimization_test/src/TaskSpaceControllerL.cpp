@@ -306,7 +306,7 @@ void TaskSpaceControllerL::RobotControl()
 		UpdateConstraintMatrix();
 		UpdateConstraintBounds();
 		UpdateVariableBounds();
-		solver.InspectQPproblem();
+		//solver.InspectQPproblem();
 		OptimizeSingleTier();
 
 		//cout<<" === "<<dBar.transpose()<<endl;
@@ -386,7 +386,7 @@ void TaskSpaceControllerL::RobotControl()
 	ComputeActualQdd(qddA);
 
 #ifdef DEBUG_TSCL
-	cout<<"totalMass = "<<totalMass<<endl;
+/*	cout<<"totalMass = "<<totalMass<<endl;
 	cout<<"pCom        = "<<pCom.transpose()<<endl;
 	cout<<"zmpWrench   = "<<zmpWrenchOpt.transpose()<<endl;
 	cout<<"zmpPos      = "<<zmpPosOpt.transpose()<<endl;
@@ -398,7 +398,7 @@ void TaskSpaceControllerL::RobotControl()
 	cout<<"tauOpt:"<<endl<<tauOpt.transpose()<<endl;
 	cout<<"qddOpt:"<<endl<<qddOpt.transpose()<<endl;
 	cout<<"qddA: "<<endl<<qddA.transpose()<<endl;
-	cout<<"lambdaOpt:"<<endl<<lambdaOpt.transpose()<<endl;
+	cout<<"lambdaOpt:"<<endl<<lambdaOpt.transpose()<<endl;*/
 #endif 
 
 }
@@ -453,13 +453,13 @@ void TaskSpaceControllerL::Reset()
 	CBar = C0; 
 
 #ifdef DEBUG_TSCL
-	IOFormat OctaveFmt(FullPrecision, 0, ", ", ";\n", "", "", "[", "]");
+/*	IOFormat OctaveFmt(FullPrecision, 0, ", ", ";\n", "", "", "[", "]");
 	cout<<"CBar is " <<CBar.rows()<<" x "<<CBar.cols()<<endl;
 	cout<<"d0 = (full precision)"<< endl<<(dBar.transpose()).format(OctaveFmt)<<endl;
 	cout<<"-H = (full precision)"<<endl<<(-artic->H).format(OctaveFmt)<<endl;
 	cout<<"DynCon = (full precision)"<<endl<<DynCon.format(OctaveFmt)<<endl;
 	cout<<"CandG = (full precision)"<<endl<<(artic->CandG.transpose()).format(OctaveFmt)<<endl;
-	cout<<"CBar = (full precision)"<<endl<<CBar.format(OctaveFmt)<<endl;
+	cout<<"CBar = (full precision)"<<endl<<CBar.format(OctaveFmt)<<endl;*/
 #endif
 }
 

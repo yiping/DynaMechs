@@ -106,9 +106,10 @@ void StateMachineControllerA::BalanceMiddle()
 		kDotDes.setZero();
 		kComDes.setZero();
 	
-		TaskSchedule.resize(1);
-		TaskSchedule<<2;
-
+		//TaskSchedule.resize(1);
+		//TaskSchedule<<2;
+		TaskSchedule.resize(3);
+		TaskSchedule<<6,2,3;
 
 		transitionFlag = false;
 	}
@@ -161,8 +162,8 @@ void StateMachineControllerA::StateControl()
 
 			MatrixXF AmObj;
 			MatrixXF AmBias;
-			//Vector3F angMomDotDes = kDotDes + kdAM*(kComDes-centMom.head(3)); 
-			Vector3F angMomDotDes = Vector3F::Zero(); 
+			Vector3F angMomDotDes = kDotDes + kdAM*(kComDes-centMom.head(3)); 
+			//Vector3F angMomDotDes = Vector3F::Zero(); 
 			AmObj = MatrixXF::Zero(3, NVAR);
 			AmObj.block(0,NJ,3,NJ+6) = CentMomMat.topRows(3);
 			AmBias = -cmBias.segment(0,3);
@@ -175,8 +176,8 @@ void StateMachineControllerA::StateControl()
 
 			MatrixXF LmObj;
 			MatrixXF LmBias;
-			//Vector3F linMomDotDes = totalMass*aComDes + totalMass*kpCM*(pComDes - pCom) + kdCM*(vComDes*totalMass - centMom.tail(3));
-			Vector3F linMomDotDes = Vector3F::Zero();
+			Vector3F linMomDotDes = totalMass*aComDes + totalMass*kpCM*(pComDes - pCom) + kdCM*(vComDes*totalMass - centMom.tail(3));
+			//Vector3F linMomDotDes = Vector3F::Zero();
 			LmObj = MatrixXF::Zero(3, NVAR);
 			LmObj.block(0,NJ,3,NJ+6) = CentMomMat.bottomRows(3);
 			LmBias = -cmBias.segment(3,3);
@@ -409,7 +410,7 @@ void StateMachineControllerA::StateControl()
 
 		RobotControl();
 
-		exit(18);
+		//exit(18);
 		
 		dmGetSysTime(&controlEnd);
 		controlTime = timeDiff(controlStart, controlEnd);

@@ -14,9 +14,13 @@
 #define MAXNUMQNZ (MAXNUMVAR * MAXNUMVAR)            
 
 
+//#define DEBUG_MOSEK
+
 static void MSKAPI printstr(void *handle, char str[]) 
 { 
-	printf("%s",str); 
+#ifdef DEBUG_MOSEK
+	printf("%s",str);
+#endif 
 } 
 
 
@@ -492,15 +496,18 @@ void QPsolver::Optimize()
 	xx.resize(m_num_var);
 	// MSK_putdouparam(task, MSK_DPAR_INTPNT_CO_TOL_REL_GAP, 10e-14);
 	MSKrescodee trmcode; // Relay information about the conditions under which the optimizer terminated
-	
+
 	// Run optimizer 
 	r = MSK_optimizetrm(task,&trmcode);
 
+#ifdef DEBUG_MOSEK
 	// Print a summary containing information about the solution 
 	MSK_solutionsummary (task,MSK_STREAM_LOG);
+
 	int iter;
 	MSK_getintinf(task, MSK_IINF_INTPNT_ITER, &iter);
 	cout<<"Number of interior-point iterations since invoking the interior-point optimizer: "<< iter<<endl;
+#endif
 
 	if ( r==MSK_RES_OK ) 
 	{

@@ -64,6 +64,7 @@ wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,w
 
 BasicGLPane::~BasicGLPane()
 {
+	cout<<" -- BasicGLPane destructor -- "<<endl;
 	timer->Stop();
 	delete timer;
 }

@@ -109,6 +109,9 @@ void SimulationThread::requestStop()	// Note: this function is to be called by m
 	refreshCondition->Signal(); // unWait ... 
 	re_mutex.Unlock();		// Note: If pthread_mutex_destroy() is called on a mutex that is locked by another thread, the request fails with an EBUSY error. 
 
+	frame->glPane->stopTimer();	// stop invoking glPane->updateSim()
+								// to avoid "pthread_mutex_trylock(): mutex not initialized" error upon exiting
+
 	// waits for a joinable thread to terminate and returns the value
 	Wait();		// wxThread::Wait
 	

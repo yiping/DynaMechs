@@ -59,8 +59,9 @@ Articulation {
 									0.000000	0.015438	0.000000
 									0.000000	0.000000	0.015438
 				Center_of_Gravity	0.108661	0.000000	0.000000
-				Number_of_Contact_Points	1
-				Contact_Locations	0.250950	0.000000	0.000000
+				# Number_of_Contact_Points	1
+				# Contact_Locations	0.250950	0.000000	0.000000
+				Number_of_Contact_Points	0
 				MDH_Parameters	0.277200	0.000000	0.000000	0.500000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
@@ -100,9 +101,9 @@ Articulation {
 				Center_of_Gravity	0.015750	0.000000	0.039900
 				Number_of_Contact_Points	4
 				Contact_Locations	0.031500	0.046200	-0.039900
-									0.031500	-0.046200	-0.039900
 									0.031500	0.046200	0.119700
 									0.031500	-0.046200	0.119700
+									0.031500	-0.046200	-0.039900
 				MDH_Parameters	0.000000	1.570796	0.000000	0.000000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
@@ -142,8 +143,9 @@ Articulation {
 									0.000000	0.015438	0.000000
 									0.000000	0.000000	0.015438
 				Center_of_Gravity	0.108661	0.000000	0.000000
-				Number_of_Contact_Points	1
-				Contact_Locations	0.250950	0.000000	0.000000
+				# Number_of_Contact_Points	1
+				# Contact_Locations	0.250950	0.000000	0.000000
+				Number_of_Contact_Points	0
 				MDH_Parameters	0.277200	0.000000	0.000000	0.500000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
@@ -183,9 +185,9 @@ Articulation {
 				Center_of_Gravity	0.015750	0.000000	0.039900
 				Number_of_Contact_Points	4
 				Contact_Locations	0.031500	0.046200	-0.039900
-									0.031500	-0.046200	-0.039900
 									0.031500	0.046200	0.119700
 									0.031500	-0.046200	0.119700
+									0.031500	-0.046200	-0.039900
 				MDH_Parameters	0.000000	1.570796	0.000000	0.000000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
@@ -210,8 +212,9 @@ Articulation {
 								0.000000	0.003730	0.000000
 								0.000000	0.000000	0.003648
 			Center_of_Gravity	0.067754	0.000000	0.000000
-			Number_of_Contact_Points	1
-			Contact_Locations	0.155400	0.000000	0.000000
+			# Number_of_Contact_Points	1
+			# Contact_Locations	0.155400	0.000000	0.000000
+			Number_of_Contact_Points	0
 			Position_From_Inboard_Link	0.000000	-0.107625	0.337050
 			Orientation_Quat	0.411088	0.481323	-0.588681	0.502781
 			Initial_Angular_Velocity	0	0	0
@@ -251,8 +254,9 @@ Articulation {
 								0.000000	0.003730	0.000000
 								0.000000	0.000000	0.003648
 			Center_of_Gravity	0.067754	0.000000	0.000000
-			Number_of_Contact_Points	1
-			Contact_Locations	0.155400	0.000000	0.000000
+			# Number_of_Contact_Points	1
+			# Contact_Locations	0.155400	0.000000	0.000000
+			Number_of_Contact_Points	0
 			Position_From_Inboard_Link	0.000000	0.107625	0.337050
 			Orientation_Quat	0.502781	0.588681	-0.481323	0.411088
 			Initial_Angular_Velocity	0	0	0

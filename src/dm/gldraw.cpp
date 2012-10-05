@@ -506,7 +506,7 @@ void dmRevoluteLink::drawSkeleton(bool isTip) const
    p1 = Rot * p1;
 
    glLineWidth (1.5);
-   glColor4f(0.0,0.1,0.9,1.0);
+   glColor4f(0.0,0.4,0.9,1.0);
    glBegin(GL_LINES);
    glVertex3f(0,0,0);
    glVertex3f(p(0), p(1), p(2) );
@@ -514,7 +514,7 @@ void dmRevoluteLink::drawSkeleton(bool isTip) const
    glVertex3f(p1(0), p1(1), p1(2) );
    glEnd();
    glColor4f(1.0,1.0,1.0,1.0);
-   glLineWidth (1.5);
+   //glLineWidth (1.5);
 
 
 
@@ -591,16 +591,16 @@ void dmRevoluteLink::drawSkeleton(bool isTip) const
          CartesianVector pos, pos1;
          cm->getContactPoint(i, pos);
          cm->getContactPoint((i+1)%num_cp, pos1);
-         glLineWidth (1.5);
-         glColor4f(0.0,1.0,0.0,1.0);
+         // glLineWidth (1.5);
+         glColor4f(1.0,0.0,1.0,1.0);
          glBegin(GL_LINES);
          glVertex3f(0,0,0);
          glVertex3f(pos[0], pos[1], pos[2] );
          glVertex3f(pos[0], pos[1], pos[2] );
          glVertex3f(pos1[0], pos1[1], pos1[2] );
          glEnd();
-         glColor4f(1.0,1.0,1.0,1.0);
       }
+      glColor4f(1.0,1.0,1.0,1.0);
    }
 }
 

@@ -11,7 +11,7 @@
 #include "wx/wx.h"
 #include "wx/menu.h"
 #include "BasicGLPane.h"
-
+#include "globalDefs.h"
 
 class MainFrame: public wxFrame
 {
@@ -25,6 +25,7 @@ public:
 		CHECKBOX_ShowNetForceAtGround,
 		CHECKBOX_ShowNetForceAtCoM,
 		CHECKBOX_SyncGraphics,
+		CHECKBOX_EnableExtF,
 		CHECKBOX_LogData,
 		BUTTON_SaveData,
 		MENU_Control_Step,
@@ -61,7 +62,7 @@ public:
 	// http://wiki.wxwidgets.org/Avoiding_Memory_Leaks
 	
 	// wxCheckBox * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
-	wxCheckBox * showCoM, *logDataCheckBox, *syncGraphicsCheckBox;
+	wxCheckBox * showCoM, *logDataCheckBox, * enableExtForcesCheckBox;  // *syncGraphicsCheckBox;
 	wxStaticText * realTimeRatioDisplay;
 	BasicGLPane * glPane;
 	

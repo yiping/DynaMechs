@@ -14,7 +14,7 @@
 #define STATE_SIZE (NJ+7+4)
 #define RATE_SIZE  (NJ+6)
 
-#include "control_globals.h"
+#include "controlDefs.h"
 #include "dmArticulation.hpp"
 #include "PrioritizedController.h"
 #include "QPsolver.h"
@@ -48,7 +48,8 @@ public:
 	void ControlInit();
 	void RobotControl();
 
-	
+	Vector3F getComPos(){ return pCom; }
+	Vector3F getComPosDes(){ return pComDes;}
 
 protected:
 	dmArticulation * artic;	

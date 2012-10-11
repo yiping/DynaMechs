@@ -20,8 +20,7 @@
 #include "TraceableStateMachineControllerA.h"
 
 //#define EIGEN_NO_DEBUG
-//#define OPTIM_DEBUG
-//#define CONTROL_DEBUG
+
 
 
 

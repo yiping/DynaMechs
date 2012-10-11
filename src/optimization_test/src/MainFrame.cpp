@@ -116,10 +116,18 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		//toolpanel_sizer->Add(showNetForceAtGround, 0,wxALL,2 );
 		//toolpanel_sizer->Add(showNetForceAtCoM, 0,wxALL,2 );
 		
-		toolpanel_sizer->AddSpacer(15);					 
-		syncGraphicsCheckBox = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_SyncGraphics,wxT("Synchronize Graphics"));
+		toolpanel_sizer->AddSpacer(15);	
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Control Options")),0,wxALL,2);	
-		toolpanel_sizer->Add(syncGraphicsCheckBox, 0 ,wxALL  ,2);
+#ifdef SYNC_GRAPHICS			
+		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Sync Graphics")), 0, wxALL, 2);
+#else 
+		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Dynamics AFAP")), 0, wxALL, 2);
+#endif
+		//syncGraphicsCheckBox = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_SyncGraphics,wxT("Synchronize Graphics"));
+		//toolpanel_sizer->Add(syncGraphicsCheckBox, 0 ,wxALL  ,2);
+
+		enableExtForcesCheckBox = new wxCheckBox(toolpanel, MainFrame::CHECKBOX_EnableExtF,wxT("Enable Ext F"));
+		toolpanel_sizer->Add(enableExtForcesCheckBox,0,wxALL,2);
 		
 		// Data Logging
 		toolpanel_sizer->AddSpacer(15);					 
@@ -140,7 +148,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		
 		//showCoM->SetValue(true);
 		//showGRF->SetValue(true);
-		syncGraphicsCheckBox->SetValue(true);
+		//syncGraphicsCheckBox->SetValue(true);
+		enableExtForcesCheckBox->SetValue(false);
 		
 		toolpanel->SetSizer(toolpanel_sizer);
 		

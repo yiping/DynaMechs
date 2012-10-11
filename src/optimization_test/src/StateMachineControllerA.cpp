@@ -214,9 +214,11 @@ void StateMachineControllerA::StateControl()
 			wAnkle = 1;
 			wKnee = 1;
 			wHip = .1;
-			wShoulder = 1.5;
+			wShoulder = 0.8;
+			//wShoulder = 1.5;
 			wElbow = 1;
-			wTorso = 1/2.;
+			wTorso = 10;
+			//wTorso = 1/2.;
 
 			//////
 			// torso  

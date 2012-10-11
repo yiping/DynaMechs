@@ -10,6 +10,8 @@
 #include "wx/thread.h"
 #include <dm.h>
 #include <dmIntegEuler.hpp>
+#include "globalDefs.h"
+
 
 
 class SimulationThread : public wxThread {
@@ -28,10 +30,20 @@ public:
 	volatile bool paused_flag;
 
 
-	//wxMutex mutexProtectSharedData;	
+	//wxMutex mutexProtectSharedData;
+
+#ifdef SYNC_GRAPHICS	
 	wxMutex re_mutex;
 	wxCondition * refreshCondition;
+#endif
 	
+
+	Vector3F p_fExtTorso;
+	Vector6F fExtTorso;
+	Vector6F fExtTorsoICS;
+	int duty_count;
+	void applyExternalForces();
+
 private:
 	wxMutex mutex;
 	wxCondition * unPauseCondition;

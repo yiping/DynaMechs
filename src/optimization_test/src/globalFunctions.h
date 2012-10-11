@@ -20,4 +20,5 @@ double timeDiff(const dmTimespec & t1, const dmTimespec & t2);
 
 void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector6F & a);
 
+
 #endif

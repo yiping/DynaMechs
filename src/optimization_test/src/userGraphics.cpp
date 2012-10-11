@@ -35,11 +35,73 @@ void BasicGLPane::userGraphics()
 	if (frame->showCoM->IsChecked()) 
 	{
 		// Draw COM location
+		Vector3F ComPos = humanoidCtrl->getComPos();
+		Vector3F ComPosDes = humanoidCtrl->getComPosDes();
 
+		/*glBegin(GL_LINES);
+		glColor4f(0.0, 0.0, 1.0,1.0);
+		glVertex3f(ComPosDes[0], ComPosDes[1], ComPosDes[2]);
+		glVertex3f(ComPosDes[0], ComPosDes[1], 0      );
+		glEnd();
+		
+		glBegin(GL_LINES);
+		glColor4f(1.0, 0.0, 0.0,1.0);
+		glVertex3f(ComPos[0], ComPos[1], ComPos[2]);
+		glVertex3f(ComPos[0], ComPos[1], 0      );
+		glEnd();*/
+		
+		glPushMatrix();
+		glTranslatef(ComPos[0],ComPos[1],ComPos[2]); 
+		glBegin(GL_LINES);
+		glColor4f(1.0, 0.0, 0.0,1.0);
+		glVertex3f(0.01, 0, 0 );
+		glVertex3f(-0.01, 0, 0 );
+		glVertex3f(0, 0.01, 0 );
+		glVertex3f(0,-0.01, 0 );
+		glVertex3f(0, 0, 0.01 );
+		glVertex3f(0, 0, -0.01 );
+		glEnd();
+		glPopMatrix();
 
+		glPushMatrix();
+		glTranslatef(ComPosDes[0],ComPosDes[1],ComPosDes[2]); 
+		glBegin(GL_LINES);
+		glColor4f(0.0, 1.0, 0.0,1.0);
+		glVertex3f(0.01, 0, 0 );
+		glVertex3f(-0.01, 0, 0 );
+		glVertex3f(0, 0.01, 0 );
+		glVertex3f(0,-0.01, 0 );
+		glVertex3f(0, 0, 0.01 );
+		glVertex3f(0, 0, -0.01 );
+		glEnd();
+		glPopMatrix();
 	}
 
+	
+	if (frame->enableExtForcesCheckBox->IsChecked())
+	{
+		// Draw external force applied to torso 
+		CartesianVector p;
+		RotationMatrix R;
+		G_robot->getLink(0)->getPose(R,p);
+		Matrix3F R1;
+		copyRtoMat(R, R1);		//	i_R_(i-1)
+		Map<Vector3F> p1(p);	// 	(i-1)_p_i
+		Vector3F loc;
+		loc = p1 + R1.transpose()*simThread->p_fExtTorso;
 
+		glPushMatrix();
+		glTranslatef(loc(0), loc(1), loc(2));
+		Vector6F f1 = Vector6F::Zero();
+		f1.tail(3) = R1.transpose()* (simThread->fExtTorso.tail(3));
+		f1 = f1/500;
+		glBegin(GL_LINES);
+		glColor3f(1.0, 1.0, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(f1(3), f1(4), f1(5));
+		glEnd();
+		glPopMatrix();
+	}
 
 	
 	

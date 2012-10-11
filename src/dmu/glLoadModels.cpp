@@ -69,7 +69,7 @@ GLuint glLoadModel(char *filename)
    {
       if (strcmp(filename, solid_model_list[i].first.c_str()) == 0)
       {
-         return solid_model_list[i].second;
+         return solid_model_list[i].second;	// avoid loading the same graphic model more than once
       }
    }
 

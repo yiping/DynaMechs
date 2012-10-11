@@ -3,7 +3,7 @@
 #ifndef __STATE_MACHINE_CONTROLLER_A_H__
 #define __STATE_MACHINE_CONTROLLER_A_H__
 
-#include "control_globals.h"
+#include "controlDefs.h"
 #include "dmArticulation.hpp"
 #include "TaskSpaceControllerL.h"
 #include "globalFunctions.h"

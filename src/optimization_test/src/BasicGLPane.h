@@ -88,8 +88,9 @@ public:
 private:
 	wxTimer * timer;
 	int timer_count;
-	volatile Float last_render_time, rtime;
+	volatile Float last_sim_time, rtime;
 	dmTimespec last_draw_tv, first_tv , update_tv;
+	int cnt;
 	
 	GLdouble modelview[16], projection[16];
 	GLint vp[4];

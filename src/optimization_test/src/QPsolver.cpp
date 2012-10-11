@@ -15,6 +15,7 @@
 
 
 //#define DEBUG_MOSEK
+//#define DEBUG_QP
 
 static void MSKAPI printstr(void *handle, char str[]) 
 { 
@@ -27,7 +28,9 @@ static void MSKAPI printstr(void *handle, char str[])
 //------------------------------------------------------------
 QPsolver::QPsolver()
 {
+#ifdef DEBUG_QP
 	cout<<" -- initializing QP solver --"<<endl;
+#endif
 	solnStatus = -1;
 
 	// Create the mosek environment. 
@@ -288,7 +291,9 @@ void QPsolver::UpdateObjective(const MatrixXF &Q, const VectorXF & c, double cfi
 	}
 	
 	m_num_var = Q.rows();
+#ifdef DEBUG_QP
 	cout<<"m_num_var: "<<m_num_var<<endl;
+#endif
 
 	// Append variables. 
 	// The variables will initially be fixed at zero (x=0)
@@ -328,7 +333,9 @@ void QPsolver::UpdateObjective(const MatrixXF &Q, const VectorXF & c, double cfi
 		m_num_qnz = k;
 		//cout<<"m_num_qnz = "<<m_num_qnz<<endl;
 		r = MSK_putqobj(task,m_num_qnz,qsubi,qsubj,qval);
+#ifdef DEBUG_QP
 		cout<<"done putting qobj"<<endl;
+#endif
 	}
 
 	if (r != MSK_RES_OK) 
@@ -363,7 +370,9 @@ void QPsolver::UpdateConstraintMatrix(const MatrixXF & A)
 	}
 
 	m_num_con = A.rows();
+#ifdef DEBUG_QP
 	cout<<"m_num_con: "<<m_num_con <<endl;
+#endif
 
 	// Append 'NUMCON' empty constraints. The constraints will initially have no bounds. 
 	r = MSK_append(task,MSK_ACC_CON,m_num_con);
@@ -385,10 +394,12 @@ void QPsolver::UpdateConstraintMatrix(const MatrixXF & A)
 		// cout<<"done putting a row of A"<<endl;
 	}
 
+#ifdef DEBUG_QP
 	if (r == MSK_RES_OK)
 	{
 		cout<<"done putting all rows of A"<<endl;
 	}
+#endif
 
 	if (r != MSK_RES_OK) 
 	{	
@@ -428,10 +439,12 @@ void QPsolver::UpdateConstraintBounds(const VectorXbk & bkc, const VectorXF & bl
 		// cout<<"done putting a row of constraint bounds"<<endl;
 	}
 
+#ifdef DEBUG_QP
 	if (r == MSK_RES_OK)
 	{
 		cout<<"done putting all rows of constraint bounds"<<endl;
 	}
+#endif
 
 	if (r != MSK_RES_OK) 
 	{	
@@ -476,7 +489,9 @@ void QPsolver::UpdateVariableBounds(const VectorXbk &boundkey_var, const VectorX
 
 	
 	r =MSK_putboundslice(task, MSK_ACC_VAR, 0, m_num_var, bkx, blx, bux);
+#ifdef DEBUG_QP
 	cout<<"done putting variable bounds"<<endl;
+#endif
 	if (r != MSK_RES_OK) 
 	{	
 		// In case of an error, print error code and description.  

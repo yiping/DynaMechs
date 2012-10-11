@@ -21,7 +21,7 @@
 
 
 
-#define DEBUG_TSCL
+//#define DEBUG_TSCL
 
 
 TaskSpaceControllerL::TaskSpaceControllerL(dmArticulation * robot) 
@@ -300,7 +300,9 @@ void TaskSpaceControllerL::RobotControl()
 	Reset();
 	for(int i = 0; i<TaskSchedule.size();i++)
 	{
+#ifdef DEBUG_TSCL
 		cout<<"\n ------- Task "<<i<<" -------"<<endl;
+#endif
 
 		UpdateObjective(TaskJacobians[TaskSchedule[i]], TaskBiases[TaskSchedule[i]]);	
 		UpdateConstraintMatrix();

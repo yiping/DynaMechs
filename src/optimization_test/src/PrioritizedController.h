@@ -4,7 +4,7 @@
 #ifndef __PRIORITIZED_CONTROLLER_H__
 #define __PRIORITIZED_CONTROLLER_H__
 
-#include "control_globals.h"
+#include "controlDefs.h"
 #include "QPsolver.h"
 #include "math_funcs.h"
 

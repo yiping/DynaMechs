@@ -562,10 +562,14 @@ void BasicGLPane::updateSim(wxTimerEvent & event) {
 	dmTimespec tv_now;
 	dmGetSysTime(&tv_now);
 	
-	real_time_ratio = (simThread->sim_time-last_render_time)/timeDiff(last_draw_tv, tv_now);
-	last_render_time = simThread->sim_time;
-	
-	dmGetSysTime(&last_draw_tv);
+	cnt ++;
+	if (cnt == 10)
+	{ 
+		real_time_ratio = (simThread->sim_time-last_render_time)/timeDiff(last_draw_tv, tv_now);
+		last_render_time = simThread->sim_time;
+		dmGetSysTime(&last_draw_tv);
+		cnt = 0;
+	}
 	
 	
 	

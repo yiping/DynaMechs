@@ -173,7 +173,7 @@ bool dmRigidBody::setInertiaParameters(Float mass,
    // inertia matrix
    if (!pd_flag)
    {
-      cerr << "Error: Rigid Body inertia is not positive definite." << endl;
+      cerr << "Error: ["<< m_name <<"] Rigid Body inertia is not positive definite." << endl;
    }
 
    return pd_flag;

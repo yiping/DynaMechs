@@ -1,5 +1,5 @@
 
-#include "control_globals.h"
+#include "controlDefs.h"
 #include "QPsolver.h"
 #include "PrioritizedController.h"
 #include "mosek.h"

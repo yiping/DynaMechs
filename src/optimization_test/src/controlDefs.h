@@ -1,16 +1,16 @@
-// control_globals.h
+// controlDefs.h
 // 
 
 //  Sep 6, 2012
 //  Project: Optimization Test
-//  define variables, marcos, types that are specific to robot controller
+//  marcos, typedefs that are specific to robot controller
 //  YL
 
 
 
 
-#ifndef __CONTROL_GLOBALS__
-#define __CONTROL_GLOBALS__
+#ifndef __CONTROL_DEFS__
+#define __CONTROL_DEFS__
 
 
 #include <dm.h>

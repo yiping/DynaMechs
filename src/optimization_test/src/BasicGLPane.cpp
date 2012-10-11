@@ -7,6 +7,7 @@
 #include <dm.h>            
 #include "globalVariables.h"
 #include "globalFunctions.h"
+#include "globalDefs.h"
 #include <dmTime.h>
 #include "BasicGLPane.h"
 #include <dmEnvironment.hpp>
@@ -59,6 +60,7 @@ wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,w
 	dmGetSysTime(&first_tv);
 	model_loaded = false;
 	timer_count = 0;
+	cnt = 0;
 	SetCurrent();
 }
 
@@ -337,17 +339,20 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glLoadIdentity();
 		glDisable(GL_LIGHTING); // need to turn off light before rendering texts, otherwise the colors won't show.
 		glDepthFunc (GL_ALWAYS);
-		glColor3f (0,0,0);
+		
+		int len;
+		
+		/*glColor3f (0,0,0);
 		glRasterPos2f(10, 20);
 		char * displaytext = (char *) "Optimization Test";
-		int len = (int) strlen(displaytext);
+		len = (int) strlen(displaytext);
 		for (int i = 0; i<len; ++i)
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, displaytext[i]);
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, displaytext[i]);*/
 
 		glColor3f (1,1,1);
 		glRasterPos2f(10, 40);
 		char buffer [50];
-		sprintf (buffer, "sim time: %.6f s", simThread->sim_time);
+		sprintf (buffer, "sim time: %.3f s", simThread->sim_time);
 		len = (int) strlen(buffer);
 		for (int i = 0; i<len; ++i)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);  //GLUT_BITMAP_HELVETICA_10
@@ -510,16 +515,24 @@ void BasicGLPane::updateSim(wxTimerEvent & event)
 {	
 	dmTimespec tv_now;
 	dmGetSysTime(&tv_now);
-	
-	real_time_ratio = (simThread->sim_time-last_render_time)/timeDiff(last_draw_tv, tv_now);
-	last_render_time = simThread->sim_time;
-	
-	dmGetSysTime(&last_draw_tv);
+
+	cnt ++;
+	if (cnt == 10)
+	{
+		real_time_ratio = (simThread->sim_time-last_sim_time)/timeDiff(last_draw_tv, tv_now);
+		last_sim_time = simThread->sim_time;
+		dmGetSysTime(&last_draw_tv);
+		cnt = 0;
+	}
+
+
 	
 
 	Refresh(); // ask for repaint
+
+#ifdef SYNC_GRAPHICS
 	Update(); // execute all the pending repaint events
-	
+
 	// TryLock() is especially important for the main (GUI) thread, 
 	// which should never be blocked because your application would become unresponsive to user input. 
 	// also, the main thread can still proceed if it cannot lock the mutex
@@ -529,6 +542,7 @@ void BasicGLPane::updateSim(wxTimerEvent & event)
 		simThread->refreshCondition->Signal();
 		simThread->re_mutex.Unlock();
 	}
+#endif
 
 	timer_count++;
 	
@@ -537,12 +551,11 @@ void BasicGLPane::updateSim(wxTimerEvent & event)
 	
 	if (update_time > 2.5)
 	{
-		timer_count ++;
-		//cerr << "time/real_time: " << simThread->sim_time << '/' << rtime
-		//<< "  frame_rate: " << (double) timer_count/rtime << endl;
+		cerr << "\033[1;31m sim_time\033[0m/real_time: " << "\033[1;31m"<< simThread->sim_time << "\033[0m"<< '/' << rtime
+		<< "  frame_rate: " << (double) timer_count/rtime << endl;
 
-		cerr<<"Sim Time: \033[1;31m"<< simThread->sim_time<< "\033[0m\n";
-
+		//cerr<<"Sim Time: \033[1;31m"<< simThread->sim_time<< "\033[0m\n";
+		
 		dmGetSysTime(&update_tv);
 	}
 }

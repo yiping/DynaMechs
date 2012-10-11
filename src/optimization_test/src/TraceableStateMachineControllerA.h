@@ -3,7 +3,7 @@
 #ifndef __TRACEABLE_STATE_MACHINE_CONTROLLER_A_H__
 #define __TRACEABLE_STATE_MACHINE_CONTROLLER_A_H__
 
-#include "control_globals.h"
+#include "controlDefs.h"
 #include "dmArticulation.hpp"
 #include "StateMachineControllerA.h"
 #include "DataLogger.h"

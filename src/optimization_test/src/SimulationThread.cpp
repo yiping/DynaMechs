@@ -145,7 +145,7 @@ void SimulationThread::applyExternalForces()
 	if ( duty_count <= 1000 )
 	{
 		p_fExtTorso<< 0.05, 0, 0.3;	// in torso coordinate
-		fExtTorsoICS <<	0,0,0, 45, 0 , -100;
+		fExtTorsoICS <<	0,0,0, 50, 0 , -100;
 		CartesianVector p;
 		RotationMatrix R;
 		G_robot->getLink(0)->getPose(R,p);

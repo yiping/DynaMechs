@@ -110,6 +110,7 @@ void StateMachineControllerA::BalanceMiddle()
 		//TaskSchedule.resize(1);
 		//TaskSchedule<<2;
 		TaskSchedule.resize(3);
+		//TaskSchedule<<6,1,7;
 		TaskSchedule<<6,2,3;
 
 		transitionFlag = false;
@@ -151,8 +152,8 @@ void StateMachineControllerA::StateControl()
 
 	if (state != DROP) 
 	{
-		TaskJacobians.resize(7); // currently only 7 possible objectives
-		TaskBiases.resize(7);
+		TaskJacobians.resize(8); // currently only 8 possible objectives
+		TaskBiases.resize(8);
 
 		// Task 0 - (Centroidal) Angular momentum (AM) objective
 		// Task 1 - (Centroidal) Linear momentum (LM) objective
@@ -213,14 +214,15 @@ void StateMachineControllerA::StateControl()
 			kpHip = 120;		
 			kpShoulder = 200;	
 			kpElbow = 240;		
-			kpTorso = 120./10.;	
+			kpTorso = 200;
+			//kpTorso = 120./10.;	
 
 			wAnkle = 1;
 			wKnee = 1;
 			wHip = .1;
 			wShoulder = 1.5;
 			wElbow = 1;
-			wTorso = 10;
+			wTorso = 1000;
 			//wTorso = 1/2.;
 
 			//////
@@ -412,6 +414,15 @@ void StateMachineControllerA::StateControl()
 			TaskBiases[6].segment(0,6) = TaskBiases[4];
 			TaskBiases[6].segment(6,6) = TaskBiases[5];		
 		} 
+
+		{
+			MatrixXF J7(3+NJ+6,NVAR);
+			J7<< TaskJacobians[0], TaskJacobians[3];
+			VectorXF b7(3+NJ+6);
+			b7<< TaskBiases[0], TaskBiases[3];
+			TaskJacobians[7] = J7; 
+			TaskBiases[7] = b7; 
+		}
 
 		RobotControl();
 

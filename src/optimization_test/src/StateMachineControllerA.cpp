@@ -82,7 +82,8 @@ void StateMachineControllerA::BalanceMiddle()
 	{
 		cout <<"[BalanceMiddle] - pCom: "<< pCom.transpose() << endl;
 
-		kpCM = 30;
+		kpCM = 300;
+		//kpCM = 30;
 		kdCM = 2*sqrt(kpCM);
 		kdAM = 25;
 		pComDes << 2.00, 2.0, .48;	// predetermined nominal COM position
@@ -186,6 +187,9 @@ void StateMachineControllerA::StateControl()
 			TaskJacobians[1] = LmObj;
 			TaskBiases[1] = LmBias;
 
+			hDotDes.head(3) = angMomDotDes;
+			hDotDes.tail(3) = linMomDotDes;
+
 
 			MatrixXF CentroidMomObj(6, NVAR);
 			VectorXF CentroidMomBias(6);
@@ -214,8 +218,7 @@ void StateMachineControllerA::StateControl()
 			wAnkle = 1;
 			wKnee = 1;
 			wHip = .1;
-			wShoulder = 0.8;
-			//wShoulder = 1.5;
+			wShoulder = 1.5;
 			wElbow = 1;
 			wTorso = 10;
 			//wTorso = 1/2.;

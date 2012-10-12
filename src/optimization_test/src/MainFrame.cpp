@@ -101,7 +101,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		//showGRF = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowGRF,wxT("Show GRF"));
 		//showNetForceAtGround = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtGround,wxT("Show Net Force (Ground)"));
 		//showNetForceAtCoM	 = new wxCheckBox(toolpanel,MainFrame::CHECKBOX_ShowNetForceAtCoM,wxT("Show Net Force (CoM)"));
-	
+		showSkeleton           = new wxCheckBox(toolpanel ,MainFrame::CHECKBOX_ShowSkeleton,wxT("Show Skeleton"));
+		showRobot           = new wxCheckBox(toolpanel ,MainFrame::CHECKBOX_ShowRobot,wxT("Show Robot"));
+		showZMP				= new wxCheckBox(toolpanel ,MainFrame::CHECKBOX_ShowZMP,wxT("Show ZMP"));
 		
 		// Camera Options
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Camera Options")),0,wxALL,2);
@@ -115,6 +117,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		//toolpanel_sizer->Add(showGRF, 0 ,wxALL ,2);
 		//toolpanel_sizer->Add(showNetForceAtGround, 0,wxALL,2 );
 		//toolpanel_sizer->Add(showNetForceAtCoM, 0,wxALL,2 );
+		toolpanel_sizer->Add(showSkeleton, 0 ,wxALL  ,2);
+		toolpanel_sizer->Add(showRobot, 0 ,wxALL  ,2);
+		toolpanel_sizer->Add(showZMP, 0 ,wxALL  ,2);
 		
 		toolpanel_sizer->AddSpacer(15);	
 		toolpanel_sizer->Add(new wxStaticText(toolpanel,-1,wxT("Control Options")),0,wxALL,2);	
@@ -146,10 +151,13 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		realTimeRatioDisplay = new wxStaticText(toolpanel,-1,wxT("RT Ratio: "));
 		toolpanel_sizer->Add(realTimeRatioDisplay,0,wxALL,2);
 		
-		//showCoM->SetValue(true);
+		showCoM->SetValue(true);
 		//showGRF->SetValue(true);
 		//syncGraphicsCheckBox->SetValue(true);
 		enableExtForcesCheckBox->SetValue(false);
+		showRobot->SetValue(true);
+		showSkeleton->SetValue(false);
+		showZMP->SetValue(false);
 		
 		toolpanel->SetSizer(toolpanel_sizer);
 		

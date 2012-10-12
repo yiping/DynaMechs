@@ -50,6 +50,8 @@ public:
 
 	Vector3F getComPos(){ return pCom; }
 	Vector3F getComPosDes(){ return pComDes;}
+	Vector3F getZmpPos(){ return grfInfo.pZMP;}
+	Vector3F getZmpPosOpt(){return zmpPosOpt;}
 
 protected:
 	dmArticulation * artic;	

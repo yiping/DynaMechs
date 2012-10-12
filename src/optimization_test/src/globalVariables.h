@@ -17,7 +17,7 @@
 #include "SimulationThread.h"
 #include "MainFrame.h"
 //#include "OTDataLogger.h"
-#include "TraceableStateMachineControllerA.h"
+#include "StateMachineControllerA.h"
 
 //#define EIGEN_NO_DEBUG
 
@@ -32,7 +32,7 @@ extern SimulationThread * simThread;
 //extern OTDataLogger * logger;
 
 extern wxMutex dataMutex;
-extern TraceableStateMachineControllerA * humanoidCtrl;
+extern StateMachineControllerA * humanoidCtrl;
 
 
 

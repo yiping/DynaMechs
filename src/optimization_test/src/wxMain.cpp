@@ -48,6 +48,10 @@
 #include "wx/dcclient.h"
 #include "globalVariables.h"
 
+
+#include "TraceableStateMachineControllerA.h"
+
+
 //#include "mosek.h" /* Include the MOSEK definition file. */
 
 #include "SimulationThread.h"
@@ -178,7 +182,7 @@ bool MyApp::OnInit()
 
 
 		//logger = new OTDataLogger();
-		humanoidCtrl = new TraceableStateMachineControllerA(G_robot);
+		humanoidCtrl = (StateMachineControllerA *) new TraceableStateMachineControllerA(G_robot);	// base pointer points to derived class
 		humanoidCtrl->sm_dt = simThread->cdt;
 		cout << "Robot controller created" << endl;
 

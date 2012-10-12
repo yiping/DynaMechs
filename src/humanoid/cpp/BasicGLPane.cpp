@@ -415,9 +415,9 @@ void BasicGLPane::glInit()
 		//glEnable(GL_POLYGON_SMOOTH);
 		
 		// Enable Blending
-		//glEnable(GL_BLEND);
+		glEnable(GL_BLEND);
 		// Specifies pixel arithmetic
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 		//glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 		//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);

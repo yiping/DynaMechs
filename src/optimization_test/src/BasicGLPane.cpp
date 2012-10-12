@@ -279,7 +279,17 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		{   
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		}
-		G_robot->drawSkeleton();
+
+		if (frame->showSkeleton->IsChecked()) 
+		{
+			G_robot->drawSkeleton();
+		}
+
+		if (frame->showRobot->IsChecked())
+		{
+			G_robot->draw();
+		}
+
 		glPopAttrib();
 	}
 	// -----------------------------------------------------------

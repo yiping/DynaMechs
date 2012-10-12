@@ -15,7 +15,7 @@ public:
 
 	void logData();
 	void saveToFile();
-	string dataSaveDirectory;
+	//string dataSaveDirectory;
 
 private:
 	
@@ -23,8 +23,7 @@ private:
 	int SIM_TIME;  // 
 
 	// group
-
-
+	int G_HCOM, G_HCOM_DES, G_HCOMDOT_OPT, G_HCOMDOT_DES;
 };
 
 #endif

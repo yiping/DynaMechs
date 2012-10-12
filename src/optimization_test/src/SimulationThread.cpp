@@ -27,7 +27,7 @@ SimulationThread::SimulationThread() : wxThread(wxTHREAD_JOINABLE)
 	//mutexProtectSharedData.Unlock();
 
 
-
+	duty_count = 0;
 	p_fExtTorso = Vector3F::Zero();
 	fExtTorsoICS = Vector6F::Zero();
 
@@ -76,11 +76,11 @@ void *SimulationThread::Entry()
 			
 			humanoidCtrl->StateControl();
 
-			/*if (frame->logDataCheckBox->IsChecked()) 
+			if (frame->logDataCheckBox->IsChecked()) 
 			{
 				//cout<<"log data!"<<endl;
 				humanoidCtrl->logData();
-			}*/
+			}
 			
 			last_control_time = sim_time;
 		}
@@ -137,15 +137,15 @@ void SimulationThread::requestStop()	// Note: this function is to be called by m
 void SimulationThread::applyExternalForces()
 {
 	duty_count ++;
-	if (duty_count >= 200)
+	if (duty_count >= 2000)
 	{
 		duty_count = 0;
 	}
 
-	if ( duty_count == 0 )
+	if ( duty_count <= 1000 )
 	{
 		p_fExtTorso<< 0.05, 0, 0.3;	// in torso coordinate
-		fExtTorsoICS <<	0,0,0, 0, 0 , -300;
+		fExtTorsoICS <<	0,0,0, 45, 0 , -100;
 		CartesianVector p;
 		RotationMatrix R;
 		G_robot->getLink(0)->getPose(R,p);
@@ -159,7 +159,7 @@ void SimulationThread::applyExternalForces()
 		f1 = X.transpose() * fExtTorso;	// X is the 6D motion transform from link frame to applying location 
 		dynamic_cast<dmRigidBody *>(G_robot->getLink(0))->setExternalForce(f1.data());		
 	}
-	else if ( duty_count == 50 )
+	else if ( duty_count<2000 && duty_count>1000 )
 	{
 		fExtTorso = Vector6F::Zero();
 		Vector6F f0 =  Vector6F::Zero();

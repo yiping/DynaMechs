@@ -290,9 +290,9 @@ void executeGL_xan(ifstream &data_ptr)
 	  {
          if(face_size[i] == 4)
          {
-            glColor4f(.1,.1, .1, 0.6);
+            glColor4f(.3,.3, .3, 0.6);
             glBegin(GL_LINE_STRIP);
-            glLineWidth(3.0f);
+            glLineWidth(1.0f);
             glVertex3fv(vertex[face_index[i][0]]);
             glVertex3fv(vertex[face_index[i][2]]);
             glVertex3fv(vertex[face_index[i][3]]);

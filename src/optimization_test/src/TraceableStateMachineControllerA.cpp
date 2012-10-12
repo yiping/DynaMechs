@@ -17,11 +17,17 @@ TraceableStateMachineControllerA::TraceableStateMachineControllerA(dmArticulatio
 {
 	SIM_TIME = addItem( "Sim Time",		"t");
 
+	G_HCOM 					= addGroup( "Centroidal Momentum", "hCom", 6);
+	G_HCOM_DES				= addGroup( "Centroidal Momentum Desired", "hComDes", 6);
+	G_HCOMDOT_OPT			= addGroup("H Com Dot Opt",				"hComDotOpt",6);
+	G_HCOMDOT_DES			= addGroup("H Com Dot Des",				"hComDotDes", 6);
 
 
-	cout<<endl<<"SIM_TIME                  	"<<SIM_TIME<<endl
-
-
+	cout<<endl<<"SIM_TIME                  	      "<<SIM_TIME<<endl
+		      <<"G_HCOM                           "<<G_HCOM<<endl
+		      <<"G_HCOM_DES                       "<<G_HCOM_DES<<endl
+		      <<"G_HCOMDOT_OPT                    "<<G_HCOMDOT_OPT<<endl
+		      <<"G_HCOMDOT_DES                    "<<G_HCOMDOT_DES<<endl
 		<<endl;
 }	
 
@@ -33,6 +39,10 @@ void TraceableStateMachineControllerA::logData()
 	newRecord();
 	assignItem(SIM_TIME, simThread->sim_time);
 
+	assignGroup(G_HCOM, centMom);
+	assignGroup(G_HCOM_DES, hDes);
+	assignGroup(G_HCOMDOT_OPT, hDotOpt);
+	assignGroup(G_HCOMDOT_DES, hDotDes);
 
 	dataMutex.Unlock();
 }
@@ -56,7 +66,7 @@ void TraceableStateMachineControllerA::saveToFile()
 	if(! wxDirExists(dataDirectory))
 	{
 		cout<<"making new dir..."<<endl;
-		wxMkdir(dataDirectory);	
+		wxMkdir(dataDirectory);		// can only create one level of file directory!
 		cout<<wxDirExists(dataDirectory)<<endl;
 	}
 

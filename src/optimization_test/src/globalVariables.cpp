@@ -16,4 +16,4 @@ MainFrame *frame;
 wxMutex dataMutex;
 //OTDataLogger *logger;
 
-TraceableStateMachineControllerA * humanoidCtrl;
+StateMachineControllerA * humanoidCtrl;

@@ -14,6 +14,7 @@ public:
 	StateMachineControllerA(dmArticulation * robot);
 
 	void StateControl();
+
 	int state;
 	enum StatesA 
 	{
@@ -26,6 +27,12 @@ public:
 
 	Float controlTime;
 	Float sm_dt;
+
+	// interfaces for data logging
+	virtual void logData() = 0;
+	virtual void saveToFile() = 0;
+	string dataSaveDirectory;
+
 
 protected:
 	double stateTime;

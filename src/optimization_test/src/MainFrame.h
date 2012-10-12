@@ -26,6 +26,9 @@ public:
 		CHECKBOX_ShowNetForceAtCoM,
 		CHECKBOX_SyncGraphics,
 		CHECKBOX_EnableExtF,
+		CHECKBOX_ShowSkeleton,
+		CHECKBOX_ShowRobot,
+		CHECKBOX_ShowZMP,
 		CHECKBOX_LogData,
 		BUTTON_SaveData,
 		MENU_Control_Step,
@@ -62,7 +65,7 @@ public:
 	// http://wiki.wxwidgets.org/Avoiding_Memory_Leaks
 	
 	// wxCheckBox * showGRF, * showNetForceAtGround, * showNetForceAtCoM;
-	wxCheckBox * showCoM, *logDataCheckBox, * enableExtForcesCheckBox;  // *syncGraphicsCheckBox;
+	wxCheckBox * showCoM, *logDataCheckBox, * enableExtForcesCheckBox, *showSkeleton, *showRobot, *showZMP;  // *syncGraphicsCheckBox;
 	wxStaticText * realTimeRatioDisplay;
 	BasicGLPane * glPane;
 	

@@ -61,7 +61,8 @@ wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, size, wxFULL_REPAINT_ON_RESIZE,w
 	model_loaded = false;
 	timer_count = 0;
 	cnt = 0;
-	SetCurrent();
+
+	//SetCurrent();		// note: one cannot call SetCurrent() if the window is not shown
 }
 
 BasicGLPane::~BasicGLPane()

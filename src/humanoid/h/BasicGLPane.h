@@ -11,6 +11,7 @@
 #else
 #include <GL/glu.h>
 #include <GL/gl.h>
+#include <GL/glut.h>
 #endif
 
 #include <dm.h>

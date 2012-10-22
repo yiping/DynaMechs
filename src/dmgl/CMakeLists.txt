@@ -16,6 +16,6 @@ SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 
 INSTALL(TARGETS dmgl 
-        LIBRARY DESTINATION dynamechs/lib)
+        DESTINATION dynamechs/lib)
 FILE( GLOB DMGL_HEADERS [^.]*.h [^.]*.hpp )
 INSTALL(FILES ${DMGL_HEADERS} DESTINATION dynamechs/dmgl)

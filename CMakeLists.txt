@@ -16,21 +16,50 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 MESSAGE(STATUS "c compiler is: " ${CMAKE_C_COMPILER} )
 MESSAGE(STATUS "c++ compiler is: " ${CMAKE_CXX_COMPILER} )
 
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	#tell CMake to search first in directories listed in CMAKE_MODULE_PATH
+	SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeScripts)
+	message(STATUS "CMAKE_MODULE_PATH (search first) is ${CMAKE_MODULE_PATH}")
+    SET(GLUT_ROOT_PATH ${PROJECT_SOURCE_DIR}/glut)
+ENDIF()
+
 # /usr/share/cmake-2.8/Modules
 find_package(GLUT)
 find_package(OpenGL)
+
 #override opengl path, using ATI implementation
 #set(OPENGL_LIBRARIES "/usr/lib/fglrx")
-MESSAGE(STATUS "OpenGL library path: " ${OPENGL_LIBRARIES})
-MESSAGE(STATUS "GLUT library path: " ${GLUT_LIBRARIES})
-MESSAGE(STATUS "OpenGL headers path: " ${OPENGL_INCLUDE_DIR})
+
 MESSAGE(STATUS "GLUT headers path: " ${GLUT_INCLUDE_DIR})
+MESSAGE(STATUS "GLUT library path: " ${GLUT_LIBRARIES})
+
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    MESSAGE(STATUS "openGL library : " ${OPENGL_gl_LIBRARY})
+    MESSAGE(STATUS "glu library : " ${OPENGL_glu_LIBRARY})
+ELSE()
+    MESSAGE(STATUS "OpenGL headers path: " ${OPENGL_INCLUDE_DIR})
+    MESSAGE(STATUS "OpenGL library path: " ${OPENGL_LIBRARIES})
+ENDIF()
+
+
 MESSAGE(STATUS "CMake build type: " ${CMAKE_BUILD_TYPE})
 
-find_package(Eigen REQUIRED)
-include_directories(${Eigen_INCLUDE_DIRS})
 # Eigen is a header-only library, so you do not need to specify any linking
-MESSAGE(STATUS "Eigen headers path: " ${Eigen_INCLUDE_DIRS})
+
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    SET(EIGEN_INCLUDE_DIR "$ENV{EIGEN_INCLUDE_DIR}")
+    IF( NOT EIGEN_INCLUDE_DIR )
+        MESSAGE( FATAL_ERROR "Please point the environment variable EIGEN_INCLUDE_DIR to the include directory of your Eigen3 installation.")
+    ENDIF(NOT EIGEN_INCLUDE_DIR)
+    INCLUDE_DIRECTORIES ( "${EIGEN_INCLUDE_DIR}" )
+    MESSAGE(STATUS "EIGEN_INCLUDE_DIR: " ${EIGEN_INCLUDE_DIR})
+ELSE()
+    find_package(Eigen REQUIRED)
+    include_directories(${Eigen_INCLUDE_DIRS})
+    MESSAGE(STATUS "Eigen3 headers path: " ${Eigen_INCLUDE_DIRS})
+ENDIF()
+
+
 
 ADD_SUBDIRECTORY(src/dm bin_dm)
 ADD_SUBDIRECTORY(src/dmu bin_dmu)

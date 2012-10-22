@@ -1,0 +1,7 @@
+
+This is a different version of FindwxWidgets.cmake. [NOT the CMake default script for finding wxWidgets]
+
+This script provides a few extra variables after configuration than the default one (such as wxWidgets_PFVERSION )
+
+It calls UsewxWidgets.cmake inside to print out debug information.
+ 

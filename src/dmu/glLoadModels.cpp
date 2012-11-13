@@ -82,7 +82,7 @@ GLuint glLoadModel(char *filename)
    else if (strstr(filename, ".cmb"))
       dlist = dmGLLoadFile_cmb(filename);
    else
-      cerr << "Error: unknown model format for " << filename << endl;
+      cerr << "Error: unknown model format for [" << filename <<"]"<< endl;
 
    if (dlist)
    {
@@ -303,7 +303,7 @@ void executeGL_xan(ifstream &data_ptr)
       }
    }
 
-#define NO_POLYGON	
+//#define NO_POLYGON	
     // polygons
 #ifndef NO_POLYGON
 	for (i=0; i<num_faces; i++)

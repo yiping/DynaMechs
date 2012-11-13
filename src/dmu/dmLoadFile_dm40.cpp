@@ -73,15 +73,16 @@ bool getStringParameter40(ifstream &cfg_ptr, const char *label, char *name)
 {
    readConfigParameterLabel(cfg_ptr, label);
 
-   if (cfg_ptr.getline(name, NAME_SIZE, '\042'))
+   if (cfg_ptr.getline(name, NAME_SIZE, '\042'))	// stop at quotation mark
    {
       if (cfg_ptr.getline(name, NAME_SIZE, '\042'))
       {
-         if (strlen(name) > 0)
-         {
-            //cerr << "Got name: " << name << endl;
+         //if (strlen(name) > 0)
+         //{	cout<<strlen(name)<<endl;
+            // cerr << "Got name: " << name << endl;
             return true;
-         }
+         //}
+
       }
    }
    return false;
@@ -951,8 +952,9 @@ dmArticulation *loadArticulation40(ifstream &cfg_ptr)
    }
 
    char object_name40[256];
-   if (getStringParameter40(cfg_ptr, "Graphics_Model", object_name40) &&
-       (object_name40[0] != '\0'))
+//   if (getStringParameter40(cfg_ptr, "Graphics_Model", object_name40) &&
+//       (object_name40[0] != '\0'))
+   if (getStringParameter40(cfg_ptr, "Graphics_Model", object_name40) )
    {
       GLuint *dlist = new GLuint;
       *dlist = glLoadModel(object_name40);

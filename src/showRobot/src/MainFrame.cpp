@@ -81,6 +81,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 		wxBoxSizer *toolpanel_sizer = new wxBoxSizer( wxVERTICAL);
 		
+		//enabling MSAA, but this feature requires hardware support
+		//int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, WX_GL_SAMPLE_BUFFERS, GL_TRUE, WX_GL_SAMPLES, 4,0};	
 		int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0};
 		
 		//cout << "Pane " << endl;

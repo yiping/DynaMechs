@@ -93,9 +93,36 @@ void getGraphicsModel40(ifstream &cfg_ptr, dmLink *link)
 {
    if (getStringParameter40(cfg_ptr, "Graphics_Model", object_name40))
    {
+      // For each link, DM can render AT MOST two graphical models (2 .xan files)
+      // spcified as "model1.xan|model2.xan"
+
+      char * pch;
+      pch = strtok (object_name40,"|");// note: do not put extra spaces
       GLuint *dlist = new GLuint;
-      *dlist = glLoadModel(object_name40);
-      link->setUserData((void *) dlist);
+      *dlist = glLoadModel(pch);
+      link->setUserData((void *) dlist); 
+
+      //cout<<pch<<endl;
+
+      pch = strtok (NULL, "|"); 
+      if (pch != NULL)
+      {
+         GLuint *dlist2 = new GLuint;
+         *dlist2 = glLoadModel(pch);
+         link->setUserData2((void *) dlist2);	
+      }
+      else
+      {
+         GLuint *dlist2 = new GLuint;
+         *dlist2 = 0;
+         link->setUserData2((void *) dlist2);	
+      }
+
+
+
+      //GLuint *dlist = new GLuint;
+      //*dlist = glLoadModel(object_name40);
+      //link->setUserData((void *) dlist);
    }
 }
 

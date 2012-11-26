@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 dmObject::dmObject()
-      : m_user_data(NULL),
+      : m_user_data(NULL), m_user_data_2(NULL),
         m_name(NULL)
 {
 }

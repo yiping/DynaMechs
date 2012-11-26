@@ -79,6 +79,11 @@ public:
    void *getUserData() const {return m_user_data;}
 
    ///
+   void setUserData2(void *data) {m_user_data_2 = data;}
+   ///
+   void *getUserData2() const {return m_user_data_2;}
+
+   ///
    void setName(const char *name);
    ///
    const char *getName() const {return m_name;}
@@ -90,6 +95,7 @@ protected:
 
 protected:
    void *m_user_data;
+   void *m_user_data_2;	// for rendering the second graphical model of a single link
    char *m_name;
 };
 

@@ -858,6 +858,7 @@ void dmRevoluteLink::draw() const
    glRotatef(m_thetaMDH*RADTODEG, 0.0, 0.0, 1.0);
 
    glCallList(*((GLuint *) getUserData()));
+   glCallList(*((GLuint *) getUserData2()));
 }
 
 //----------------------------------------------------------------------------
@@ -926,6 +927,7 @@ void dmMobileBaseLink::draw() const
    }
 
    glCallList(*((GLuint *) getUserData()));
+   glCallList(*((GLuint *) getUserData2()));
 }
 
 //----------------------------------------------------------------------------

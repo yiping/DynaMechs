@@ -17,7 +17,7 @@ Articulation {
 
 	 	Center_of_Gravity   	-0.012258116293  -0.002473149928  -0.048635606065
 		Number_of_Contact_Points	0
-		Position				2.0		2.0		1.5
+		Position				2.0		2.0		1.1
 		Orientation_Quat		0.0		0.0784591		0.0		0.996917
 		Velocity 				0 0	0 0	0 0
 	}

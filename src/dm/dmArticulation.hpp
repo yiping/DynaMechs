@@ -31,6 +31,14 @@
 #include <vector>
 
 // Now made public
+
+//! \b index is the physical link index \n
+//! \b index_ext is the extended index that takes into account true degrees of freedom \n
+//! \b dof is the true degrees of freedom of the link \n
+//! For example: \n
+//! a three-link articulated system consisting sequentially of a floating base, a spherical link and a revolute link \n
+//! the \b index for each link would be: 0, 1, 2 \n
+//! the \b index_ext for each link would be: 0, 6, 9 \n
 struct LinkInfoStruct
 {
   unsigned int index, index_ext, dof;

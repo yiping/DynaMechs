@@ -18,7 +18,7 @@ Articulation {
 	 	Center_of_Gravity   	-0.012258116293  -0.002473149928  -0.048635606065
 		Number_of_Contact_Points	0
 		Position				2.0		2.0		1.5
-		Orientation_Quat		0.0		0.0784591		0.0		0.996917
+		Orientation_Quat		0.0		0.0		0.0		1.0
 		Velocity 				0 0	0 0	0 0
 	}
 
@@ -118,7 +118,7 @@ Articulation {
 			 	Center_of_Gravity    	 	-0.175202 	0.019505 	0.059577
 
 			 	Number_of_Contact_Points	0
-			 	MDH_Parameters  			0	1.570796	-0.0656		-0.557079
+			 	MDH_Parameters  			0	1.570796	-0.0656		0
 			 	Initial_Joint_Velocity   	0
 			 	Joint_Limits     	-85 	92
 			 	Joint_Limit_Spring_Constant  	0
@@ -139,7 +139,7 @@ Articulation {
 			 	Center_of_Gravity    	 	-0.171431 	0.012825 	0.007276
 
 			 	Number_of_Contact_Points	0
-			 	MDH_Parameters  			-0.2800		0	0.0445		0.8	
+			 	MDH_Parameters  			-0.2800		0	0.0445		0	
 			 	Initial_Joint_Velocity   	0
 			 	Joint_Limits     	-4 	149
 			 	Joint_Limit_Spring_Constant  	0
@@ -160,7 +160,7 @@ Articulation {
 			 	Center_of_Gravity    	 	0.011507 	0.019870 	0.045969
 
 			 	Number_of_Contact_Points	0
-			 	MDH_Parameters  			-0.2799		0	-0.02476	-0.4
+			 	MDH_Parameters  			-0.2799		0	-0.02476	0
 			 	Initial_Joint_Velocity   	0
 			 	Joint_Limits     	-74 	97
 			 	Joint_Limit_Spring_Constant  	0
@@ -268,7 +268,7 @@ Articulation {
 			 	Center_of_Gravity    	 	-0.175202 	0.019505 	-0.059577
 
 			 	Number_of_Contact_Points	0
-			 	MDH_Parameters  			0	1.570796	0.0656		-0.557079
+			 	MDH_Parameters  			0	1.570796	0.0656		0
 			 	Initial_Joint_Velocity   	0
 			 	Joint_Limits     	-85 	92
 			 	Joint_Limit_Spring_Constant  	0
@@ -290,7 +290,7 @@ Articulation {
 			 	Center_of_Gravity    	 	-0.171431 	0.012825 	-0.007276
 
 			 	Number_of_Contact_Points	0
-			 	MDH_Parameters  			-0.2800		0	-0.0445		0.8
+			 	MDH_Parameters  			-0.2800		0	-0.0445		0
 			 	Initial_Joint_Velocity   	0
 			 	Joint_Limits     	-4 	149
 			 	Joint_Limit_Spring_Constant  	0
@@ -311,7 +311,7 @@ Articulation {
 			 	Center_of_Gravity    	 	0.011507 	0.019870 	-0.045969
 
 			 	Number_of_Contact_Points	0
-			 	MDH_Parameters  			-0.2799		0	0.02476		-0.4
+			 	MDH_Parameters  			-0.2799		0	0.02476		0
 			 	Initial_Joint_Velocity   	0
 			 	Joint_Limits     	-74 	97
 			 	Joint_Limit_Spring_Constant  	0
@@ -371,7 +371,7 @@ Articulation {
 		 	Center_of_Gravity    	 	0.016721 	-0.000010 	-0.057041
 
 		 	Number_of_Contact_Points	0
-		 	MDH_Parameters  			0	-1.570796	-0.1415		0.2
+		 	MDH_Parameters  			0	-1.570796	-0.1415		0
 		 	Initial_Joint_Velocity   	0
 		 	Joint_Limits     	-179.999 	179.999
 		 	Joint_Limit_Spring_Constant  	0
@@ -396,7 +396,7 @@ Articulation {
 		 	Center_of_Gravity    	 	0.001267 	0.000083 	-0.036208
 
 		 	Number_of_Contact_Points	0
-		 	MDH_Parameters  			0	1.570796	0.0269	-0.3
+		 	MDH_Parameters  			0	1.570796	0.0269	-1.570796
 		 	Initial_Joint_Velocity   	0
 		 	Joint_Limits     	-180 	4
 		 	Joint_Limit_Spring_Constant  	0
@@ -447,7 +447,7 @@ Articulation {
 		 	Center_of_Gravity    	 	-0.021735 	0.061087 	-0.017831
 
 		 	Number_of_Contact_Points	0
-		 	MDH_Parameters  			0.0220	-1.570796	0.0180	-0.6
+		 	MDH_Parameters  			0.0220	-1.570796	0.0180	0
 		 	Initial_Joint_Velocity   	0
 		 	Joint_Limits     	-143 	4
 		 	Joint_Limit_Spring_Constant  	0
@@ -524,7 +524,7 @@ Articulation {
 		 	Center_of_Gravity    	 	0.016721 	-0.000010 	0.057041
 
 		 	Number_of_Contact_Points	0
-		 	MDH_Parameters  			0	-1.570796	0.1415		0.20
+		 	MDH_Parameters  			0	-1.570796	0.1415		0
 		 	Initial_Joint_Velocity   	0
 		 	Joint_Limits     	-179.999 	179.999
 		 	Joint_Limit_Spring_Constant  	0
@@ -550,7 +550,7 @@ Articulation {
 		 	Center_of_Gravity    	 	0.001267 	-0.000083 	-0.036208
 
 		 	Number_of_Contact_Points	0
-		 	MDH_Parameters  			0	1.570796	0.0269	0.3
+		 	MDH_Parameters  			0	1.570796	0.0269	0
 		 	Initial_Joint_Velocity   	0
 		 	Joint_Limits     	-4 	180
 		 	Joint_Limit_Spring_Constant  	0
@@ -603,7 +603,7 @@ Articulation {
 
 		 	Number_of_Contact_Points	0
 
-		 	MDH_Parameters  			0.0220	-1.570796	-0.0180		-0.6
+		 	MDH_Parameters  			0.0220	-1.570796	-0.0180	0
 		 	Initial_Joint_Velocity   	0
 		 	Joint_Limits     	-143 	4
 		 	Joint_Limit_Spring_Constant  	0

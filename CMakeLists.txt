@@ -76,6 +76,7 @@ ADD_SUBDIRECTORY(src/humanoid bin_humanoid)
 #ADD_SUBDIRECTORY(src/contact_demo bin_contact_demo)
 ADD_SUBDIRECTORY(src/optimization_test bin_optimization_test)
 ADD_SUBDIRECTORY(src/showRobot bin_showRobot)
+ADD_SUBDIRECTORY(src/huboplus1 bin_huboplus1)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX is: " ${CMAKE_INSTALL_PREFIX})
 

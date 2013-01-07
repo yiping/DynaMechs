@@ -230,6 +230,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -277,7 +279,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>28</integer>
+									<integer>27</integer>
 									<integer>26</integer>
 									<integer>9</integer>
 									<integer>3</integer>
@@ -315,14 +317,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>RunningStateMachine.cpp</string>
+								<string>RunningStateMachine.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -330,23 +330,23 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>RunningStateMachine.cpp</string>
+										<string>RunningStateMachine.h</string>
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>19F88C03169B753B00B62ABE</string>
+										<string>19F88C0F169B76A300B62ABE</string>
 										<key>history</key>
 										<array>
 											<string>19F88BF9169B753B00B62ABE</string>
-											<string>19F88BFA169B753B00B62ABE</string>
-											<string>19F88BFB169B753B00B62ABE</string>
 											<string>19F88BFC169B753B00B62ABE</string>
 											<string>19F88BFD169B753B00B62ABE</string>
 											<string>19F88BFE169B753B00B62ABE</string>
 											<string>19F88BFF169B753B00B62ABE</string>
 											<string>19F88C00169B753B00B62ABE</string>
 											<string>19F88C01169B753B00B62ABE</string>
-											<string>19F88C02169B753B00B62ABE</string>
+											<string>19F88C0C169B76A300B62ABE</string>
+											<string>19F88C0D169B76A300B62ABE</string>
+											<string>19F88C0E169B76A300B62ABE</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>

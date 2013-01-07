@@ -4,11 +4,11 @@ addpath ~/Documents/MATLAB/DynamicsLibrary/
 Height = 1.8288; % 6 feet
 Mass = 72.5748; % 160 pounds
 
-Height = Height*70/Mass; % 5' 9.5"
+%Height = Height*70/Mass; % 5' 9.5"
 %Mass = 70;               %
 
-Height = 1.0500;
-Mass = 19.12;
+%Height = 1.0500;
+%Mass = 19.12;
 totalMass = 0;
 
 

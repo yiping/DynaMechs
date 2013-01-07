@@ -176,7 +176,7 @@ void JumpingStateMachine::BalanceMiddle() {
 	kpCM = 30;
 	kdCM = 2*sqrt(kpCM);
 	kdAM = 25;
-	pComDes << 2.00, 2.0, .48;
+	pComDes << 2.00, 2.0, .48*1.7;
 	//pComDes << 2.00, 2.0, .72;
 	vComDes.setZero();
 	aComDes.setZero();
@@ -198,7 +198,7 @@ void JumpingStateMachine::Squat()
 		VectorXF pComEnd(3);
 		VectorXF vComEnd = VectorXF::Zero(3);
 		
-		pComEnd << 2.02, 2.0, .32;
+		pComEnd << 2.02, 2.0, .32*1.7;
 		
 		ComTrajectory.init(pComInit, vComInit, pComEnd, vComEnd, SquatTime);
 		transitionFlag = false;
@@ -369,7 +369,7 @@ void JumpingStateMachine::RaiseFoot()
 		VectorXF vFootEnd(3);
 		vFootEnd.setZero();
 		
-		pFootEnd << pFoot[0](0),pFoot[0](1),pFoot[0](2)+.02; 
+		pFootEnd << pFoot[0](0),pFoot[0](1),pFoot[0](2)+.02*1.7; 
 		footSpline.init(pFoot[0], vFoot[0].tail(3), pFootEnd, vFootEnd,raiseSplineTime);
 		
 		transitionFlag = false;
@@ -418,11 +418,11 @@ void JumpingStateMachine::Kick()
 	
 	Matrix3F IBarC0_init = IBarC0;
 	
-	Float kickTime = 1.1;
-	Float swingBackTime =.5;
-	Float swingForwardTime = .25;
-	Float slowTime = .5;
-	Float returnTime = .6;
+	Float kickTime = 1.1*1.5;
+	Float swingBackTime =.5*1.5;
+	Float swingForwardTime = .25*1.5;
+	Float slowTime = .5*1.5;
+	Float returnTime = .6*1.5;
 	static Float splineTime = 0;
 	kpFoot[0] = 50*5;
 	kdFoot[0] = 2*sqrt(kpFoot[0]);
@@ -610,7 +610,7 @@ void JumpingStateMachine::Kick()
 	
 	if (subState <= 2) {
 		OptimizationSchedule.segment(0,3).setConstant(4);
-		TaskWeight.segment(0,3).setConstant(200);
+		TaskWeight.segment(0,3).setConstant(200/10.);
 		//TaskWeight.segment(0,3).setConstant(50);
 		kComDes(1) = -IBarC0_init(1,1) * td*.8;
 		kDotDes(1) = -IBarC0_init(1,1) * tdd*.8;		
@@ -619,6 +619,8 @@ void JumpingStateMachine::Kick()
 		OptimizationSchedule.segment(0,3).setConstant(4);
 	}
 
+	//kComDes.setZero();
+	//kDotDes.setZero();
 	
 	Vector3F angAx;
 	angAx << 0,-t,0;
@@ -642,9 +644,9 @@ void JumpingStateMachine::BalanceLeft()
 		VectorXF pComInit = pCom;
 		VectorXF vComInit = centMom.tail(3)/totalMass;
 		
-		pComEnd  << pCom(0)+.06, pCom(1)+.06, pCom(2)+.08;
+		pComEnd  << pCom(0)+.06, pCom(1)+.06*1.7, pCom(2)+.08*1.7;
 		
-		ComTrajectory.init(pComInit, vComInit, pComEnd, vComEnd,.8);
+		ComTrajectory.init(pComInit, vComInit, pComEnd, vComEnd,.8*1.5);
 		transitionFlag = false;
 		
 		MaxFootLoad = grfInfo.fCoPs[0](2);
@@ -692,8 +694,8 @@ void JumpingStateMachine::StateControl(ControlInfo & ci)
 	
 	TaskWeight.setOnes(6+NJ+6+12);
 	
-	TaskWeight.segment(0,3).setConstant(10);
-	TaskWeight.segment(3,3).setConstant(100);
+	TaskWeight.segment(0,3).setConstant(10/8.);
+	TaskWeight.segment(3,3).setConstant(100/16.);
 	
 	TaskWeight.tail(12).setConstant(1000);
 	

@@ -606,6 +606,7 @@
 		19EE349B153C526D0029D664 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1925876B14D2EDF400778EA7 /* OpenGL.framework */; };
 		19EE34A1153C52CA0029D664 /* functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19EE345D153C52670029D664 /* functions.cpp */; };
 		19EE34A2153C52CA0029D664 /* windmill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19EE345E153C52670029D664 /* windmill.cpp */; };
+		19F88BE5169B72B400B62ABE /* RunningStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */; };
 		19F8D3EF158BB30E00BC4671 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3EE158BB30E00BC4671 /* AGL.framework */; };
 		19F8D3F1158BB30E00BC4671 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3F0158BB30E00BC4671 /* Carbon.framework */; };
 		19F8D3F3158BB30E00BC4671 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8D3F2158BB30E00BC4671 /* Cocoa.framework */; };
@@ -943,6 +944,8 @@
 		19EE345D153C52670029D664 /* functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = functions.cpp; path = src/windmill/functions.cpp; sourceTree = "<group>"; };
 		19EE345E153C52670029D664 /* windmill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = windmill.cpp; path = src/windmill/windmill.cpp; sourceTree = "<group>"; };
 		19EE349F153C526D0029D664 /* windmill */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = windmill; sourceTree = BUILT_PRODUCTS_DIR; };
+		19F88BE3169B72B400B62ABE /* RunningStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunningStateMachine.h; sourceTree = "<group>"; };
+		19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RunningStateMachine.cpp; sourceTree = "<group>"; };
 		19F8CFA7158BADA500BC4671 /* libmosek.6.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmosek.6.0.dylib; path = src/mosek/6/tools/platform/osx32x86/bin/libmosek.6.0.dylib; sourceTree = "<group>"; };
 		19F8CFA8158BAE7800BC4671 /* mosek32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mosek32.h; path = src/mosek/6/tools/platform/osx32x86_old/h/mosek32.h; sourceTree = "<group>"; };
 		19F8D3DF158BB2D000BC4671 /* libwx_base_carbonu_net-2.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libwx_base_carbonu_net-2.8.a"; path = "src/wxWidgets/libwx_base_carbonu_net-2.8.a"; sourceTree = "<group>"; };
@@ -1411,6 +1414,8 @@
 		198016D215994F9F00DB8AD5 /* humanoid Utils */ = {
 			isa = PBXGroup;
 			children = (
+				19F88BE3169B72B400B62ABE /* RunningStateMachine.h */,
+				19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */,
 				19B0331115B45FEB00025508 /* JumpingStateMachine.h */,
 				19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */,
 				192003E715A5F9FD0006A823 /* HumanoidStateMachineController.cpp */,
@@ -2570,6 +2575,7 @@
 				198B440E15C9BF7C00458DC4 /* JumpingStateMachine.cpp in Sources */,
 				19EC853415D1639900874729 /* TaskSpaceControllerC.cpp in Sources */,
 				1974711615E521FE00E7AA0A /* BezierCurve.cpp in Sources */,
+				19F88BE5169B72B400B62ABE /* RunningStateMachine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

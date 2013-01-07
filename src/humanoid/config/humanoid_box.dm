@@ -10,16 +10,14 @@ Articulation {
 	MobileBaseLink {
 		Name	"Torso"
 		Graphics_Model	"./humanoid_box_model/torso.xan"
-		Mass				11.051360
-		Inertia				0.643093	0.000000	0.000000
-							0.000000	0.748940	0.000000
-							0.000000	0.000000	0.123410
-		Center_of_Gravity	0.000000	0.000000	0.232848
+		Mass				41.948234
+		Inertia				7.405012	0.000000	0.000000
+							0.000000	8.623801	0.000000
+							0.000000	0.000000	1.421026
+		Center_of_Gravity	0.000000	0.000000	0.405555
 		Number_of_Contact_Points	0
-		Position	2.000000	2.000000	0.620000
-		#Position	0.500000	.5000000	0.512
-		#Orientation_Quat	0.000000	0.000000	0.3827	0.9239
-		Orientation_Quat	0.000000	0.000000	0	1
+		Position	2.000000	2.000000	1.200000
+		Orientation_Quat	0.000000	0.000000	0.000000	1.000000
 		Velocity 0 0 0 0 0 0
 	}
 	# End "Torso"
@@ -37,14 +35,14 @@ Articulation {
 			QuaternionLink {
 				Name	"RightThigh"
 				Graphics_Model	"./humanoid_box_model/thigh.xan"
-				Mass				1.912000
-				Inertia				0.001985	0.000000	0.000000
-									0.000000	0.040649	0.000000
-									0.000000	0.000000	0.040913
-				Center_of_Gravity	0.120028	0.000000	0.000000
+				Mass				7.257480
+				Inertia				0.022857	0.000000	0.000000
+									0.000000	0.468064	0.000000
+									0.000000	0.000000	0.471099
+				Center_of_Gravity	0.209054	0.000000	0.000000
 				Number_of_Contact_Points	1
-				Contact_Locations	0.277200	0.000000	0.000000
-				Position_From_Inboard_Link	0.000000	-0.072975	0.030450
+				Contact_Locations	0.482803	0.000000	0.000000
+				Position_From_Inboard_Link	0.000000	-0.127102	0.053035
 				Orientation_Quat	-0.547419	0.447585	0.447585	0.547419
 				Initial_Angular_Velocity	0	0	0
 				Joint_Friction	0
@@ -54,14 +52,14 @@ Articulation {
 			RevoluteLink {
 				Name	"RightShank"
 				Graphics_Model	"./humanoid_box_model/shank.xan"
-				Mass				0.889080
-				Inertia				0.000550	0.000000	0.000000
-									0.000000	0.015438	0.000000
-									0.000000	0.000000	0.015438
-				Center_of_Gravity	0.108661	0.000000	0.000000
+				Mass				3.374728
+				Inertia				0.006328	0.000000	0.000000
+									0.000000	0.177767	0.000000
+									0.000000	0.000000	0.177767
+				Center_of_Gravity	0.189257	0.000000	0.000000
 				Number_of_Contact_Points	1
-				Contact_Locations	0.250950	0.000000	0.000000
-				MDH_Parameters	0.277200	0.000000	0.000000	0.500000
+				Contact_Locations	0.437083	0.000000	0.000000
+				MDH_Parameters	0.482803	0.000000	0.000000	0.500000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
 				Joint_Limit_Spring_Constant	0
@@ -80,7 +78,7 @@ Articulation {
 									0.000000	0.000000	0.000000
 				Center_of_Gravity	0.000000	0.000000	0.000000
 				Number_of_Contact_Points	0
-				MDH_Parameters	0.250950	0.000000	0.000000	-0.300000
+				MDH_Parameters	0.437083	0.000000	0.000000	-0.300000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
 				Joint_Limit_Spring_Constant	0
@@ -93,16 +91,16 @@ Articulation {
 			RevoluteLink {
 				Name	"RightAnkle2"
 				Graphics_Model	"./humanoid_box_model/foot.xan"
-				Mass				0.277240
-				Inertia				0.001227	0.000000	-0.000174
-									0.000000	0.001122	0.000000
-									-0.000174	0.000000	0.000289
-				Center_of_Gravity	0.015750	0.000000	0.039900
+				Mass				1.052335
+				Inertia				0.014130	0.000000	-0.002006
+									0.000000	0.012914	0.000000
+									-0.002006	0.000000	0.003327
+				Center_of_Gravity	0.027432	0.000000	0.069494
 				Number_of_Contact_Points	4
-				Contact_Locations	0.031500	0.046200	-0.039900
-									0.031500	-0.046200	-0.039900
-									0.031500	0.046200	0.119700
-									0.031500	-0.046200	0.119700
+				Contact_Locations	0.054864	0.080467	-0.069494
+									0.054864	-0.080467	-0.069494
+									0.054864	0.080467	0.208483
+									0.054864	-0.080467	0.208483
 				MDH_Parameters	0.000000	1.570796	0.000000	0.000000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
@@ -120,14 +118,14 @@ Articulation {
 			QuaternionLink {
 				Name	"LeftThigh"
 				Graphics_Model	"./humanoid_box_model/thigh.xan"
-				Mass				1.912000
-				Inertia				0.001985	0.000000	0.000000
-									0.000000	0.040649	0.000000
-									0.000000	0.000000	0.040913
-				Center_of_Gravity	0.120028	0.000000	0.000000
+				Mass				7.257480
+				Inertia				0.022857	0.000000	0.000000
+									0.000000	0.468064	0.000000
+									0.000000	0.000000	0.471099
+				Center_of_Gravity	0.209054	0.000000	0.000000
 				Number_of_Contact_Points	1
-				Contact_Locations	0.277200	0.000000	0.000000
-				Position_From_Inboard_Link	0.000000	0.072975	0.030450
+				Contact_Locations	0.482803	0.000000	0.000000
+				Position_From_Inboard_Link	0.000000	0.127102	0.053035
 				Orientation_Quat	-0.547419	0.447585	0.447585	0.547419
 				Initial_Angular_Velocity	0	0	0
 				Joint_Friction	0
@@ -137,14 +135,14 @@ Articulation {
 			RevoluteLink {
 				Name	"LeftShank"
 				Graphics_Model	"./humanoid_box_model/shank.xan"
-				Mass				0.889080
-				Inertia				0.000550	0.000000	0.000000
-									0.000000	0.015438	0.000000
-									0.000000	0.000000	0.015438
-				Center_of_Gravity	0.108661	0.000000	0.000000
+				Mass				3.374728
+				Inertia				0.006328	0.000000	0.000000
+									0.000000	0.177767	0.000000
+									0.000000	0.000000	0.177767
+				Center_of_Gravity	0.189257	0.000000	0.000000
 				Number_of_Contact_Points	1
-				Contact_Locations	0.250950	0.000000	0.000000
-				MDH_Parameters	0.277200	0.000000	0.000000	0.500000
+				Contact_Locations	0.437083	0.000000	0.000000
+				MDH_Parameters	0.482803	0.000000	0.000000	0.500000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
 				Joint_Limit_Spring_Constant	0
@@ -163,7 +161,7 @@ Articulation {
 									0.000000	0.000000	0.000000
 				Center_of_Gravity	0.000000	0.000000	0.000000
 				Number_of_Contact_Points	0
-				MDH_Parameters	0.250950	0.000000	0.000000	-0.300000
+				MDH_Parameters	0.437083	0.000000	0.000000	-0.300000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
 				Joint_Limit_Spring_Constant	0
@@ -176,16 +174,16 @@ Articulation {
 			RevoluteLink {
 				Name	"LeftAnkle2"
 				Graphics_Model	"./humanoid_box_model/foot.xan"
-				Mass				0.277240
-				Inertia				0.001227	0.000000	-0.000174
-									0.000000	0.001122	0.000000
-									-0.000174	0.000000	0.000289
-				Center_of_Gravity	0.015750	0.000000	0.039900
+				Mass				1.052335
+				Inertia				0.014130	0.000000	-0.002006
+									0.000000	0.012914	0.000000
+									-0.002006	0.000000	0.003327
+				Center_of_Gravity	0.027432	0.000000	0.069494
 				Number_of_Contact_Points	4
-				Contact_Locations	0.031500	0.046200	-0.039900
-									0.031500	-0.046200	-0.039900
-									0.031500	0.046200	0.119700
-									0.031500	-0.046200	0.119700
+				Contact_Locations	0.054864	0.080467	-0.069494
+									0.054864	-0.080467	-0.069494
+									0.054864	0.080467	0.208483
+									0.054864	-0.080467	0.208483
 				MDH_Parameters	0.000000	1.570796	0.000000	0.000000
 				Initial_Joint_Velocity	0
 				Joint_Limits	0	0
@@ -205,14 +203,14 @@ Articulation {
 		QuaternionLink {
 			Name	"RightArm"
 			Graphics_Model	"./humanoid_box_model/upperArm.xan"
-			Mass				0.535360
-			Inertia				0.000309	0.000000	0.000000
-								0.000000	0.003730	0.000000
-								0.000000	0.000000	0.003648
-			Center_of_Gravity	0.067754	0.000000	0.000000
+			Mass				2.032094
+			Inertia				0.003553	0.000000	0.000000
+								0.000000	0.042953	0.000000
+								0.000000	0.000000	0.042010
+			Center_of_Gravity	0.118009	0.000000	0.000000
 			Number_of_Contact_Points	1
-			Contact_Locations	0.155400	0.000000	0.000000
-			Position_From_Inboard_Link	0.000000	-0.107625	0.337050
+			Contact_Locations	0.270662	0.000000	0.000000
+			Position_From_Inboard_Link	0.000000	-0.187452	0.587045
 			Orientation_Quat	0.411088	0.481323	-0.588681	0.502781
 			Initial_Angular_Velocity	0	0	0
 			Joint_Friction	0
@@ -222,14 +220,14 @@ Articulation {
 		RevoluteLink {
 			Name	"RightForeArm"
 			Graphics_Model	"./humanoid_box_model/foreArm.xan"
-			Mass				0.420640
-			Inertia				0.000157	0.000000	0.000000
-								0.000000	0.014740	0.000000
-								0.000000	0.000000	0.014719
-			Center_of_Gravity	0.171864	0.000000	0.000000
+			Mass				1.596646
+			Inertia				0.001810	0.000000	0.000000
+								0.000000	0.169722	0.000000
+								0.000000	0.000000	0.169482
+			Center_of_Gravity	0.299338	0.000000	0.000000
 			Number_of_Contact_Points	1
-			Contact_Locations	0.252000	0.000000	0.000000
-			MDH_Parameters	0.155400	0.000000	0.000000	0.500000
+			Contact_Locations	0.438912	0.000000	0.000000
+			MDH_Parameters	0.270662	0.000000	0.000000	0.500000
 			Initial_Joint_Velocity	0
 			Joint_Limits	0	0
 			Joint_Limit_Spring_Constant	0
@@ -246,14 +244,14 @@ Articulation {
 		QuaternionLink {
 			Name	"LeftArm"
 			Graphics_Model	"./humanoid_box_model/upperArm.xan"
-			Mass				0.535360
-			Inertia				0.000309	0.000000	0.000000
-								0.000000	0.003730	0.000000
-								0.000000	0.000000	0.003648
-			Center_of_Gravity	0.067754	0.000000	0.000000
+			Mass				2.032094
+			Inertia				0.003553	0.000000	0.000000
+								0.000000	0.042953	0.000000
+								0.000000	0.000000	0.042010
+			Center_of_Gravity	0.118009	0.000000	0.000000
 			Number_of_Contact_Points	1
-			Contact_Locations	0.155400	0.000000	0.000000
-			Position_From_Inboard_Link	0.000000	0.107625	0.337050
+			Contact_Locations	0.270662	0.000000	0.000000
+			Position_From_Inboard_Link	0.000000	0.187452	0.587045
 			Orientation_Quat	0.502781	0.588681	-0.481323	0.411088
 			Initial_Angular_Velocity	0	0	0
 			Joint_Friction	0
@@ -263,14 +261,14 @@ Articulation {
 		RevoluteLink {
 			Name	"RightArm"
 			Graphics_Model	"./humanoid_box_model/foreArm.xan"
-			Mass				0.420640
-			Inertia				0.000157	0.000000	0.000000
-								0.000000	0.014740	0.000000
-								0.000000	0.000000	0.014719
-			Center_of_Gravity	0.171864	0.000000	0.000000
+			Mass				1.596646
+			Inertia				0.001810	0.000000	0.000000
+								0.000000	0.169722	0.000000
+								0.000000	0.000000	0.169482
+			Center_of_Gravity	0.299338	0.000000	0.000000
 			Number_of_Contact_Points	1
-			Contact_Locations	0.252000	0.000000	0.000000
-			MDH_Parameters	0.155400	0.000000	0.000000	0.500000
+			Contact_Locations	0.438912	0.000000	0.000000
+			MDH_Parameters	0.270662	0.000000	0.000000	0.500000
 			Initial_Joint_Velocity	0
 			Joint_Limits	0	0
 			Joint_Limit_Spring_Constant	0

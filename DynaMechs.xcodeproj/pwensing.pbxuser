@@ -8,11 +8,11 @@
 			198B43C715C9BF7C00458DC4 /* humanoidWx29 */,
 		);
 		breakpoints = (
-			194A85B115A1FF2D007CBCFE /* humanoidWx.cpp:92 */,
-			194A85C915A1FF3D007CBCFE /* humanoidWx.cpp:222 */,
-			194A85D115A1FF6B007CBCFE /* humanoidWx.cpp:181 */,
+			194A85B115A1FF2D007CBCFE /* humanoidWx.cpp:93 */,
+			194A85C915A1FF3D007CBCFE /* humanoidWx.cpp:224 */,
+			194A85D115A1FF6B007CBCFE /* humanoidWx.cpp:183 */,
 			194A860415A205FE007CBCFE /* HumanoidDataLogger.h:20 */,
-			191CCC5615A217D600EDB32D /* humanoidWx.cpp:246 */,
+			191CCC5615A217D600EDB32D /* humanoidWx.cpp:248 */,
 			191CCC5D15A2180E00EDB32D /* BalanceDemoStateMachine.cpp:686 */,
 			191CCC6915A2185800EDB32D /* BalanceDemoStateMachine.cpp:112 */,
 			191CCC7C15A218C500EDB32D /* BalanceDemoStateMachine.cpp:694 */,
@@ -28,8 +28,8 @@
 			1992697315AD060C00E51313 /* BasicGLPane.cpp:218 */,
 			1992699C15AD065100E51313 /* dmArticulation.cpp:715 */,
 			199269E915AD0A0100E51313 /* BasicGLPane.cpp:524 */,
-			19B2079B15C720FB005EA3A3 /* humanoidWx.cpp:299 */,
-			19B2080215C7348E005EA3A3 /* humanoidWx.cpp:332 */,
+			19B2079B15C720FB005EA3A3 /* humanoidWx.cpp:301 */,
+			19B2080215C7348E005EA3A3 /* humanoidWx.cpp:334 */,
 		);
 		codeSenseManager = 1925863A14D2E86400778EA7 /* Code sense */;
 		executables = (
@@ -106,7 +106,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Warnings_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					784,
+					687,
 					20,
 					48,
 					43,
@@ -181,8 +181,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 367955043;
-			PBXWorkspaceStateSaveDate = 367955043;
+			PBXPerProjectTemplateStateSaveDate = 379281845;
+			PBXWorkspaceStateSaveDate = 379281845;
 		};
 		perUserProjectItems = {
 			1902B4C115EBF8C900B105E1 = 1902B4C115EBF8C900B105E1 /* PBXTextBookmark */;
@@ -202,13 +202,28 @@
 			1912CD4115EBEB0200C35BD3 = 1912CD4115EBEB0200C35BD3 /* PBXTextBookmark */;
 			1912CD4215EBEB0200C35BD3 = 1912CD4215EBEB0200C35BD3 /* PBXTextBookmark */;
 			193E3A9B15EBEB1100E920CE = 193E3A9B15EBEB1100E920CE /* PBXTextBookmark */;
-			1990669C15EE8DA50019D6FA /* PBXTextBookmark */ = 1990669C15EE8DA50019D6FA /* PBXTextBookmark */;
-			1990669D15EE8DA50019D6FA /* PBXTextBookmark */ = 1990669D15EE8DA50019D6FA /* PBXTextBookmark */;
-			1990669E15EE8DA50019D6FA /* PBXTextBookmark */ = 1990669E15EE8DA50019D6FA /* PBXTextBookmark */;
-			1990669F15EE8DA50019D6FA /* PBXBookmark */ = 1990669F15EE8DA50019D6FA /* PBXBookmark */;
-			199066A015EE8DA50019D6FA /* PBXTextBookmark */ = 199066A015EE8DA50019D6FA /* PBXTextBookmark */;
-			199066AC15EE8EBA0019D6FA /* PBXTextBookmark */ = 199066AC15EE8EBA0019D6FA /* PBXTextBookmark */;
-			199066AD15EE8EBA0019D6FA /* PBXTextBookmark */ = 199066AD15EE8EBA0019D6FA /* PBXTextBookmark */;
+			1990669C15EE8DA50019D6FA = 1990669C15EE8DA50019D6FA /* PBXTextBookmark */;
+			1990669D15EE8DA50019D6FA = 1990669D15EE8DA50019D6FA /* PBXTextBookmark */;
+			1990669E15EE8DA50019D6FA = 1990669E15EE8DA50019D6FA /* PBXTextBookmark */;
+			1990669F15EE8DA50019D6FA = 1990669F15EE8DA50019D6FA /* PBXBookmark */;
+			199066A015EE8DA50019D6FA = 199066A015EE8DA50019D6FA /* PBXTextBookmark */;
+			199066AC15EE8EBA0019D6FA = 199066AC15EE8EBA0019D6FA /* PBXTextBookmark */;
+			199066AD15EE8EBA0019D6FA = 199066AD15EE8EBA0019D6FA /* PBXTextBookmark */;
+			19F88BF2169B753600B62ABE /* XCBuildMessageTextBookmark */ = 19F88BF2169B753600B62ABE /* XCBuildMessageTextBookmark */;
+			19F88BF3169B753600B62ABE /* PBXTextBookmark */ = 19F88BF3169B753600B62ABE /* PBXTextBookmark */;
+			19F88BF5169B753600B62ABE /* PBXTextBookmark */ = 19F88BF5169B753600B62ABE /* PBXTextBookmark */;
+			19F88BF6169B753600B62ABE /* PBXTextBookmark */ = 19F88BF6169B753600B62ABE /* PBXTextBookmark */;
+			19F88BF9169B753B00B62ABE /* PBXTextBookmark */ = 19F88BF9169B753B00B62ABE /* PBXTextBookmark */;
+			19F88BFA169B753B00B62ABE /* PBXTextBookmark */ = 19F88BFA169B753B00B62ABE /* PBXTextBookmark */;
+			19F88BFB169B753B00B62ABE /* PBXTextBookmark */ = 19F88BFB169B753B00B62ABE /* PBXTextBookmark */;
+			19F88BFC169B753B00B62ABE /* PBXTextBookmark */ = 19F88BFC169B753B00B62ABE /* PBXTextBookmark */;
+			19F88BFD169B753B00B62ABE /* PBXTextBookmark */ = 19F88BFD169B753B00B62ABE /* PBXTextBookmark */;
+			19F88BFE169B753B00B62ABE /* PBXTextBookmark */ = 19F88BFE169B753B00B62ABE /* PBXTextBookmark */;
+			19F88BFF169B753B00B62ABE /* PBXTextBookmark */ = 19F88BFF169B753B00B62ABE /* PBXTextBookmark */;
+			19F88C00169B753B00B62ABE /* PBXTextBookmark */ = 19F88C00169B753B00B62ABE /* PBXTextBookmark */;
+			19F88C01169B753B00B62ABE /* PBXTextBookmark */ = 19F88C01169B753B00B62ABE /* PBXTextBookmark */;
+			19F88C02169B753B00B62ABE /* PBXTextBookmark */ = 19F88C02169B753B00B62ABE /* PBXTextBookmark */;
+			19F88C03169B753B00B62ABE /* PBXTextBookmark */ = 19F88C03169B753B00B62ABE /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
 		userBuildSettings = {
@@ -229,7 +244,7 @@
 		fRef = 1980177315995A8500DB8AD5 /* SimulationThread.cpp */;
 		name = "SimulationThread.cpp: 67";
 		rLen = 0;
-		rLoc = 1579;
+		rLoc = 1578;
 		rType = 0;
 		vrLen = 1746;
 		vrLoc = 584;
@@ -239,7 +254,7 @@
 		fRef = 19801738159955E500DB8AD5 /* HumanoidMainFrame.cpp */;
 		name = "HumanoidMainFrame.cpp: 104";
 		rLen = 0;
-		rLoc = 3501;
+		rLoc = 3500;
 		rType = 0;
 		vrLen = 3204;
 		vrLoc = 2150;
@@ -249,7 +264,7 @@
 		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
 		name = "humanoidWx.cpp: 175";
 		rLen = 0;
-		rLoc = 4204;
+		rLoc = 4237;
 		rType = 0;
 		vrLen = 1529;
 		vrLoc = 530;
@@ -259,7 +274,7 @@
 		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
 		name = "humanoidWx.cpp: 175";
 		rLen = 0;
-		rLoc = 4185;
+		rLoc = 4218;
 		rType = 0;
 		vrLen = 2268;
 		vrLoc = 2654;
@@ -294,7 +309,7 @@
 		fRef = 1980177315995A8500DB8AD5 /* SimulationThread.cpp */;
 		name = "SimulationThread.cpp: 67";
 		rLen = 0;
-		rLoc = 1579;
+		rLoc = 1578;
 		rType = 0;
 		vrLen = 1732;
 		vrLoc = 585;
@@ -314,7 +329,7 @@
 		fRef = 19B20A0D15C8472C005EA3A3 /* humanoid_box.env */;
 		name = "humanoid_box.env: 16";
 		rLen = 4;
-		rLoc = 361;
+		rLoc = 362;
 		rType = 0;
 		vrLen = 622;
 		vrLoc = 0;
@@ -344,7 +359,7 @@
 		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
 		name = "JumpingStateMachine.cpp: 632";
 		rLen = 0;
-		rLoc = 13383;
+		rLoc = 13463;
 		rType = 0;
 		vrLen = 1261;
 		vrLoc = 10394;
@@ -399,7 +414,7 @@
 		vrLen = 1707;
 		vrLoc = 5412;
 	};
-	191CCC5615A217D600EDB32D /* humanoidWx.cpp:246 */ = {
+	191CCC5615A217D600EDB32D /* humanoidWx.cpp:248 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -411,7 +426,7 @@
 		functionName = "MyApp::OnInit()";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 246;
+		lineNumber = 248;
 		location = humanoidWx;
 		modificationTime = 365376656.7759979;
 		originalNumberOfMultipleMatches = 1;
@@ -509,14 +524,14 @@
 	};
 	192003E715A5F9FD0006A823 /* HumanoidStateMachineController.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {729, 566}}";
+			sepNavIntBoundsRect = "{{0, 0}, {850, 763}}";
 			sepNavSelRange = "{363, 0}";
 			sepNavVisRange = "{0, 363}";
 		};
 	};
 	192003E815A5F9FD0006A823 /* StateMachine.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1060, 790}}";
+			sepNavIntBoundsRect = "{{0, 0}, {850, 763}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 304}";
 		};
@@ -1411,7 +1426,7 @@
 	};
 	194A858215A1F924007CBCFE /* Humanoid.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {774, 614}}";
+			sepNavIntBoundsRect = "{{0, 0}, {850, 763}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 170}";
 		};
@@ -1430,7 +1445,7 @@
 			sepNavVisRange = "{0, 469}";
 		};
 	};
-	194A85B115A1FF2D007CBCFE /* humanoidWx.cpp:92 */ = {
+	194A85B115A1FF2D007CBCFE /* humanoidWx.cpp:93 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -1442,13 +1457,13 @@
 		functionName = "MyApp::OnInit()";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 92;
+		lineNumber = 93;
 		location = humanoidWx;
 		modificationTime = 365376656.774994;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
-	194A85C915A1FF3D007CBCFE /* humanoidWx.cpp:222 */ = {
+	194A85C915A1FF3D007CBCFE /* humanoidWx.cpp:224 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -1460,13 +1475,13 @@
 		functionName = "MyApp::OnInit()";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 222;
+		lineNumber = 224;
 		location = humanoidWx;
 		modificationTime = 365376656.7753471;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
-	194A85D115A1FF6B007CBCFE /* humanoidWx.cpp:181 */ = {
+	194A85D115A1FF6B007CBCFE /* humanoidWx.cpp:183 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -1478,7 +1493,7 @@
 		functionName = "MyApp::OnInit()";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 181;
+		lineNumber = 183;
 		location = humanoidWx;
 		modificationTime = 365376656.775601;
 		originalNumberOfMultipleMatches = 1;
@@ -1726,17 +1741,18 @@
 	};
 	19801738159955E500DB8AD5 /* HumanoidMainFrame.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {962, 3564}}";
-			sepNavSelRange = "{6691, 0}";
-			sepNavVisRange = "{4203, 2775}";
+			sepNavIntBoundsRect = "{{0, 0}, {850, 3641}}";
+			sepNavSelRange = "{3157, 0}";
+			sepNavVisRange = "{1749, 3010}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
 	1980177315995A8500DB8AD5 /* SimulationThread.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {962, 1287}}";
-			sepNavSelRange = "{1245, 0}";
-			sepNavVisRange = "{584, 1679}";
+			sepNavIntBoundsRect = "{{0, 0}, {850, 1287}}";
+			sepNavSelRange = "{1244, 0}";
+			sepNavVisRange = "{516, 1740}";
+			sepNavWindowFrame = "{{-1665, 126}, {955, 721}}";
 		};
 	};
 	19801DB1159B621A00DB8AD5 /* humanoid.cfg */ = {
@@ -1748,9 +1764,9 @@
 	};
 	19801DB3159B623A00DB8AD5 /* BasicGLPane.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1060, 6996}}";
-			sepNavSelRange = "{11011, 0}";
-			sepNavVisRange = "{10181, 1523}";
+			sepNavIntBoundsRect = "{{0, 0}, {924, 6776}}";
+			sepNavSelRange = "{10865, 0}";
+			sepNavVisRange = "{10106, 890}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
@@ -1814,9 +1830,9 @@
 	};
 	19801DC2159B62C100DB8AD5 /* TaskSpaceControllerB.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {713, 6248}}";
-			sepNavSelRange = "{6260, 1}";
-			sepNavVisRange = "{5409, 1733}";
+			sepNavIntBoundsRect = "{{0, 0}, {1083, 6193}}";
+			sepNavSelRange = "{5415, 2}";
+			sepNavVisRange = "{4808, 1198}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
@@ -1971,7 +1987,7 @@
 		fRef = 1980177315995A8500DB8AD5 /* SimulationThread.cpp */;
 		name = "SimulationThread.cpp: 55";
 		rLen = 0;
-		rLoc = 1245;
+		rLoc = 1244;
 		rType = 0;
 		vrLen = 1679;
 		vrLoc = 584;
@@ -1991,7 +2007,7 @@
 		fRef = 19801738159955E500DB8AD5 /* HumanoidMainFrame.cpp */;
 		name = "HumanoidMainFrame.cpp: 169";
 		rLen = 0;
-		rLoc = 6691;
+		rLoc = 6690;
 		rType = 0;
 		vrLen = 2775;
 		vrLoc = 4203;
@@ -2005,7 +2021,7 @@
 		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
 		name = "humanoidWx.cpp: 469";
 		rLen = 0;
-		rLoc = 11855;
+		rLoc = 11960;
 		rType = 0;
 		vrLen = 1890;
 		vrLoc = 10567;
@@ -2015,7 +2031,7 @@
 		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
 		name = "humanoidWx.cpp: 469";
 		rLen = 0;
-		rLoc = 11855;
+		rLoc = 11960;
 		rType = 0;
 		vrLen = 1857;
 		vrLoc = 10674;
@@ -2025,7 +2041,7 @@
 		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
 		name = "humanoidWx.cpp: 175";
 		rLen = 0;
-		rLoc = 4185;
+		rLoc = 4218;
 		rType = 0;
 		vrLen = 2119;
 		vrLoc = 2530;
@@ -2155,31 +2171,31 @@
 	19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{13848, 407}\";\n            s = 0;\n        },\n                {\n            r = \"{19322, 303}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 19626}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {713, 8096}}";
-			sepNavSelRange = "{1081, 0}";
-			sepNavVisRange = "{923, 1920}";
+			sepNavIntBoundsRect = "{{0, 0}, {863, 8052}}";
+			sepNavSelRange = "{5451, 7}";
+			sepNavVisRange = "{5331, 194}";
 		};
 	};
 	19AB184D15CB1D22000B9114 /* humanoid_box.cfg */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {713, 755}}";
+			sepNavIntBoundsRect = "{{0, 0}, {850, 763}}";
 			sepNavSelRange = "{121, 0}";
 			sepNavVisRange = "{0, 344}";
 		};
 	};
 	19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {713, 11264}}";
-			sepNavSelRange = "{13383, 0}";
-			sepNavVisRange = "{10394, 1261}";
+			sepNavIntBoundsRect = "{{0, 0}, {930, 11154}}";
+			sepNavSelRange = "{0, 23454}";
+			sepNavVisRange = "{12858, 1679}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
 	19B0331115B45FEB00025508 /* JumpingStateMachine.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {695, 868}}";
-			sepNavSelRange = "{521, 0}";
-			sepNavVisRange = "{0, 921}";
+			sepNavIntBoundsRect = "{{0, 0}, {850, 763}}";
+			sepNavSelRange = "{232, 715}";
+			sepNavVisRange = "{0, 954}";
 		};
 	};
 	19B1EB3015ADE57B005FCEE4 /* TaskSpaceControllerA.cpp */ = {
@@ -2196,7 +2212,7 @@
 			sepNavVisRange = "{155, 1343}";
 		};
 	};
-	19B2079B15C720FB005EA3A3 /* humanoidWx.cpp:299 */ = {
+	19B2079B15C720FB005EA3A3 /* humanoidWx.cpp:301 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -2208,13 +2224,13 @@
 		functionName = "BasicGLPane::userGraphics()";
 		hitCount = 5;
 		ignoreCount = 0;
-		lineNumber = 299;
+		lineNumber = 301;
 		location = humanoidWx;
 		modificationTime = 365376706.3556979;
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
-	19B2080215C7348E005EA3A3 /* humanoidWx.cpp:332 */ = {
+	19B2080215C7348E005EA3A3 /* humanoidWx.cpp:334 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -2226,7 +2242,7 @@
 		functionName = "BasicGLPane::userGraphics()";
 		hitCount = 9;
 		ignoreCount = 0;
-		lineNumber = 332;
+		lineNumber = 334;
 		location = humanoidWx;
 		modificationTime = 365376708.062205;
 		originalNumberOfMultipleMatches = 1;
@@ -2234,9 +2250,9 @@
 	};
 	19B20A0D15C8472C005EA3A3 /* humanoid_box.env */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {713, 755}}";
-			sepNavSelRange = "{361, 4}";
-			sepNavVisRange = "{0, 622}";
+			sepNavIntBoundsRect = "{{0, 0}, {850, 763}}";
+			sepNavSelRange = "{627, 0}";
+			sepNavVisRange = "{0, 780}";
 		};
 	};
 	19B20A1E15C8487D005EA3A3 /* humanoid_box.dm */ = {
@@ -2248,9 +2264,9 @@
 	};
 	19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {962, 8327}}";
-			sepNavSelRange = "{4185, 0}";
-			sepNavVisRange = "{2530, 2119}";
+			sepNavIntBoundsRect = "{{0, 0}, {788, 8360}}";
+			sepNavSelRange = "{4425, 0}";
+			sepNavVisRange = "{4213, 541}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
@@ -2349,8 +2365,8 @@
 	};
 	19BA5C58158A403400BC26DA /* GlobalDefines.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1341, 863}}";
-			sepNavSelRange = "{502, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {850, 763}}";
+			sepNavSelRange = "{588, 0}";
 			sepNavVisRange = "{0, 665}";
 		};
 	};
@@ -2580,6 +2596,167 @@
 		sourceDirectories = (
 		);
 		startupPath = /Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/src/windmill;
+	};
+	19F88BE3169B72B400B62ABE /* RunningStateMachine.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {896, 682}}";
+			sepNavSelRange = "{209, 0}";
+			sepNavVisRange = "{43, 894}";
+			sepNavWindowFrame = "{{-1642, 105}, {955, 721}}";
+		};
+	};
+	19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {850, 10989}}";
+			sepNavSelRange = "{15902, 0}";
+			sepNavVisRange = "{15197, 2033}";
+		};
+	};
+	19F88BF2169B753600B62ABE /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Expected primary-expression before '*' token";
+		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 181;
+		rType = 1;
+	};
+	19F88BF3169B753600B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
+		name = "humanoidWx.cpp: 182";
+		rLen = 0;
+		rLoc = 4425;
+		rType = 0;
+		vrLen = 541;
+		vrLoc = 4213;
+	};
+	19F88BF5169B753600B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */;
+		rLen = 6;
+		rLoc = 5367;
+		rType = 0;
+	};
+	19F88BF6169B753600B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */;
+		name = "HumanoidController.cpp: 240";
+		rLen = 7;
+		rLoc = 5451;
+		rType = 0;
+		vrLen = 194;
+		vrLoc = 5331;
+	};
+	19F88BF9169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DC2159B62C100DB8AD5 /* TaskSpaceControllerB.cpp */;
+		name = "TaskSpaceControllerB.cpp: 213";
+		rLen = 0;
+		rLoc = 5486;
+		rType = 0;
+		vrLen = 1499;
+		vrLoc = 3926;
+	};
+	19F88BFA169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0331115B45FEB00025508 /* JumpingStateMachine.h */;
+		name = "JumpingStateMachine.h: 12";
+		rLen = 715;
+		rLoc = 232;
+		rType = 0;
+		vrLen = 954;
+		vrLoc = 0;
+	};
+	19F88BFB169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE3169B72B400B62ABE /* RunningStateMachine.h */;
+		name = "RunningStateMachine.h: 55";
+		rLen = 0;
+		rLoc = 842;
+		rType = 0;
+		vrLen = 953;
+		vrLoc = 0;
+	};
+	19F88BFC169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1980177315995A8500DB8AD5 /* SimulationThread.cpp */;
+		name = "SimulationThread.cpp: 55";
+		rLen = 0;
+		rLoc = 1244;
+		rType = 0;
+		vrLen = 1740;
+		vrLoc = 516;
+	};
+	19F88BFD169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
+		name = "humanoidWx.cpp: 400";
+		rLen = 6;
+		rLoc = 9879;
+		rType = 0;
+		vrLen = 1574;
+		vrLoc = 0;
+	};
+	19F88BFE169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19BA5C58158A403400BC26DA /* GlobalDefines.cpp */;
+		name = "GlobalDefines.cpp: 29";
+		rLen = 0;
+		rLoc = 588;
+		rType = 0;
+		vrLen = 665;
+		vrLoc = 0;
+	};
+	19F88BFF169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 194A858215A1F924007CBCFE /* Humanoid.cpp */;
+		name = "Humanoid.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 170;
+		vrLoc = 0;
+	};
+	19F88C00169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */;
+		name = "HumanoidController.cpp: 54";
+		rLen = 0;
+		rLoc = 1081;
+		rType = 0;
+		vrLen = 1588;
+		vrLoc = 0;
+	};
+	19F88C01169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B0330F15B45FD300025508 /* JumpingStateMachine.cpp */;
+		name = "JumpingStateMachine.cpp: 1";
+		rLen = 23454;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1679;
+		vrLoc = 12858;
+	};
+	19F88C02169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 663";
+		rLen = 0;
+		rLoc = 14227;
+		rType = 0;
+		vrLen = 1783;
+		vrLoc = 8410;
+	};
+	19F88C03169B753B00B62ABE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 726";
+		rLen = 0;
+		rLoc = 15902;
+		rType = 0;
+		vrLen = 2033;
+		vrLoc = 15197;
 	};
 	19F8CFA8158BAE7800BC4671 /* mosek32.h */ = {
 		uiCtxt = {

@@ -26,7 +26,7 @@ link.type   = 'MobileBaseLink';
 link.model  = '"./humanoid_box_model/torso.xan"';
 link.contacts = [];
 link.quat   = [0 0 0 1];
-link.pos    = [2 2 .62];
+link.pos    = [2 2 1.2];
 link.offset = [-link.depth/2 -link.width/2 0];
 link.scale  = [link.depth link.width link.length];
 

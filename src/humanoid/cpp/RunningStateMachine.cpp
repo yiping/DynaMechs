@@ -649,7 +649,7 @@ void RunningStateMachine::BalanceLeft()
 		
 		MaxFootLoad = grfInfo.fCoPs[0](2);
 	}
-	if (stateTime > .81) {
+	if (stateTime > .81*1.5) {
 		state = RAISE_FOOT;
 		transitionFlag =true;
 		return;
@@ -693,7 +693,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	TaskWeight.setOnes(6+NJ+6+12);
 	
 	TaskWeight.segment(0,3).setConstant(10/8.);
-	TaskWeight.segment(3,3).setConstant(100/16.);
+	TaskWeight.segment(3,3).setConstant(100/4.);
 	
 	TaskWeight.tail(12).setConstant(1000);
 	
@@ -845,6 +845,9 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 			
 			//Float Kp = 120, Kd = 2*sqrt(Kp);
 			
+			Vector3F relPos;
+			relPos = (pCom - pFoot[1]);
+			cout << relPos.norm() << endl;
 			
 			// Joint PDs
 			int jointIndexDm=0;

@@ -272,7 +272,7 @@ void BasicGLPane::userGraphics()
 	{
 		// Traces
 		
-		if (humanoid->state > 0) {
+		if (humanoid->state > 0 || 1==1) {
 			PositionList * curr = new PositionList;
 			FloatVector  * distances = new FloatVector(NumTraces,0);
 			

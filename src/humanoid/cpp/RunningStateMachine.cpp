@@ -162,18 +162,29 @@ void RunningStateMachine::Floating() {
 				}
 			}
 		}
-		pDesFoot[0] << 2, 1.87,.45;
-		pDesFoot[1] << 2, 2.13,.45;
+		
+		footServos[0] = COM_SERVO;
+		footServos[1] = COM_SERVO;
+		
+		
+		//pDesFoot[0] << 2, 1.87,.45;
+		//pDesFoot[1] << 2, 2.13,.45;
+		pDesFoot[0] << .250452, -.13,-0.812265;
+		pDesFoot[1] << 0.250452, .13,-0.812265;
+		
+		
 		//pDesFoot[0] = pFoot[0];
 		//pDesFoot[0](2) += .1;
 		//pDesFoot[1] = pFoot[1];
 		//pDesFoot[1](2) += .1;
 		
+		
+		
 		kpFoot[0]=50;
-		kdFoot[0]=150;
+		kdFoot[0]=2*sqrt(50);
 		
 		kpFoot[1]=50;
-		kdFoot[1]=150;
+		kdFoot[1]=2*sqrt(50);
 		
 	}
 	
@@ -192,9 +203,26 @@ void RunningStateMachine::Floating() {
 	kDotDes.setZero();
 	kComDes.setZero();
 	
+	aDesFoot[0].setZero();
+	aDesFoot[1].setZero();
+	vDesFoot[0].setZero();
+	vDesFoot[1].setZero();
+	
 	AssignFootMaxLoad(0,0);
 	AssignFootMaxLoad(1,0);
 	
+	if(stateTime > 2)
+	{
+	
+		Float fbQ[7], fbQd[7];
+		artic->getLink(0)->getState(fbQ, fbQd);
+		cout << "Orig State " << fbQ[6] << endl;
+		
+		fbQ[6] += 1.008264 - pCom(2);
+		artic->getLink(0)->setState(fbQ, fbQd);
+		cout << "Set State " << fbQ[6] << endl;
+		simThread->G_integrator->synchronizeState();
+	}
 	
 	transitionFlag = false;
 }
@@ -795,6 +823,8 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	cout << "===========================" << endl;
 	
 	Vector3F pRel = pFoot[0] - pCom;
+	cout << "pCom = " << pCom.transpose() << endl;
+	
 	cout << "p_0f    = " << pFoot[0].transpose() << endl;
 	cout << "p_0/COM = " << pRel.transpose() << endl;
 	pRel = pFoot[1] - pCom;
@@ -920,25 +950,25 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					kpJoint[10] = kpShould;
 					kdJoint[10] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+18,3).setConstant(wShould);
-					OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
+					//OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
 					
 					
 					kpJoint[11] = kpElbow;
 					kdJoint[11] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+21) = wElbow;
-					OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
+					//OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
 					
 					
 					kpJoint[12] = kpShould;
 					kdJoint[12] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+22,3).setConstant(wShould);
-					OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
+					//OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
 					
 					
 					kpJoint[13] = kpElbow;
 					kdJoint[13] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+25) = wElbow;
-					OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
+					//OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
 					
 					/////////////////////////////////////////////////////////
 				}
@@ -1058,8 +1088,18 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				
 				// Use a PD to create a desired acceleration (everything here is in inertial coordinates)
 				aCom.head(3) = kpFoot[i] * eOmega;
-				aCom.tail(3) = kpFoot[i] * (pDesFoot[i] - pFoot[i]);
-				aCom += aDesFoot[i] + kdFoot[i] * (vDesFoot[i] - vFoot[i]);
+				
+				if (footServos[i] == COM_SERVO) {
+					aCom.head(3) += aDesFoot[i].head(3) + kdFoot[i] * (vDesFoot[i].head(3) - vFoot[i].head(3));
+					aCom.tail(3) = kpFoot[i] * (pDesFoot[i] - (pFoot[i]-pCom));
+					aCom.tail(3) += aDesFoot[i].tail(3) + kdFoot[i] * (vDesFoot[i].tail(3) - (vFoot[i].tail(3) - vCom));
+				}
+				else {
+					aCom.tail(3) = kpFoot[i] * (pDesFoot[i] - pFoot[i]);
+					aCom += aDesFoot[i] + kdFoot[i] * (vDesFoot[i] - vFoot[i]);
+				}
+
+				
 				
 				if (kdFoot[i] == 0) {
 					aCom = - 10 * vFoot[i];
@@ -1076,6 +1116,11 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				// Load Task Information
 				TaskJacobian.block(taskRow,0,6,NJ+6) = footJacs[i];
 				TaskBias.segment(taskRow,6)          = aCom - footBias[i];
+				
+				if (footServos[i] == COM_SERVO) {
+					TaskJacobian.block(taskRow+3,0,3,NJ+6) -= TaskJacobian.block(3,0,3,NJ+6)/totalMass;
+					TaskBias.segment(taskRow+3,3) += cmBias.tail(3)/totalMass;
+				}
 				
 				aDesFoot[i] = aCom;
 				

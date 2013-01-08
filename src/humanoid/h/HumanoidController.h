@@ -47,6 +47,9 @@ public:
 	vector<VectorXF > aFoot;
 	
 	vector<Matrix3F > RFoot;
+	vector<Matrix6F > XFoot;
+	vector<Vector3F > pFootCenter;
+	
 	
 	
 	vector<VectorXF> posDesJoint;

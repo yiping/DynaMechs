@@ -400,7 +400,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		//ball->draw();
 		
 		
-		Float qBase[7], qdBase[7];
+		/*Float qBase[7], qdBase[7];
 		ball->getLink(0)->getState(qBase,qdBase);
 		
 		Eigen::Matrix<GLfloat,3,1> zup;
@@ -433,7 +433,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glVertex3f(0.0, 0.0, 0.0);
 		glEnd();*/
 		
-		glColor4f(0.6, 0.6, 0.6, 0.7);
+		/*glColor4f(0.6, 0.6, 0.6, 0.7);
 		
 		glBegin(GL_LINE_LOOP);
 		Float radius = .071;
@@ -459,7 +459,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		
 		
 		
-		glPopMatrix();
+		glPopMatrix();*/
 		
 		
 		

@@ -65,7 +65,9 @@ void *SimulationThread::Entry()
 			// control for your robot
 			huboCtrl->StateControl();
 
-			
+			float x, y, z;
+   			frame->glPane->camera->getCOI(x, y, z);
+			frame->glPane->camera->setCOI(x + 0.004, y, z);
 			
 
 			last_control_time = sim_time;

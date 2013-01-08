@@ -920,18 +920,26 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					kpJoint[10] = kpShould;
 					kdJoint[10] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+18,3).setConstant(wShould);
+					OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
+					
 					
 					kpJoint[11] = kpElbow;
 					kdJoint[11] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+21) = wElbow;
+					OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
+					
 					
 					kpJoint[12] = kpShould;
 					kdJoint[12] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+22,3).setConstant(wShould);
+					OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
+					
 					
 					kpJoint[13] = kpElbow;
 					kdJoint[13] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+25) = wElbow;
+					OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
+					
 					/////////////////////////////////////////////////////////
 				}
 				

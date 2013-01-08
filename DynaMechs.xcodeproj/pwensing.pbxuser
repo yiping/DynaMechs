@@ -181,8 +181,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 379354285;
-			PBXWorkspaceStateSaveDate = 379354285;
+			PBXPerProjectTemplateStateSaveDate = 379357452;
+			PBXWorkspaceStateSaveDate = 379357452;
 		};
 		perUserProjectItems = {
 			192E09AE169BD4D10049B212 = 192E09AE169BD4D10049B212 /* PBXBookmark */;
@@ -204,6 +204,15 @@
 			19CA62BA169C7AEB009742EE = 19CA62BA169C7AEB009742EE /* PBXTextBookmark */;
 			19CA62BB169C7AEB009742EE = 19CA62BB169C7AEB009742EE /* PBXTextBookmark */;
 			19CA62BF169C7B3A009742EE = 19CA62BF169C7B3A009742EE /* PBXTextBookmark */;
+			19CA639B169C8A58009742EE /* PBXTextBookmark */ = 19CA639B169C8A58009742EE /* PBXTextBookmark */;
+			19CA639C169C8A58009742EE /* PBXTextBookmark */ = 19CA639C169C8A58009742EE /* PBXTextBookmark */;
+			19CA639D169C8A58009742EE /* PBXTextBookmark */ = 19CA639D169C8A58009742EE /* PBXTextBookmark */;
+			19CA63A1169C8A59009742EE /* PBXTextBookmark */ = 19CA63A1169C8A59009742EE /* PBXTextBookmark */;
+			19CA63A2169C8A59009742EE /* PBXTextBookmark */ = 19CA63A2169C8A59009742EE /* PBXTextBookmark */;
+			19CA63A3169C8A59009742EE /* PBXTextBookmark */ = 19CA63A3169C8A59009742EE /* PBXTextBookmark */;
+			19CA63A4169C8A59009742EE /* PBXTextBookmark */ = 19CA63A4169C8A59009742EE /* PBXTextBookmark */;
+			19CA63A5169C8A59009742EE /* PBXTextBookmark */ = 19CA63A5169C8A59009742EE /* PBXTextBookmark */;
+			19CA63A6169C8A59009742EE /* PBXTextBookmark */ = 19CA63A6169C8A59009742EE /* PBXTextBookmark */;
 			19F88BF9169B753B00B62ABE = 19F88BF9169B753B00B62ABE /* PBXTextBookmark */;
 			19F88BFC169B753B00B62ABE = 19F88BFC169B753B00B62ABE /* PBXTextBookmark */;
 			19F88BFD169B753B00B62ABE = 19F88BFD169B753B00B62ABE /* PBXTextBookmark */;
@@ -1651,17 +1660,17 @@
 	};
 	19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {951, 3993}}";
-			sepNavSelRange = "{12201, 0}";
-			sepNavVisRange = "{10942, 1991}";
+			sepNavIntBoundsRect = "{{0, 0}, {813, 4004}}";
+			sepNavSelRange = "{11504, 5}";
+			sepNavVisRange = "{10978, 1936}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
 	19801DBA159B627A00DB8AD5 /* HumanoidController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {713, 902}}";
-			sepNavSelRange = "{508, 0}";
-			sepNavVisRange = "{0, 1661}";
+			sepNavIntBoundsRect = "{{0, 0}, {813, 902}}";
+			sepNavSelRange = "{1294, 5}";
+			sepNavVisRange = "{0, 1663}";
 		};
 	};
 	19801DBB159B627A00DB8AD5 /* HumanoidDataLogger.h */ = {
@@ -1978,9 +1987,9 @@
 	19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{13848, 407}\";\n            s = 0;\n        },\n                {\n            r = \"{19322, 303}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 19626}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {863, 8052}}";
-			sepNavSelRange = "{5451, 7}";
-			sepNavVisRange = "{5331, 194}";
+			sepNavIntBoundsRect = "{{0, 0}, {863, 8030}}";
+			sepNavSelRange = "{3040, 5}";
+			sepNavVisRange = "{3195, 217}";
 		};
 	};
 	19AB184D15CB1D22000B9114 /* humanoid_box.cfg */ = {
@@ -2057,7 +2066,7 @@
 	};
 	19B20A0D15C8472C005EA3A3 /* humanoid_box.env */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {813, 799}}";
+			sepNavIntBoundsRect = "{{0, 0}, {813, 793}}";
 			sepNavSelRange = "{52, 0}";
 			sepNavVisRange = "{0, 780}";
 		};
@@ -2424,6 +2433,90 @@
 		vrLen = 1545;
 		vrLoc = 2719;
 	};
+	19CA639B169C8A58009742EE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DBA159B627A00DB8AD5 /* HumanoidController.h */;
+		name = "HumanoidController.h: 47";
+		rLen = 5;
+		rLoc = 1294;
+		rType = 0;
+		vrLen = 350;
+		vrLoc = 1075;
+	};
+	19CA639C169C8A58009742EE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */;
+		rLen = 5;
+		rLoc = 3040;
+		rType = 0;
+	};
+	19CA639D169C8A58009742EE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */;
+		name = "HumanoidController.cpp: 126";
+		rLen = 5;
+		rLoc = 3040;
+		rType = 0;
+		vrLen = 217;
+		vrLoc = 3195;
+	};
+	19CA63A1169C8A59009742EE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B20A0D15C8472C005EA3A3 /* humanoid_box.env */;
+		name = "humanoid_box.env: 5";
+		rLen = 0;
+		rLoc = 52;
+		rType = 0;
+		vrLen = 780;
+		vrLoc = 0;
+	};
+	19CA63A2169C8A59009742EE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19A6F44B157E4EFD00ED6631 /* HumanoidController.cpp */;
+		name = "HumanoidController.cpp: 131";
+		rLen = 0;
+		rLoc = 3145;
+		rType = 0;
+		vrLen = 1298;
+		vrLoc = 2437;
+	};
+	19CA63A3169C8A59009742EE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 943";
+		rLen = 0;
+		rLoc = 21583;
+		rType = 0;
+		vrLen = 1374;
+		vrLoc = 1322;
+	};
+	19CA63A4169C8A59009742EE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */;
+		name = "HumanoidDataLogger.cpp: 292";
+		rLen = 5;
+		rLoc = 11504;
+		rType = 0;
+		vrLen = 1936;
+		vrLoc = 10978;
+	};
+	19CA63A5169C8A59009742EE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DBA159B627A00DB8AD5 /* HumanoidController.h */;
+		rLen = 5;
+		rLoc = 1294;
+		rType = 0;
+	};
+	19CA63A6169C8A59009742EE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DBA159B627A00DB8AD5 /* HumanoidController.h */;
+		name = "HumanoidController.h: 47";
+		rLen = 5;
+		rLoc = 1294;
+		rType = 0;
+		vrLen = 1663;
+		vrLoc = 0;
+	};
 	19CECD5D15BEF1BB00CAC966 /* human.cfg */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1265, 761}}";
@@ -2543,9 +2636,9 @@
 	};
 	19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {813, 12034}}";
-			sepNavSelRange = "{1955, 1}";
-			sepNavVisRange = "{2719, 1545}";
+			sepNavIntBoundsRect = "{{0, 0}, {813, 12045}}";
+			sepNavSelRange = "{21583, 0}";
+			sepNavVisRange = "{1322, 1374}";
 			sepNavWindowFrame = "{{15, 57}, {955, 721}}";
 		};
 	};

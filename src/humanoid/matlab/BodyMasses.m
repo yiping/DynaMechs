@@ -14,7 +14,7 @@ totalMass = 0;
 
 
 humanoidLinks
-return
+
                 
 
 links{1} = torsoLink;       links{1}.name='"Torso"';            links{1}.parent = 0;

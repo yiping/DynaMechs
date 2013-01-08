@@ -17,6 +17,9 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 {
 	stateFunctions.resize(numStates);
 	
+	stateNames[FLOATING] = "Floating";
+	stateFunctions[FLOATING] = &RunningStateMachine::Floating;
+	
 	stateNames[DROP] = "Drop";
 	stateFunctions[DROP] = &RunningStateMachine::Drop;
 	
@@ -47,8 +50,7 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	
 	ComTrajectory.setSize(3);
 	//aComDes.resize(3);
-	
-	
+	footServos.resize(NS);
 	kpFoot.resize(NS);
 	kdFoot.resize(NS);
 	aDesFoot.resize(NS);
@@ -63,7 +65,10 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 		aDesFoot[i].setZero();
 		vDesFoot[i].setZero();
 		pDesFoot[i].setZero();
+		
+		footServos[i] = GLOBAL_SERVO;
 	}
+	
 	aComDes.resize(3);
 	aComDes.setZero();
 	
@@ -106,10 +111,72 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 		}
 	}
 	
-	state = DROP;
+	state = FLOATING;
 	transitionFlag = true;
 	
 }
+
+void RunningStateMachine::Floating() {
+		
+	if (transitionFlag) {
+		cout << setprecision(8) << endl;
+		cout << pCom.transpose() << endl;
+		
+		for (int i=0; i<NS; i++) {
+			kpFoot[i]=0;
+			kdFoot[i]=0;
+			aDesFoot[i] << 0,0,0,0,0,0;
+			
+			RDesFoot[i] <<  0, 0,  1, 
+			0, 1, 0,
+			-1, 0,  0;
+		}
+		pDesFoot[0] << 2,2,.01;
+		pDesFoot[1] << 2.18,2,.01;	
+		
+		int numLinks = artic->getNumLinks();
+		for (int i=0; i<numLinks; i++) {
+			LinkInfoStruct * bodyi = artic->m_link_list[i];
+			int dof = bodyi->dof;
+			if (dof != 0) {
+				if (dof == 6) {
+					Vector3F om;
+					om << 0,M_PI/20,0;
+					matrixExpOmegaCross(om,RDesJoint[i]);
+				}
+				else if (dof ==3)
+				{
+					CartesianTensor i_R_pi;
+					CartesianVector pShoulder;
+					Matrix3F i_R_pi_mat;
+					bodyi->link->getPose(i_R_pi,pShoulder);
+					copyRtoMat(i_R_pi, i_R_pi_mat);
+					RDesJoint[i] = i_R_pi_mat.transpose();
+				}
+				else if (dof == 1)
+				{
+					Float qLink[0],qdLink[0];
+					bodyi->link->getState(qLink, qdLink);
+					posDesJoint[i](0) = qLink[0]; 
+				}
+			}
+		}
+	}
+	kpCM = 30*0;
+	kdCM = 2*sqrt(kpCM)*0;
+	kdAM = 25*0;
+	pComDes << 2.00, 2.0, .48*1.7;
+	//pComDes << 2.00, 2.0, .72;
+	vComDes.setZero();
+	aComDes.setZero();
+	kDotDes.setZero();
+	kComDes.setZero();
+	
+	
+	
+	transitionFlag = false;
+}
+
 void RunningStateMachine::Drop() {
 	if (transitionFlag) {
 		cout << setprecision(8) << endl;
@@ -678,6 +745,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	
 	OptimizationSchedule.setZero(6+NJ+6+12);
 	OptimizationSchedule.segment(0,6).setConstant(3);
+	
 	//OptimizationSchedule.segment(0,6).setConstant(2);
 	OptimizationSchedule.segment(6,NJ+6).setConstant(4);
 	//OptimizationSchedule.segment(6,NJ+6).setConstant(2);

@@ -22,6 +22,7 @@ public:
 	RunningStateMachine(dmArticulation * robot);
 	
 	enum RunStates {
+		FLOATING,
 		DROP,
 		BALANCE_MIDDLE,
 		SQUAT,
@@ -33,11 +34,19 @@ public:
 		KICK,
 		NUM_JUMP_STATES
 	};
+	
+	enum FootServoType {
+		GLOBAL_SERVO,
+		COM_SERVO,
+		HIP_SERVO
+	};
+	
 	virtual void StateControl(ControlInfo & ci);
 	
 	
 private:
 	
+	void Floating();
 	void Drop();
 	void BalanceMiddle();
 	void Squat();
@@ -50,6 +59,7 @@ private:
 	void RaiseFoot();
 	void Kick();
 	
+	vector<FootServoType> footServos;
 	
 	typedef void (RunningStateMachine::*RunStateFuncPtr)();
 	vector<RunStateFuncPtr> stateFunctions;

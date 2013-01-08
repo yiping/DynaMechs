@@ -205,6 +205,9 @@ int MyApp::OnExit() {
 
 void BasicGLPane::userGraphics()
 {
+	
+	frame->glPane->camera->setCOI(ComPos[0], ComPos[1], ComPos[2]);
+	
 	// Plot User Stuff
 	{
 		if (frame->showCoM->IsChecked()) {

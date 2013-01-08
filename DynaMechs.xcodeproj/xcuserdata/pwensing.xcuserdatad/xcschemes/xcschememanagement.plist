@@ -39,6 +39,11 @@
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>humanoidWx.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>13</integer>
+		</dict>
 		<key>kurmet.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -54,10 +59,30 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
+		<key>wxCube.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>12</integer>
+		</dict>
 		<key>wxDMV.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>11</integer>
+		</dict>
+		<key>wxDMVapp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>16</integer>
+		</dict>
+		<key>wxTest.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>14</integer>
+		</dict>
+		<key>wxTest2.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>15</integer>
 		</dict>
 		<key>xan_viewer.xcscheme</key>
 		<dict>
@@ -117,12 +142,37 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>19B85EC0158F7E2F00788BE5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>19BA5C89158A432100BC26DA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>19EE3465153C526D0029D664</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>19F8D70B158BB7D500BC4671</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>19F8D7F7158BD2F600BC4671</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>19F8D864158BD83A00BC4671</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>19F8D8FD158BDBAC00BC4671</key>
 		<dict>
 			<key>primary</key>
 			<true/>

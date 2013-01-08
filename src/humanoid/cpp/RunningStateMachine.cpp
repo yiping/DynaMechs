@@ -143,6 +143,7 @@ void RunningStateMachine::Floating() {
 					Vector3F om;
 					om << 0,M_PI/20,0;
 					matrixExpOmegaCross(om,RDesJoint[i]);
+					
 				}
 				else if (dof ==3)
 				{
@@ -161,7 +162,26 @@ void RunningStateMachine::Floating() {
 				}
 			}
 		}
+		pDesFoot[0] << 2, 1.87,.45;
+		pDesFoot[1] << 2, 2.13,.45;
+		//pDesFoot[0] = pFoot[0];
+		//pDesFoot[0](2) += .1;
+		//pDesFoot[1] = pFoot[1];
+		//pDesFoot[1](2) += .1;
+		
+		kpFoot[0]=50;
+		kdFoot[0]=150;
+		
+		kpFoot[1]=50;
+		kdFoot[1]=150;
+		
 	}
+	
+	
+	//OptimizationSchedule.segment(6,3).setConstant(-1);
+	OptimizationSchedule.head(6).setConstant(-1);
+	OptimizationSchedule.tail(12).setConstant(1);
+	
 	kpCM = 30*0;
 	kdCM = 2*sqrt(kpCM)*0;
 	kdAM = 25*0;
@@ -172,6 +192,8 @@ void RunningStateMachine::Floating() {
 	kDotDes.setZero();
 	kComDes.setZero();
 	
+	AssignFootMaxLoad(0,0);
+	AssignFootMaxLoad(1,0);
 	
 	
 	transitionFlag = false;
@@ -770,6 +792,16 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	//TaskWeight.segment(taskRow+3,3).setConstant(1000);
 	
 	
+	cout << "===========================" << endl;
+	
+	Vector3F pRel = pFoot[0] - pCom;
+	cout << "p_0f    = " << pFoot[0].transpose() << endl;
+	cout << "p_0/COM = " << pRel.transpose() << endl;
+	pRel = pFoot[1] - pCom;
+	cout << "p_1f    = " << pFoot[1].transpose() << endl;
+	cout << "p_1/COM = " << pRel.transpose() << endl;
+	
+	
 	// Do at least one state call, and more if it transitioned out
 	do {
 		if (transitionFlag) {
@@ -913,10 +945,6 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 			
 			//Float Kp = 120, Kd = 2*sqrt(Kp);
 			
-			Vector3F relPos;
-			relPos = (pCom - pFoot[1]);
-			cout << relPos.norm() << endl;
-			
 			// Joint PDs
 			int jointIndexDm=0;
 			CartesianTensor i_R_pi;
@@ -982,8 +1010,12 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 						// Note: omega is in "i" coordinates, error in p(i) coordinates
 						Vector3F omega = qd.segment(bodyi->index_ext,3);
 						
+						//Vector3F ve = rateDesJoint[i].head(3) - omega;
+					
+						//cout << "Joint " << i << "e = " << eOmega.transpose() << " ve = " << ve.transpose() << endl;
+						
 						// Note: Velocity bias accel is omega cross omega
-						TaskBias.segment(taskRow+jointIndex,3) = (i_R_pi_mat*(Kp *eOmega) + Kd * (rateDesJoint[i].head(3) - omega)) - omega.cross(omega);
+						TaskBias.segment(taskRow+jointIndex,3) = (i_R_pi_mat*(Kp *eOmega) + Kd * (rateDesJoint[i].head(3) - omega));
 					}
 				}
 				jointIndexDm+=bodyi->link->getNumDOFs();

@@ -72,6 +72,11 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 	}
 	SupportXforms = Xforms;
 	
+	XFoot.resize(NS);
+	pFootCenter.resize(NS);
+	
+	
+	
 	// Construct Point Force Transform
 	PointForceXforms.resize(NS);
 	for (int i=0; i<NS; i++) {
@@ -89,11 +94,15 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 		
 		//cout << "pirelsup " << endl << piRelSup << endl;
 		
+		pFootCenter[i].setZero();
 		for (int j=0; j<NP; j++) {
 			Vector3F pRel, tmp;
 				
 			//Tmp is now the contact point location relative to the body coordinate
 			dmContactLattice->getContactPoint(j,tmp.data());
+			
+			//add up points and average to find foot center
+			pFootCenter[i] += tmp/NP;
 			
 			// Point of contact (relative to support origin) in support coordinates
 			pRel = RSup*tmp + piRelSup;
@@ -101,6 +110,7 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 			PointForceXforms[i][j].setIdentity(6,6);
 			PointForceXforms[i][j].block(0,3,3,3) = cr3(pRel);
 		}
+		//cout << "Center = " << pFootCenter[i].transpose() << endl;
 	}
 	grfInfo.localContacts = 0;
 	
@@ -220,7 +230,7 @@ void HumanoidController::ControlInit()
 	// Init Foot State
 	{
 		for (int i=0; i<NS; i++) {
-			InertialKinematicInfo(SupportIndices[i], RFoot[i], pFoot[i], vFoot[i]);
+			InertialKinematicInfo(SupportIndices[i], pFootCenter[i], RFoot[i], pFoot[i], vFoot[i]);
 		}
 	}
 }
@@ -738,3 +748,20 @@ void HumanoidController::InertialKinematicInfo(int index, Matrix3F & RtoICS, Vec
 	spatVelICS.head(3) = RtoICS * link->link_val2.v.head(3);
 	spatVelICS.tail(3) = RtoICS * link->link_val2.v.tail(3);
 }
+
+void HumanoidController::InertialKinematicInfo(int index, Vector3F & ipInterest, Matrix3F & RtoICS, VectorXF & pICS, VectorXF & spatVelICS)
+{
+	LinkInfoStruct * link = artic->m_link_list[index];
+	copyRtoMat(link->link_val2.R_ICS, RtoICS);
+	
+	COPY_P_TO_VEC(link->link_val2.p_ICS, pICS);
+	pICS += RtoICS*ipInterest;
+	
+	
+	// Compute the link velocity in the ICS
+	spatVelICS.head(3) = RtoICS * link->link_val2.v.head(3);
+	// ivInterest = vi + wi x ipInterest
+	spatVelICS.tail(3) = RtoICS * (link->link_val2.v.tail(3) + cr3(link->link_val2.v.head(3))*ipInterest);
+}
+
+

@@ -19,6 +19,7 @@ void ComputeComInfo(Matrix6XF & Cmm, Vector6F & bias, Vector3F & pCom, Float & m
 void matrixExpOmegaCross(const Vector3F & omega,Matrix3F & R);
 void matrixLogRot(const Matrix3F & R, Vector3F & omega);
 void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector6F & a);
+void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector3F &pInterest, Vector6F & a);
 
 void copyRtoMat(const CartesianTensor R, Matrix3F & Rmat);
 

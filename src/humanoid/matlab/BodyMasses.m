@@ -59,7 +59,7 @@ links{9}.mdh(4) = -.3*rotFact;
 
 % Initial Orientation for Right Arm
 R = [1 0 0;0 0 1;0 -1 0]';
-R2 = expm(cross([0 1.1*pi/2 0]));
+R2 = expm(cross([0 .8*pi/2 0]));
 R3 = expm(cross([-.2 0 0]));
 quat = RtoQuat(R3*R2*R);
 % R4 = expm(cross([0 0 -pi/2]));
@@ -70,7 +70,7 @@ links{12}.mdh(4) = 0.50000;
 
 % Initial Orientation for Left Arm
 R = [1 0 0;0 0 1;0 -1 0]';
-R2 = expm(cross([0 1.1*pi/2 0]));
+R2 = expm(cross([0 .8*pi/2 0]));
 R3 = expm(cross([.2 0 0]));
 quat = RtoQuat(R3*R2*R);
 % R4 = expm(cross([0 0 pi/2]));

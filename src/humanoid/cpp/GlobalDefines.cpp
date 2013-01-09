@@ -18,9 +18,11 @@
 #include "SimulationThread.h"
 #include "HumanoidMainFrame.h"
 #include "HumanoidDataLogger.h"
+#include "dmEnvironment.hpp"
 
 dmArticulation *G_robot;
 dmArticulation *ball;
+dmEnvironment *environment;
 volatile Float ComPos[3];
 volatile Float ComDes[3];
 

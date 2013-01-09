@@ -83,6 +83,31 @@ void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector6F & a) {
 	APPLY_CARTESIAN_TENSOR(infoStruct.R_ICS,ptmp,pa); // Transform cartesian acceleration to global coords
 }
 
+void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector3F & pInterest, Vector6F & a) {
+	Vector6F tmp;
+	tmp = infoStruct.a + infoStruct.ag;
+	
+	// add omega cross r to get acceleration of interest point
+	tmp.tail(3) += cr3(tmp.head(3))*pInterest;
+	
+	Vector6F vInterest = infoStruct.v;
+	// add omega cross r to get velocity of interest point
+	vInterest.tail(3) += cr3(vInterest.head(3))*pInterest;
+							 
+	ClassicAcceleration(tmp,vInterest, a);
+	
+	
+	a.swap(tmp); // after this, tmp has classical acceelration of interest point
+	Float * pa = a.data();
+	Float * ptmp = tmp.data();
+	APPLY_CARTESIAN_TENSOR(infoStruct.R_ICS,ptmp,pa); // Transform rotational acceleration to global coords
+	ptmp+=3;
+	pa+=3;
+	APPLY_CARTESIAN_TENSOR(infoStruct.R_ICS,ptmp,pa); // Transform cartesian acceleration to global coords
+}
+
+
+
 // teach how wxString use streams (operator<<) 
 ostream & operator<<(ostream & out, const wxString & str) 
 { 

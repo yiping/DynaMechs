@@ -27,6 +27,7 @@
 #include "SimulationThread.h"
 #include "HumanoidMainFrame.h"
 #include "HumanoidDataLogger.h"
+#include "dmEnvironment.hpp"
 
 //#define EIGEN_NO_DEBUG
 //#define OPTIM_DEBUG
@@ -41,6 +42,7 @@ extern dmArticulation *ball;
 extern HumanoidMainFrame *frame;
 extern SimulationThread * simThread;
 extern HumanoidDataLogger * humanoid;
+extern dmEnvironment *environment;
 
 
 extern wxMutex dataMutex;

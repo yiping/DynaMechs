@@ -211,7 +211,7 @@ Articulation {
 			Number_of_Contact_Points	1
 			Contact_Locations	0.270662	0.000000	0.000000
 			Position_From_Inboard_Link	0.000000	-0.187452	0.587045
-			Orientation_Quat	0.411088	0.481323	-0.588681	0.502781
+			Orientation_Quat	0.512093	0.372057	-0.455044	0.626314
 			Initial_Angular_Velocity	0	0	0
 			Joint_Friction	0
 		}
@@ -252,7 +252,7 @@ Articulation {
 			Number_of_Contact_Points	1
 			Contact_Locations	0.270662	0.000000	0.000000
 			Position_From_Inboard_Link	0.000000	0.187452	0.587045
-			Orientation_Quat	0.502781	0.588681	-0.481323	0.411088
+			Orientation_Quat	0.626314	0.455044	-0.372057	0.512093
 			Initial_Angular_Velocity	0	0	0
 			Joint_Friction	0
 		}

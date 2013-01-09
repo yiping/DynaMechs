@@ -14,6 +14,7 @@
 
 #include "CubicSplineTrajectory.h"
 #include "HumanoidDataLogger.h"
+#include "SlipModel.h"
 
 class RunningStateMachine : public HumanoidDataLogger
 {
@@ -24,15 +25,20 @@ public:
 	enum RunStates {
 		FLOATING,
 		DROP,
-		BALANCE_MIDDLE,
+		PRE_HOP,
+		STANCE1,
+		STANCE2,
+		FLIGHT1,
+		FLIGHT2,
+		/*BALANCE_MIDDLE,
 		SQUAT,
 		THRUST,
 		FLIGHT,
 		LAND,
 		BALANCE_LEFT,
 		RAISE_FOOT,
-		KICK,
-		NUM_JUMP_STATES
+		KICK,*/
+		NUM_RUN_STATES
 	};
 	
 	enum FootServoType {
@@ -48,7 +54,14 @@ private:
 	
 	void Floating();
 	void Drop();
-	void BalanceMiddle();
+	
+	void PreHop();
+	void Stance1();
+	void Stance2();
+	void Flight1();
+	void Flight2();
+	
+	/*void BalanceMiddle();
 	void Squat();
 	void Thrust();
 	void Flight();
@@ -57,7 +70,18 @@ private:
 	void Land();
 	
 	void RaiseFoot();
-	void Kick();
+	void Kick();*/
+	
+	Float touchDownLength;
+	Float touchDownAngle;
+	Float legSpringConstant;
+	Float maxSLIPHeight;
+	Float flightTime;
+	Float forwardVelocity;
+	
+	
+	
+	
 	
 	vector<FootServoType> footServos;
 	
@@ -66,6 +90,8 @@ private:
 	
 	CubicSplineTrajectory ComTrajectory;
 	Float kpCM, kdCM, kdAM;
+	
+	SlipModel SLIP;
 };
 
 

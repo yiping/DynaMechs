@@ -160,7 +160,7 @@ bool MyApp::OnInit()
 		char env_flname[FILENAME_SIZE];
 		readConfigParameterLabel(cfg_ptr,"Environment_Parameter_File");
 		readFilename(cfg_ptr, env_flname);
-		dmEnvironment *environment = dmuLoadFile_env(env_flname);
+		environment = dmuLoadFile_env(env_flname);
 		dmEnvironment::setEnvironment(environment);
 		
 		cout << "Environment Set" << endl;
@@ -268,11 +268,13 @@ void BasicGLPane::userGraphics()
 	const Float DashSize = .05;
 	const int NumTraces = 3;
 	
+	frame->glPane->camera->setCOI(ComPos[0], 2, 1);
+	
 	// Plot User Stuff
 	{
 		// Traces
 		
-		if (humanoid->state > 0 || 1==1) {
+		if (humanoid->state > 0) {
 			PositionList * curr = new PositionList;
 			FloatVector  * distances = new FloatVector(NumTraces,0);
 			

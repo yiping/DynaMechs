@@ -186,7 +186,7 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 	COM_POSITION_DES = addGroup("Com Pos (Des)", "pComDes", 3);
 	
 	COM_VELOCITY = addGroup("CoM Velocity", "vCom",3);
-	COM_VELOCITY_DES = addGroup("CoM Velocity", "vCom",3);
+	COM_VELOCITY_DES = addGroup("CoM Velocity", "vComDes",3);
 	
 	LEFT_FOOT_POS = addGroup("Left Foot Pos", "lFootPos", 3);
 	LEFT_FOOT_POS_DES = addGroup("Left Foot Pos (Des)", "lFootPosDes", 3);

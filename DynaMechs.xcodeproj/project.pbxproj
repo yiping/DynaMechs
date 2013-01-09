@@ -550,6 +550,7 @@
 		19BA6129158A478500BC26DA /* dmLoadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868714D2E97C00778EA7 /* dmLoadFile.cpp */; };
 		19BA612A158A478500BC26DA /* dmUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868A14D2E97C00778EA7 /* dmUtils.cpp */; };
 		19BA612B158A478500BC26DA /* glLoadModels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1925868B14D2E97C00778EA7 /* glLoadModels.cpp */; };
+		19CA6504169CC2AA009742EE /* SlipModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19CA6503169CC2AA009742EE /* SlipModel.cpp */; };
 		19CECD7415BEF35C00CAC966 /* MosekTestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19CECD7315BEF35C00CAC966 /* MosekTestMain.cpp */; };
 		19CECD8115BEF48900CAC966 /* libmosek.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F8CFA7158BADA500BC4671 /* libmosek.6.0.dylib */; };
 		19EAF03515A1F3F4007E4EC2 /* HumanoidDataLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19801DB8159B626700DB8AD5 /* HumanoidDataLogger.cpp */; };
@@ -933,6 +934,8 @@
 		19BA5CA0158A436400BC26DA /* wxDMGLPolarCamera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = wxDMGLPolarCamera.hpp; path = src/wxdmgl/wxDMGLPolarCamera.hpp; sourceTree = "<group>"; };
 		19BA5CA7158A437300BC26DA /* global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = global.cpp; path = src/wxDMV/global.cpp; sourceTree = "<group>"; };
 		19BA5CA8158A437300BC26DA /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global.h; path = src/wxDMV/global.h; sourceTree = "<group>"; };
+		19CA6502169CC2AA009742EE /* SlipModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlipModel.h; path = src/humanoid/cpp/SlipModel.h; sourceTree = "<group>"; };
+		19CA6503169CC2AA009742EE /* SlipModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SlipModel.cpp; path = src/humanoid/cpp/SlipModel.cpp; sourceTree = "<group>"; };
 		19CECD5D15BEF1BB00CAC966 /* human.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = human.cfg; path = src/humanoid/config/human.cfg; sourceTree = "<group>"; };
 		19CECD5E15BEF1BB00CAC966 /* human.dm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = human.dm; path = src/humanoid/config/human.dm; sourceTree = "<group>"; };
 		19CECD7315BEF35C00CAC966 /* MosekTestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MosekTestMain.cpp; path = src/mosekTest/MosekTestMain.cpp; sourceTree = "<group>"; };
@@ -1414,6 +1417,8 @@
 		198016D215994F9F00DB8AD5 /* humanoid Utils */ = {
 			isa = PBXGroup;
 			children = (
+				19CA6502169CC2AA009742EE /* SlipModel.h */,
+				19CA6503169CC2AA009742EE /* SlipModel.cpp */,
 				19F88BE3169B72B400B62ABE /* RunningStateMachine.h */,
 				19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */,
 				19B0331115B45FEB00025508 /* JumpingStateMachine.h */,
@@ -2576,6 +2581,7 @@
 				19EC853415D1639900874729 /* TaskSpaceControllerC.cpp in Sources */,
 				1974711615E521FE00E7AA0A /* BezierCurve.cpp in Sources */,
 				19F88BE5169B72B400B62ABE /* RunningStateMachine.cpp in Sources */,
+				19CA6504169CC2AA009742EE /* SlipModel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

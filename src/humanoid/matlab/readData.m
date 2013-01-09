@@ -53,6 +53,33 @@ drawTransitions(transitionTimes,transitionStates);
 title('CoM Z'); xlabel('Time (s)'); ylabel('Z Position (m)');
 
 
+
+f = figure('Name','CoM Velocity','Position',figPos); figs = [figs f];
+clf
+title('CoM Position');
+a=[a subplot(131)];
+hold on
+plot(t,vCom(1,:),'r');
+plot(t,vComDes(1,:),'r--');
+drawTransitions(transitionTimes,transitionStates);
+title('V CoM X'); xlabel('Time (s)'); ylabel('X Velocity (m/s)');
+
+a=[a subplot(132)];
+hold on
+plot(t,vCom(2,:),'g');
+plot(t,vComDes(2,:),'g--');
+drawTransitions(transitionTimes,transitionStates);
+title('V CoM Y'); xlabel('Time (s)'); ylabel('Y Velocity (m/s)');
+
+a=[a subplot(133)];
+hold on
+plot(t,vCom(3,:),'b');
+plot(t,vComDes(3,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('V CoM Z'); xlabel('Time (s)'); ylabel('Z Velocity (m/s)');
+
+
+
 f = figure('Name','Pelvis Position','Position',figPos); figs = [figs f];
 clf
 title('CoM Position');
@@ -277,42 +304,42 @@ ylabel('Z Position (m)');
 f = figure('Name','Right Foot Trajectories','Position',figPos); figs = [figs f];
 a=[a subplot(321)]
 hold on
-plot(t,rFootPos(1,:),'r');
+plot(t,rFootPos(1,:)-pCom(1,:),'r');
 plot(t,rFootPosDes(1,:),'r--');
 xlabel('Time (s)'); ylabel('Pos X');
 drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(323)]
 hold on
-plot(t,rFootPos(2,:),'g');
+plot(t,rFootPos(2,:)-pCom(2,:),'g');
 plot(t,rFootPosDes(2,:),'g--');
 xlabel('Time (s)'); ylabel('Pos Y');
 drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(325)]
 hold on
-plot(t,rFootPos(3,:),'b');
+plot(t,rFootPos(3,:)-pCom(3,:),'b');
 plot(t,rFootPosDes(3,:),'b--');
 xlabel('Time (s)'); ylabel('Pos Z');
 drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(322)]
 hold on
-plot(t,rFootVel(4,:),'r');
+plot(t,rFootVel(4,:)-vCom(1,:),'r');
 plot(t,rFootVelDes(4,:),'r--');
 xlabel('Time (s)'); ylabel('Vel X');
 drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(324)]
 hold on
-plot(t,rFootVel(5,:),'g');
+plot(t,rFootVel(5,:)-vCom(2,:),'g');
 plot(t,rFootVelDes(5,:),'g--');
 xlabel('Time (s)'); ylabel('Vel Y');
 drawTransitions(transitionTimes,transitionStates);
 
 a=[a subplot(326)]
 hold on
-plot(t,rFootVel(6,:),'b');
+plot(t,rFootVel(6,:)-vCom(3,:),'b');
 plot(t,rFootVelDes(6,:),'b--');
 xlabel('Time (s)'); ylabel('Vel Z');
 drawTransitions(transitionTimes,transitionStates);

@@ -211,7 +211,7 @@ Articulation {
 			Number_of_Contact_Points	1
 			Contact_Locations	0.270662	0.000000	0.000000
 			Position_From_Inboard_Link	0.000000	-0.187452	0.587045
-			Orientation_Quat	0.512093	0.372057	-0.455044	0.626314
+			Orientation_Quat	0.563990	0.287367	-0.351464	0.689788
 			Initial_Angular_Velocity	0	0	0
 			Joint_Friction	0
 		}
@@ -227,7 +227,7 @@ Articulation {
 			Center_of_Gravity	0.299338	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.438912	0.000000	0.000000
-			MDH_Parameters	0.270662	0.000000	0.000000	1.500000
+			MDH_Parameters	0.270662	0.000000	0.000000	0.700000
 			Initial_Joint_Velocity	0
 			Joint_Limits	0	0
 			Joint_Limit_Spring_Constant	0
@@ -252,7 +252,7 @@ Articulation {
 			Number_of_Contact_Points	1
 			Contact_Locations	0.270662	0.000000	0.000000
 			Position_From_Inboard_Link	0.000000	0.187452	0.587045
-			Orientation_Quat	0.626314	0.455044	-0.372057	0.512093
+			Orientation_Quat	0.351464	0.689788	-0.563990	0.287367
 			Initial_Angular_Velocity	0	0	0
 			Joint_Friction	0
 		}
@@ -268,7 +268,7 @@ Articulation {
 			Center_of_Gravity	0.299338	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.438912	0.000000	0.000000
-			MDH_Parameters	0.270662	0.000000	0.000000	1.500000
+			MDH_Parameters	0.270662	0.000000	0.000000	0.300000
 			Initial_Joint_Velocity	0
 			Joint_Limits	0	0
 			Joint_Limit_Spring_Constant	0

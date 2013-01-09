@@ -127,13 +127,13 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	state = FLOATING;
 	transitionFlag = true;
 	
-	touchDownAngle = 0.296213;
-	touchDownLength = .86;
-	legSpringConstant = 6679.190684;
-	maxSLIPHeight = 1.018546;
-	forwardVelocity = 1.5;
+	touchDownAngle = 0.345209;
+	touchDownLength = .93;
+	legSpringConstant = 13247.243210;
+	maxSLIPHeight = 0.900325;
+	forwardVelocity = 2.600000;
 	
-	flightTime = .35;
+	flightTime = 0.1434;
 	
 }
 
@@ -163,7 +163,7 @@ void RunningStateMachine::Floating() {
 				if (dof == 6) {
 					Vector3F om;
 					//om << 0,M_PI/20,0;
-					om << 0,M_PI/10,0*0;
+					om << 0,M_PI/20,0*0;
 					matrixExpOmegaCross(om,RDesJoint[i]);
 					
 				}
@@ -191,7 +191,7 @@ void RunningStateMachine::Floating() {
 		
 		//pDesFoot[0] << 2, 1.87,.45;
 		//pDesFoot[1] << 2, 2.13,.45;
-		pDesFoot[0] << touchDownLength*sin(touchDownAngle), -.13,-touchDownLength*cos(touchDownAngle);
+		pDesFoot[0] << -touchDownLength*sin(touchDownAngle), -.13,-touchDownLength*cos(touchDownAngle)+.25;
 		pDesFoot[1] << touchDownLength*sin(touchDownAngle), .13,-touchDownLength*cos(touchDownAngle);
 		
 		//pDesFoot[0] = pFoot[0];
@@ -254,7 +254,7 @@ void RunningStateMachine::Floating() {
 		fbQd[0] = 0; 
 		fbQd[1] = 0;
 		fbQd[2] = 0;
-		fbQd[3] = 1.5;
+		fbQd[3] = forwardVelocity;
 		fbQd[4] = 0;
 		fbQd[5] = 0;
 	
@@ -271,6 +271,7 @@ void RunningStateMachine::Floating() {
 		
 		cout << " vCOM init " << vCom.transpose() << endl;
 		cout << " pCom init " << pCom.transpose() << endl;
+		cout << " pfoot init" << pFoot[1].transpose() << endl;
 		state = PRE_HOP;
 		transitionFlag = true;
 		frame->logDataCheckBox->SetValue(true);
@@ -336,7 +337,7 @@ void RunningStateMachine::Drop() {
 
 void RunningStateMachine::PreHop()
 {
-	cout << "vCom = " << vCom.transpose() << " hfs " << pFoot[0](2) << ", " << pFoot[1](2) << endl;
+	cout << "vCom = " << vCom.transpose() << "h " << pCom(2) << " hfs " << pFoot[0](2) << "/ " << contactState[0] << ", " << pFoot[1](2) << "/" << contactState[1] << endl;
 	
 	//Retain gains from flight before
 	aDesFoot[0].setZero();
@@ -394,6 +395,7 @@ void RunningStateMachine::Stance1()
 		
 		cout << "relPos\t" << -relPos.transpose() << endl;
 		cout << "vSLIP\t" << SLIP.vel.transpose() << endl;
+		cout << "vCOM\t" << vCom.transpose() << endl;
 		
 		
 		
@@ -423,13 +425,15 @@ void RunningStateMachine::Stance1()
 	//kpCM = 15;
 	//kdCM = 25;
 	
+	AssignFootMaxLoad(0,0);
+	kpFoot[0]=50;
+	kdFoot[0]=2*sqrt(50);
+	
 	
 	kpCM = 150;
 	kdCM = 2*sqrt(kpCM);
 	
 	kdAM = 25;
-	kpFoot[0] = 0;
-	kdFoot[0] = 0;
 	
 	kpFoot[1] = 0;
 	kdFoot[1] = 0;
@@ -763,25 +767,25 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					kpJoint[10] = kpShould;
 					kdJoint[10] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+18,3).setConstant(wShould);
-					//OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
+					OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
 					
 					
 					kpJoint[11] = kpElbow;
 					kdJoint[11] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+21) = wElbow;
-					//OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
+					OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
 					
 					
 					kpJoint[12] = kpShould;
 					kdJoint[12] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+22,3).setConstant(wShould);
-					//OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
+					OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
 					
 					
 					kpJoint[13] = kpElbow;
 					kdJoint[13] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+25) = wElbow;
-					//OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
+					OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
 					
 					/////////////////////////////////////////////////////////
 				}
@@ -814,9 +818,10 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					Float Kd = kdJoint[i];
 					if (i == 0) {
 						TaskWeight.segment(taskRow,3).setConstant(70);
-						//if (state == FLIGHT1) {
-						//	TaskWeight.segment(taskRow,3).setConstant(0);
-						//}
+						
+						/*if (state == STANCE1) {
+							TaskWeight.segment(taskRow,3).setConstant(180);
+						}*/
 						//taskOptimActive.segment(taskRow+3,3).setZero();
 					}
 					else if (bodyi->dof == 1) {

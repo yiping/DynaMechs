@@ -1,5 +1,5 @@
 function hop()
-    g=9.8;    m=72.5748; L0=.85;
+    g=9.8;    m=72.5748; L0=.93;
     k=16*72*10*21.5;
     
     vx = 2.6;
@@ -247,9 +247,10 @@ Period = tfs(1);
 DutyFactor = Stance/Period/2;
 Length = Period*vx;
 
-fprintf(1,'theta=\t%f\n',ang*180/pi);
+fprintf(1,'theta=\t%f\t=%f deg\n',ang,ang*180/pi);
 fprintf(1,'K = \t%f\n',Stiffness);
 fprintf(1,'Vx = \t%f\n',vx);
+fprintf(1,'Vy = \t%f\n',vy);
 fprintf(1,'T  = \t%f\n',Period);
 fprintf(1,'Cad  = \t%f\n',60/Period);
 fprintf(1,'t_c = \t%f\n',Stance);

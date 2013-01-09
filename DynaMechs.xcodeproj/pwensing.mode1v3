@@ -341,10 +341,9 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>19E752A6169DC6A600214B96</string>
+										<string>19E7530F169DDD7800214B96</string>
 										<key>history</key>
 										<array>
-											<string>199F918E169D03F600B53AAD</string>
 											<string>199F918F169D03F600B53AAD</string>
 											<string>199F91B7169D0A9800B53AAD</string>
 											<string>199F91D1169D0DF300B53AAD</string>
@@ -353,7 +352,8 @@
 											<string>199F91D4169D0DF300B53AAD</string>
 											<string>199F91EB169D12E400B53AAD</string>
 											<string>19E75293169DC3F100214B96</string>
-											<string>19E75294169DC3F100214B96</string>
+											<string>19E752EC169DD13C00214B96</string>
+											<string>19E752ED169DD13C00214B96</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -551,12 +551,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>19E752A7169DC6A600214B96</string>
+		<string>19E75310169DDD7800214B96</string>
 		<string>19E75277169DBFB900214B96</string>
 		<string>19E75278169DBFB900214B96</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>1925863714D2E86400778EA7</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -884,6 +884,8 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -929,7 +931,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

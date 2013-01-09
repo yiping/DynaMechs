@@ -133,8 +133,14 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	maxSLIPHeight = 0.900325;
 	forwardVelocity = 2.600000;
 	
+	stanceTime = .255;
 	flightTime = 0.1434;
 	
+	/*touchDownAngle = 0;
+	touchDownLength = .85;
+	legSpringConstant = 13275.962156;
+	maxSLIPHeight = 0.960249;
+	forwardVelocity = 0;*/
 }
 
 void RunningStateMachine::Floating() {
@@ -192,7 +198,7 @@ void RunningStateMachine::Floating() {
 		//pDesFoot[0] << 2, 1.87,.45;
 		//pDesFoot[1] << 2, 2.13,.45;
 		pDesFoot[0] << -touchDownLength*sin(touchDownAngle), -.13,-touchDownLength*cos(touchDownAngle)+.25;
-		pDesFoot[1] << touchDownLength*sin(touchDownAngle), .13,-touchDownLength*cos(touchDownAngle);
+		pDesFoot[1] << touchDownLength*sin(touchDownAngle), .05,-touchDownLength*cos(touchDownAngle);
 		
 		//pDesFoot[0] = pFoot[0];
 		//pDesFoot[0](2) += .1;
@@ -361,42 +367,66 @@ void RunningStateMachine::PreHop()
 }
 void RunningStateMachine::Stance1()
 {
+	static CubicSplineTrajectory rightFootSpline(3);
+	static CubicSplineTrajectory verticalSpline(3);
+	
 	static Float initHeight = 0;
 	if (transitionFlag) {
-		//simThread->idt/=10;
-		//simThread->cdt/=10;
 		
+		//Initilize right foot spline
+		{
+			VectorXF startPos(3), endPos(3), startVel(3), endVel(3);
+			startPos = pFoot[1] - pCom;
+			startVel = vFoot[1].tail(3) - vCom;
+			
+			endPos << touchDownLength*sin(touchDownAngle)*3./4., startPos(1), startPos(2);
+			endVel.setZero();
+			rightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
+			
+		}
 		
-		SLIP.pos(0) = pCom(0);
-		SLIP.pos(1) = pCom(2);
-		
-		SLIP.anchor(0) = pFoot[0](0);
-		SLIP.anchor(1) = 0;
-		
-		SLIP.pos(0) = SLIP.anchor(0) - touchDownLength*sin(touchDownAngle);
-		SLIP.pos(1) = SLIP.anchor(1) + touchDownLength*cos(touchDownAngle);
-		
-		SLIP.vel(0) = forwardVelocity;
-		SLIP.vel(1) = -sqrt(2*9.8*(maxSLIPHeight-touchDownLength*cos(touchDownAngle)));
-		
-		
-		Vector2F relPos = SLIP.pos - SLIP.anchor;
-		
-		
-		
-		SLIP.restLength = relPos.norm();
-		SLIP.mass = totalMass;
-		SLIP.springConst = legSpringConstant;
-		
-		//SLIP.vel(0) = vCom(0);
-		//SLIP.vel(1) = vCom(2);
-		
-		initHeight = SLIP.pos(1);
-		
-		cout << "relPos\t" << -relPos.transpose() << endl;
-		cout << "vSLIP\t" << SLIP.vel.transpose() << endl;
-		cout << "vCOM\t" << vCom.transpose() << endl;
-		
+		// Initialize SLIP and LIP models
+		{
+			//simThread->idt/=10;
+			//simThread->cdt/=10;
+			
+			LIP.pos = pCom.head(2);
+			LIP.vel = vCom.head(2);
+			LIP.g = 9.8;
+			LIP.height = pCom(2);
+			LIP.anchor = pFoot[1].head(2);
+			
+			
+			SLIP.pos(0) = pCom(0);
+			SLIP.pos(1) = pCom(2);
+			
+			SLIP.anchor(0) = pFoot[1](0);
+			SLIP.anchor(1) = 0;
+			
+			SLIP.pos(0) = SLIP.anchor(0) - touchDownLength*sin(touchDownAngle);
+			SLIP.pos(1) = SLIP.anchor(1) + touchDownLength*cos(touchDownAngle);
+			
+			SLIP.vel(0) = forwardVelocity;
+			SLIP.vel(1) = -sqrt(2*9.8*(maxSLIPHeight-touchDownLength*cos(touchDownAngle)));
+			
+			
+			Vector2F relPos = SLIP.pos - SLIP.anchor;
+			
+			
+			
+			SLIP.restLength = relPos.norm();
+			SLIP.mass = totalMass;
+			SLIP.springConst = legSpringConstant;
+			
+			//SLIP.vel(0) = vCom(0);
+			//SLIP.vel(1) = vCom(2);
+			
+			initHeight = SLIP.pos(1);
+			
+			cout << "relPos\t" << -relPos.transpose() << endl;
+			cout << "vSLIP\t" << SLIP.vel.transpose() << endl;
+			cout << "vCOM\t" << vCom.transpose() << endl;
+		}
 		
 		
 		/*cout << pCom << endl;
@@ -409,36 +439,47 @@ void RunningStateMachine::Stance1()
 	}
 	
 	SLIP.dynamics();
-	pComDes << SLIP.pos(0), 2, SLIP.pos(1);
-	vComDes << SLIP.vel(0), 0, SLIP.vel(1);
-	aComDes << SLIP.acc(0), 0, SLIP.acc(1);
+	LIP.dynamics();
+	
+	pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
+	vComDes << SLIP.vel(0), LIP.vel(1), SLIP.vel(1);
+	aComDes << SLIP.acc(0), LIP.acc(1), SLIP.acc(1);
 	
 	for (int i=0; i<100; i++) {
 		SLIP.integrate(simThread->cdt/100.);
+		LIP.integrate(simThread->cdt/100.);
 		if(SLIP.pos(1) >= initHeight)
 			break;
 	}
 	OptimizationSchedule.segment(0,3).setConstant(4);
 	TaskWeight.segment(0,3).setConstant(200/10.);
-	TaskWeight.segment(0,1).setConstant(200/600.);
+	TaskWeight.segment(0,1).setConstant(200/10.);
+	
+	kpCM = 150;
+	kdCM = 2*sqrt(kpCM);
+	kdAM = 25;
+	
+	
+	VectorXF p(3), pd(3), pdd(3);
+	
 	
 	//kpCM = 15;
 	//kdCM = 25;
 	
+	aDesFoot[0].setZero();
+	
 	AssignFootMaxLoad(0,0);
+	
 	kpFoot[0]=50;
 	kdFoot[0]=2*sqrt(50);
 	
-	
-	kpCM = 150;
-	kdCM = 2*sqrt(kpCM);
-	
-	kdAM = 25;
+	rightFootSpline.eval(stateTime, p,pd, pdd);
+	pDesFoot[0] = p;
+	vDesFoot[0].tail(3) = pd;
+	aDesFoot[0].tail(3) = pdd;
 	
 	kpFoot[1] = 0;
 	kdFoot[1] = 0;
-	
-	aDesFoot[0].setZero();
 	aDesFoot[1].setZero();
 	
 	static bool slowFlag = true;
@@ -453,9 +494,13 @@ void RunningStateMachine::Stance1()
 		pDesFoot[0] = pFoot[0]-pCom;
 		pDesFoot[1] = pFoot[1]-pCom;
 		
+		//simThread->idt/=100000;
+		
 		state = FLIGHT1;
 		transitionFlag = true;
 		return;
+		
+		
 	}
 	transitionFlag = false;
 	
@@ -479,29 +524,29 @@ void RunningStateMachine::Flight1()
 		VectorXF startPos(3),endPos(3),startVel(3), endVel(3);
 		
 		startPos = pFoot[0] - pCom;
-		endPos << touchDownLength*sin(touchDownAngle), -.13,-touchDownLength*cos(touchDownAngle);
+		endPos << touchDownLength*sin(touchDownAngle), -.05,-touchDownLength*cos(touchDownAngle);
 		startVel = vFoot[0].tail(3) - vCom;
-		endVel.setZero();
-		leftFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
-		
-		startPos = pFoot[1] - pCom;
-		endPos << touchDownLength*sin(touchDownAngle), .13,-touchDownLength*cos(touchDownAngle);
-		startVel = vFoot[1].tail(3) - vCom;
 		endVel.setZero();
 		rightFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
 		
-		startPos.setZero();
+		startPos = pFoot[1] - pCom;
+		endPos << -touchDownLength*sin(touchDownAngle), .13,-touchDownLength*cos(touchDownAngle)+.25;
+		startVel.setZero();
+		endVel.setZero();
+		leftFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
+		
+		/*startPos.setZero();
 		endPos.setZero();
 		endPos(2) = .2;
 		startVel.setZero();
 		endVel.setZero();
 		
 		verticalSpline.init(startPos,startVel,endPos,endVel,flightTime/2.);
-		firstHalf = true;
+		firstHalf = true;*/
 	}
 	
 	
-	if ((stateTime > flightTime/2.) && firstHalf) {
+	/*if ((stateTime > flightTime/2.) && firstHalf) {
 		
 		VectorXF startPos(3),endPos(3),startVel(3), endVel(3);
 		startPos.setZero();
@@ -510,7 +555,7 @@ void RunningStateMachine::Flight1()
 		endVel.setZero();
 		verticalSpline.reInit(stateTime, endPos, endVel, flightTime/2.);
 		firstHalf = false;
-	}
+	}*/
 	
 	
 	vDesFoot[0].setZero();
@@ -531,35 +576,27 @@ void RunningStateMachine::Flight1()
 	
 	
 	VectorXF p(3), pd(3), pdd(3);
-	VectorXF pv(3), pvd(3), pvdd(3);
 	
-	if (firstHalf) {
-		verticalSpline.eval(stateTime, pv,pvd,pvdd);
-	}
-	else {
-		verticalSpline.eval(stateTime-flightTime/2., pv,pvd,pvdd);
-	}
 	
-	leftFootSpline.eval(stateTime, p,pd, pdd);
-	
-	pDesFoot[0] = p+pv;
-	vDesFoot[0].tail(3) = pd+pvd;
-	aDesFoot[0].tail(3) = pdd+pvdd;
 	
 	
 	rightFootSpline.eval(stateTime, p,pd, pdd);
 	
-	pDesFoot[1] = p+pv;
-	vDesFoot[1].tail(3) = pd+pvd;
-	aDesFoot[1].tail(3) = pdd+pvdd;
+	pDesFoot[0] = p;
+	vDesFoot[0].tail(3) = pd;
+	aDesFoot[0].tail(3) = pdd;
 	
+	
+	leftFootSpline.eval(stateTime, p,pd, pdd);
+	
+	pDesFoot[1] = p;
+	vDesFoot[1].tail(3) = pd;
+	aDesFoot[1].tail(3) = pdd;
 	
 	//pDesFoot[0] = pFoot[0];
 	//pDesFoot[0](2) += .1;
 	//pDesFoot[1] = pFoot[1];
 	//pDesFoot[1](2) += .1;
-	
-	
 	
 	kpFoot[0]=50;
 	kdFoot[0]=2*sqrt(50);
@@ -573,19 +610,14 @@ void RunningStateMachine::Flight1()
 	OptimizationSchedule.head(6).setConstant(-1);
 	OptimizationSchedule.tail(12).setConstant(1);
 	
-	if ( (pFoot[0](2) < .01 || pFoot[1](2) < .01) && stateTime > .1) 
-	{
-		
+	if ( (pFoot[0](2) < .01 || pFoot[1](2) < .01) && stateTime > .05) {
 		cout << "Touchdown" << endl;
 		transitionFlag=true;
 		state=STANCE1;
 		return;
 	}
-	
-	
-	
-	
 }
+
 void RunningStateMachine::Flight2()
 {
 	
@@ -767,25 +799,25 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					kpJoint[10] = kpShould;
 					kdJoint[10] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+18,3).setConstant(wShould);
-					OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
+					//OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
 					
 					
 					kpJoint[11] = kpElbow;
 					kdJoint[11] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+21) = wElbow;
-					OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
+					//OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
 					
 					
 					kpJoint[12] = kpShould;
 					kdJoint[12] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+22,3).setConstant(wShould);
-					OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
+					//OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
 					
 					
 					kpJoint[13] = kpElbow;
 					kdJoint[13] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+25) = wElbow;
-					OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
+					//OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
 					
 					/////////////////////////////////////////////////////////
 				}
@@ -818,6 +850,8 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					Float Kd = kdJoint[i];
 					if (i == 0) {
 						TaskWeight.segment(taskRow,3).setConstant(70);
+						TaskWeight.segment(taskRow,1).setConstant(70/10.);
+						TaskWeight.segment(taskRow+2,1).setConstant(70/5.);
 						
 						/*if (state == STANCE1) {
 							TaskWeight.segment(taskRow,3).setConstant(180);
@@ -923,7 +957,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				
 				
 				if (kdFoot[i] == 0) {
-					aCom = - 10 * vFoot[i];
+					aCom = - 20 * vFoot[i];
 					//aCom.setZero();
 				}
 				
@@ -972,6 +1006,15 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 		qddA.setZero(26);
 		fs.setZero(12);
 	}
+	
+	/*if(state == STANCE1)
+	{
+		VectorXF jointInput(10*NJ);
+		jointInput.setZero();
+		artic->setJointInput(jointInput.data());
+		
+	}*/
+	
 	
 	
 	if (frame->logDataCheckBox->IsChecked()) {

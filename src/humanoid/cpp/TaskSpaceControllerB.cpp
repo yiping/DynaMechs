@@ -196,8 +196,8 @@ void TaskSpaceControllerB::UpdateVariableBounds() {
 	// Initialize Bounds for Tau Variables
 	for (i=tauStart; i<=tauEnd; i++) {
 		bkx[i] = MSK_BK_RA;
-		blx[i] = -500;
-		bux[i] = +500;
+		blx[i] = -1000;
+		bux[i] = +1000;
 	}
 	
 	//Intialize Bounds for Force Variables

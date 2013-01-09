@@ -15,6 +15,7 @@
 #include "CubicSplineTrajectory.h"
 #include "HumanoidDataLogger.h"
 #include "SlipModel.h"
+#include "LipModel.h"
 
 class RunningStateMachine : public HumanoidDataLogger
 {
@@ -76,7 +77,7 @@ private:
 	Float touchDownAngle;
 	Float legSpringConstant;
 	Float maxSLIPHeight;
-	Float flightTime;
+	Float flightTime, stanceTime;
 	Float forwardVelocity;
 	
 	
@@ -92,6 +93,9 @@ private:
 	Float kpCM, kdCM, kdAM;
 	
 	SlipModel SLIP;
+	LipModel LIP;
+	
+	int stanceLeg, flightLeg;
 };
 
 

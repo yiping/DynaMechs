@@ -254,18 +254,21 @@ a=[a subplot(311)]
 hold on
 plot(t,zmpForce(1,:),'r');
 plot(t,zmpWrenchOpt(4,:),'r--');
+drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('ZMP Force X');
 
 a=[a subplot(312)]
 hold on
 plot(t,zmpForce(2,:),'g');
 plot(t,zmpWrenchOpt(5,:),'g--');
+drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('ZMP Force Y');
 
 a=[a subplot(313)]
 hold on
 plot(t,zmpForce(3,:),'b');
 plot(t,zmpWrenchOpt(6,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('ZMP Force Z');
 
 f=figure('Name','ZMP Pos','Position',figPos); figs = [figs f];
@@ -273,18 +276,21 @@ a=[a subplot(311)]
 hold on
 plot(t,zmpPos(1,:),'r');
 plot(t,zmpPosOpt(1,:),'r--');
+drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('ZMP Pos X');
 
 a=[a subplot(312)]
 hold on
 plot(t,zmpPos(2,:),'g');
 plot(t,zmpPosOpt(2,:),'g--');
+drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('ZMP Pos Y');
 
 a=[a subplot(313)]
 hold on
 plot(t,zmpNz,'b');
 plot(t,zmpWrenchOpt(3,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('ZMP N Z');
 
 

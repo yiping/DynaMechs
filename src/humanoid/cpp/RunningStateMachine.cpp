@@ -423,6 +423,7 @@ void RunningStateMachine::Stance1()
 	//kpCM = 15;
 	//kdCM = 25;
 	
+	
 	kpCM = 150;
 	kdCM = 2*sqrt(kpCM);
 	
@@ -465,6 +466,9 @@ void RunningStateMachine::Flight1()
 {
 	static CubicSplineTrajectory leftFootSpline(3);
 	static CubicSplineTrajectory rightFootSpline(3);
+	static CubicSplineTrajectory verticalSpline(3);
+	
+	static bool firstHalf = true;
 	
 	if(transitionFlag) {
 		
@@ -481,7 +485,29 @@ void RunningStateMachine::Flight1()
 		startVel = vFoot[1].tail(3) - vCom;
 		endVel.setZero();
 		rightFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
+		
+		startPos.setZero();
+		endPos.setZero();
+		endPos(2) = .2;
+		startVel.setZero();
+		endVel.setZero();
+		
+		verticalSpline.init(startPos,startVel,endPos,endVel,flightTime/2.);
+		firstHalf = true;
 	}
+	
+	
+	if ((stateTime > flightTime/2.) && firstHalf) {
+		
+		VectorXF startPos(3),endPos(3),startVel(3), endVel(3);
+		startPos.setZero();
+		endPos.setZero();
+		startVel.setZero();
+		endVel.setZero();
+		verticalSpline.reInit(stateTime, endPos, endVel, flightTime/2.);
+		firstHalf = false;
+	}
+	
 	
 	vDesFoot[0].setZero();
 	vDesFoot[1].setZero();
@@ -501,18 +527,27 @@ void RunningStateMachine::Flight1()
 	
 	
 	VectorXF p(3), pd(3), pdd(3);
+	VectorXF pv(3), pvd(3), pvdd(3);
+	
+	if (firstHalf) {
+		verticalSpline.eval(stateTime, pv,pvd,pvdd);
+	}
+	else {
+		verticalSpline.eval(stateTime-flightTime/2., pv,pvd,pvdd);
+	}
+	
 	leftFootSpline.eval(stateTime, p,pd, pdd);
 	
-	pDesFoot[0] = p;
-	vDesFoot[0].tail(3) = pd;
-	aDesFoot[0].tail(3) = pdd;
+	pDesFoot[0] = p+pv;
+	vDesFoot[0].tail(3) = pd+pvd;
+	aDesFoot[0].tail(3) = pdd+pvdd;
 	
 	
 	rightFootSpline.eval(stateTime, p,pd, pdd);
 	
-	pDesFoot[1] = p;
-	vDesFoot[1].tail(3) = pd;
-	aDesFoot[1].tail(3) = pdd;
+	pDesFoot[1] = p+pv;
+	vDesFoot[1].tail(3) = pd+pvd;
+	aDesFoot[1].tail(3) = pdd+pvdd;
 	
 	
 	//pDesFoot[0] = pFoot[0];
@@ -778,7 +813,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					Float Kp = kpJoint[i];
 					Float Kd = kdJoint[i];
 					if (i == 0) {
-						TaskWeight.segment(taskRow,3).setConstant(120);
+						TaskWeight.segment(taskRow,3).setConstant(70);
 						//if (state == FLIGHT1) {
 						//	TaskWeight.segment(taskRow,3).setConstant(0);
 						//}

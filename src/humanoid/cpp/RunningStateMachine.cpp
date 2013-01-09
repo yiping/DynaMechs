@@ -779,9 +779,9 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					Float Kd = kdJoint[i];
 					if (i == 0) {
 						TaskWeight.segment(taskRow,3).setConstant(120);
-						if (state == FLIGHT1) {
-							TaskWeight.segment(taskRow,3).setConstant(0);
-						}
+						//if (state == FLIGHT1) {
+						//	TaskWeight.segment(taskRow,3).setConstant(0);
+						//}
 						//taskOptimActive.segment(taskRow+3,3).setZero();
 					}
 					else if (bodyi->dof == 1) {

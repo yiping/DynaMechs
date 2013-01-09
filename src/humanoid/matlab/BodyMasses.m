@@ -66,7 +66,7 @@ quat = RtoQuat(R3*R2*R);
 % quat = RtoQuat(R4*R);
 dmQuat = [quat(2:4) quat(1)];
 links{11}.quat = dmQuat;
-links{12}.mdh(4) = 0.50000;
+links{12}.mdh(4) = 1.50000;
 
 % Initial Orientation for Left Arm
 R = [1 0 0;0 0 1;0 -1 0]';
@@ -77,7 +77,7 @@ quat = RtoQuat(R3*R2*R);
 % quat = RtoQuat(R4*R);
 dmQuat = [quat(2:4) quat(1)];
 links{13}.quat = dmQuat;
-links{14}.mdh(4) = 0.50000;
+links{14}.mdh(4) = 1.50000;
 
 
 N=14;

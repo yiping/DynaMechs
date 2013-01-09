@@ -2,7 +2,7 @@ function hop()
     g=9.8;    m=72.5748; L0=.86;
     k=16*72*10*21.5;
     
-    vx = 1.5;
+    vx = .95;
     
     N = 1000;      % Number of Samples
     tSim = 10;     % Max Sim time
@@ -20,8 +20,8 @@ function hop()
     %tFlightDes=.225/.64*(1-.64);
     
     % for 2.6 m/s
-    tStanceDes=.4;
-    tFlightDes=.4;
+    tStanceDes=.35;
+    tFlightDes=.35;
     
     
     figure(1)

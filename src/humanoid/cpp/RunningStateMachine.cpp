@@ -127,10 +127,10 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	state = FLOATING;
 	transitionFlag = true;
 	
-	touchDownAngle = 0.277471;
-	touchDownLength = .93;
-	legSpringConstant = 6709.972150;
-	maxSLIPHeight = 1.090428;
+	touchDownAngle = 0.296213;
+	touchDownLength = .86;
+	legSpringConstant = 6679.190684;
+	maxSLIPHeight = 1.018546;
 	forwardVelocity = 1.5;
 	
 	flightTime = .35;
@@ -163,7 +163,7 @@ void RunningStateMachine::Floating() {
 				if (dof == 6) {
 					Vector3F om;
 					//om << 0,M_PI/20,0;
-					om << 0,M_PI/20,0;
+					om << 0,M_PI/10,0*0;
 					matrixExpOmegaCross(om,RDesJoint[i]);
 					
 				}
@@ -416,8 +416,9 @@ void RunningStateMachine::Stance1()
 		if(SLIP.pos(1) >= initHeight)
 			break;
 	}
-	//OptimizationSchedule.segment(0,3).setConstant(4);
-	//TaskWeight.segment(0,3).setConstant(200/10.);
+	OptimizationSchedule.segment(0,3).setConstant(4);
+	TaskWeight.segment(0,3).setConstant(200/10.);
+	TaskWeight.segment(0,1).setConstant(200/600.);
 	
 	//kpCM = 15;
 	//kdCM = 25;
@@ -564,6 +565,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	OptimizationSchedule.setZero(6+NJ+6+12);
 	OptimizationSchedule.segment(0,6).setConstant(3);
 	//OptimizationSchedule.segment(0,3).setConstant(3);
+	OptimizationSchedule.segment(0,6).setConstant(4);
 	
 	
 	//OptimizationSchedule.segment(0,6).setConstant(2);
@@ -582,6 +584,12 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	
 	TaskWeight.segment(0,3).setConstant(10/8.);
 	TaskWeight.segment(3,3).setConstant(100/4.);
+	
+	
+	TaskWeight.segment(0,3).setConstant(200/10.);
+	TaskWeight.segment(0,1).setConstant(200/600.);
+	
+	
 	
 	TaskWeight.tail(12).setConstant(1000);
 	
@@ -770,7 +778,10 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					Float Kp = kpJoint[i];
 					Float Kd = kdJoint[i];
 					if (i == 0) {
-						TaskWeight.segment(taskRow,3).setConstant(100);
+						TaskWeight.segment(taskRow,3).setConstant(120);
+						if (state == FLIGHT1) {
+							TaskWeight.segment(taskRow,3).setConstant(0);
+						}
 						//taskOptimActive.segment(taskRow+3,3).setZero();
 					}
 					else if (bodyi->dof == 1) {

@@ -139,21 +139,20 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	
 	
 	// 3.5 m/s
-	/*touchDownAngle = 0.396459;
+	touchDownAngle = 0.396459;
 	touchDownLength = .98;
 	legSpringConstant = 12854.483189;
 	maxSLIPHeight = 0.923557;
 	forwardVelocity = 3.500000;
 	
 	stanceTime = .255;
-	flightTime = 0.1434;*/
+	flightTime = 0.1434;
 	
 	// 3.5 m/s fast cadence
-	touchDownAngle = 0.316856;
+	/*touchDownAngle = 0.316856;
 	touchDownLength = .98;
 	legSpringConstant = 20372.460409;
 	maxSLIPHeight = 0.966499;
-	
 	forwardVelocity = 3.5;
 	stanceTime = 0.180000;
 	flightTime = .17;
@@ -175,7 +174,7 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	maxSLIPHeight = 	0.975204;
 	touchDownLength = 	1.000000;
 	stanceTime = 	0.146300;
-	flightTime = 	0.146300;
+	flightTime = 	0.146300;*/
 	
 	
 	
@@ -184,6 +183,26 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	legSpringConstant = 13275.962156;
 	maxSLIPHeight = 0.960249;
 	forwardVelocity = 0;*/
+	
+	restWidth = .13;
+	stepWidth = .06;
+	vDesDisplay = forwardVelocity;
+	
+	FILE * fid = fopen("SlipData.txt","r");
+	SlipData.resize(51);
+	for(int i=0;i<51;i++) {
+		SlipData[i].resize(7);
+		int scans = fscanf(fid, "%lf%lf%lf%lf%lf%lf%lf",&SlipData[i][0],&SlipData[i][1],&SlipData[i][2]
+						,&SlipData[i][3],&SlipData[i][4],&SlipData[i][5],&SlipData[i][6]);
+		
+		//cout << "Scans = " << scans << "v=" << SlipData[i][0] << endl;
+	}
+	fclose(fid);
+	
+	//cout << "SlipData[2][4] " << SlipData[2][4] << endl;
+	
+	
+	//exit(-1);
 }
 
 void RunningStateMachine::Floating() {
@@ -240,8 +259,8 @@ void RunningStateMachine::Floating() {
 		
 		//pDesFoot[0] << 2, 1.87,.45;
 		//pDesFoot[1] << 2, 2.13,.45;
-		pDesFoot[0] << -touchDownLength*sin(touchDownAngle), -.13,-touchDownLength*cos(touchDownAngle)+.25;
-		pDesFoot[1] << touchDownLength*sin(touchDownAngle), .05,-touchDownLength*cos(touchDownAngle);
+		pDesFoot[0] << -touchDownLength*sin(touchDownAngle), -restWidth,-touchDownLength*cos(touchDownAngle)+.25;
+		pDesFoot[1] << touchDownLength*sin(touchDownAngle), stepWidth,-touchDownLength*cos(touchDownAngle);
 		
 		//pDesFoot[0] = pFoot[0];
 		//pDesFoot[0](2) += .1;
@@ -452,8 +471,6 @@ void RunningStateMachine::Stance1()
 			SLIP.anchor(0) = pFoot[stanceLeg](0);
 			SLIP.anchor(1) = 0;
 			
-			
-			
 			SLIP.pos(0) = SLIP.anchor(0) - touchDownLength*sin(touchDownAngle);
 			SLIP.pos(1) = SLIP.anchor(1) + touchDownLength*cos(touchDownAngle);
 			
@@ -504,6 +521,7 @@ void RunningStateMachine::Stance1()
 	}
 	OptimizationSchedule.segment(0,3).setConstant(4);
 	TaskWeight.segment(0,3).setConstant(200/10.);
+	TaskWeight.segment(2,1).setConstant(90.);
 	TaskWeight.segment(0,1).setConstant(200/10.);
 	
 	kpCM = 150;
@@ -577,17 +595,38 @@ void RunningStateMachine::Flight1()
 	
 	
 	if(transitionFlag) {
+		//bool foundVel = false;
+		int i=0;
+		while(1 == 1)
+		{
+			float Diff = SlipData[i][0]-vDesDisplay;
+			if (Diff*Diff < 1e-6 ) {
+				break;
+			}
+			i++;
+		}
+
+		forwardVelocity = SlipData[i][0];
+		stanceTime = SlipData[i][1];
+		flightTime = SlipData[i][2];
+		legSpringConstant = SlipData[i][3];
+		touchDownAngle = SlipData[i][4];
+		maxSLIPHeight = SlipData[i][5];
+		touchDownLength = SlipData[i][6];
 		
+		
+		
+		firstHalf = true;
 		VectorXF startPos(3),endPos(3),startVel(3), endVel(3);
 		
 		startPos = pFoot[stanceLeg] - pCom;
-		endPos << touchDownLength*sin(touchDownAngle), .05 * stanceYSign,-touchDownLength*cos(touchDownAngle);
+		endPos << touchDownLength*sin(touchDownAngle), stepWidth * stanceYSign,-touchDownLength*cos(touchDownAngle);
 		startVel = vFoot[stanceLeg].tail(3) - vCom;
 		endVel.setZero();
 		stanceFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
 		
 		startPos = pFoot[flightLeg] - pCom;
-		endPos << -touchDownLength*sin(touchDownAngle), .13 * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
+		endPos << -touchDownLength*sin(touchDownAngle), restWidth * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
 		startVel.setZero();
 		endVel.setZero();
 		flightFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
@@ -600,6 +639,12 @@ void RunningStateMachine::Flight1()
 		
 		verticalSpline.init(startPos,startVel,endPos,endVel,flightTime/2.);
 		firstHalf = true;*/
+	}
+	
+	if(firstHalf && vCom(2) < 0)
+	{
+		vActDisplay   = vCom(0);
+		firstHalf = false;
 	}
 	
 	
@@ -856,25 +901,31 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					kpJoint[10] = kpShould;
 					kdJoint[10] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+18,3).setConstant(wShould);
-					//OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
+					
 					
 					
 					kpJoint[11] = kpElbow;
 					kdJoint[11] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+21) = wElbow;
-					//OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
+					
 					
 					
 					kpJoint[12] = kpShould;
 					kdJoint[12] = 2*sqrt(kpShould);
 					TaskWeight.segment(taskRow+22,3).setConstant(wShould);
-					//OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
+					
 					
 					
 					kpJoint[13] = kpElbow;
 					kdJoint[13] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+25) = wElbow;
-					//OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
+					
+					if (state == PRE_HOP || state == FLOATING) {
+						OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
+						OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
+						OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
+						OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
+					}
 					
 					/////////////////////////////////////////////////////////
 				}
@@ -908,6 +959,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					if (i == 0) {
 						TaskWeight.segment(taskRow,3).setConstant(70);
 						TaskWeight.segment(taskRow,1).setConstant(70/10.);
+						TaskWeight.segment(taskRow+1,1).setConstant(90);
 						TaskWeight.segment(taskRow+2,1).setConstant(70/5.);
 						
 						/*if (state == STANCE1) {

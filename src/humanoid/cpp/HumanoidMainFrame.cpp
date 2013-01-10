@@ -166,6 +166,13 @@ HumanoidMainFrame::HumanoidMainFrame(const wxString& title, const wxPoint& pos, 
 		renderHzDisplay = new wxStaticText(toolpanel,-1,wxT("Render Hz: "));
 		toolpanel_sizer->Add(renderHzDisplay,0,wxALL,2);
 		
+		desiredSpeedDisplay = new wxStaticText(toolpanel,-1,wxT("vDes : "));
+		toolpanel_sizer->Add(desiredSpeedDisplay,0,wxALL,2);
+		
+		actualSpeedDisplay = new wxStaticText(toolpanel,-1,wxT("vAct : "));
+		toolpanel_sizer->Add(actualSpeedDisplay,0,wxALL,2);
+		
+		
 		showCoM->SetValue(false);
 		showGRF->SetValue(false);
 		

@@ -50,6 +50,8 @@ public:
 	
 	virtual void StateControl(ControlInfo & ci);
 	
+	Float vDesDisplay;
+	Float vActDisplay;
 	
 private:
 	
@@ -79,9 +81,10 @@ private:
 	Float maxSLIPHeight;
 	Float flightTime, stanceTime;
 	Float forwardVelocity;
+	Float stepWidth;
+	Float restWidth;
 	
-	
-	
+	vector<vector<Float> > SlipData;
 	
 	
 	vector<FootServoType> footServos;

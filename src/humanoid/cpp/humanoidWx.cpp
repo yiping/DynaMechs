@@ -464,12 +464,17 @@ void BasicGLPane::userGraphics()
 		frame->realTimeRatioDisplay->SetLabel(wxString::Format(wxT("RT Ratio: %.2lf"), real_time_ratio));
 		
 		
+		
+		
 		static dmTimespec thisRenderTime, prevRenderTime;
 		dmGetSysTime(&thisRenderTime);
 		Float renderHz = 1/timeDiff(prevRenderTime, thisRenderTime);
 		dmGetSysTime(&prevRenderTime);
 		
 		frame->renderHzDisplay->SetLabel(wxString::Format(wxT("Render Hz: %.2lf"), renderHz));
+		
+		frame->desiredSpeedDisplay->SetLabel(wxString::Format(wxT("vDes: %.2f"),((RunningStateMachine *) humanoid)->vDesDisplay));
+		frame->actualSpeedDisplay->SetLabel(wxString::Format(wxT("vAct: %.2f"),((RunningStateMachine *) humanoid)->vActDisplay));
 		
 		
 		/*

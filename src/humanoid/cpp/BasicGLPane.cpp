@@ -7,7 +7,7 @@
  *
  */
 #include "GlobalDefines.h"
-
+#include "RunningStateMachine.h"
 #include "BasicGLPane.h"
 #include <dmEnvironment.hpp>
 using namespace Eigen;
@@ -162,6 +162,16 @@ void BasicGLPane::keyPressed(wxKeyEvent& event)
 	if (event.GetUnicodeKey() == 32) {
 		mouse->button_flags |= MOUSE_M_DN;
 	}
+	
+	if (event.GetKeyCode() == 315) {
+		((RunningStateMachine *) humanoid)->vDesDisplay+=.05;
+	}
+	if (event.GetKeyCode() == 317) {
+		((RunningStateMachine *) humanoid)->vDesDisplay-=.05;
+	}
+	
+	
+	cout << event.GetKeyCode() << endl;
 }
 void BasicGLPane::keyReleased(wxKeyEvent& event) {
 	//normally wxWidgets sends key events to the window that has the focus

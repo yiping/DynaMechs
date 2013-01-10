@@ -65,6 +65,9 @@ public:
 	wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM, *showSkeleton;
 	wxCheckBox * showTraces, *logDataCheckBox,*slowMotion;
 	wxStaticText * realTimeRatioDisplay, *renderHzDisplay;
+	wxStaticText * desiredSpeedDisplay, *actualSpeedDisplay;
+	
+	
 	BasicGLPane * glPane;
 	wxBoxSlider * slowMoRatio;
 	

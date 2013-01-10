@@ -24,14 +24,38 @@ function hop()
     %tFlightDes=.255/.64*(1-.64);
     
     % for 4.4 m/s
-    tStanceDes=.205;
-    tFlightDes=0.3158-.205;
+    %tStanceDes=.205;
+    %tFlightDes=0.3158-.205;
     
     % for 6.0 m/s
-    tStanceDes=0.1463;
-    tFlightDes=0.1463;
+    %tStanceDes=0.1463;
+    %tFlightDes=0.1463;
+    
+    %tStanceDes = 0.256307061;
+    %tFlightDes = 0.097823578;
+    %vx = 3;
+    
+    %tStanceDes = 0.225872939;
+    %tFlightDes = 0.120308035;
+    %vx = 3.5;
     
     
+    %tStanceDes = 0.202446749;
+    %tFlightDes = 0.13371407;
+    %vx = 4;
+    
+    %tStanceDes = 0.183808563;
+    %tFlightDes = 0.140642473;
+    %vx = 4.5;
+    
+    %tStanceDes = 0.168594963;
+    %tFlightDes = 0.142858747;
+    %vx = 5;
+    
+    tStanceDes = 0.155920276;
+    tFlightDes = 0.141643052;
+    
+    vx = 5.5;
     
     figure(1)
     clf;
@@ -218,26 +242,26 @@ function hop()
     fprintf(1,'%f\t',z0);
     fprintf(1,'\n');
     
-    tic
-        %% Hopping Animation
-	figure(2); clf; hold on;
-    hOA = plot([z0(1) z0(3)],[foot0(1) foot0(2)],'r');
-    hA = plot(z0(1),z0(3),'ro');
-    hHist = plot(z0(1),z0(3),'r--');
-    axis equal;
-    axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
-    set(hA,'markerfacecolor','r');
-    startTime = cputime;
-    for i = 1:1:length(ts)
-        set(hOA,'ydata',[zs(i,3) foots(i,2)],'xdata',[zs(i,1) foots(i,1)]);
-        set(hA,'ydata',zs(i,3),'xdata',zs(i,1));
-        set(hHist,'ydata',zs(1:i,3),'xdata',zs(1:i,1));
-        %while (cputime-startTime) < ts(i)
-            pause(.00001);
-        %end
-    end
-    toc
-    ts(end)
+%     tic
+%         %% Hopping Animation
+% 	figure(2); clf; hold on;
+%     hOA = plot([z0(1) z0(3)],[foot0(1) foot0(2)],'r');
+%     hA = plot(z0(1),z0(3),'ro');
+%     hHist = plot(z0(1),z0(3),'r--');
+%     axis equal;
+%     axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
+%     set(hA,'markerfacecolor','r');
+%     startTime = cputime;
+%     for i = 1:1:length(ts)
+%         set(hOA,'ydata',[zs(i,3) foots(i,2)],'xdata',[zs(i,1) foots(i,1)]);
+%         set(hA,'ydata',zs(i,3),'xdata',zs(i,1));
+%         set(hHist,'ydata',zs(1:i,3),'xdata',zs(1:i,1));
+%         %while (cputime-startTime) < ts(i)
+%             pause(.00001);
+%         %end
+%     end
+%     toc
+%     ts(end)
 
 
      

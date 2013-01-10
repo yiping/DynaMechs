@@ -1,8 +1,8 @@
 function hop()
-    g=9.8;    m=72.5748; L0=1.0;
+    g=9.8;    m=72.5748; L0=.85;
     k=16*72*10*21.5;
     
-    vx = 4.4;
+    vx = 0;
     
     N = 1000;      % Number of Samples
     tSim = 10;     % Max Sim time
@@ -16,21 +16,12 @@ function hop()
     %tFlightDes = 0.2633/.45*.55;
     
     % for 3.5 m/s
-    %tStanceDes=.18;
-    %tFlightDes=.16;
+    %tStanceDes=.225;
+    %tFlightDes=.225/.64*(1-.64);
     
     % for 2.6 m/s
-    %tStanceDes=.255;
-    %tFlightDes=.255/.64*(1-.64);
-    
-    % for 4.4 m/s
-    tStanceDes=.205;
-    tFlightDes=0.3158-.205;
-    
-    % for 6.0 m/s
-    tStanceDes=0.1463;
-    tFlightDes=0.1463;
-    
+    tStanceDes=.3;
+    tFlightDes=.3;
     
     
     figure(1)
@@ -167,7 +158,7 @@ function hop()
     %% Find Orbit
     params0 = paramsInitial;
     options = optimset('display','iter');
-    [params resnorm res] = lsqnonlin(@periodResidual,params0,[pi/20,-inf,16*72*2],[pi/4,-.1,16*72*100*21.5],options);
+    [params resnorm res] = lsqnonlin(@periodResidual,params0,[-pi/20,-inf,16*72*2],[pi/4,-.1,16*72*100*21.5],options);
     res
     ang = params(1)
     vy = params(2)
@@ -225,7 +216,7 @@ function hop()
     hA = plot(z0(1),z0(3),'ro');
     hHist = plot(z0(1),z0(3),'r--');
     axis equal;
-    axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
+    axis([-1 max(zs(:,1))+1 0 max(zs(:,3))]); 
     set(hA,'markerfacecolor','r');
     startTime = cputime;
     for i = 1:1:length(ts)
@@ -243,7 +234,7 @@ function hop()
      
     %% Point Mass Trajectory
     plot(zs(:,1),0*zs(:,1),'k');
-    axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
+    axis([-1 max(zs(:,1))+1 0 max(zs(:,3))]); 
     
     %% Energy Plot    
 %     figure(4)
@@ -256,26 +247,19 @@ Period = tfs(1);
 DutyFactor = Stance/Period/2;
 Length = Period*vx;
 
-
+fprintf(1,'theta=\t%f\t=%f deg\n',ang,ang*180/pi);
+fprintf(1,'K = \t%f\n',Stiffness);
+fprintf(1,'Vx = \t%f\n',vx);
 fprintf(1,'Vy = \t%f\n',vy);
 fprintf(1,'T  = \t%f\n',Period);
 fprintf(1,'Cad  = \t%f\n',60/Period);
 fprintf(1,'t_c = \t%f\n',Stance);
 fprintf(1,'DF = \t%f\n',DutyFactor);
 fprintf(1,'SL = \t%f\n',Length);
+fprintf(1,'hMax = \t%f\n',max(zs(:,3)));
+
 fprintf(1,'px = \t%f\n',L0*sin(ang));
 fprintf(1,'py = \t%f\n',-L0*cos(ang));
-
-
-fprintf(1,'touchDownAngle=\t%f;\n',ang);
-fprintf(1,'legSpringConstant = \t%f;\n',Stiffness);
-fprintf(1,'forwardVelocity = \t%f;\n',vx);
-fprintf(1,'maxSLIPHeight = \t%f;\n',max(zs(:,3)));
-fprintf(1,'touchDownLength = \t%f;\n',L0);
-fprintf(1,'stanceTime = \t%f;\n',tStanceDes);
-fprintf(1,'flightTime = \t%f;\n',tFlightDes);
-
-
 
 
 

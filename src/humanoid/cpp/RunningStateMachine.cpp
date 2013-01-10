@@ -127,14 +127,57 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	state = FLOATING;
 	transitionFlag = true;
 	
-	touchDownAngle = 0.345209;
+	// 2.5 m/s
+	/*touchDownAngle = 0.345209;
 	touchDownLength = .93;
 	legSpringConstant = 13247.243210;
 	maxSLIPHeight = 0.900325;
 	forwardVelocity = 2.600000;
 	
 	stanceTime = .255;
-	flightTime = 0.1434;
+	flightTime = 0.1434;*/
+	
+	
+	// 3.5 m/s
+	/*touchDownAngle = 0.396459;
+	touchDownLength = .98;
+	legSpringConstant = 12854.483189;
+	maxSLIPHeight = 0.923557;
+	forwardVelocity = 3.500000;
+	
+	stanceTime = .255;
+	flightTime = 0.1434;*/
+	
+	// 3.5 m/s fast cadence
+	touchDownAngle = 0.316856;
+	touchDownLength = .98;
+	legSpringConstant = 20372.460409;
+	maxSLIPHeight = 0.966499;
+	
+	forwardVelocity = 3.5;
+	stanceTime = 0.180000;
+	flightTime = .17;
+	
+	
+	// 4.4 m/s
+	touchDownAngle=	0.429390;
+	legSpringConstant = 	11994.503323;
+	forwardVelocity = 	4.400000;
+	maxSLIPHeight = 	0.969610;
+	touchDownLength = 	1.050000;
+	stanceTime = 	0.205000;
+	flightTime = 	0.110800;
+	
+	// 6 m/s
+	touchDownAngle=	0.320645;
+	legSpringConstant = 	24445.777807;
+	forwardVelocity = 	4.400000;
+	maxSLIPHeight = 	0.975204;
+	touchDownLength = 	1.000000;
+	stanceTime = 	0.146300;
+	flightTime = 	0.146300;
+	
+	
 	
 	/*touchDownAngle = 0;
 	touchDownLength = .85;
@@ -343,6 +386,9 @@ void RunningStateMachine::Drop() {
 
 void RunningStateMachine::PreHop()
 {
+	stanceLeg = 1;
+	flightLeg = 0;
+	
 	cout << "vCom = " << vCom.transpose() << "h " << pCom(2) << " hfs " << pFoot[0](2) << "/ " << contactState[0] << ", " << pFoot[1](2) << "/" << contactState[1] << endl;
 	
 	//Retain gains from flight before
@@ -367,7 +413,7 @@ void RunningStateMachine::PreHop()
 }
 void RunningStateMachine::Stance1()
 {
-	static CubicSplineTrajectory rightFootSpline(3);
+	static CubicSplineTrajectory flightFootSpline(3);
 	static CubicSplineTrajectory verticalSpline(3);
 	
 	static Float initHeight = 0;
@@ -376,12 +422,12 @@ void RunningStateMachine::Stance1()
 		//Initilize right foot spline
 		{
 			VectorXF startPos(3), endPos(3), startVel(3), endVel(3);
-			startPos = pFoot[1] - pCom;
-			startVel = vFoot[1].tail(3) - vCom;
+			startPos = pFoot[flightLeg] - pCom;
+			startVel = vFoot[flightLeg].tail(3) - vCom;
 			
-			endPos << touchDownLength*sin(touchDownAngle)*3./4., startPos(1), startPos(2);
+			endPos << touchDownLength*sin(touchDownAngle)*3./4., startPos(1), startPos(2)-.05;
 			endVel.setZero();
-			rightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
+			flightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
 			
 		}
 		
@@ -394,14 +440,19 @@ void RunningStateMachine::Stance1()
 			LIP.vel = vCom.head(2);
 			LIP.g = 9.8;
 			LIP.height = pCom(2);
-			LIP.anchor = pFoot[1].head(2);
+			LIP.anchor = pFoot[stanceLeg].head(2);
 			
+			
+			LIP.pos(1) = 2;
+			LIP.anchor(1) = 2;
 			
 			SLIP.pos(0) = pCom(0);
 			SLIP.pos(1) = pCom(2);
 			
-			SLIP.anchor(0) = pFoot[1](0);
+			SLIP.anchor(0) = pFoot[stanceLeg](0);
 			SLIP.anchor(1) = 0;
+			
+			
 			
 			SLIP.pos(0) = SLIP.anchor(0) - touchDownLength*sin(touchDownAngle);
 			SLIP.pos(1) = SLIP.anchor(1) + touchDownLength*cos(touchDownAngle);
@@ -466,21 +517,21 @@ void RunningStateMachine::Stance1()
 	//kpCM = 15;
 	//kdCM = 25;
 	
-	aDesFoot[0].setZero();
+	aDesFoot[flightLeg].setZero();
 	
-	AssignFootMaxLoad(0,0);
+	AssignFootMaxLoad(flightLeg,0);
 	
-	kpFoot[0]=50;
-	kdFoot[0]=2*sqrt(50);
+	kpFoot[flightLeg]=50;
+	kdFoot[flightLeg]=2*sqrt(50);
 	
-	rightFootSpline.eval(stateTime, p,pd, pdd);
-	pDesFoot[0] = p;
-	vDesFoot[0].tail(3) = pd;
-	aDesFoot[0].tail(3) = pdd;
+	flightFootSpline.eval(stateTime, p,pd, pdd);
+	pDesFoot[flightLeg] = p;
+	vDesFoot[flightLeg].tail(3) = pd;
+	aDesFoot[flightLeg].tail(3) = pdd;
 	
-	kpFoot[1] = 0;
-	kdFoot[1] = 0;
-	aDesFoot[1].setZero();
+	kpFoot[stanceLeg] = 0;
+	kdFoot[stanceLeg] = 0;
+	aDesFoot[stanceLeg].setZero();
 	
 	static bool slowFlag = true;
 	if (SLIP.pos(1) >= initHeight &&slowFlag) {
@@ -498,9 +549,11 @@ void RunningStateMachine::Stance1()
 		
 		state = FLIGHT1;
 		transitionFlag = true;
+		
+		flightLeg = 1-flightLeg;
+		stanceLeg = 1-stanceLeg;
+		
 		return;
-		
-		
 	}
 	transitionFlag = false;
 	
@@ -513,27 +566,31 @@ void RunningStateMachine::Stance2()
 }
 void RunningStateMachine::Flight1()
 {
-	static CubicSplineTrajectory leftFootSpline(3);
-	static CubicSplineTrajectory rightFootSpline(3);
+	static CubicSplineTrajectory flightFootSpline(3);
+	static CubicSplineTrajectory stanceFootSpline(3);
 	static CubicSplineTrajectory verticalSpline(3);
 	
 	static bool firstHalf = true;
+	
+	int flightYSign = (flightLeg == 0 ? -1 : 1);
+	int stanceYSign = (stanceLeg == 0 ? -1 : 1);
+	
 	
 	if(transitionFlag) {
 		
 		VectorXF startPos(3),endPos(3),startVel(3), endVel(3);
 		
-		startPos = pFoot[0] - pCom;
-		endPos << touchDownLength*sin(touchDownAngle), -.05,-touchDownLength*cos(touchDownAngle);
-		startVel = vFoot[0].tail(3) - vCom;
+		startPos = pFoot[stanceLeg] - pCom;
+		endPos << touchDownLength*sin(touchDownAngle), .05 * stanceYSign,-touchDownLength*cos(touchDownAngle);
+		startVel = vFoot[stanceLeg].tail(3) - vCom;
 		endVel.setZero();
-		rightFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
+		stanceFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
 		
-		startPos = pFoot[1] - pCom;
-		endPos << -touchDownLength*sin(touchDownAngle), .13,-touchDownLength*cos(touchDownAngle)+.25;
+		startPos = pFoot[flightLeg] - pCom;
+		endPos << -touchDownLength*sin(touchDownAngle), .13 * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
 		startVel.setZero();
 		endVel.setZero();
-		leftFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
+		flightFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
 		
 		/*startPos.setZero();
 		endPos.setZero();
@@ -580,18 +637,18 @@ void RunningStateMachine::Flight1()
 	
 	
 	
-	rightFootSpline.eval(stateTime, p,pd, pdd);
+	flightFootSpline.eval(stateTime, p,pd, pdd);
 	
-	pDesFoot[0] = p;
-	vDesFoot[0].tail(3) = pd;
-	aDesFoot[0].tail(3) = pdd;
+	pDesFoot[flightLeg] = p;
+	vDesFoot[flightLeg].tail(3) = pd;
+	aDesFoot[flightLeg].tail(3) = pdd;
 	
 	
-	leftFootSpline.eval(stateTime, p,pd, pdd);
+	stanceFootSpline.eval(stateTime, p,pd, pdd);
 	
-	pDesFoot[1] = p;
-	vDesFoot[1].tail(3) = pd;
-	aDesFoot[1].tail(3) = pdd;
+	pDesFoot[stanceLeg] = p;
+	vDesFoot[stanceLeg].tail(3) = pd;
+	aDesFoot[stanceLeg].tail(3) = pdd;
 	
 	//pDesFoot[0] = pFoot[0];
 	//pDesFoot[0](2) += .1;
@@ -751,7 +808,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				wHip  = .1;
 				
 				kpShould = 220;
-				wShould  = 10.0;
+				wShould  = 10.0/2.;
 				
 				kpElbow = 240;
 				wElbow  = 10;

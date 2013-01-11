@@ -452,7 +452,8 @@ void RunningStateMachine::Stance1()
 			int flightYSign = (flightLeg == 0 ? -1 : 1);
 			
 			//endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2);
-			endPos << touchDownLength*sin(touchDownAngle)*3./4., startPos(1), startPos(2)-.05;
+			//endPos << touchDownLength*sin(touchDownAngle)*3./4., startPos(1), startPos(2)-.15;
+			endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2)-.15;
 			endVel.setZero();
 			flightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
 			
@@ -537,6 +538,10 @@ void RunningStateMachine::Stance1()
 	kpCM = 150;
 	kdCM = 2*sqrt(kpCM);
 	kdAM = 25;
+	
+	Vector6F hLegs = CentMomMat.block(0,7,6,12) * qd.segment(7,12);
+	kComDes(1) = hLegs(1);
+	
 	
 	
 	VectorXF p(3), pd(3), pdd(3);
@@ -810,6 +815,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 			//Our task jacobain will be a desired pose + centroidal quantities
 			TaskJacobian.block(0,0,6,NJ+6) = CentMomMat;
 			
+			
 			// Compute Task Bias from RNEA Fw Kin
 			TaskBias.segment(0,6) = -cmBias;
 			
@@ -864,13 +870,13 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				kpHip = 120/3.;
 				wHip  = .1;
 				
-				kpShould = 220;
-				wShould  = 10.0/2.;
+				kpShould = 420;
+				wShould  = 10.0*3;
 				
 				kpElbow = 240;
 				wElbow  = 10;
 				
-				kpTorso = 120.;
+				kpTorso = 440.;
 				wTorso = 10.;
 				
 				{
@@ -933,10 +939,10 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					TaskWeight(taskRow+25) = wElbow;
 					
 					//if (state == FLOATING) {
-						OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
-						OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
-						OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
-						OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
+					//	OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
+					//	OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
+					//	OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
+					//	OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
 					//}
 					
 					/////////////////////////////////////////////////////////
@@ -946,7 +952,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				
 			}
 			
-			{
+			 {
 				Float angle, rate;
 				Vector3F relPos = pFoot[1] - pCom;
 				Vector3F relVel = vFoot[1].tail(3) - vCom;
@@ -966,7 +972,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				Vector3F angAx,omega, omegaDot,rateDes;
 				
 				R1 << 1,0,0,0,0,-1,0,1,0;
-				angAx << 0,M_PI/2 - angle+.1,0;
+				angAx << 0,M_PI/2 - angle-.2,0;
 				matrixExpOmegaCross(angAx, R2);
 				omega << 0, rate, 0;
 				
@@ -1001,12 +1007,12 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				
 				//cout << "la = " << angle << " lv " << rate << endl;
 				
-				angAx << 0,M_PI/2 - angle+.1,0;
+				angAx << 0,M_PI/2 - angle-.2,0;
 				matrixExpOmegaCross(angAx, R2);
 				omega << 0, rate, 0;
 				dR2 = cr3(omega)*R2;
 				
-				angAx<< .2,0,0;
+				angAx<< .3,0,0;
 				matrixExpOmegaCross(angAx, R3);
 				
 				RDesJoint[12] = R3*R2*R1;
@@ -1044,7 +1050,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					Float Kd = kdJoint[i];
 					if (i == 0) {
 						TaskWeight.segment(taskRow,3).setConstant(70);
-						TaskWeight.segment(taskRow,1).setConstant(70/10.);
+						TaskWeight.segment(taskRow,1).setConstant(70/4.);
 						//TaskWeight.segment(taskRow+1,1).setConstant(90);
 						TaskWeight.segment(taskRow+2,1).setConstant(70/5.);
 						

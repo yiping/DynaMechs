@@ -139,17 +139,17 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	
 	
 	// 3.5 m/s
-	touchDownAngle = 0.396459;
+	/*touchDownAngle = 0.396459;
 	touchDownLength = .98;
 	legSpringConstant = 12854.483189;
 	maxSLIPHeight = 0.923557;
 	forwardVelocity = 3.500000;
 	
 	stanceTime = .255;
-	flightTime = 0.1434;
+	flightTime = 0.1434;*/
 	
 	// 3.5 m/s fast cadence
-	/*touchDownAngle = 0.316856;
+	touchDownAngle = 0.316856;
 	touchDownLength = .98;
 	legSpringConstant = 20372.460409;
 	maxSLIPHeight = 0.966499;
@@ -157,7 +157,7 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	stanceTime = 0.180000;
 	flightTime = .17;
 	
-	
+	/*
 	// 4.4 m/s
 	touchDownAngle=	0.429390;
 	legSpringConstant = 	11994.503323;
@@ -166,9 +166,10 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	touchDownLength = 	1.050000;
 	stanceTime = 	0.205000;
 	flightTime = 	0.110800;
-	
+	*/
+	 
 	// 6 m/s
-	touchDownAngle=	0.320645;
+	/*touchDownAngle=	0.320645;
 	legSpringConstant = 	24445.777807;
 	forwardVelocity = 	4.400000;
 	maxSLIPHeight = 	0.975204;
@@ -231,7 +232,7 @@ void RunningStateMachine::Floating() {
 				if (dof == 6) {
 					Vector3F om;
 					//om << 0,M_PI/20,0;
-					om << 0,M_PI/10,0*0;
+					om << 0,M_PI/20,0*0;
 					matrixExpOmegaCross(om,RDesJoint[i]);
 					
 				}
@@ -280,12 +281,6 @@ void RunningStateMachine::Floating() {
 		kdFoot[1]=2*sqrt(50);
 		
 	}
-	
-	//R = [1 0 0;0 0 1;0 -1 0]';
-	//R2 = expm(cross([0 pi/2 0]));
-	//R3 = expm(cross([-.2 0 0]));
-	//quat = RtoQuat(R3*R2*R);
-	
 	
 	//OptimizationSchedule.segment(6,3).setConstant(-1);
 	OptimizationSchedule.head(6).setConstant(-1);
@@ -456,7 +451,8 @@ void RunningStateMachine::Stance1()
 			startVel = vFoot[flightLeg].tail(3) - vCom;
 			int flightYSign = (flightLeg == 0 ? -1 : 1);
 			
-			endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2);
+			//endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2);
+			endPos << touchDownLength*sin(touchDownAngle)*3./4., startPos(1), startPos(2)-.05;
 			endVel.setZero();
 			flightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
 			
@@ -533,7 +529,7 @@ void RunningStateMachine::Stance1()
 	}
 	OptimizationSchedule.segment(0,3).setConstant(4);
 	TaskWeight.segment(0,3).setConstant(200/10.);
-	TaskWeight.segment(2,1).setConstant(90.);
+	//TaskWeight.segment(2,1).setConstant(90.);
 	TaskWeight.segment(0,1).setConstant(200/10.);
 	
 	kpCM = 150;
@@ -932,12 +928,12 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					kdJoint[13] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+25) = wElbow;
 					
-					if (state == FLOATING) {
+					//if (state == FLOATING) {
 						OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
 						OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
 						OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
 						OptimizationSchedule.segment(taskRow+25,1).setConstant(1);
-					}
+					//}
 					
 					/////////////////////////////////////////////////////////
 				}
@@ -959,13 +955,14 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				else {
 					rate = 0;
 				}
-				
+				angle*=1.5;
+				rate*=1.5;
 				
 				Matrix3F R1, R2,dR2,ddR2, R3, RDot, Rddot;
 				Vector3F angAx,omega, omegaDot,rateDes;
 				
 				R1 << 1,0,0,0,0,-1,0,1,0;
-				angAx << 0,M_PI/2 - angle+.25,0;
+				angAx << 0,M_PI/2 - angle+.1,0;
 				matrixExpOmegaCross(angAx, R2);
 				omega << 0, rate, 0;
 				
@@ -995,10 +992,12 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				else {
 					rate = 0;
 				}
+				angle*=1.5;
+				rate*=1.5;
 				
 				//cout << "la = " << angle << " lv " << rate << endl;
 				
-				angAx << 0,M_PI/2 - angle+.25,0;
+				angAx << 0,M_PI/2 - angle+.1,0;
 				matrixExpOmegaCross(angAx, R2);
 				omega << 0, rate, 0;
 				dR2 = cr3(omega)*R2;
@@ -1041,8 +1040,8 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					Float Kd = kdJoint[i];
 					if (i == 0) {
 						TaskWeight.segment(taskRow,3).setConstant(70);
-						TaskWeight.segment(taskRow,1).setConstant(70/4.);
-						TaskWeight.segment(taskRow+1,1).setConstant(90);
+						TaskWeight.segment(taskRow,1).setConstant(70/10.);
+						//TaskWeight.segment(taskRow+1,1).setConstant(90);
 						TaskWeight.segment(taskRow+2,1).setConstant(70/5.);
 						
 						/*if (state == STANCE1) {

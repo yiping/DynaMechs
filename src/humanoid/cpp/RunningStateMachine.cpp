@@ -185,7 +185,7 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	forwardVelocity = 0;*/
 	
 	restWidth = .13;
-	stepWidth = .06;
+	stepWidth = .05;
 	vDesDisplay = forwardVelocity;
 	
 	FILE * fid = fopen("SlipData.txt","r");
@@ -231,7 +231,7 @@ void RunningStateMachine::Floating() {
 				if (dof == 6) {
 					Vector3F om;
 					//om << 0,M_PI/20,0;
-					om << 0,M_PI/20,0*0;
+					om << 0,M_PI/10,0*0;
 					matrixExpOmegaCross(om,RDesJoint[i]);
 					
 				}
@@ -252,6 +252,12 @@ void RunningStateMachine::Floating() {
 				}
 			}
 		}
+		
+		
+		
+		
+		
+		
 		
 		footServos[0] = COM_SERVO;
 		footServos[1] = COM_SERVO;
@@ -274,6 +280,11 @@ void RunningStateMachine::Floating() {
 		kdFoot[1]=2*sqrt(50);
 		
 	}
+	
+	//R = [1 0 0;0 0 1;0 -1 0]';
+	//R2 = expm(cross([0 pi/2 0]));
+	//R3 = expm(cross([-.2 0 0]));
+	//quat = RtoQuat(R3*R2*R);
 	
 	
 	//OptimizationSchedule.segment(6,3).setConstant(-1);
@@ -443,8 +454,9 @@ void RunningStateMachine::Stance1()
 			VectorXF startPos(3), endPos(3), startVel(3), endVel(3);
 			startPos = pFoot[flightLeg] - pCom;
 			startVel = vFoot[flightLeg].tail(3) - vCom;
+			int flightYSign = (flightLeg == 0 ? -1 : 1);
 			
-			endPos << touchDownLength*sin(touchDownAngle)*3./4., startPos(1), startPos(2)-.05;
+			endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2);
 			endVel.setZero();
 			flightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
 			
@@ -596,7 +608,7 @@ void RunningStateMachine::Flight1()
 	
 	if(transitionFlag) {
 		//bool foundVel = false;
-		int i=0;
+		/*int i=0;
 		while(1 == 1)
 		{
 			float Diff = SlipData[i][0]-vDesDisplay;
@@ -612,7 +624,7 @@ void RunningStateMachine::Flight1()
 		legSpringConstant = SlipData[i][3];
 		touchDownAngle = SlipData[i][4];
 		maxSLIPHeight = SlipData[i][5];
-		touchDownLength = SlipData[i][6];
+		touchDownLength = SlipData[i][6];*/
 		
 		
 		
@@ -920,7 +932,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					kdJoint[13] = 2*sqrt(kpElbow);
 					TaskWeight(taskRow+25) = wElbow;
 					
-					if (state == PRE_HOP || state == FLOATING) {
+					if (state == FLOATING) {
 						OptimizationSchedule.segment(taskRow+18,3).setConstant(1);
 						OptimizationSchedule.segment(taskRow+21,1).setConstant(1);
 						OptimizationSchedule.segment(taskRow+22,3).setConstant(1);
@@ -930,6 +942,77 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					/////////////////////////////////////////////////////////
 				}
 				
+				
+				
+			}
+			
+			{
+				Float angle, rate;
+				Vector3F relPos = pFoot[1] - pCom;
+				Vector3F relVel = vFoot[1].tail(3) - vCom;
+				relVel.setZero();
+				angle = atan(-relPos(0)/relPos(2));
+				
+				if(abs(relVel(2)) > 1e-4) {
+					rate = 1./(1+pow(-relPos(0)/relPos(2),2))*-relVel(0)/relVel(2);
+				}
+				else {
+					rate = 0;
+				}
+				
+				
+				Matrix3F R1, R2,dR2,ddR2, R3, RDot, Rddot;
+				Vector3F angAx,omega, omegaDot,rateDes;
+				
+				R1 << 1,0,0,0,0,-1,0,1,0;
+				angAx << 0,M_PI/2 - angle+.25,0;
+				matrixExpOmegaCross(angAx, R2);
+				omega << 0, rate, 0;
+				
+				dR2 = cr3(omega)*R2;
+				ddR2 = cr3(omegaDot)*R2 + cr3(omega)*dR2;
+				
+				angAx<< -.2,0,0;
+				matrixExpOmegaCross(angAx, R3);
+				
+				RDesJoint[10] = R3*R2*R1;
+				RDot = R3*dR2*R1;
+				Rddot = R3*ddR2*R1;
+				crossExtract(RDot*RDesJoint[10].transpose(),rateDes);
+				rateDesJoint[10] = rateDes;
+				accDesJoint[10].setZero(3);
+				//cout << "Ra = " << angle << " Rv " << rate << endl;
+				
+				
+				relPos = pFoot[0] - pCom;
+				relVel = vFoot[0].tail(3) - vCom;
+				relVel.setZero();
+				angle = atan(-relPos(0)/relPos(2));
+				
+				if(abs(relVel(2)) > 1e-4) {
+					rate = 1./(1+pow(-relPos(0)/relPos(2),2))*-relVel(0)/relVel(2);
+				}
+				else {
+					rate = 0;
+				}
+				
+				//cout << "la = " << angle << " lv " << rate << endl;
+				
+				angAx << 0,M_PI/2 - angle+.25,0;
+				matrixExpOmegaCross(angAx, R2);
+				omega << 0, rate, 0;
+				dR2 = cr3(omega)*R2;
+				
+				angAx<< .2,0,0;
+				matrixExpOmegaCross(angAx, R3);
+				
+				RDesJoint[12] = R3*R2*R1;
+				RDot = R3*dR2*R1;
+				
+				crossExtract(RDot*RDesJoint[12].transpose(),rateDes);
+				
+				rateDesJoint[12] = rateDes ;
+				accDesJoint[12].setZero(3) ;
 				
 				
 			}
@@ -958,7 +1041,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					Float Kd = kdJoint[i];
 					if (i == 0) {
 						TaskWeight.segment(taskRow,3).setConstant(70);
-						TaskWeight.segment(taskRow,1).setConstant(70/10.);
+						TaskWeight.segment(taskRow,1).setConstant(70/4.);
 						TaskWeight.segment(taskRow+1,1).setConstant(90);
 						TaskWeight.segment(taskRow+2,1).setConstant(70/5.);
 						
@@ -1017,7 +1100,10 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 						//cout << "Joint " << i << "e = " << eOmega.transpose() << " ve = " << ve.transpose() << endl;
 						
 						// Note: Velocity bias accel is omega cross omega
-						TaskBias.segment(taskRow+jointIndex,3) = (i_R_pi_mat*(Kp *eOmega) + Kd * (rateDesJoint[i].head(3) - omega));
+						Vector3F wDes = i_R_pi_mat*rateDesJoint[i].head(3);
+						Vector3F wdotDes = i_R_pi_mat*accDesJoint[i].head(3);
+						
+						TaskBias.segment(taskRow+jointIndex,3) = (i_R_pi_mat*(Kp *eOmega) + Kd * (wDes - omega) + wdotDes - omega.cross(wDes) );
 					}
 				}
 				jointIndexDm+=bodyi->link->getNumDOFs();

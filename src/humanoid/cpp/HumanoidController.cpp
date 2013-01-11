@@ -111,6 +111,7 @@ HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceContro
 			PointForceXforms[i][j].block(0,3,3,3) = cr3(pRel);
 		}
 		//cout << "Center = " << pFootCenter[i].transpose() << endl;
+		//pFootCenter[i][2]+=.06;
 	}
 	grfInfo.localContacts = 0;
 	

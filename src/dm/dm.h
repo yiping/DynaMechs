@@ -459,7 +459,7 @@ inline Matrix3F cr3(const Vector3F &v)
  \return the 3d vector that the product represents 
  \sa crm()
  */
-inline void crossExtract(Matrix3F &m, Vector3F &v)
+inline void crossExtract(const Matrix3F &m, Vector3F &v)
 {
 	v << m(2,1) , m(0,2) , m(1,0);
 	//return v;

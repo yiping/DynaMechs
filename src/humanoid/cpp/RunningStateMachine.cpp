@@ -768,7 +768,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	
 	
 	TaskWeight.segment(0,3).setConstant(200/10.);
-	TaskWeight.segment(0,1).setConstant(200/600.);
+	TaskWeight.segment(0,1).setConstant(200/200.);
 	
 	
 	

@@ -531,6 +531,8 @@ void RunningStateMachine::Stance1()
 	TaskWeight.segment(0,3).setConstant(200/10.);
 	//TaskWeight.segment(2,1).setConstant(90.);
 	TaskWeight.segment(0,1).setConstant(200/10.);
+	TaskWeight.segment(1,1).setConstant(200/50.);
+	
 	
 	kpCM = 150;
 	kdCM = 2*sqrt(kpCM);
@@ -763,12 +765,14 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	
 	TaskWeight.setOnes(6+NJ+6+12);
 	
-	TaskWeight.segment(0,3).setConstant(10/8.);
+	// These are set in the stance state
+	//TaskWeight.segment(0,3).setConstant(10/8.);
 	TaskWeight.segment(3,3).setConstant(100/4.);
 	
 	
-	TaskWeight.segment(0,3).setConstant(200/10.);
-	TaskWeight.segment(0,1).setConstant(200/200.);
+	/*TaskWeight.segment(0,3).setConstant(200/10.);
+	TaskWeight.segment(0,1).setConstant(200/50.);
+	TaskWeight.segment(1,1).setConstant(200/5.);*/
 	
 	
 	

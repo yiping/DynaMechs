@@ -242,26 +242,26 @@ function hop()
     fprintf(1,'%f\t',z0);
     fprintf(1,'\n');
     
-%     tic
-%         %% Hopping Animation
-% 	figure(2); clf; hold on;
-%     hOA = plot([z0(1) z0(3)],[foot0(1) foot0(2)],'r');
-%     hA = plot(z0(1),z0(3),'ro');
-%     hHist = plot(z0(1),z0(3),'r--');
-%     axis equal;
-%     axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
-%     set(hA,'markerfacecolor','r');
-%     startTime = cputime;
-%     for i = 1:1:length(ts)
-%         set(hOA,'ydata',[zs(i,3) foots(i,2)],'xdata',[zs(i,1) foots(i,1)]);
-%         set(hA,'ydata',zs(i,3),'xdata',zs(i,1));
-%         set(hHist,'ydata',zs(1:i,3),'xdata',zs(1:i,1));
-%         %while (cputime-startTime) < ts(i)
-%             pause(.00001);
-%         %end
-%     end
-%     toc
-%     ts(end)
+    tic
+        %% Hopping Animation
+	figure(2); clf; hold on;
+    hOA = plot([z0(1) z0(3)],[foot0(1) foot0(2)],'r');
+    hA = plot(z0(1),z0(3),'ro');
+    hHist = plot(z0(1),z0(3),'r--');
+    axis equal;
+    axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
+    set(hA,'markerfacecolor','r');
+    startTime = cputime;
+    for i = 1:1:length(ts)
+        set(hOA,'ydata',[zs(i,3) foots(i,2)],'xdata',[zs(i,1) foots(i,1)]);
+        set(hA,'ydata',zs(i,3),'xdata',zs(i,1));
+        set(hHist,'ydata',zs(1:i,3),'xdata',zs(1:i,1));
+        %while (cputime-startTime) < ts(i)
+            pause(.00001);
+        %end
+    end
+    toc
+    ts(end)
 
 
      
@@ -300,6 +300,9 @@ fprintf(1,'stanceTime = \t%f;\n',tStanceDes);
 fprintf(1,'flightTime = \t%f;\n',tFlightDes);
 
 
+params(1)
+params(2)
+params(3)
 
 
 

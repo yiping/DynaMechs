@@ -15,6 +15,9 @@
 RunningStateMachine::RunningStateMachine(dmArticulation * robot) 
 : HumanoidDataLogger(robot, NUM_RUN_STATES), ComTrajectory(3)
 {
+	//SlipModel s;
+	//s.optimize();
+	//exit(-1);
 	
 	stateFunctions.resize(numStates);
 	
@@ -439,13 +442,15 @@ void RunningStateMachine::PreHop()
 void RunningStateMachine::Stance1()
 {
 	static CubicSplineTrajectory flightFootSpline(3);
-	static CubicSplineTrajectory verticalSpline(3);
+	static CubicSplineTrajectory horizontalSpline(3);
 	
 	static Float initHeight = 0;
+	static bool firstHalf = true;
 	if (transitionFlag) {
 		
 		//Initilize right foot spline
 		{
+			firstHalf = true;
 			VectorXF startPos(3), endPos(3), startVel(3), endVel(3);
 			startPos = pFoot[flightLeg] - pCom;
 			startVel = vFoot[flightLeg].tail(3) - vCom;
@@ -457,6 +462,11 @@ void RunningStateMachine::Stance1()
 			endVel.setZero();
 			flightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
 			
+			startPos << 0,0,0;
+			endPos   << 0,.5*(restWidth-stepWidth) * flightYSign,0;
+			startVel << 0,0,0;
+			endVel   << 0,0,0;
+			horizontalSpline.init(startPos, startVel, endPos, endVel, stanceTime/2.);
 		}
 		
 		// Initialize SLIP and LIP models
@@ -528,6 +538,21 @@ void RunningStateMachine::Stance1()
 		if(SLIP.pos(1) >= initHeight)
 			break;
 	}
+	if (firstHalf && stateTime > stanceTime/2.) {
+		VectorXF endPos(3), endVel(3);
+		endPos.setZero();
+		endVel.setZero();
+		horizontalSpline.reInit(stateTime, endPos, endVel, stanceTime/2.);
+		firstHalf = false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	OptimizationSchedule.segment(0,3).setConstant(4);
 	TaskWeight.segment(0,3).setConstant(200/10.);
 	//TaskWeight.segment(2,1).setConstant(90.);
@@ -545,7 +570,14 @@ void RunningStateMachine::Stance1()
 	
 	
 	VectorXF p(3), pd(3), pdd(3);
-	
+	VectorXF ph(3), pdh(3), pddh(3);
+	if (firstHalf) {
+		horizontalSpline.eval(stateTime, ph,pdh,pddh);
+	}
+	else {
+		horizontalSpline.eval(stateTime-stanceTime/2., ph,pdh, pddh);
+	}
+
 	
 	//kpCM = 15;
 	//kdCM = 25;
@@ -558,9 +590,9 @@ void RunningStateMachine::Stance1()
 	kdFoot[flightLeg]=2*sqrt(50);
 	
 	flightFootSpline.eval(stateTime, p,pd, pdd);
-	pDesFoot[flightLeg] = p;
-	vDesFoot[flightLeg].tail(3) = pd;
-	aDesFoot[flightLeg].tail(3) = pdd;
+	pDesFoot[flightLeg] = p+ph;
+	vDesFoot[flightLeg].tail(3) = pd+pdh;
+	aDesFoot[flightLeg].tail(3) = pdd+pddh;
 	
 	kpFoot[stanceLeg] = 0;
 	kdFoot[stanceLeg] = 0;
@@ -641,7 +673,7 @@ void RunningStateMachine::Flight1()
 		stanceFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
 		
 		startPos = pFoot[flightLeg] - pCom;
-		endPos << -touchDownLength*sin(touchDownAngle), restWidth * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
+		endPos << -touchDownLength*sin(touchDownAngle), stepWidth * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
 		startVel.setZero();
 		endVel.setZero();
 		flightFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
@@ -960,7 +992,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				angle = atan(-relPos(0)/relPos(2));
 				
 				if(abs(relVel(2)) > 1e-4) {
-					rate = 1./(1+pow(-relPos(0)/relPos(2),2))*-relVel(0)/relVel(2);
+					rate = (-relVel(0)*relPos(2) + relVel(2)*relPos(0))/(pow(relPos(0),2)+pow(relPos(2),2));
 				}
 				else {
 					rate = 0;
@@ -974,7 +1006,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				R1 << 1,0,0,0,0,-1,0,1,0;
 				angAx << 0,M_PI/2 - angle-.2,0;
 				matrixExpOmegaCross(angAx, R2);
-				omega << 0, rate, 0;
+				omega << 0, -rate, 0;
 				
 				dR2 = cr3(omega)*R2;
 				ddR2 = cr3(omegaDot)*R2 + cr3(omega)*dR2;
@@ -997,7 +1029,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				angle = atan(-relPos(0)/relPos(2));
 				
 				if(abs(relVel(2)) > 1e-4) {
-					rate = 1./(1+pow(-relPos(0)/relPos(2),2))*-relVel(0)/relVel(2);
+					rate = (-relVel(0)*relPos(2) + relVel(2)*relPos(0))/(pow(relPos(0),2)+pow(relPos(2),2));
 				}
 				else {
 					rate = 0;
@@ -1009,7 +1041,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				
 				angAx << 0,M_PI/2 - angle-.2,0;
 				matrixExpOmegaCross(angAx, R2);
-				omega << 0, rate, 0;
+				omega << 0, -rate, 0;
 				dR2 = cr3(omega)*R2;
 				
 				angAx<< .3,0,0;

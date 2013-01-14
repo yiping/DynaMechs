@@ -1,5 +1,5 @@
 function hop()
-    g=9.8;    m=72.5748; L0=1.0;
+    g=9.8;    m=72.5748; L0=.97;
     k=16*72*10*21.5;
     
     vx = 4.4;
@@ -16,8 +16,9 @@ function hop()
     %tFlightDes = 0.2633/.45*.55;
     
     % for 3.5 m/s
-    %tStanceDes=.18;
-    %tFlightDes=.16;
+    tStanceDes=.18;
+    tFlightDes=.16;
+    vx = 3.5;
     
     % for 2.6 m/s
     %tStanceDes=.255;
@@ -30,6 +31,7 @@ function hop()
     % for 6.0 m/s
     %tStanceDes=0.1463;
     %tFlightDes=0.1463;
+    %vx = 6.0;
     
     %tStanceDes = 0.256307061;
     %tFlightDes = 0.097823578;
@@ -52,10 +54,10 @@ function hop()
     %tFlightDes = 0.142858747;
     %vx = 5;
     
-    tStanceDes = 0.155920276;
-    tFlightDes = 0.141643052;
+    %tStanceDes = 0.155920276;
+    %tFlightDes = 0.141643052;
     
-    vx = 5.5;
+    %vx = 5.5;
     
     figure(1)
     clf;

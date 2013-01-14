@@ -83,6 +83,7 @@ private:
 	Float forwardVelocity;
 	Float stepWidth;
 	Float restWidth;
+	Float SwayAmplitude, SwayStart;
 	
 	vector<vector<Float> > SlipData;
 	
@@ -95,8 +96,10 @@ private:
 	CubicSplineTrajectory ComTrajectory;
 	Float kpCM, kdCM, kdAM;
 	
+	
 	SlipModel SLIP;
 	LipModel LIP;
+	int stepNum;
 	
 	int stanceLeg, flightLeg;
 };

@@ -287,7 +287,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 395}, {334, 606}}</string>
+							<string>{{0, 395}, {334, 956}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -299,14 +299,14 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {351, 624}}</string>
+						<string>{{0, 0}, {351, 974}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
 							<real>334</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>0 113 1280 665 0 0 1280 778 </string>
+						<string>1288 57 1247 1015 1280 0 1920 1080 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -336,15 +336,15 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>193B32BA16A356D70040EB1D</string>
+										<string>193B331D16A385BD0040EB1D</string>
 										<key>history</key>
 										<array>
 											<string>19F3CA3A16A084E3007004E6</string>
-											<string>19F3CA7416A0A992007004E6</string>
 											<string>193B31CE16A2ADE50040EB1D</string>
 											<string>193B32B716A356D70040EB1D</string>
 											<string>193B32B816A356D70040EB1D</string>
-											<string>193B32B916A356D70040EB1D</string>
+											<string>193B330D16A383A70040EB1D</string>
+											<string>193B330E16A383A70040EB1D</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -356,14 +356,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {924, 439}}</string>
+								<string>{{0, 0}, {891, 789}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 113 1280 665 0 0 1280 778 </string>
+								<string>1288 57 1247 1015 1280 0 1920 1080 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>439pt</string>
+							<string>789pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -376,9 +376,9 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 444}, {924, 180}}</string>
+								<string>{{0, 794}, {891, 180}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 113 1280 665 0 0 1280 778 </string>
+								<string>1288 57 1247 1015 1280 0 1920 1080 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -387,7 +387,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>924pt</string>
+					<string>891pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -542,16 +542,16 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>193B32BB16A356D70040EB1D</string>
+		<string>193B331E16A385BD0040EB1D</string>
 		<string>193B317C16A2A2590040EB1D</string>
 		<string>193B317D16A2A2590040EB1D</string>
 		<string>1925863714D2E86400778EA7</string>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>1CD10A99069EF8BA00B06720</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>0 113 1280 665 0 0 1280 778 </string>
+	<string>1288 57 1247 1015 1280 0 1920 1080 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

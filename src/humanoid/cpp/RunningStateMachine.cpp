@@ -15,6 +15,7 @@
 RunningStateMachine::RunningStateMachine(dmArticulation * robot) 
 : HumanoidDataLogger(robot, NUM_RUN_STATES), ComTrajectory(3)
 {
+	stepNum = 0;
 	//SlipModel s;
 	//s.optimize();
 	//exit(-1);
@@ -152,33 +153,64 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	flightTime = 0.1434;*/
 	
 	// 3.5 m/s fast cadence
-	touchDownAngle = 0.316856;
+	/*touchDownAngle = 0.316856;
 	touchDownLength = .98;
 	legSpringConstant = 20372.460409;
 	maxSLIPHeight = 0.966499;
 	forwardVelocity = 3.5;
 	stanceTime = 0.180000;
 	flightTime = .17;
+	 SwayAmplitude = .01;
+	 SwayStart = .0148;
+	*/
 	
-	/*
+	
+	// 3.5 m/s test 3
+	touchDownAngle=	0.320423;
+	legSpringConstant = 	20207.700395;
+	forwardVelocity = 	3.500000;
+	maxSLIPHeight = 	0.951989;
+	touchDownLength = 	0.970000;
+	stanceTime = 	0.180000;
+	flightTime = 	0.160000;
+	SwayAmplitude = .01;
+	SwayStart = .0148;
+	
+	
 	// 4.4 m/s
-	touchDownAngle=	0.429390;
+	/*touchDownAngle=	0.429390;
 	legSpringConstant = 	11994.503323;
 	forwardVelocity = 	4.400000;
 	maxSLIPHeight = 	0.969610;
 	touchDownLength = 	1.050000;
 	stanceTime = 	0.205000;
-	flightTime = 	0.110800;
-	*/
-	 
+	flightTime = 	0.110800;*/
+	
+	// 5.0 m/s
+	/*touchDownAngle=	0.436423;
+	legSpringConstant = 	15065.438410;
+	forwardVelocity = 	5.000000;
+	maxSLIPHeight = 	0.904073;
+	touchDownLength = 	0.970000;
+	stanceTime = 	0.168595;
+	flightTime = 	0.142859;
+	SwayAmplitude = .005;
+	SwayStart = .007418;*/
+	
+	
+	
+	
 	// 6 m/s
 	/*touchDownAngle=	0.320645;
 	legSpringConstant = 	24445.777807;
-	forwardVelocity = 	4.400000;
+	forwardVelocity = 	6.000000;
 	maxSLIPHeight = 	0.975204;
 	touchDownLength = 	1.000000;
 	stanceTime = 	0.146300;
-	flightTime = 	0.146300;*/
+	flightTime = 	0.146300;
+	SwayAmplitude = .005;
+	SwayStart = .007418;*/
+	
 	
 	
 	
@@ -189,7 +221,11 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	forwardVelocity = 0;*/
 	
 	restWidth = .13;
-	stepWidth = .05;
+	stepWidth = .08;
+	//SwayStart = SwayAmplitude*pi/tStance;
+	
+
+	
 	vDesDisplay = forwardVelocity;
 	
 	FILE * fid = fopen("SlipData.txt","r");
@@ -463,7 +499,7 @@ void RunningStateMachine::Stance1()
 			flightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
 			
 			startPos << 0,0,0;
-			endPos   << 0,.5*(restWidth-stepWidth) * flightYSign,0;
+			endPos   << 0,.5*(restWidth-stepWidth) * flightYSign*0,0;
 			startVel << 0,0,0;
 			endVel   << 0,0,0;
 			horizontalSpline.init(startPos, startVel, endPos, endVel, stanceTime/2.);
@@ -528,9 +564,22 @@ void RunningStateMachine::Stance1()
 	SLIP.dynamics();
 	LIP.dynamics();
 	
-	pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
-	vComDes << SLIP.vel(0), LIP.vel(1), SLIP.vel(1);
-	aComDes << SLIP.acc(0), LIP.acc(1), SLIP.acc(1);
+	int stanceYSign = (stanceLeg == 0 ? -1 : 1);
+	
+	Float latPos = (SwayAmplitude*sin(M_PI*stateTime/stanceTime)+SwayStart)*stanceYSign;
+	Float latVel = (SwayAmplitude*M_PI*cos(M_PI*stateTime/stanceTime))*stanceYSign/stanceTime;
+	Float latAcc = (-SwayAmplitude*pow(M_PI,2)*sin(M_PI*stateTime/stanceTime))*stanceYSign/pow(stanceTime,2);
+	
+	
+	
+	pComDes << SLIP.pos(0), 2+latPos, SLIP.pos(1);
+	vComDes << SLIP.vel(0), latVel, SLIP.vel(1);
+	aComDes << SLIP.acc(0), latAcc, SLIP.acc(1);
+	
+	
+	//pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
+	//vComDes << SLIP.vel(0), LIP.vel(1), SLIP.vel(1);
+	//aComDes << SLIP.acc(0), LIP.acc(1), SLIP.acc(1);
 	
 	for (int i=0; i<100; i++) {
 		SLIP.integrate(simThread->cdt/100.);
@@ -643,7 +692,26 @@ void RunningStateMachine::Flight1()
 	
 	if(transitionFlag) {
 		//bool foundVel = false;
-		/*int i=0;
+		stepNum ++;
+		if (stepNum == 6) {
+			vDesDisplay = 4.0;
+		}
+		
+		if (stepNum == 9) {
+			vDesDisplay = 3.75;
+		}
+		
+		if (stepNum == 12) {
+			vDesDisplay = 4.25;
+		}
+		
+		if (stepNum == 15) {
+			vDesDisplay = 4.0;
+		}
+		if (stepNum == 18) {
+			vDesDisplay = 4.5;
+		}
+		int i=0;
 		while(1 == 1)
 		{
 			float Diff = SlipData[i][0]-vDesDisplay;
@@ -659,7 +727,7 @@ void RunningStateMachine::Flight1()
 		legSpringConstant = SlipData[i][3];
 		touchDownAngle = SlipData[i][4];
 		maxSLIPHeight = SlipData[i][5];
-		touchDownLength = SlipData[i][6];*/
+		touchDownLength = SlipData[i][6];
 		
 		
 		

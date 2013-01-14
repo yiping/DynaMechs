@@ -114,6 +114,9 @@ private:
 	Float prevFlightTime, prevStanceTime;
 	Float prevForwardVelocity;
 	
+	bool transitionController;
+	bool velocityTest;
+	
 };
 
 

@@ -31,6 +31,8 @@ public:
 		CHECKBOX_ShowTraces,
 		CHECKBOX_ShowSkeleton,
 		CHECKBOX_SlowMotion,
+		CHECKBOX_VelocityTest,
+		CHECKBOX_TransitionController,
 		BUTTON_SaveData,
 		MENU_Control_Step,
 		MENU_Display_Freq,
@@ -62,10 +64,11 @@ public:
 	void OnSlowMotion(wxCommandEvent &event);
 	
 	
-	wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM, *showSkeleton;
+	wxCheckBox * showCoM, * showGRF, * showNetForceAtGround, * showNetForceAtCoM, *showSkeleton,*velocityTest, *transitionController;
 	wxCheckBox * showTraces, *logDataCheckBox,*slowMotion;
 	wxStaticText * realTimeRatioDisplay, *renderHzDisplay;
 	wxStaticText * desiredSpeedDisplay, *actualSpeedDisplay;
+	
 	
 	
 	BasicGLPane * glPane;

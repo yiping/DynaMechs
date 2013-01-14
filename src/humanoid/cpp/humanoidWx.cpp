@@ -280,7 +280,9 @@ void BasicGLPane::userGraphics()
 			
 			curr->resize(NumTraces);
 			
-			curr->at(0) = humanoid->pCom;
+			curr->at(0)(0) = ComPos[0];
+			curr->at(0)(1) = ComPos[1];
+			curr->at(0)(2) = ComPos[2];
 			curr->at(1) = humanoid->pFoot[0];
 			curr->at(2) = humanoid->pFoot[1];
 			
@@ -413,11 +415,23 @@ void BasicGLPane::userGraphics()
 			glTranslatef(ComPos[0],ComPos[1],ComPos[2]); 
 			gluSphere(quadratic,.03f,32,32);
 			glPopMatrix();
+			
+			Vector3F vDraw = humanoid->vCom/6.;
+			glColor4f(1, 0, 0, 1.0);
+			drawArrow(humanoid->pCom, vDraw, .001, .02, .05);
+			
+			
+			vDraw << ((RunningStateMachine *) humanoid)->vDesDisplay/6.,0,0;
+			
+			glColor4f(0, 0, 1, 1.0);
+			drawArrow(humanoid->pCom, vDraw, .001, .02, .05);
+			
+			
 			//glTranslatef(-ComPos[0],-ComPos[1],-ComPos[2]);
 		}
 		
 		
-		const Float forceScale = 250;
+		const Float forceScale = 250*3;
 		glColor4f(0.0, 0.0, 0.0,0.75);
 		
 		/*humanoid->grfInfo.localContacts = 2;
@@ -439,6 +453,7 @@ void BasicGLPane::userGraphics()
 				Vector3F grf = humanoid->grfInfo.fCoPs[i]/forceScale;
 				
 				drawArrow(footPoint, grf, .005, .01, .03);
+				
 				
 			}
 		}

@@ -1,5 +1,6 @@
 clear all
 close all
+return
 setDataDir;
 fid = fopen(strcat(dataDir,'/recentData.dat'));
 filename = fscanf(fid,'%s');

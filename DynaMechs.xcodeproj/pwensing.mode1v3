@@ -197,7 +197,48 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array/>
+	<array>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>193B334716A3904C0040EB1D</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>TaskSpaceControllerB.cpp</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>193B334816A3904C0040EB1D</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>TaskSpaceControllerB.cpp</string>
+						<key>_historyCapacity</key>
+						<integer>10</integer>
+						<key>bookmark</key>
+						<string>193B335316A3919E0040EB1D</string>
+						<key>history</key>
+						<array>
+							<string>193B333916A38F730040EB1D</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {1142, 624}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>15 113 1142 665 0 0 1280 778 </string>
+			</dict>
+		</dict>
+	</array>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -336,15 +377,19 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>193B331D16A385BD0040EB1D</string>
+										<string>193B335216A3919E0040EB1D</string>
 										<key>history</key>
 										<array>
-											<string>19F3CA3A16A084E3007004E6</string>
 											<string>193B31CE16A2ADE50040EB1D</string>
 											<string>193B32B716A356D70040EB1D</string>
 											<string>193B32B816A356D70040EB1D</string>
-											<string>193B330D16A383A70040EB1D</string>
-											<string>193B330E16A383A70040EB1D</string>
+											<string>193B333F16A3904C0040EB1D</string>
+											<string>193B334016A3904C0040EB1D</string>
+											<string>193B334116A3904C0040EB1D</string>
+											<string>193B334216A3904C0040EB1D</string>
+											<string>193B334316A3904C0040EB1D</string>
+											<string>193B334416A3904C0040EB1D</string>
+											<string>193B334516A3904C0040EB1D</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -542,12 +587,13 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>193B331E16A385BD0040EB1D</string>
+		<string>193B335416A3919E0040EB1D</string>
 		<string>193B317C16A2A2590040EB1D</string>
 		<string>193B317D16A2A2590040EB1D</string>
 		<string>1925863714D2E86400778EA7</string>
 		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
+		<string>193B334716A3904C0040EB1D</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>

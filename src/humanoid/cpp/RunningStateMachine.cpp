@@ -576,6 +576,8 @@ void RunningStateMachine::Stance1()
 	vComDes << SLIP.vel(0), latVel, SLIP.vel(1);
 	aComDes << SLIP.acc(0), latAcc, SLIP.acc(1);
 	
+	minfz =totalMass *(SLIP.acc(1)+9.8)*.07;
+	UpdateVariableBounds();
 	
 	//pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
 	//vComDes << SLIP.vel(0), LIP.vel(1), SLIP.vel(1);

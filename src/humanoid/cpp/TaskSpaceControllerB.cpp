@@ -47,7 +47,7 @@ static void MSKAPI printstr(void *handle,
 
 
 TaskSpaceControllerB::TaskSpaceControllerB(dmArticulation * art) : TaskSpaceController(art) {
-	
+	minfz = -MSK_INFINITY;
 	SupportJacobians.resize(NS);
 	
 	// Initialize Support Jacobians
@@ -207,11 +207,11 @@ void TaskSpaceControllerB::UpdateVariableBounds() {
 		bux[i] = +MSK_INFINITY;
 	}
 	
-	/*for (i=fStart+2; i<=fEnd; i+=3) {
+	for (i=fStart+2; i<=fEnd; i+=3) {
 		bkx[i] = MSK_BK_LO;
-		blx[i] = 0;
+		blx[i] = minfz;
 		bux[i] = +MSK_INFINITY;
-	}*/
+	}
 	
 	
 	//Initialize Bounds for Error Variables

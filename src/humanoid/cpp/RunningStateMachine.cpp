@@ -479,10 +479,16 @@ void RunningStateMachine::Stance1()
 {
 	static CubicSplineTrajectory flightFootSpline(3);
 	static CubicSplineTrajectory horizontalSpline(3);
+	static CubicSpline blendSpline;
 	
 	static Float initHeight = 0;
 	static bool firstHalf = true;
 	if (transitionFlag) {
+		if (transitionStep) {
+			Float blendTime = (stanceTime < prevStanceTime ? stanceTime : prevStanceTime);
+			blendSpline.init(0, 0, 1, 0, blendTime);
+		}
+		
 		
 		//Initilize right foot spline
 		{
@@ -541,6 +547,25 @@ void RunningStateMachine::Stance1()
 			SLIP.mass = totalMass;
 			SLIP.springConst = legSpringConstant;
 			
+			
+			if (transitionStep) {
+				prevSLIP.mass = totalMass;
+				prevSLIP.springConst = prevLegSpringConstant;
+				prevSLIP.anchor = SLIP.anchor;
+				
+				prevSLIP.pos(0) = SLIP.anchor(0) - prevTouchDownLength*sin(prevTouchDownAngle);
+				prevSLIP.pos(1) = SLIP.anchor(1) + prevTouchDownLength*cos(prevTouchDownAngle);
+				
+				prevSLIP.vel(0) = prevForwardVelocity;
+				prevSLIP.vel(1) = -sqrt(2*9.8*(prevMaxSLIPHeight-prevTouchDownLength*cos(prevTouchDownAngle)));
+				
+				Vector2F relPos = prevSLIP.pos - prevSLIP.anchor;
+				
+				prevSLIP.restLength = relPos.norm();
+				
+				
+			}
+			
 			//SLIP.vel(0) = vCom(0);
 			//SLIP.vel(1) = vCom(2);
 			
@@ -561,6 +586,7 @@ void RunningStateMachine::Stance1()
 		transitionFlag = false;
 	}
 	
+	
 	SLIP.dynamics();
 	LIP.dynamics();
 	
@@ -571,12 +597,45 @@ void RunningStateMachine::Stance1()
 	Float latAcc = (-SwayAmplitude*pow(M_PI,2)*sin(M_PI*stateTime/stanceTime))*stanceYSign/pow(stanceTime,2);
 	
 	
+	//if (!transitionStep) {
+		pComDes << SLIP.pos(0), 2+latPos, SLIP.pos(1);
+		vComDes << SLIP.vel(0), latVel, SLIP.vel(1);
+		aComDes << SLIP.acc(0), latAcc, SLIP.acc(1);
+	/*}
+	else {
+		prevSLIP.dynamics();
+		
+		Float a, ad, add;
+		blendSpline.eval(stateTime, a, ad,add);
+		
+		Vector2F pos, vel, acc;
+		pos = a*SLIP.pos + (1-a)*prevSLIP.pos;
+		vel = a*SLIP.vel + (1-a)*prevSLIP.vel;// + ad*(SLIP.pos-prevSLIP.pos);
+		acc = SLIP.acc;// + 2*ad*(SLIP.vel-prevSLIP.vel) + add*(SLIP.pos-prevSLIP.pos);
+		
+		pComDes << pos(0), 2+latPos, pos(1);
+		vComDes << vel(0), latVel, vel(1);
+		aComDes << acc(0), latAcc, acc(1);
+		
+		
+		cout << "Spos " << SLIP.pos.transpose() << endl;
+		cout << "Ppos " << prevSLIP.pos.transpose() << endl;
+		
+		
+		
+		//pComDes << SLIP.pos(0), 2+latPos, SLIP.pos(1);
+		//vComDes << SLIP.vel(0), latVel, SLIP.vel(1);
+		//aComDes << SLIP.acc(0), latAcc, SLIP.acc(1);
+		
+		
+		
+	}*/
+
 	
-	pComDes << SLIP.pos(0), 2+latPos, SLIP.pos(1);
-	vComDes << SLIP.vel(0), latVel, SLIP.vel(1);
-	aComDes << SLIP.acc(0), latAcc, SLIP.acc(1);
 	
-	minfz =totalMass *(SLIP.acc(1)+9.8)*.07;
+	
+	
+	minfz =totalMass *(aComDes(2)+9.8)*.01;
 	UpdateVariableBounds();
 	
 	//pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
@@ -586,6 +645,9 @@ void RunningStateMachine::Stance1()
 	for (int i=0; i<100; i++) {
 		SLIP.integrate(simThread->cdt/100.);
 		LIP.integrate(simThread->cdt/100.);
+		if (transitionStep) {
+			prevSLIP.integrate(simThread->cdt/100.);
+		}
 		if(SLIP.pos(1) >= initHeight)
 			break;
 	}
@@ -691,7 +753,7 @@ void RunningStateMachine::Flight1()
 	int flightYSign = (flightLeg == 0 ? -1 : 1);
 	int stanceYSign = (stanceLeg == 0 ? -1 : 1);
 	
-	
+	static Float prevvDes = 0;
 	if(transitionFlag) {
 		//bool foundVel = false;
 		stepNum ++;
@@ -713,6 +775,27 @@ void RunningStateMachine::Flight1()
 		if (stepNum == 18) {
 			vDesDisplay = 4.5;
 		}
+		
+		
+		if (vDesDisplay != prevvDes && stepNum > 1) {
+			transitionStep = true;
+			transitionStep = true;
+			prevForwardVelocity = forwardVelocity;
+			prevStanceTime = stanceTime;
+			prevFlightTime = flightTime;
+			prevLegSpringConstant = legSpringConstant;
+			prevTouchDownAngle = touchDownAngle;
+			prevMaxSLIPHeight = maxSLIPHeight;
+			prevTouchDownLength = touchDownLength;
+		}
+		else {
+			transitionStep = false;
+		}
+
+		
+		
+		
+		
 		int i=0;
 		while(1 == 1)
 		{
@@ -722,7 +805,7 @@ void RunningStateMachine::Flight1()
 			}
 			i++;
 		}
-
+		prevvDes = vDesDisplay;
 		forwardVelocity = SlipData[i][0];
 		stanceTime = SlipData[i][1];
 		flightTime = SlipData[i][2];
@@ -973,10 +1056,10 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				wHip  = .1;
 				
 				kpShould = 420;
-				wShould  = 10.0*3;
+				wShould  = 10.0*2.6;
 				
 				kpElbow = 240;
-				wElbow  = 10;
+				wElbow  = 10*2;
 				
 				kpTorso = 440.;
 				wTorso = 10.;
@@ -1114,7 +1197,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				omega << 0, -rate, 0;
 				dR2 = cr3(omega)*R2;
 				
-				angAx<< .3,0,0;
+				angAx<< .2,0,0;
 				matrixExpOmegaCross(angAx, R3);
 				
 				RDesJoint[12] = R3*R2*R1;

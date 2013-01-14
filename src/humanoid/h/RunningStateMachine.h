@@ -97,11 +97,23 @@ private:
 	Float kpCM, kdCM, kdAM;
 	
 	
-	SlipModel SLIP;
+	SlipModel SLIP, prevSLIP;
+	bool transitionStep;
+	
 	LipModel LIP;
 	int stepNum;
 	
 	int stanceLeg, flightLeg;
+	
+	
+	//
+	Float prevTouchDownLength;
+	Float prevTouchDownAngle;
+	Float prevLegSpringConstant;
+	Float prevMaxSLIPHeight;
+	Float prevFlightTime, prevStanceTime;
+	Float prevForwardVelocity;
+	
 };
 
 

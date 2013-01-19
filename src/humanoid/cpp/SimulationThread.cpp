@@ -52,7 +52,11 @@ void *SimulationThread::Entry()
 			//HumanoidControl(ci); 
 			//cout << ci.totalTime << "\t" << ci.calcTime << "\t" << ci.setupTime << "\t" << ci.optimTime << "\t" << ci.iter << endl;
 			
-			Float slowFactor = 2;
+			Float slowFactor = 10;
+			if (sim_time < 3) {
+				slowFactor = 1;
+			}
+			
 			if (frame->slowMotion->IsChecked()) {
 				slowFactor = pow(10,frame->slowMoRatio->getValue());
 			}

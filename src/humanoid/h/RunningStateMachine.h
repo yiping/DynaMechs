@@ -101,7 +101,6 @@ private:
 	bool transitionStep;
 	
 	LipModel LIP;
-	int stepNum;
 	
 	int stanceLeg, flightLeg;
 	

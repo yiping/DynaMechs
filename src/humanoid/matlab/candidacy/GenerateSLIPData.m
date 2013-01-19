@@ -113,20 +113,20 @@ function hop()
     end
     function output = periodResidual(params)
         [t z foot tf zf en loTime] = simulatePeriod(0,params);
-        output = [0 0 0 0];
+        output = [0 0 0];
         if length(tf)==0
             output(1) = vx - z(end,2);
-            output(2) = params(2) - z(end,4);
-            output(3) = loTime - tStanceDes;
-            output(4) = (t(end)-loTime) - tFlightDes;
+            %output(2) = params(2) - z(end,4);
+            output(2) = loTime - tStanceDes;
+            output(3) = (t(end)-loTime) - tFlightDes;
         else
             output(1) = vx - z(end,2);
-            output(2) = params(2) - z(end,4);
+            %output(2) = params(2) - z(end,4);
             
-            output(3) = loTime - tStanceDes;
+            output(2) = loTime - tStanceDes;
             
             
-            output(4) = (tf-loTime) - tFlightDes;
+            output(3) = (tf-loTime) - tFlightDes;
         end
     end
     
@@ -134,7 +134,7 @@ function hop()
     fid = fopen('SlipData.txt','w');
    
     paramsInitial = [.3 -1.2250 12000];
-    for vx = 3:.05:5.5
+    for vx = 3:.25:5.5
         
         tStanceDes =10^-0.2*vx^-0.82;
         cad = 2.551*vx*vx-8.8*vx+172.87;

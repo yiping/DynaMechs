@@ -101,6 +101,11 @@ for i=1:N
    end
 end
 
+%hipLink.length+shankLink.length +footLink.depth
+
+%footLink
+
+return
 
 
 fid = fopen('../config/humanoid_box.dm','w');

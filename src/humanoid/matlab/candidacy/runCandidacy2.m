@@ -5,7 +5,7 @@ function hop()
     vx = 4.4;
     
     N = 1000;      % Number of Samples
-    tSim = 10;     % Max Sim time
+    tSim = 2;     % Max Sim time
     
     tdPos = [];
     tdAng = pi/6;
@@ -20,9 +20,15 @@ function hop()
     tFlightDes=.16;
     vx = 3.5;
     
+    %tStanceDes = 0.2409;
+    %tFlightDes = 0.1389;
+    
     % for 2.6 m/s
     %tStanceDes=.255;
     %tFlightDes=.255/.64*(1-.64);
+    %vx = 2.6;
+    
+    
     
     % for 4.4 m/s
     %tStanceDes=.205;
@@ -131,7 +137,26 @@ function hop()
         en = m*g*z(:,3) + 1/2 * k * (sqrt(sum(leg.^2,2))-L0).^2 + 1/2*m*sum(vel.^2,2);
         foot = ones(length(z(:,1)),1)*tdPos;
         
+        
+        
+        subplot(211)
+        hold on
         plot(z(:,1),z(:,3),'r');
+        
+        plot([z(1,1),tdPos(1)],[z(1,3) tdPos(2)],'k--');
+        plot([z(end,1),tdPos(1)],[z(end,3) tdPos(2)],'k--');
+        
+        subplot(212)
+        hold on
+        plot(t,1/2*m*sum(vel.^2,2),'r');
+        plot(t,m*g*z(:,3),'g-.');
+        plot(t,1/2 * k * (sqrt(sum(leg.^2,2))-L0).^2,'b--');
+        
+        %subplot(313);
+        %hold on
+        %plot(t,z(:,4),'r');
+        
+        
         %plot(z(:,1),sqrt(L0^2-(z(:,1)-tdPos(1)).^2),'k--')
         
         z_out = z;
@@ -151,7 +176,19 @@ function hop()
         en2 = m*g*z(:,3) + 1/2*m*(z(:,2).^2 + z(:,4).^2);
         en = [en ; en2];
         
-        plot(z(:,1),z(:,3),'b');
+        subplot(211)
+        hold on
+        plot(z(:,1),z(:,3),'b-.');
+        %plot([z(1,1) z(end,1)],[L0*cos(tdAng) L0*cos(tdAng)],'k--')
+
+        subplot(212)
+        hold on
+        
+        plot(t,1/2*m*sum(vel.^2,2),'r');
+        plot(t,m*g*z(:,3),'g-.');
+        plot(t,0*t,'b--');
+        
+        
         %plot([z(1,1) z(end,1)],[L0*cos(tdAng) L0*cos(tdAng)],'k--')
         
         t_out = [t_out ; t];
@@ -160,20 +197,20 @@ function hop()
     end
     function output = periodResidual(params)
         [t z foot tf zf en loTime] = simulatePeriod(0,params);
-        output = [0 0 0 0];
+        output = [0 0 0 ];
         if length(tf)==0
             output(1) = vx - z(end,2);
-            output(2) = params(2) - z(end,4);
-            output(3) = loTime - tStanceDes;
-            output(4) = (t(end)-loTime) - tFlightDes;
+            %output(2) = params(2) - z(end,4);
+            output(2) = loTime - tStanceDes;
+            output(3) = (t(end)-loTime) - tFlightDes;
         else
             output(1) = vx - z(end,2);
-            output(2) = params(2) - z(end,4);
+            %output(2) = params(2) - z(end,4);
             
-            output(3) = loTime - tStanceDes;
+            output(2) = loTime - tStanceDes;
             
             
-            output(4) = (tf-loTime) - tFlightDes;
+            output(3) = (tf-loTime) - tFlightDes;
         end
     end
     
@@ -193,7 +230,9 @@ function hop()
     %% Find Orbit
     params0 = paramsInitial;
     options = optimset('display','iter');
+    tic
     [params resnorm res] = lsqnonlin(@periodResidual,params0,[pi/20,-inf,16*72*2],[pi/4,-.1,16*72*100*21.5],options);
+    toc
     res
     ang = params(1)
     vy = params(2)
@@ -214,7 +253,7 @@ function hop()
     tf = 0;
     foot0 = [z0(1)+L0*sin(tdAng) z0(3)-L0*cos(tdAng)];
     
-	J = 5;         % Number of Jumps
+	J = 3;         % Number of Jumps
     ts = []; zs = []; ens = [];
     
     
@@ -240,36 +279,71 @@ function hop()
         %fprintf(1,'\n');
     end
     
+    h = subplot(211)
+    axis([0 zf(1) 0 1]);
+    xlabel('CoM X Position (m)');
+    ylabel('CoM Z Position (m)');
+    a = get(h,'children')
+    h2 = legend(a([1 4 6]),'Flight','Stance','Leg');
+
+    set(h2,'FontSize',12)
+    
+    
+    
+
+    
+    subplot(212)
+    ylabel('Energy (J)');
+    xlabel('Time (s)');
+    axis([0 tf 0 800]);
+    h2 = legend('Kinetic Energy', 'Grav. Pot. Energy', 'Spring Pot. Energy');
+    set(h2,'FontSize',12)
+
+    
+    as = findall(0,'type','axes');
+for i=1:length(as)
+    a=as(i);
+   xlab = get(a,'XLabel');
+   ylab = get(a,'YLabel');
+   tlab = get(a,'Title');
+   set(xlab,'FontSize',16);
+   set(ylab,'FontSize',16);
+   set(tlab,'FontSize',16);
+end
+
+
     fprintf(1,'\n');
     fprintf(1,'%f\t',z0);
     fprintf(1,'\n');
     
-    tic
-        %% Hopping Animation
-	figure(2); clf; hold on;
-    hOA = plot([z0(1) z0(3)],[foot0(1) foot0(2)],'r');
-    hA = plot(z0(1),z0(3),'ro');
-    hHist = plot(z0(1),z0(3),'r--');
-    axis equal;
-    axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
-    set(hA,'markerfacecolor','r');
-    startTime = cputime;
-    for i = 1:1:length(ts)
-        set(hOA,'ydata',[zs(i,3) foots(i,2)],'xdata',[zs(i,1) foots(i,1)]);
-        set(hA,'ydata',zs(i,3),'xdata',zs(i,1));
-        set(hHist,'ydata',zs(1:i,3),'xdata',zs(1:i,1));
-        %while (cputime-startTime) < ts(i)
-            pause(.00001);
-        %end
-    end
-    toc
-    ts(end)
+%     tic
+%         %% Hopping Animation
+% 	figure(2); clf; hold on;
+%     hOA = plot([z0(1) z0(3)],[foot0(1) foot0(2)],'r');
+%     hA = plot(z0(1),z0(3),'ro');
+%     hHist = plot(z0(1),z0(3),'r--');
+%     axis equal;
+%     axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
+%     set(hA,'markerfacecolor','r');
+%     startTime = cputime;
+%     for i = 1:1:length(ts)
+%         set(hOA,'ydata',[zs(i,3) foots(i,2)],'xdata',[zs(i,1) foots(i,1)]);
+%         set(hA,'ydata',zs(i,3),'xdata',zs(i,1));
+%         set(hHist,'ydata',zs(1:i,3),'xdata',zs(1:i,1));
+%         %while (cputime-startTime) < ts(i)
+%             pause(.00001);
+%         %end
+%     end
+%     toc
+%     ts(end)
 
+    
+    
 
      
     %% Point Mass Trajectory
-    plot(zs(:,1),0*zs(:,1),'k');
-    axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
+    %plot(zs(:,1),0*zs(:,1),'k');
+    %axis([0 max(zs(:,1)) 0 max(zs(:,3))]); 
     
     %% Energy Plot    
 %     figure(4)

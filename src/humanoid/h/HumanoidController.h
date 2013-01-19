@@ -29,9 +29,13 @@ public:
 	void ComputeActualQdd(VectorXF & qddA);
 	
 	Vector6F centMom, hDotDes, hDotOpt, hDes;
-	Vector3F kDotDes;
+	Vector3F kDotDes, avgAngVelocity;
 	VectorXF pComDes, vComDes;
 	Float totalMass;
+	
+	Float totalEnergy, kineticEnergy, potentialEnergy, crbKineticEnergy, comKineticEnergy;
+	Float lLegLength, rLegLength, slipSpringEnergy, slipKineticEnergy, slipPotentialEnergy;
+	
 	
 	GRFInfo grfInfo;
 	
@@ -65,7 +69,7 @@ public:
 	IntVector contactState;
 	IntVector slidingState;
 	
-	
+	int stepNum;
 	
 	Vector6F zmpWrenchOpt;
 	Vector3F zmpPosOpt;

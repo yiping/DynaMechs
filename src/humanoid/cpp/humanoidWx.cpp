@@ -399,11 +399,11 @@ void BasicGLPane::userGraphics()
 		
 		if (frame->showCoM->IsChecked()) {
 			// Draw COM Info
-			glBegin(GL_LINES);
-			glColor4f(0.0, 0.0, 1.0,1.0);
-			glVertex3f(ComDes[0], ComDes[1], ComDes[2]);
-			glVertex3f(ComDes[0], ComDes[1], 0      );
-			glEnd();
+			//glBegin(GL_LINES);
+			//glColor4f(0.0, 0.0, 1.0,1.0);
+			//glVertex3f(ComDes[0], ComDes[1], ComDes[2]);
+			//glVertex3f(ComDes[0], ComDes[1], 0      );
+			//glEnd();
 			
 			glBegin(GL_LINES);
 			glColor4f(1.0, 0.0, 0.0,1.0);
@@ -431,7 +431,7 @@ void BasicGLPane::userGraphics()
 		}
 		
 		
-		const Float forceScale = 250*3;
+		const Float forceScale = 250*5;
 		glColor4f(0.0, 0.0, 0.0,0.75);
 		
 		/*humanoid->grfInfo.localContacts = 2;

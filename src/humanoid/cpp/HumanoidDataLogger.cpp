@@ -230,6 +230,24 @@ HumanoidDataLogger::HumanoidDataLogger(dmArticulation * robot, int stateSize) : 
 	
 	LEFT_FOOT_SPATIAL_WRENCH  = addGroup("Left Foot Spatial Wrench", "lFootSpatWrench", 6);
 	RIGHT_FOOT_SPATIAL_WRENCH = addGroup("Right Foot Spatial Wrench", "rFootSpatWrench", 6);
+	
+	TOTAL_ENERGY = addItem("Total Energy", "totalEnergy");
+	KINETIC_ENERGY = addItem("Kinetic Energy", "kineticEnergy"); 
+	POTENTIAL_ENERGY = addItem("Potential Energy", "potentialEnergy");
+	CRB_KINETIC_ENERGY = addItem("CRB Kinetic Energy", "crbKineticEnergy");
+	COM_KINETIC_ENERGY = addItem("CoM Kinetic Energy", "comKineticEnergy");
+	
+	
+	AVG_ANGULAR_VELOCITY = addGroup("Avg. Ang. Velocity", "avgAngVel", 3);
+	
+	LEFT_LEG_LENGTH = addItem("Left Leg Length", "lLegLength"); 
+	RIGHT_LEG_LENGTH = addItem("Right Leg Length", "rLegLength");
+	
+	SLIP_SPRING_ENERGY = addItem("SLIP Spring Energy","slipSpringEnergy");
+	SLIP_KINETIC_ENERGY = addItem("SLIP Kinetic Energy","slipKineticEnergy");
+	SLIP_POTENTIAL_ENERGY = addItem("SLIP Potential Energy","slipPotentialEnergy");
+	
+	STEP_NUM = addItem("Step Number" ,"stepNum");
 }
 
 
@@ -312,6 +330,25 @@ void HumanoidDataLogger::logData() {
 	
 	assignGroup(CANDG, artic->CandG);
 	assignMatrixGroup(HMAT,artic->H);
+	
+	
+	assignItem(TOTAL_ENERGY, totalEnergy);
+	assignItem(KINETIC_ENERGY, kineticEnergy);
+	assignItem(POTENTIAL_ENERGY, potentialEnergy);
+	assignItem(CRB_KINETIC_ENERGY, crbKineticEnergy);
+	assignItem(COM_KINETIC_ENERGY, comKineticEnergy);
+	assignGroup(AVG_ANGULAR_VELOCITY, avgAngVelocity);
+	
+	assignItem(LEFT_LEG_LENGTH, lLegLength);
+	assignItem(RIGHT_LEG_LENGTH, rLegLength);
+	
+	assignItem(SLIP_SPRING_ENERGY,slipSpringEnergy);
+	assignItem(SLIP_KINETIC_ENERGY,slipKineticEnergy);
+	assignItem(SLIP_POTENTIAL_ENERGY,slipPotentialEnergy);
+	
+	assignItem(STEP_NUM,stepNum);
+	
+	
 	dataMutex.Unlock();
 }
 

@@ -454,6 +454,10 @@ void RunningStateMachine::Drop() {
 
 void RunningStateMachine::PreHop()
 {
+	slipSpringEnergy = 0;
+	slipKineticEnergy = 0;
+	slipPotentialEnergy = 0;
+	
 	stanceLeg = 1;
 	flightLeg = 0;
 	
@@ -508,23 +512,23 @@ void RunningStateMachine::Stance1()
 			
 			//endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2);
 			//endPos << touchDownLength*sin(touchDownAngle)*3./4., startPos(1), startPos(2)-.15;
-			if (transitionController && (stepNum == 5  /*|| stepNum ==6*/)) {
+			if (transitionController && (stepNum == 5  || stepNum ==6)) {
 				Float touchDownAngle2=	0.225380;
 				Float touchDownLength2 = 	0.924829;
 				Float lift = .05;
 				if (stepNum == 6) {
 					touchDownAngle2=	0.414741;
 					touchDownLength2 = 	0.970000;
-					lift = .2;
+					lift = .15;
 				}
-				endPos << touchDownLength2*sin(touchDownAngle2)*3./4., stepWidth * flightYSign, -touchDownLength2*cos(touchDownAngle2)+lift;
+				endPos << touchDownLength2*sin(touchDownAngle2)*3/4, stepWidth * flightYSign, -touchDownLength2*cos(touchDownAngle2)+lift;
 				//frame->slowMotion->SetValue(true);
 			}
 			else {
 				endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2)-.15;
 			}
 
-			endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2)-.15;
+			//endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2)-.15;
 			endVel.setZero();
 			flightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
 			
@@ -559,6 +563,7 @@ void RunningStateMachine::Stance1()
 			SLIP.pos(0) = SLIP.anchor(0) - touchDownLength*sin(touchDownAngle);
 			SLIP.pos(1) = SLIP.anchor(1) + touchDownLength*cos(touchDownAngle);
 			
+			
 			SLIP.vel(0) = forwardVelocity;
 			SLIP.vel(1) = -sqrt(2*9.8*(maxSLIPHeight-touchDownLength*cos(touchDownAngle)));
 			
@@ -570,6 +575,8 @@ void RunningStateMachine::Stance1()
 			SLIP.restLength = relPos.norm();
 			SLIP.mass = totalMass;
 			SLIP.springConst = legSpringConstant;
+			
+			cout << "K = " << legSpringConstant << endl;
 			
 			
 			if (transitionStep) {
@@ -623,6 +630,13 @@ void RunningStateMachine::Stance1()
 	Float latVel = (SwayAmplitude*M_PI*cos(M_PI*stateTime/stanceTime))*stanceYSign/stanceTime;
 	Float latAcc = (-SwayAmplitude*pow(M_PI,2)*sin(M_PI*stateTime/stanceTime))*stanceYSign/pow(stanceTime,2);
 	
+	slipSpringEnergy = 1/2. * SLIP.springConst * pow(SLIP.restLength-SLIP.length,2);
+	slipKineticEnergy = 1/2. * SLIP.mass * SLIP.vel.dot(SLIP.vel);
+	slipPotentialEnergy = SLIP.mass * 9.8 * SLIP.pos(1);
+	
+	//cout << "Kin " << slipKineticEnergy << endl;
+	//cout << "Pot " << slipPotentialEnergy << endl;
+	//cout << "Tot " << slipKineticEnergy + slipPotentialEnergy + slipSpringEnergy << endl;
 	
 	//if (!transitionStep) {
 		pComDes << SLIP.pos(0), 2+latPos, SLIP.pos(1);
@@ -666,9 +680,6 @@ void RunningStateMachine::Stance1()
 		//pComDes << SLIP.pos(0), 2+latPos, SLIP.pos(1);
 		//vComDes << SLIP.vel(0), latVel, SLIP.vel(1);
 		//aComDes << SLIP.acc(0), latAcc, SLIP.acc(1);
-		
-		
-		
 	//}
 
 	
@@ -795,6 +806,9 @@ void RunningStateMachine::Stance2()
 }
 void RunningStateMachine::Flight1()
 {
+	slipSpringEnergy = 0;
+	slipKineticEnergy = 0;
+	slipPotentialEnergy = 0;
 	static CubicSplineTrajectory flightFootSpline(3);
 	static CubicSplineTrajectory stanceFootSpline(3);
 	static CubicSplineTrajectory verticalSpline(3);
@@ -814,7 +828,7 @@ void RunningStateMachine::Flight1()
 				vDesDisplay = 4.0;
 			}
 			
-			if (stepNum == 9) {
+			/*if (stepNum == 9) {
 				vDesDisplay = 3.75;
 			}
 			
@@ -827,7 +841,7 @@ void RunningStateMachine::Flight1()
 			}
 			if (stepNum == 18) {
 				vDesDisplay = 4.5;
-			}
+			}*/
 		}
 		
 		
@@ -874,7 +888,7 @@ void RunningStateMachine::Flight1()
 
 		
 		
-		if (! transitionController) {
+		if (! transitionController && (stepNum>=6 || !velocityTest)) {
 			int i=0;
 			while(1 == 1)
 			{
@@ -901,7 +915,17 @@ void RunningStateMachine::Flight1()
 		VectorXF startPos(3),endPos(3),startVel(3), endVel(3);
 		
 		startPos = pFoot[flightLeg] - pCom;
-		endPos << -touchDownLength*sin(touchDownAngle), stepWidth * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
+		
+		if (transitionController && stepNum == 6) {
+			Float touchDownLength2 = 0.970000;
+			Float touchDownAngle2 = 0.320423;
+			endPos << -touchDownLength2*sin(touchDownAngle2), stepWidth * flightYSign,-touchDownLength2*cos(touchDownAngle2)+.25;
+		}
+		else
+		{
+				endPos << -touchDownLength*sin(touchDownAngle), stepWidth * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
+		}
+		//endPos << -touchDownLength*sin(touchDownAngle), stepWidth * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
 		startVel.setZero();
 		endVel.setZero();
 		flightFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
@@ -1059,6 +1083,9 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	//TaskWeight.segment(taskRow  ,6).setConstant(10);
 	//TaskWeight.segment(taskRow+3,3).setConstant(1000);
 	
+	//OptimizationSchedule.segment(3,1).setConstant(3);
+	//OptimizationSchedule.segment(5,1).setConstant(3);
+	
 	
 	/*cout << "===========================" << endl;
 	
@@ -1072,6 +1099,14 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	cout << "p_1/COM = " << pRel.transpose() << endl;*/
 	
 	
+	/*if (stateTime == simThread->cdt) {
+		
+		cout << "Prior to machine State = " << stateNames[state] << endl;
+		cout << "Weights = " << endl << TaskWeight << endl;
+		cout << "Schedule = " << endl << OptimizationSchedule << endl;
+	}*/
+	
+	
 	// Do at least one state call, and more if it transitioned out
 	do {
 		if (transitionFlag) {
@@ -1079,6 +1114,14 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 		}
 		(this->*stateFunctions[state])();
 	} while (transitionFlag);
+	
+	/*if (stateTime == simThread->cdt) {
+		
+		cout << "after machine State = " << stateNames[state] << endl;
+		cout << "Weights = " << endl << TaskWeight << endl;
+		cout << "Schedule = " << endl << OptimizationSchedule << endl;
+	}*/
+	
 	
 	if (state != DROP) {
 		int taskRow = 0;
@@ -1495,6 +1538,12 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	
 	if (frame->logDataCheckBox->IsChecked()) {
 		logData();
+	}
+	if (stateTime == simThread->cdt) {
+		
+		cout << "State = " << stateNames[state] << endl;
+		cout << "Weights = " << endl << TaskWeight << endl;
+		cout << "Schedule = " << endl << OptimizationSchedule << endl;
 	}
 	
 	

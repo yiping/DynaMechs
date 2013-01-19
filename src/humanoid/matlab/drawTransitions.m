@@ -1,5 +1,9 @@
-function drawStamps(tList,stateList)
+function drawStamps(tList,stateList,modheight)
     %h=axes();]
+    height = 1000;
+    if nargin==3
+        height = modheight;
+    end
     ys=ylim;
     axis tight
     xs=xlim;
@@ -10,7 +14,7 @@ function drawStamps(tList,stateList)
             color='k-.';
             w=1;
         end
-        plot([tList(i) tList(i)],[-1000,1000],color,'LineWidth',w);
+        plot([tList(i) tList(i)],[-height,height],color,'LineWidth',w);
     end
     axis([xs ys])
 end

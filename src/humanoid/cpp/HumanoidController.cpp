@@ -226,6 +226,22 @@ void HumanoidController::ControlInit()
 		
 		centMom = CentMomMat*qd;
 		vCom = centMom.tail(3)/totalMass;
+		
+		avgAngVelocity = IBarC0.inverse()*centMom.head(3);
+		
+		// Kinetic energy = 1/2 m |v|^2
+		comKineticEnergy = 1/2. * totalMass * vCom.dot(vCom);
+		
+		// assume vertical gravity. Potential energy = m g h
+		const Float g = artic->m_link_list[0]->link_val2.ag.norm();
+		potentialEnergy = totalMass * g * pCom(2);
+		
+		crbKineticEnergy = comKineticEnergy + 1/2. * avgAngVelocity.dot(centMom.head(3));
+		
+		// Kinetic energy = 1/2. qd' * H * qd
+		kineticEnergy = 1/2. * qd.transpose() * artic->H * qd;
+		
+		totalEnergy = kineticEnergy + potentialEnergy;
 	}
 	
 	// Init Foot State
@@ -233,7 +249,25 @@ void HumanoidController::ControlInit()
 		for (int i=0; i<NS; i++) {
 			InertialKinematicInfo(SupportIndices[i], pFootCenter[i], RFoot[i], pFoot[i], vFoot[i]);
 		}
+		
+		// Get Virtual Leg Lengths
+		{
+			Matrix3F R;
+			VectorXF v(6);
+			VectorXF plFoot(3), prFoot(3), plHip(3), prHip(3), pRel(3);
+			InertialKinematicInfo(2, R, prHip, v);
+			InertialKinematicInfo(5, R, prFoot, v);
+			InertialKinematicInfo(6, R, plHip, v);
+			InertialKinematicInfo(9, R, plFoot, v);
+			
+			pRel = prFoot - prHip;
+			rLegLength = pRel.norm();
+			
+			pRel = plFoot - plHip;
+			lLegLength  = pRel.norm();
+		}
 	}
+	
 }
 
 void HumanoidController::HumanoidControl(ControlInfo & ci) {

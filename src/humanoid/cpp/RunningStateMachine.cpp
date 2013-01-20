@@ -485,7 +485,7 @@ void RunningStateMachine::PreHop()
 }
 void RunningStateMachine::Stance1()
 {
-	//SwayStart = flightTime * SwayAmplitude * M_PI / (2 * stanceTime);
+	SwayStart = flightTime * SwayAmplitude * M_PI / (2 * stanceTime);
 	
 	static bool bof = false;
 	
@@ -688,7 +688,7 @@ void RunningStateMachine::Stance1()
 	
 	
 	
-	minfz =totalMass *(aComDes(2)+9.8)*.15;
+	minfz =totalMass *(aComDes(2)+9.8)*.01;
 	UpdateVariableBounds();
 	
 	//pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
@@ -1288,10 +1288,13 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				 Float offset = .2;
 				 Float ampFactor = 1.5;
 				 
+				 offset = -.1;
+				 ampFactor = .7;
+				 
 				Float angle, rate;
 				Vector3F relPos = pFoot[1] - pCom;
 				Vector3F relVel = vFoot[1].tail(3) - vCom;
-				relVel.setZero();
+				//relVel.setZero();
 				angle = atan(-relPos(0)/relPos(2));
 				
 				if(abs(relVel(2)) > 1e-4) {
@@ -1332,7 +1335,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				
 				relPos = pFoot[0] - pCom;
 				relVel = vFoot[0].tail(3) - vCom;
-				relVel.setZero();
+				//relVel.setZero();
 				angle = atan(-relPos(0)/relPos(2));
 				
 				if(abs(relVel(2)) > 1e-4) {

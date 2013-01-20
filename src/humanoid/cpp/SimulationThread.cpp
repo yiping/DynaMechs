@@ -45,7 +45,7 @@ void *SimulationThread::Entry()
 			cout << "Awake now" << endl;
 		}
 		// Check if it's time for control
-		if ((sim_time - last_control_time) >= cdt) {
+		if ((sim_time - last_control_time) >= (cdt-0*idt/10.)) {
 			
 			ControlInfo ci;
 			humanoid->StateControl(ci);

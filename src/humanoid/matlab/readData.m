@@ -9,8 +9,15 @@ filename
 % /Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-19/2013-01-19_11-26-12.dat
 %
 
+
+% com with others
+% /Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-19/2013-01-19_16-12-50.dat
+
+
 LKNEE = 19;
 RKNEE = 12;
+
+
 
 [cols, display, names, data, commands] = readColData(filename);
 
@@ -19,9 +26,15 @@ RKNEE = 12;
 
 %data = data(659:881,:);
 
+
+
+
 for i=1:cols
     eval(char(commands{i}));
 end
+
+totalMass = H(6,6,1);
+
 indices = 1:length(state);
 prevState = [state(1) state(1:(end-1))];
 transitionTimes = t(state ~= prevState);
@@ -155,8 +168,8 @@ clf
 title('CoM Position');
 a=[a subplot(311)];
 hold on
-plot(t,pCom(1,:),'r');
-plot(t,pComDes(1,:),'r--');
+plot(t,pCom(1,:)-pComDes(1,:),'r');
+plot(t,pComDes(1,:)-pComDes(1,:),'r--');
 drawTransitions(transitionTimes,transitionStates);
 title('CoM X'); xlabel('Time (s)'); ylabel('X Position (m)');
 
@@ -235,6 +248,23 @@ drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('Knee Torques (Nm)');
 
 
+f = figure('Name','Hip Torques','Position',figPos); figs = [figs f];
+clf
+hold on
+plot(t,tau(1,:),'r');
+plot(t,tau(2,:),'g');
+plot(t,tau(3,:),'b');
+
+plot(t,tau(7,:),'r--');
+plot(t,tau(8,:),'g--');
+plot(t,tau(9,:),'b--');
+
+
+drawTransitions(transitionTimes,transitionStates);
+xlabel('Time (s)'); ylabel('Hip Torques (Nm)');
+
+
+
 
 f = figure('Name','Ang Momentum Tracking','Position',figPos); figs = [figs f];
 clf
@@ -285,7 +315,7 @@ xlabel('Time (s)'); ylabel('Z rate (rad/s)');
 
 
 
-f = figure('Name','hDot','Position',figPos); figs = [figs f];
+f = figure('Name','hDot (Ang)','Position',figPos); figs = [figs f];
 clf
 a=[a subplot(311)];
 hold on
@@ -309,18 +339,49 @@ drawTransitions(transitionTimes,transitionStates);
 title('CoM Z'); xlabel('Time (s)'); ylabel('Z Position (m)');
 
 
-
-f = figure('Name','CoM Trajectory','Position',figPos); figs = [figs f];
+f = figure('Name','hDot (Lin)','Position',figPos); figs = [figs f];
 clf
+a=[a subplot(311)];
 hold on
-plot(pCom(1,:),pCom(3,:))
-plot(pComDes(1,:),pComDes(3,:),'b--')
-axis square
-axis([2,2.25 0 .5])
-r = norm(pComDes(:,1)-[2 pComDes(2,1) 0]');
-theta = 0:pi/40:pi/2;
-plot(2+r*sin(theta),cos(theta)*r,'r.');
-xlabel('X Position (m)'); ylabel('Z Position (m)')
+plot(t,zmpForce(1,:),'k-.');
+plot(t,hDotOpt(4,:),'r');
+plot(t,hDotDes(4,:),'r--');
+
+
+drawTransitions(transitionTimes,transitionStates);
+title('CoM X'); xlabel('Time (s)'); ylabel('X Position (m)');
+
+a=[a subplot(312)];
+hold on
+plot(t,zmpForce(2,:),'k-.');
+plot(t,hDotOpt(5,:),'g');
+plot(t,hDotDes(5,:),'g--');
+
+
+drawTransitions(transitionTimes,transitionStates);
+title('CoM Y'); xlabel('Time (s)'); ylabel('Y Position (m)');
+
+a=[a subplot(313)];
+hold on
+plot(t,zmpForce(3,:)-totalMass*9.8,'k-.');
+plot(t,hDotOpt(6,:),'b');
+plot(t,hDotDes(6,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM Z'); xlabel('Time (s)'); ylabel('Z Position (m)');
+
+
+
+% f = figure('Name','CoM Trajectory','Position',figPos); figs = [figs f];
+% clf
+% hold on
+% plot(pCom(1,:),pCom(3,:))
+% plot(pComDes(1,:),pComDes(3,:),'b--')
+% axis square
+% axis([2,2.25 0 .5])
+% r = norm(pComDes(:,1)-[2 pComDes(2,1) 0]');
+% theta = 0:pi/40:pi/2;
+% plot(2+r*sin(theta),cos(theta)*r,'r.');
+% xlabel('X Position (m)'); ylabel('Z Position (m)')
 
 %%%%%%%%%
 % Feet

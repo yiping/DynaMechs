@@ -223,9 +223,8 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	
 	restWidth = .13;
 	stepWidth = .08;
-	//SwayStart = SwayAmplitude*pi/tStance;
 	
-
+	pTOFData = fopen("tofData.txt","w");
 	
 	vDesDisplay = forwardVelocity;
 	vActDisplay = forwardVelocity;
@@ -471,12 +470,13 @@ void RunningStateMachine::PreHop()
 	AssignFootMaxLoad(0,0);
 	AssignFootMaxLoad(1,0);
 	
-	if (pFoot[0](2) < .01 || pFoot[1](2) < .01) 
+	if (pFoot[0](2) < .002 || pFoot[1](2) < .002) 
 	{
 		
 		cout << "Touchdown" << endl;
 		transitionFlag=true;
 		state=STANCE1;
+		
 		return;
 	}
 	
@@ -485,6 +485,8 @@ void RunningStateMachine::PreHop()
 }
 void RunningStateMachine::Stance1()
 {
+	//SwayStart = flightTime * SwayAmplitude * M_PI / (2 * stanceTime);
+	
 	static bool bof = false;
 	
 	static CubicSplineTrajectory flightFootSpline(3);
@@ -686,7 +688,7 @@ void RunningStateMachine::Stance1()
 	
 	
 	
-	minfz =totalMass *(aComDes(2)+9.8)*.01;
+	minfz =totalMass *(aComDes(2)+9.8)*.15;
 	UpdateVariableBounds();
 	
 	//pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
@@ -723,7 +725,7 @@ void RunningStateMachine::Stance1()
 	
 	
 	
-	
+	//OptimizationSchedule.segment(3,3).setConstant(3);
 	
 	OptimizationSchedule.segment(0,3).setConstant(4);
 	TaskWeight.segment(0,3).setConstant(200/10.);
@@ -828,7 +830,7 @@ void RunningStateMachine::Flight1()
 				vDesDisplay = 4.0;
 			}
 			
-			/*if (stepNum == 9) {
+			if (stepNum == 9) {
 				vDesDisplay = 3.75;
 			}
 			
@@ -841,7 +843,7 @@ void RunningStateMachine::Flight1()
 			}
 			if (stepNum == 18) {
 				vDesDisplay = 4.5;
-			}*/
+			}
 		}
 		
 		
@@ -949,8 +951,18 @@ void RunningStateMachine::Flight1()
 		firstHalf = true;*/
 	}
 	
+	if ( (pFoot[0](2) < .002 || pFoot[1](2) < .002) && stateTime > .05) {
+		cout << "Touchdown" << endl;
+		transitionFlag=true;
+		state=STANCE1;
+		cout << "Flight Time " << stateTime << " vs. Desired " << flightTime << endl;
+		return;
+	}
+	
+	
 	if(firstHalf && vCom(2) < 0)
 	{
+		fprintf(pTOFData,"%.5lf %.5lf %.5lf %.5lf\n",forwardVelocity, vCom(0), maxSLIPHeight,pCom(2));
 		vActDisplay   = vCom(0);
 		firstHalf = false;
 	}
@@ -966,6 +978,14 @@ void RunningStateMachine::Flight1()
 		verticalSpline.reInit(stateTime, endPos, endVel, flightTime/2.);
 		firstHalf = false;
 	}*/
+	
+	// This is for prettier graphs
+	aComDes.setZero(3);
+	aComDes(2) = -9.8;
+	vComDes += .002*aComDes;
+	pComDes += .002*vComDes;
+	kpCM = 0;
+	kdCM = 0;
 	
 	
 	vDesFoot[0].setZero();
@@ -1020,12 +1040,7 @@ void RunningStateMachine::Flight1()
 	OptimizationSchedule.head(6).setConstant(-1);
 	OptimizationSchedule.tail(12).setConstant(1);
 	
-	if ( (pFoot[0](2) < .01 || pFoot[1](2) < .01) && stateTime > .05) {
-		cout << "Touchdown" << endl;
-		transitionFlag=true;
-		state=STANCE1;
-		return;
-	}
+
 }
 
 void RunningStateMachine::Flight2()
@@ -1268,6 +1283,11 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 			}
 			
 			 {
+				 static Float prevAngle1, prevAngle2;
+				 
+				 Float offset = .2;
+				 Float ampFactor = 1.5;
+				 
 				Float angle, rate;
 				Vector3F relPos = pFoot[1] - pCom;
 				Vector3F relVel = vFoot[1].tail(3) - vCom;
@@ -1280,14 +1300,14 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				else {
 					rate = 0;
 				}
-				angle*=1.5;
-				rate*=1.5;
+				angle*=ampFactor;
+				rate*=ampFactor;
 				
 				Matrix3F R1, R2,dR2,ddR2, R3, RDot, Rddot;
 				Vector3F angAx,omega, omegaDot,rateDes;
 				
 				R1 << 1,0,0,0,0,-1,0,1,0;
-				angAx << 0,M_PI/2 - angle-.2,0;
+				angAx << 0,M_PI/2 - angle-offset,0;
 				matrixExpOmegaCross(angAx, R2);
 				omega << 0, -rate, 0;
 				
@@ -1304,7 +1324,11 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				rateDesJoint[10] = rateDes;
 				accDesJoint[10].setZero(3);
 				//cout << "Ra = " << angle << " Rv " << rate << endl;
-				
+				 
+				// cout << "t1 " << angle << endl;
+				 //cout << "r1 " << rate << " v " << (angle-prevAngle1)/simThread->cdt << endl;
+				 prevAngle1 = angle;
+				 
 				
 				relPos = pFoot[0] - pCom;
 				relVel = vFoot[0].tail(3) - vCom;
@@ -1317,12 +1341,12 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				else {
 					rate = 0;
 				}
-				angle*=1.5;
-				rate*=1.5;
+				angle*=ampFactor;
+				rate*=ampFactor;
 				
 				//cout << "la = " << angle << " lv " << rate << endl;
 				
-				angAx << 0,M_PI/2 - angle-.2,0;
+				angAx << 0,M_PI/2 - angle-offset,0;
 				matrixExpOmegaCross(angAx, R2);
 				omega << 0, -rate, 0;
 				dR2 = cr3(omega)*R2;
@@ -1338,6 +1362,10 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				rateDesJoint[12] = rateDes ;
 				accDesJoint[12].setZero(3) ;
 				
+				 
+				 //cout << "t2 " << angle << endl;
+				 // cout << "r2 " << rate << " v " << (angle-prevAngle2)/simThread->cdt << endl;
+				 prevAngle2 = angle;
 				
 			}
 			
@@ -1526,25 +1554,53 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 		fs.setZero(12);
 	}
 	
-	/*if(state == STANCE1)
+	/*if(state == STANCE1 && simThread->sim_time > 6.04)
 	{
-		VectorXF jointInput(10*NJ);
-		jointInput.setZero();
-		artic->setJointInput(jointInput.data());
+		Vector3F fDes;
+		fDes = hDotDes.tail(3);
+		fDes(2)+=9.8*totalMass;
 		
+		cout << " fDes " << fDes.transpose() << endl;
+		cout << " fOpt " << fs.segment(3,3).transpose() + fs.segment(9,3).transpose() << endl;
+		cout << " hDes " << hDotDes.transpose() << endl;
+		cout << " hOpt " << hDotOpt.transpose() << endl;
 	}*/
+	
+	{
+		
+		/*static Vector3F pComPrev;
+		
+		Matrix3F i_R_pi_mat;
+		
+		cout << "m= " << totalMass << endl;
+		cout << "VCom1 " << vCom.transpose() << endl;
+		VectorXF p(26);
+		p = artic->H * qd; 
+	
+		CartesianTensor i_R_pi; CartesianVector pLink;
+		artic->m_link_list[0]->link->getPose(i_R_pi,pLink);
+		copyRtoMat(i_R_pi, i_R_pi_mat);
+		Vector3F v2 = i_R_pi_mat.transpose() * p.segment(3,3);
+		cout << "VCom2 " << v2.transpose()/totalMass << endl;
+		Float c = simThread->cdt;
+		
+		cout << "VCom3 " << (pCom- pComPrev).transpose()/c << endl;
+		
+		pComPrev = pCom;*/
+	}
+	
 	
 	
 	
 	if (frame->logDataCheckBox->IsChecked()) {
 		logData();
 	}
-	if (stateTime == simThread->cdt) {
+	/*if (stateTime == simThread->cdt) {
 		
 		cout << "State = " << stateNames[state] << endl;
 		cout << "Weights = " << endl << TaskWeight << endl;
 		cout << "Schedule = " << endl << OptimizationSchedule << endl;
-	}
+	}*/
 	
 	
 	stateTime += simThread->cdt;

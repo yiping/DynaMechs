@@ -197,7 +197,88 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array/>
+	<array>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>19BACBE916AB8FEF00F7231D</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>SimulationThread.cpp</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>19BACBEA16AB8FEF00F7231D</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>SimulationThread.cpp</string>
+						<key>_historyCapacity</key>
+						<integer>10</integer>
+						<key>bookmark</key>
+						<string>19BACC7016AB9E9A00F7231D</string>
+						<key>history</key>
+						<array>
+							<string>19BACBDE16AB8F4F00F7231D</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {955, 624}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>0 113 955 665 0 0 1280 778 </string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>19BACB6316AB754200F7231D</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>HumanoidController.cpp</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>19BACB6416AB754200F7231D</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>HumanoidController.cpp</string>
+						<key>_historyCapacity</key>
+						<integer>10</integer>
+						<key>bookmark</key>
+						<string>19BACC7116AB9E9A00F7231D</string>
+						<key>history</key>
+						<array>
+							<string>19BACB5916AB750A00F7231D</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {955, 624}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>15 113 955 665 0 0 1280 778 </string>
+			</dict>
+		</dict>
+	</array>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -337,19 +418,19 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>19BACAC316AB07A400F7231D</string>
+										<string>19BACC6F16AB9E9A00F7231D</string>
 										<key>history</key>
 										<array>
-											<string>194470D116A7813C0015093C</string>
-											<string>19BACA1116A8543900F7231D</string>
-											<string>19BACA4D16AAE9C400F7231D</string>
-											<string>19BACA4E16AAE9C400F7231D</string>
-											<string>19BACA4F16AAE9C400F7231D</string>
-											<string>19BACA7F16AAFF5900F7231D</string>
-											<string>19BACA8616AAFFCA00F7231D</string>
-											<string>19BACA8C16AB003B00F7231D</string>
-											<string>19BACA8D16AB003B00F7231D</string>
-											<string>19BACAB516AB066A00F7231D</string>
+											<string>19BACB2916AB560D00F7231D</string>
+											<string>19BACB2B16AB560D00F7231D</string>
+											<string>19BACB2C16AB560D00F7231D</string>
+											<string>19BACB5C16AB754200F7231D</string>
+											<string>19BACB5E16AB754200F7231D</string>
+											<string>19BACB6016AB754200F7231D</string>
+											<string>19BACBC616AB8D8000F7231D</string>
+											<string>19BACBE616AB8FEF00F7231D</string>
+											<string>19BACC6D16AB9E9A00F7231D</string>
+											<string>19BACC6E16AB9E9A00F7231D</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -547,11 +628,14 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>19BACC7216AB9E9A00F7231D</string>
 		<string>19BACA1F16A8543900F7231D</string>
 		<string>19BACA2016A8543900F7231D</string>
 		<string>1CD10A99069EF8BA00B06720</string>
+		<string>19BACB6316AB754200F7231D</string>
 		<string>1925863714D2E86400778EA7</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>19BACBE916AB8FEF00F7231D</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -647,7 +731,7 @@
 			<key>WindowToolGUID</key>
 			<string>1925863714D2E86400778EA7</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

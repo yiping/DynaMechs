@@ -529,6 +529,19 @@ void TaskSpaceControllerB::Optimize() {
 		}
 	}
 	
+	MatrixXF H = artic->H;
+	VectorXF CandG = artic->CandG;
+	
+	MatrixXF S = MatrixXF::Zero(NJ,NJ+6);
+	S.block(0,6,NJ,NJ) = MatrixXF::Identity(NJ,NJ);
+	
+	VectorXF generalizedContactForce = VectorXF::Zero(NJ+6);
+	for (int i=0; i<NS; i++) {
+		generalizedContactForce += SupportJacobians[i].transpose()*fs.segment(6*i,6);
+	}
+	
+	qdd = Hdecomp.solve(S.transpose() * tau + generalizedContactForce- CandG);
+	
 	//cout << "f = " << endl << f << endl;
 	
 	/*for (int i=0; i<taskConstrActive.size(); i++) {

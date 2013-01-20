@@ -16,6 +16,7 @@
 #include "HumanoidDataLogger.h"
 #include "SlipModel.h"
 #include "LipModel.h"
+#include <cstdio>
 
 class RunningStateMachine : public HumanoidDataLogger
 {
@@ -115,6 +116,8 @@ private:
 	
 	bool transitionController;
 	bool velocityTest;
+	
+	FILE * pTOFData;
 	
 };
 

@@ -268,7 +268,17 @@ void BasicGLPane::userGraphics()
 	const Float DashSize = .05;
 	const int NumTraces = 3;
 	
-	frame->glPane->camera->setCOI(ComPos[0], 2, 1);
+	
+	
+	if (simThread->sim_time < 7) {
+		frame->glPane->camera->setCOI(ComPos[0], 2, .5);
+	}
+	else {
+		
+		frame->glPane->camera->setCOI(ComPos[0]-(simThread->sim_time-7)*1.5, 2, .5);
+	}
+
+	
 	
 	// Plot User Stuff
 	{

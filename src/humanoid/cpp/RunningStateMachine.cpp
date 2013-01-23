@@ -688,7 +688,7 @@ void RunningStateMachine::Stance1()
 	
 	
 	
-	minfz =totalMass *(aComDes(2)+9.8)*.01;
+	minfz =totalMass *(aComDes(2)+9.8)*.15;
 	UpdateVariableBounds();
 	
 	//pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
@@ -830,7 +830,7 @@ void RunningStateMachine::Flight1()
 				vDesDisplay = 4.0;
 			}
 			
-			if (stepNum == 9) {
+			/*if (stepNum == 9) {
 				vDesDisplay = 3.75;
 			}
 			
@@ -843,7 +843,7 @@ void RunningStateMachine::Flight1()
 			}
 			if (stepNum == 18) {
 				vDesDisplay = 4.5;
-			}
+			}*/
 		}
 		
 		
@@ -889,7 +889,7 @@ void RunningStateMachine::Flight1()
 		}
 
 		
-		
+
 		if (! transitionController && (stepNum>=6 || !velocityTest)) {
 			int i=0;
 			while(1 == 1)
@@ -1199,12 +1199,12 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				
 				kpHip = 120/3.;
 				wHip  = .1;
+				//;//
+				kpShould = 420;///3.;
+				wShould  = 10.0*2.6;///3.;
 				
-				kpShould = 420;
-				wShould  = 10.0*2.6;
-				
-				kpElbow = 240;
-				wElbow  = 10*2;
+				kpElbow = 240;///3.;
+				wElbow  = 10*2;///3.;
 				
 				kpTorso = 440.;
 				wTorso = 10.;

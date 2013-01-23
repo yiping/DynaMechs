@@ -275,7 +275,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	
 	// Draw Axes
 	{
-		Float AxisLength = .5;
+		/*Float AxisLength = .5;
 		glBegin(GL_LINES);
 		glColor3f(1.0, 0.0, 0.0);
 		glVertex3f(AxisLength, 0.0, 0.0);
@@ -292,7 +292,7 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glColor3f(0.0, 0.0, 1.0);
 		glVertex3f(0.0, 0.0, AxisLength);
 		glVertex3f(0.0, 0.0, 0.0);
-		glEnd();
+		glEnd();*/
 		
 		/*Float qBase[7], qdBase[7];
 		G_robot->getLink(0)->getState(qBase,qdBase);

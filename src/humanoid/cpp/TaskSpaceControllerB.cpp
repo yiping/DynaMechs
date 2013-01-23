@@ -529,6 +529,7 @@ void TaskSpaceControllerB::Optimize() {
 		}
 	}
 	
+	//cout << "fs " << fs.transpose() << endl;
 	MatrixXF H = artic->H;
 	VectorXF CandG = artic->CandG;
 	

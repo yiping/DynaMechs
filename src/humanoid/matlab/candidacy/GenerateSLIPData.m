@@ -133,10 +133,17 @@ function hop()
    
     fid = fopen('SlipData.txt','w');
    
+    vxs = 3:.05:5.5;
+    global vxs ks  thetas heights;
+    
+    ks = [];
+    thetas = [];
+    heights = [];
+    
     paramsInitial = [.3 -1.2250 12000];
-    for vx = 3:.25:5.5
+    for vx = 3:.05:5.5
         
-        tStanceDes =10^-0.2*vx^-0.82;
+        tStanceDes =10^-0.2*vx^-0.64;
         cad = 2.551*vx*vx-8.8*vx+172.87;
         tFlightDes = 60/cad - tStanceDes;
 
@@ -156,12 +163,19 @@ function hop()
         %plot(z(:,1),0*z(:,1),'k');
         %axis([0 max(z(:,1)) 0 max(z(:,3))]); 
 
+        ks = [ks params(3)];
+        thetas = [thetas params(1)];
+        
         Stiffness = params(3);
         Stance = lo;
         Period = tf;
         DutyFactor = Stance/Period/2;
         Length = Period*vx;
         maxSLIPHeight = max(z(:,3));
+        
+        heights = [heights maxSLIPHeight];
+
+        
         
         fprintf(fid,'%f\t %f\t %f\t %f\t %f\t %f\t %f\n',vx,tStanceDes,tFlightDes,Stiffness, ang, maxSLIPHeight, L0);
 
@@ -184,6 +198,7 @@ function hop()
 %         fprintf(1,'flightTime = \t%f;\n',tFlightDes);
     end
     fclose(fid);
+
 
 
 

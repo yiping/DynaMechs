@@ -65,7 +65,7 @@ void transformToZMP(Vector6F & fZMP, Vector3F & pZMP) {
 	
 	fZMP(0) = 0;
 	fZMP(1) = 0;
-	fZMP(2)+= fZMP(4)*pZMP(0) - fZMP(3)*pZMP(1);
+	fZMP(2)-= fZMP(4)*pZMP(0) - fZMP(3)*pZMP(1);
 }
 
 void computeAccBiasFromFwKin(dmRNEAStruct & infoStruct,Vector6F & a) {

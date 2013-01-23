@@ -6,14 +6,27 @@ filename = fscanf(fid,'%s');
 fclose(fid);
 filename
 %filename = '/Users/pwensing/Documents/MATLAB/humanoid/data/CandidacyTransitionWPlanning.dat';
-% /Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-19/2013-01-19_11-26-12.dat
-%
 
 
-% com with others
-% /Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-19/2013-01-19_16-12-50.dat
+% 3.5 m/s minfz enforced
+%filename = '/Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-20/2013-01-20_01-50-25.dat';
+
+% 3.5 m/s minfz enforce, Com Priority
+% /Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-20/2013-01-20_00-09-02.dat
 
 
+% 3.5 m/s minfz enforce, extra arm swing!
+% /Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-20/2013-01-20_00-49-41.dat
+
+% 5 m/s, no minfz enforce
+% /Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-20/2013-01-20_02-18-21.dat
+
+% 3.5-4 m/s transition, no minfz enforce, no planning
+%filename = '/Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-20/2013-01-20_14-40-42.dat'
+
+% 3.5-4 m/s transition with plannign
+% filename =
+% '/Users/pwensing/Documents/MATLAB/humanoid/data/2013-01-20/2013-01-20_15-24-37.dat'
 LKNEE = 19;
 RKNEE = 12;
 
@@ -87,7 +100,7 @@ plot(t,totalEnergy,'r');
 plot(t,potentialEnergy+comKineticEnergy,'k--');
 
 plot(t,potentialEnergy+comKineticEnergy+springEnergy,'c-.');
-plot(t,potentialEnergy+comKineticEnergy+slipSpringEnergy,'g-.');
+%plot(t,potentialEnergy+comKineticEnergy+slipSpringEnergy,'g-.');
 
 plot(t,((slipPotentialEnergy+slipKineticEnergy)==0)*1092 + (slipPotentialEnergy+slipKineticEnergy) ,'b');
 plot(t,((slipPotentialEnergy+slipKineticEnergy)==0)*1092 + (slipPotentialEnergy+slipKineticEnergy+slipSpringEnergy) ,'m');
@@ -101,12 +114,15 @@ title('Total Energy'); xlabel('Time (s)'); ylabel('Energy (J)');
 
 a=[a subplot(312)];
 hold on
-plot(t,kineticEnergy,'r');
-plot(t,crbKineticEnergy,'b--');
+plot(t,kineticEnergy,'--');
+plot(t,crbKineticEnergy,'b');
 plot(t,comKineticEnergy,'k-.');
 
 drawTransitions(transitionTimes,transitionStates,1500);
 title('Kinetic Energy'); xlabel('Time (s)'); ylabel('Energy (J)');
+
+legend('T','T_{CRB}','T_{CoM}','Flight Begin','Stance Begin');
+
 
 a=[a subplot(313)];
 hold on
@@ -229,6 +245,72 @@ plot(t,totalMass*9.8*pCom(3,:) + 1/2*totalMass*vCom(3,:).^2+1/2*totalMass*vCom(1
 drawTransitions(transitionTimes,transitionStates);
 
 
+%%%%%%%%%%%%%
+% CoM
+%%%%%%%%%%%%%
+f = figure('Name','CoM Pos/Vel','Position',figPos); figs = [figs f];
+clf
+a=[a subplot(321)];
+hold on
+plot(t,pCom(1,:),'b');
+plot(t,pComDes(1,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM X'); xlabel('Time (s)'); ylabel('X Position (m)');
+
+a=[a subplot(323)];
+hold on
+plot(t,pCom(2,:),'b');
+plot(t,pComDes(2,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM Y'); xlabel('Time (s)'); ylabel('Y Position (m)');
+
+a=[a subplot(325)];
+hold on
+plot(t,pCom(3,:),'b');
+plot(t,pComDes(3,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('CoM Z'); xlabel('Time (s)'); ylabel('Z Position (m)');
+
+a=[a subplot(322)];
+hold on
+plot(t,vCom(1,:),'b');
+plot(t,vComDes(1,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('V CoM X'); xlabel('Time (s)'); ylabel('X Velocity (m/s)');
+legend('Actual','Desired','Stance Begin','Flight Begin');
+
+a=[a subplot(324)];
+hold on
+plot(t,vCom(2,:),'b');
+plot(t,vComDes(2,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('V CoM Y'); xlabel('Time (s)'); ylabel('Y Velocity (m/s)');
+
+
+
+a=[a subplot(326)];
+hold on
+plot(t,vCom(3,:),'b');
+plot(t,vComDes(3,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+title('V CoM Z'); xlabel('Time (s)'); ylabel('Z Velocity (m/s)');
+
+
+f = figure('Name','CoM Acc','Position',figPos); figs = [figs f];
+a=[a subplot(311)];
+plot(t,[0 diff(vCom(3,:))./diff(t)],'b');
+hold on
+drawTransitions(transitionTimes,transitionStates);
+title('V CoM Z'); xlabel('Time (s)'); ylabel('Z Velocity (m/s)');
+
+a=[a subplot(312)];
+hold on
+totalMass = 72.5748;
+plot(t,totalMass*9.8*pCom(3,:) + 1/2*totalMass*vCom(3,:).^2+1/2*totalMass*vCom(1,:).^2+1/2*totalMass*vCom(2,:).^2,'c');
+drawTransitions(transitionTimes,transitionStates);
+
+
+
 f = figure('Name','Pelvis Position','Position',figPos); figs = [figs f];
 clf
 title('CoM Position');
@@ -273,21 +355,21 @@ hold on
 plot(t,hCom(1,:),'r');
 plot(t,hComDes(1,:),'r--');
 drawTransitions(transitionTimes,transitionStates);
-xlabel('Time (s)'); ylabel('X Ang Mom');
+xlabel('Time (s)'); ylabel('X Ang Mom (N m s)');
 
 a=[a subplot(312)];
 hold on
 plot(t,hCom(2,:),'g');
 plot(t,hComDes(2,:),'g--');
 drawTransitions(transitionTimes,transitionStates);
-xlabel('Time (s)'); ylabel('Y Ang Mom');
+xlabel('Time (s)'); ylabel('Y Ang Mom (N m s)');
 
 a=[a subplot(313)];
 hold on
 plot(t,hCom(3,:),'b');
 plot(t,hComDes(3,:),'b--');
 drawTransitions(transitionTimes,transitionStates);
-xlabel('Time (s)'); ylabel('Z Ang Mom (m)');
+xlabel('Time (s)'); ylabel('Z Ang Mom (N m s)');
 
 
 
@@ -513,6 +595,51 @@ plot(t,zmpNz,'b');
 plot(t,zmpWrenchOpt(3,:),'b--');
 drawTransitions(transitionTimes,transitionStates);
 xlabel('Time (s)'); ylabel('ZMP N Z');
+
+
+f=figure('Name','ZMP Force/Pos','Position',figPos); figs = [figs f];
+a=[a subplot(321)];
+hold on
+plot(t,zmpForce(1,:),'b');
+plot(t,zmpWrenchOpt(4,:),'b--');
+drawTransitions(transitionTimes,transitionStates,6000);
+xlabel('Time (s)'); ylabel('CoP Force X (N)');
+
+a=[a subplot(323)];
+hold on
+plot(t,zmpForce(2,:),'b');
+plot(t,zmpWrenchOpt(5,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+xlabel('Time (s)'); ylabel('CoP Force Y (N)');
+
+a=[a subplot(325)];
+hold on
+plot(t,zmpForce(3,:),'b');
+plot(t,zmpWrenchOpt(6,:),'b--');
+drawTransitions(transitionTimes,transitionStates,6000);
+xlabel('Time (s)'); ylabel('CoP Force Z (N)');
+
+a=[a subplot(322)];
+hold on
+plot(t,zmpPos(1,:),'b');
+plot(t,zmpPosOpt(1,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+xlabel('Time (s)'); ylabel('CoP Pos X (m)');
+
+a=[a subplot(324)];
+hold on
+plot(t,zmpPos(2,:),'b');
+plot(t,zmpPosOpt(2,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+xlabel('Time (s)'); ylabel('CoP Pos Y (m)');
+
+a=[a subplot(326)];
+hold on
+plot(t,zmpNz,'b');
+plot(t,zmpWrenchOpt(3,:),'b--');
+drawTransitions(transitionTimes,transitionStates);
+xlabel('Time (s)'); ylabel('CoP Moment Z (N m)');
+
 
 
 

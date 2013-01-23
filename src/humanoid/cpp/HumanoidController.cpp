@@ -373,6 +373,15 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 		}
 		transformToZMP(zmpWrenchOpt,zmpPosOpt);
 		
+		{
+			Vector6F test = fs.segment(0,6)+fs.segment(6,6);
+			Vector3F p;
+			transformToZMP(test, p);
+			//cout << "test wrench " << test.transpose() << endl;
+		}
+			
+		
+		//cout << "zmp wrench " <<  zmpWrenchOpt.transpose() << endl;
 		
 		int k = 7;
 		// Skip over floating base (i=1 initially)

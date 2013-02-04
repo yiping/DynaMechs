@@ -688,7 +688,7 @@ void RunningStateMachine::Stance1()
 	
 	
 	
-	minfz =totalMass *(aComDes(2)+9.8)*.15;
+	minfz =totalMass *(aComDes(2)+9.8)*.01;
 	UpdateVariableBounds();
 	
 	//pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
@@ -1053,6 +1053,7 @@ void RunningStateMachine::Flight2()
 
 void RunningStateMachine::StateControl(ControlInfo & ci)
 {
+	//frame->transitionController->SetValue(true);
 	velocityTest = frame->velocityTest->IsChecked();
 	transitionController = frame->transitionController->IsChecked();
 	

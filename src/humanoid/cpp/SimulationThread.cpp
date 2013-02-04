@@ -52,7 +52,7 @@ void *SimulationThread::Entry()
 			//HumanoidControl(ci); 
 			//cout << ci.totalTime << "\t" << ci.calcTime << "\t" << ci.setupTime << "\t" << ci.optimTime << "\t" << ci.iter << endl;
 			
-			Float slowFactor = 10;
+			Float slowFactor = 4;
 			if (sim_time < 3) {
 				slowFactor = 1;
 			}

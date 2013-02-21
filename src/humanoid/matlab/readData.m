@@ -184,8 +184,8 @@ clf
 title('CoM Position');
 a=[a subplot(311)];
 hold on
-plot(t,pCom(1,:)-pComDes(1,:),'r');
-plot(t,pComDes(1,:)-pComDes(1,:),'r--');
+plot(t,pCom(1,:),'r');
+plot(t,pComDes(1,:),'r--');
 drawTransitions(transitionTimes,transitionStates);
 title('CoM X'); xlabel('Time (s)'); ylabel('X Position (m)');
 

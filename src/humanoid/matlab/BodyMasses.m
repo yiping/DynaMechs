@@ -38,7 +38,7 @@ links{7}.pos = [0  torsoLink.hipWidth/2 torsoLink.hipOffset];
 links{11}.pos = [0 -torsoLink.shoulderWidth/2 torsoLink.length-torsoLink.shoulderOffset];
 links{13}.pos = [0 torsoLink.shoulderWidth/2 torsoLink.length-torsoLink.shoulderOffset];
 
-
+return
 %addpath ../DynamicsLibrary
 
 % Torso orientation

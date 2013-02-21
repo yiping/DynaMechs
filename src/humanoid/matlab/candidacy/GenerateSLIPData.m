@@ -141,9 +141,9 @@ function hop()
     heights = [];
     
     paramsInitial = [.3 -1.2250 12000];
-    for vx = 3:.05:5.5
+    for vx = 3:.5:5.5
         
-        tStanceDes =10^-0.2*vx^-0.64;
+        tStanceDes =10^-0.2*vx^-0.82;
         cad = 2.551*vx*vx-8.8*vx+172.87;
         tFlightDes = 60/cad - tStanceDes;
 
@@ -156,6 +156,7 @@ function hop()
         ang = params(1);
         vy = params(2);
         k = params(3);
+        params
         [t z foot tf zf energy lo] = simulatePeriod(0,params);
 
 
@@ -200,7 +201,13 @@ function hop()
     fclose(fid);
 
 
-
+    figure(6)
+    subplot(131)
+    plot(thetas)
+    subplot(132)
+    plot(ks)
+    subplot(133)
+    plot(heights)
 
 
 

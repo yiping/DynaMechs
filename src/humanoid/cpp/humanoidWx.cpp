@@ -50,6 +50,8 @@
 #include "JumpingStateMachine.h"
 #include "BalanceDemoStateMachine.h"
 #include "RunningStateMachine.h"
+#include "CoordinatedCubicSpline.h"
+
 //#define KURMET_DEBUG
 
 #define OUTPUT_DEBUG_INFO
@@ -84,6 +86,35 @@ bool MyApp::OnInit()
 	parser.Parse();
 	
 
+	/*CoordinatedCubicSpline cs;
+	MatrixXF pts(2,7);
+	VectorXF times(7);
+	VectorXF vInit(2);
+	VectorXF vFinal(2);
+	
+	pts << -0.268065, -0.858982, -0.945076, -0.405032, 0.170231, 0.577220, 0.268065, 0.000000, 0.181749, 0.450000, 0.354752, 0.135097, 0.061231, 0.000000;
+	times << 0.000000, 0.071430, 0.142859, 0.227157, 0.311454, 0.382884, 0.454313;
+	
+	vInit << -3.5,0;
+	vFinal << -3.5,0;
+	cs.computeCoefficients(times, pts, vInit, vFinal);
+	
+	VectorXF pos(2), vel(2), acc(2);
+	
+	FILE * splineData = fopen("testSpline.dat","w");
+	for (Float t = 0; t<.5; t+=.001) {
+		
+		cs.eval(t, pos, vel, acc);
+		fprintf(splineData,"%f %f\n",pos(0),pos(1));
+	}
+	fclose(splineData);
+	exit(1);
+	
+	return true;*/
+	
+	
+	
+	
 	
 	
 	simThread = new SimulationThread();
@@ -430,8 +461,8 @@ void BasicGLPane::userGraphics()
 			glColor4f(1, 0, 0, 1.0);
 			drawArrow(humanoid->pCom, vDraw, .001, .02, .05);
 			
-			
-			vDraw << ((RunningStateMachine *) humanoid)->vDesDisplay/6.,0,0;
+			vDraw = humanoid->vComDes/6.;
+			//vDraw << ((RunningStateMachine *) humanoid)->vDesDisplay/6.,0,0;
 			
 			glColor4f(0, 0, 1, 1.0);
 			drawArrow(humanoid->pCom, vDraw, .001, .02, .05);

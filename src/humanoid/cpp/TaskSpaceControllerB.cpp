@@ -137,11 +137,35 @@ TaskSpaceControllerB::TaskSpaceControllerB(dmArticulation * art) : TaskSpaceCont
 	//cout << "LambdaEnd " << lambdaEnd << " NUMVAR " << NUMVAR << endl;
 	
 	int k=0;
-	for (int i=tauStart; i<tauEnd; i++) {
+	for (int i=tauStart; i<=tauEnd; i++) {
 		stringstream ss;
 		ss << "t" << k++;
 		MSK_putname(task, MSK_PI_VAR, i, (char *) ss.str().c_str());
 	}
+	
+	k=0;
+	for (int i=eStart; i<=eEnd; i++) {
+		stringstream ss;
+		ss << "e" << k++;
+		MSK_putname(task, MSK_PI_VAR, i, (char *) ss.str().c_str());
+	}
+
+	k=0;
+	int k1=0;
+	int k2=0;
+	for (int i=fStart; i<=fEnd; ) {
+		for (k2 = 0; k2<3; k2++) {
+			stringstream ss;
+			ss << "f" << k1 <<"," << k2;
+			MSK_putname(task, MSK_PI_VAR, i, (char *) ss.str().c_str());
+			i++;
+		}
+		k1++;
+	}
+	MSK_putname(task, MSK_PI_VAR, zStart, "z");
+	
+	
+	
 	
 	k=0;
 	for (int i=eConstrStart; i<= eConstrEnd; i++) {
@@ -225,7 +249,7 @@ void TaskSpaceControllerB::UpdateVariableBounds() {
 	blx[zStart] = -MSK_INFINITY;
 	bux[zStart] = +MSK_INFINITY;
 	
-	MSK_putboundslice(task, MSK_ACC_VAR, 0, NUMVAR-1, bkx, blx, bux);
+	MSK_putboundslice(task, MSK_ACC_VAR, 0, NUMVAR, bkx, blx, bux);
 }
 
 void TaskSpaceControllerB::AssignFootMaxLoad(int index, double maxLoad) {
@@ -475,11 +499,18 @@ void TaskSpaceControllerB::Optimize() {
 					printf("Primal or dual infeasibility certificate found.\n");
 					cout << "time = " <<setprecision(5) << simThread->sim_time << endl;
 					
+					
+					r = MSK_printdata(task, MSK_STREAM_LOG, 0, numCon, 0, NUMVAR, 0, NS*NP+1, 0, 0, 0, 0, 1, 1, 1, 1);
+					//r = MSK_printdata(task, MSK_STREAM_LOG	, 0, NUMVAR, 0, NUMCON, 0, NUMCONE, 0,0, 0, 0, 0, 0, 0, 1);
+					exit(-1);
 					simThread->paused_flag = true;
 					break;
 					
 				case MSK_SOL_STA_UNKNOWN:
 					printf("The status of the solution could not be determined.\n");
+				{ float a;
+					cin >> a;
+				}
 					break;
 				default:
 					printf("Other solution status.");

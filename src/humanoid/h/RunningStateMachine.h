@@ -14,8 +14,7 @@
 
 #include "CubicSplineTrajectory.h"
 #include "HumanoidDataLogger.h"
-#include "SlipModel.h"
-#include "LipModel.h"
+#include "SlipModel3D.h"
 #include <cstdio>
 
 class RunningStateMachine : public HumanoidDataLogger
@@ -65,28 +64,26 @@ private:
 	void Flight1();
 	void Flight2();
 	
-	/*void BalanceMiddle();
-	void Squat();
-	void Thrust();
-	void Flight();
+
+	typedef struct StepDataStruct {
+		Float touchDownLength;
+		Float touchDownAngle1;
+		Float touchDownAngle2;
+		Float k;
+		Float h0;
+		Float vx0;
+		Float vy0;
+		Float flightTime, stanceTime;
+		Float stepWidth;
+		Float footLength, CoPInitOffset, CoPVel;
+	} StepData;
 	
-	void BalanceLeft();
-	void Land();
 	
-	void RaiseFoot();
-	void Kick();*/
+	StepData thisStep;
 	
-	Float touchDownLength;
-	Float touchDownAngle;
-	Float legSpringConstant;
-	Float maxSLIPHeight;
-	Float flightTime, stanceTime;
-	Float forwardVelocity;
-	Float stepWidth;
-	Float restWidth;
-	Float SwayAmplitude, SwayStart;
+	Float hipWidth;
 	
-	vector<vector<Float> > SlipData;
+	vector<StepData> SlipData;
 	
 	
 	vector<FootServoType> footServos;
@@ -98,10 +95,10 @@ private:
 	Float kpCM, kdCM, kdAM;
 	
 	
-	SlipModel SLIP, prevSLIP;
-	bool transitionStep;
-	
-	LipModel LIP;
+	SlipModel3D SLIP;
+	//SlipModel SLIP, prevSLIP;
+	//bool transitionStep;
+	//LipModel LIP;
 	
 	int stanceLeg, flightLeg;
 	

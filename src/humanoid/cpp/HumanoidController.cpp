@@ -316,12 +316,21 @@ void HumanoidController::HumanoidControl(ControlInfo & ci) {
 					UpdateObjective();
 					UpdateHPTConstraintBounds();
 					dmGetSysTime(&tv3);
-					//cout << "Optimizing level " << level << endl;
+					//if (simThread->sim_time > 3) {
+					//		cout << "\n\n\n\nOptimizing level\n\n\n" << level << endl;
+					//}
+					//for (int i=0; i<numTasks; i++) {
+					//	cout <<"e"<<i<<" " << taskOptimActive(i) << "," << taskConstrActive(i) << endl;
+						
+					//}
 					Optimize();
 					for (int i=0; i<numTasks;i ++) {
 						if (OptimizationSchedule(i) == level) {
 							TaskBias(i) += TaskError(i);
-							//cout << "Optimization Level " << level << " task error " << i << " = " << TaskError(i) << endl; 
+							//if (simThread->sim_time > 3) {
+							//	cout << "Optimization Level " << level << " task error " << i << " = " << TaskError(i) << endl;
+							//}
+							 
 						}
 					}
 				}

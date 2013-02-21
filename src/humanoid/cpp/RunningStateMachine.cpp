@@ -12,6 +12,7 @@
 #include "BezierCurve.h"
 #include "dmRigidBody.hpp"
 
+
 RunningStateMachine::RunningStateMachine(dmArticulation * robot) 
 : HumanoidDataLogger(robot, NUM_RUN_STATES), ComTrajectory(3)
 {
@@ -131,121 +132,43 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	state = FLOATING;
 	transitionFlag = true;
 	
-	// 2.5 m/s
-	/*touchDownAngle = 0.345209;
-	touchDownLength = .93;
-	legSpringConstant = 13247.243210;
-	maxSLIPHeight = 0.900325;
-	forwardVelocity = 2.600000;
-	
-	stanceTime = .255;
-	flightTime = 0.1434;*/
-	
-	
-	// 3.5 m/s
-	/*touchDownAngle = 0.396459;
-	touchDownLength = .98;
-	legSpringConstant = 12854.483189;
-	maxSLIPHeight = 0.923557;
-	forwardVelocity = 3.500000;
-	
-	stanceTime = .255;
-	flightTime = 0.1434;*/
-	
-	// 3.5 m/s fast cadence
-	/*touchDownAngle = 0.316856;
-	touchDownLength = .98;
-	legSpringConstant = 20372.460409;
-	maxSLIPHeight = 0.966499;
-	forwardVelocity = 3.5;
-	stanceTime = 0.180000;
-	flightTime = .17;
-	 SwayAmplitude = .01;
-	 SwayStart = .0148;*/
-	
-	
-	
 	
 	// 3.5 m/s test 3 (and transition controller)
-	touchDownAngle=	0.320423;
-	legSpringConstant = 	20207.700395;
-	forwardVelocity = 	3.500000;
-	maxSLIPHeight = 	0.951989;
-	touchDownLength = 	0.970000;
-	stanceTime = 	0.180000;
-	flightTime = 	0.160000;
-	SwayAmplitude = .01;
-	SwayStart = .0148; 
+	/*thisStep.touchDownAngle1=	0.280134;
+	thisStep.touchDownAngle2=	0.000000;
+	thisStep.k = 	26745.050005;
+	thisStep.vx0 = 	3.500000;
+	thisStep.vy0 = 	0.227812;
+	thisStep.h0 = 	0.977582;
+	thisStep.touchDownLength = 	0.970000;
+	thisStep.stanceTime = 	0.157500;
+	thisStep.flightTime = 	0.192500;
+	thisStep.stepWidth = 	0.149027;*/
 	
-	
-	// 4.4 m/s
-	/*touchDownAngle=	0.429390;
-	legSpringConstant = 	11994.503323;
-	forwardVelocity = 	4.400000;
-	maxSLIPHeight = 	0.969610;
-	touchDownLength = 	1.050000;
-	stanceTime = 	0.205000;
-	flightTime = 	0.110800;*/
-	
-	// 5.0 m/s
-	/*touchDownAngle=	0.436423;
-	legSpringConstant = 	15065.438410;
-	forwardVelocity = 	5.000000;
-	maxSLIPHeight = 	0.904073;
-	touchDownLength = 	0.970000;
-	stanceTime = 	0.168595;
-	flightTime = 	0.142859;
-	SwayAmplitude = .005;
-	SwayStart = .007418;*/
+	thisStep.touchDownAngle1=	0.280977;
+	thisStep.touchDownAngle2=	0.000000;
+	thisStep.k = 	25332.191541;
+	thisStep.vx0 = 	3.500000;
+	thisStep.vy0 = 	0.228157;
+	thisStep.h0 = 	0.977356;
+	thisStep.touchDownLength = 	0.970000;
+	thisStep.stanceTime = 	0.157500;
+	thisStep.flightTime = 	0.192500;
+	thisStep.footLength = 	0.139000;
+	thisStep.CoPInitOffset = 	-0.069500;
+	thisStep.CoPVel    = 	0.882540;
+	thisStep.stepWidth = 	0.149060;
 	
 	
 	
-	
-	// 6 m/s
-	/*touchDownAngle=	0.320645;
-	legSpringConstant = 	24445.777807;
-	forwardVelocity = 	6.000000;
-	maxSLIPHeight = 	0.975204;
-	touchDownLength = 	1.000000;
-	stanceTime = 	0.146300;
-	flightTime = 	0.146300;
-	SwayAmplitude = .005;
-	SwayStart = .007418;*/
-	
-	
-	
-	
-	/*touchDownAngle = 0;
-	touchDownLength = .85;
-	legSpringConstant = 13275.962156;
-	maxSLIPHeight = 0.960249;
-	forwardVelocity = 0;*/
-	
-	restWidth = .13;
-	stepWidth = .08;
+	hipWidth = 0.2542032;
 	
 	pTOFData = fopen("tofData.txt","w");
 	
-	vDesDisplay = forwardVelocity;
-	vActDisplay = forwardVelocity;
+	vDesDisplay = thisStep.vx0;
+	vActDisplay = thisStep.vx0;
 	transitionController = false;
 	velocityTest = false;
-	
-	FILE * fid = fopen("SlipData.txt","r");
-	SlipData.resize(51);
-	for(int i=0;i<51;i++) {
-		SlipData[i].resize(7);
-		int scans = fscanf(fid, "%lf%lf%lf%lf%lf%lf%lf",&SlipData[i][0],&SlipData[i][1],&SlipData[i][2]
-						,&SlipData[i][3],&SlipData[i][4],&SlipData[i][5],&SlipData[i][6]);
-		
-		//cout << "Scans = " << scans << "v=" << SlipData[i][0] << endl;
-	}
-	fclose(fid);
-	
-	//cout << "SlipData[2][4] " << SlipData[2][4] << endl;
-	
-	
-	//exit(-1);
 }
 
 void RunningStateMachine::Floating() {
@@ -297,31 +220,20 @@ void RunningStateMachine::Floating() {
 		}
 		
 		
-		
-		
-		
-		
-		
 		footServos[0] = COM_SERVO;
 		footServos[1] = COM_SERVO;
 		
+		pDesFoot[0] << -thisStep.touchDownLength*sin(thisStep.touchDownAngle1), 
+							-hipWidth/2,-thisStep.touchDownLength*cos(thisStep.touchDownAngle1)+.25;
+		pDesFoot[1] << thisStep.touchDownLength*sin(thisStep.touchDownAngle1), 
+							 hipWidth/2,-thisStep.touchDownLength*cos(thisStep.touchDownAngle1);
 		
-		//pDesFoot[0] << 2, 1.87,.45;
-		//pDesFoot[1] << 2, 2.13,.45;
-		pDesFoot[0] << -touchDownLength*sin(touchDownAngle), -restWidth,-touchDownLength*cos(touchDownAngle)+.25;
-		pDesFoot[1] << touchDownLength*sin(touchDownAngle), stepWidth,-touchDownLength*cos(touchDownAngle);
-		
-		//pDesFoot[0] = pFoot[0];
-		//pDesFoot[0](2) += .1;
-		//pDesFoot[1] = pFoot[1];
-		//pDesFoot[1](2) += .1;
 		
 		kpFoot[0]=50;
 		kdFoot[0]=2*sqrt(50);
 		
 		kpFoot[1]=50;
 		kdFoot[1]=2*sqrt(50);
-		
 	}
 	
 	//OptimizationSchedule.segment(6,3).setConstant(-1);
@@ -353,7 +265,7 @@ void RunningStateMachine::Floating() {
 		artic->getLink(0)->getState(fbQ, fbQd);
 		//cout << "Orig State " << fbQ[6] << endl;
 		
-		fbQ[6] += maxSLIPHeight - pCom(2);
+		fbQ[6] += thisStep.h0 - pCom(2);
 		artic->getLink(0)->setState(fbQ, fbQd);
 		//cout << "Set State " << fbQ[6] << endl;
 		simThread->G_integrator->synchronizeState();
@@ -370,8 +282,8 @@ void RunningStateMachine::Floating() {
 		fbQd[0] = 0; 
 		fbQd[1] = 0;
 		fbQd[2] = 0;
-		fbQd[3] = forwardVelocity;
-		fbQd[4] = 0;
+		fbQd[3] = thisStep.vx0;
+		fbQd[4] = thisStep.vy0;
 		fbQd[5] = 0;
 	
 		artic->getLink(0)->setState(fbQ, fbQd);
@@ -453,6 +365,16 @@ void RunningStateMachine::Drop() {
 
 void RunningStateMachine::PreHop()
 {
+	if (pFoot[0](2) < .002 || pFoot[1](2) < .002) 
+	{
+		
+		cout << "Touchdown" << endl;
+		transitionFlag=true;
+		state=STANCE1;
+		
+		return;
+	}
+	
 	slipSpringEnergy = 0;
 	slipKineticEnergy = 0;
 	slipPotentialEnergy = 0;
@@ -470,38 +392,22 @@ void RunningStateMachine::PreHop()
 	AssignFootMaxLoad(0,0);
 	AssignFootMaxLoad(1,0);
 	
-	if (pFoot[0](2) < .002 || pFoot[1](2) < .002) 
-	{
-		
-		cout << "Touchdown" << endl;
-		transitionFlag=true;
-		state=STANCE1;
-		
-		return;
-	}
+
 	
 	
 	transitionFlag = false;
 }
 void RunningStateMachine::Stance1()
 {
-	SwayStart = flightTime * SwayAmplitude * M_PI / (2 * stanceTime);
-	
 	static bool bof = false;
-	
 	static CubicSplineTrajectory flightFootSpline(3);
-	static CubicSplineTrajectory horizontalSpline(3);
-	static CubicSpline blendSpline;
 	
 	static Float finishHeight = 0;
 	
 	static bool firstHalf = true;
 	if (transitionFlag) {
 		bof= false;
-		if (transitionStep) {
-			Float blendTime = (stanceTime < prevStanceTime ? stanceTime : prevStanceTime);
-			blendSpline.init(0, 0, 1, 0, blendTime);
-		}
+		
 		
 		
 		//Initilize right foot spline
@@ -512,104 +418,51 @@ void RunningStateMachine::Stance1()
 			startVel = vFoot[flightLeg].tail(3) - vCom;
 			int flightYSign = (flightLeg == 0 ? -1 : 1);
 			
-			//endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2);
-			//endPos << touchDownLength*sin(touchDownAngle)*3./4., startPos(1), startPos(2)-.15;
-			if (transitionController && (stepNum == 5  || stepNum ==6)) {
-				Float touchDownAngle2=	0.225380;
-				Float touchDownLength2 = 	0.924829;
-				Float lift = .05;
-				if (stepNum == 6) {
-					touchDownAngle2=	0.414741;
-					touchDownLength2 = 	0.970000;
-					lift = .15;
-				}
-				endPos << touchDownLength2*sin(touchDownAngle2)*3/4, stepWidth * flightYSign, -touchDownLength2*cos(touchDownAngle2)+lift;
-				//frame->slowMotion->SetValue(true);
-			}
-			else {
-				endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2)-.15;
-			}
-
-			//endPos << touchDownLength*sin(touchDownAngle)*3./4., stepWidth * flightYSign, startPos(2)-.15;
-			endVel.setZero();
-			flightFootSpline.init(startPos, startVel, endPos, endVel, stanceTime*1.1);
 			
-			startPos << 0,0,0;
-			endPos   << 0,.5*(restWidth-stepWidth) * flightYSign*0,0;
-			startVel << 0,0,0;
-			endVel   << 0,0,0;
-			horizontalSpline.init(startPos, startVel, endPos, endVel, stanceTime/2.);
+			endPos << thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*3./4., 
+							hipWidth/2 * flightYSign, startPos(2)-.15;
+
+			
+			endVel.setZero();
+			flightFootSpline.init(startPos, startVel, endPos, endVel, thisStep.stanceTime*1.1);
 		}
 		
 		// Initialize SLIP and LIP models
 		{
-			//simThread->idt/=10;
-			//simThread->cdt/=10;
+			int stanceYSign = (stanceLeg == 0 ? -1 : 1);
 			
-			LIP.pos = pCom.head(2);
-			LIP.vel = vCom.head(2);
-			LIP.g = 9.8;
-			LIP.height = pCom(2);
-			LIP.anchor = pFoot[stanceLeg].head(2);
+			SLIP.pos    = pCom;
 			
-			
-			LIP.pos(1) = 2;
-			LIP.anchor(1) = 2;
-			
-			SLIP.pos(0) = pCom(0);
-			SLIP.pos(1) = pCom(2);
 			
 			SLIP.anchor(0) = pFoot[stanceLeg](0);
-			SLIP.anchor(1) = 0;
+			SLIP.anchor(1) = thisStep.stepWidth*stanceYSign+2;
+			SLIP.anchor(2) = 0;
 			
-			SLIP.pos(0) = SLIP.anchor(0) - touchDownLength*sin(touchDownAngle);
-			SLIP.pos(1) = SLIP.anchor(1) + touchDownLength*cos(touchDownAngle);
+			SLIP.pos(0) = SLIP.anchor(0) - thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*cos(thisStep.touchDownAngle2);
+			SLIP.pos(1) = SLIP.anchor(1) - stanceYSign*(hipWidth/2. + thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*sin(thisStep.touchDownAngle2));
+			SLIP.pos(2) = SLIP.anchor(2) + thisStep.touchDownLength*cos(thisStep.touchDownAngle1);
 			
-			
-			SLIP.vel(0) = forwardVelocity;
-			SLIP.vel(1) = -sqrt(2*9.8*(maxSLIPHeight-touchDownLength*cos(touchDownAngle)));
-			
-			
-			Vector2F relPos = SLIP.pos - SLIP.anchor;
-			
+			SLIP.vel(0) = thisStep.vx0;
+			SLIP.vel(1) = thisStep.vy0*stanceYSign;
+			SLIP.vel(2) = -sqrt(2*9.8*(thisStep.h0-SLIP.pos(2)));
 			
 			
+			
+			Vector3F relPos = SLIP.pos - SLIP.anchor;
 			SLIP.restLength = relPos.norm();
 			SLIP.mass = totalMass;
-			SLIP.springConst = legSpringConstant;
-			
-			cout << "K = " << legSpringConstant << endl;
+			SLIP.springConst = thisStep.k;
 			
 			
-			if (transitionStep) {
-				prevSLIP.mass = totalMass;
-				prevSLIP.springConst = prevLegSpringConstant;
-				prevSLIP.anchor = SLIP.anchor;
-				
-				prevSLIP.pos(0) = SLIP.anchor(0) - prevTouchDownLength*sin(prevTouchDownAngle);
-				prevSLIP.pos(1) = SLIP.anchor(1) + prevTouchDownLength*cos(prevTouchDownAngle);
-				
-				prevSLIP.vel(0) = prevForwardVelocity;
-				prevSLIP.vel(1) = -sqrt(2*9.8*(prevMaxSLIPHeight-prevTouchDownLength*cos(prevTouchDownAngle)));
-				
-				Vector2F relPos = prevSLIP.pos - prevSLIP.anchor;
-				
-				prevSLIP.restLength = relPos.norm();
-				
-				
-			}
+			SLIP.anchor(0) += thisStep.CoPInitOffset;
+			SLIP.anchorVel.setZero();
+			SLIP.anchorVel(0)+=thisStep.CoPVel;
 			
-			//SLIP.vel(0) = vCom(0);
-			//SLIP.vel(1) = vCom(2);
-			
-			finishHeight = SLIP.pos(1);
-			if (transitionController && stepNum == 6) {
-				finishHeight = .8719;
-			}
-			
+			cout << "K = " << thisStep.k << endl;
 			cout << "relPos\t" << -relPos.transpose() << endl;
 			cout << "vSLIP\t" << SLIP.vel.transpose() << endl;
 			cout << "vCOM\t" << vCom.transpose() << endl;
+			cout << "SLIP Pos \t"<< SLIP.pos.transpose() << endl;
 		}
 		
 		
@@ -624,109 +477,47 @@ void RunningStateMachine::Stance1()
 	
 	
 	SLIP.dynamics();
-	LIP.dynamics();
+
 	
 	int stanceYSign = (stanceLeg == 0 ? -1 : 1);
 	
-	Float latPos = (SwayAmplitude*sin(M_PI*stateTime/stanceTime)+SwayStart)*stanceYSign;
-	Float latVel = (SwayAmplitude*M_PI*cos(M_PI*stateTime/stanceTime))*stanceYSign/stanceTime;
-	Float latAcc = (-SwayAmplitude*pow(M_PI,2)*sin(M_PI*stateTime/stanceTime))*stanceYSign/pow(stanceTime,2);
-	
 	slipSpringEnergy = 1/2. * SLIP.springConst * pow(SLIP.restLength-SLIP.length,2);
 	slipKineticEnergy = 1/2. * SLIP.mass * SLIP.vel.dot(SLIP.vel);
-	slipPotentialEnergy = SLIP.mass * 9.8 * SLIP.pos(1);
-	
-	//cout << "Kin " << slipKineticEnergy << endl;
-	//cout << "Pot " << slipPotentialEnergy << endl;
-	//cout << "Tot " << slipKineticEnergy + slipPotentialEnergy + slipSpringEnergy << endl;
-	
-	//if (!transitionStep) {
-		pComDes << SLIP.pos(0), 2+latPos, SLIP.pos(1);
-		vComDes << SLIP.vel(0), latVel, SLIP.vel(1);
-		aComDes << SLIP.acc(0), latAcc, SLIP.acc(1);
-	//}
-	//else {
-		
-		//prevSLIP.dynamics();
-		
-		/*if (prevSLIP.vel(1) <0) {
-			pComDes << prevSLIP.pos(0), 2+latPos, prevSLIP.pos(1);
-			vComDes << prevSLIP.vel(0), latVel, prevSLIP.vel(1);
-			aComDes << prevSLIP.acc(0), latAcc, prevSLIP.acc(1);
-			
-		}
-		else {
-			pComDes << SLIP.pos(0), 2+latPos, SLIP.pos(1);
-			vComDes << SLIP.vel(0), latVel, SLIP.vel(1);
-			aComDes << SLIP.acc(0), latAcc, SLIP.acc(1);
-		}*/
-
-		/*Float a, ad, add;
-		blendSpline.eval(stateTime, a, ad,add);
-		
-		Vector2F pos, vel, acc;
-		pos = a*SLIP.pos + (1-a)*prevSLIP.pos;
-		vel = a*SLIP.vel + (1-a)*prevSLIP.vel;// + ad*(SLIP.pos-prevSLIP.pos);
-		acc = SLIP.acc;// + 2*ad*(SLIP.vel-prevSLIP.vel) + add*(SLIP.pos-prevSLIP.pos);
-		
-		pComDes << pos(0), 2+latPos, pos(1);
-		vComDes << vel(0), latVel, vel(1);
-		aComDes << acc(0), latAcc, acc(1);
-		
-		
-		cout << "Spos " << SLIP.pos.transpose() << endl;
-		cout << "Ppos " << prevSLIP.pos.transpose() << endl;*/
-		
-		
-		
-		//pComDes << SLIP.pos(0), 2+latPos, SLIP.pos(1);
-		//vComDes << SLIP.vel(0), latVel, SLIP.vel(1);
-		//aComDes << SLIP.acc(0), latAcc, SLIP.acc(1);
-	//}
+	slipPotentialEnergy = SLIP.mass * 9.8 * SLIP.pos(2);
 
 	
+	pComDes = SLIP.pos;
+	vComDes = SLIP.vel;
+	aComDes = SLIP.acc;
 	
+	cout << "pComDes = " << pComDes.transpose() << endl;
+	cout << "pCom    = " << pCom.transpose() << endl;
+	
+	cout << "vComDes = " << vComDes.transpose() << endl;
+	cout << "vCom    = " << vCom.transpose() << endl;
+	
+	cout << "aComDes = " << aComDes.transpose() << endl;
 	
 	
 	minfz =totalMass *(aComDes(2)+9.8)*.01;
+	if (minfz < 0) {
+		minfz = 0;
+	}
 	UpdateVariableBounds();
 	
-	//pComDes << SLIP.pos(0), LIP.pos(1), SLIP.pos(1);
-	//vComDes << SLIP.vel(0), LIP.vel(1), SLIP.vel(1);
-	//aComDes << SLIP.acc(0), LIP.acc(1), SLIP.acc(1);
 	
 	
 	for (int i=0; i<100; i++) {
 		SLIP.integrate(simThread->cdt/100.);
-		LIP.integrate(simThread->cdt/100.);
-		if ((stepNum==6) && transitionController) {
-			if (!bof && SLIP.vel(1)>0) {
-				bof = true;
-				SLIP.restLength = .97;
-			}
-		}
 		
-		if (transitionStep) {
-			prevSLIP.integrate(simThread->cdt/100.);
-		}
-		if((SLIP.pos(1)>=finishHeight) && (SLIP.vel(1)>0))
+		if((SLIP.length >= SLIP.restLength) && (SLIP.vel(2)>0))
 			break;
 	}
-	if (firstHalf && stateTime > stanceTime/2.) {
-		VectorXF endPos(3), endVel(3);
-		endPos.setZero();
-		endVel.setZero();
-		horizontalSpline.reInit(stateTime, endPos, endVel, stanceTime/2.);
-		firstHalf = false;
-	}
-	
-	
 	
 	
 	
 	
 	//OptimizationSchedule.segment(3,3).setConstant(3);
-	
 	OptimizationSchedule.segment(0,3).setConstant(4);
 	TaskWeight.segment(0,3).setConstant(200/10.);
 	//TaskWeight.segment(2,1).setConstant(90.);
@@ -735,9 +526,6 @@ void RunningStateMachine::Stance1()
 	
 	
 	kpCM = 150;
-	//if (transitionStep) {
-	//	kpCM = 40;
-	//}
 	kdCM = 2*sqrt(kpCM);
 	kdAM = 25;
 	
@@ -747,18 +535,8 @@ void RunningStateMachine::Stance1()
 	
 	
 	VectorXF p(3), pd(3), pdd(3);
-	VectorXF ph(3), pdh(3), pddh(3);
-	if (firstHalf) {
-		horizontalSpline.eval(stateTime, ph,pdh,pddh);
-	}
-	else {
-		horizontalSpline.eval(stateTime-stanceTime/2., ph,pdh, pddh);
-	}
+	
 
-	
-	//kpCM = 15;
-	//kdCM = 25;
-	
 	aDesFoot[flightLeg].setZero();
 	
 	AssignFootMaxLoad(flightLeg,0);
@@ -767,21 +545,22 @@ void RunningStateMachine::Stance1()
 	kdFoot[flightLeg]=2*sqrt(50);
 	
 	flightFootSpline.eval(stateTime, p,pd, pdd);
-	pDesFoot[flightLeg] = p+ph;
-	vDesFoot[flightLeg].tail(3) = pd+pdh;
-	aDesFoot[flightLeg].tail(3) = pdd+pddh;
+	pDesFoot[flightLeg] = p;
+	vDesFoot[flightLeg].tail(3) = pd;
+	aDesFoot[flightLeg].tail(3) = pdd;
+
 	
 	kpFoot[stanceLeg] = 0;
 	kdFoot[stanceLeg] = 0;
 	aDesFoot[stanceLeg].setZero();
 	
 	static bool slowFlag = true;
-	if((SLIP.pos(1)>=finishHeight) && (SLIP.vel(1)>0)) {
-		
+	if((SLIP.length >= SLIP.restLength) && (SLIP.vel(2)>0)) {
+		cout << "Transition to Flight";
 		cout << "vCom\t" << vCom.transpose() << endl;
 		cout << "vSLIP\t" << SLIP.vel.transpose() << endl;
 		
-		Vector2F pos = SLIP.pos - SLIP.anchor;
+		Vector3F pos = SLIP.pos - SLIP.anchor;
 		cout << "Pos\t" << pos.transpose() << endl;
 		
 		pDesFoot[0] = pFoot[0]-pCom;
@@ -825,159 +604,43 @@ void RunningStateMachine::Flight1()
 		//bool foundVel = false;
 		stepNum ++;
 		
-		if (velocityTest) {
-			if (stepNum == 6) {
-				vDesDisplay = 4.0;
-			}
-			
-			/*if (stepNum == 9) {
-				vDesDisplay = 3.75;
-			}
-			
-			if (stepNum == 12) {
-				vDesDisplay = 4.25;
-			}
-			
-			if (stepNum == 15) {
-				vDesDisplay = 4.0;
-			}
-			if (stepNum == 18) {
-				vDesDisplay = 4.5;
-			}*/
-		}
-		
-		
-		if (transitionController && stepNum == 6) {
-			touchDownAngle=	0.225380;
-			legSpringConstant = 	21707.436838;
-			forwardVelocity = 	3.500000;
-			//maxSLIPHeight = 	0.909612;
-			vDesDisplay = 4.0;
-			touchDownLength = 	0.924829;
-			stanceTime = 	0.175122;
-			flightTime = 0.1816;	// pre transition flight time
-			
-		}
-		if (transitionController && stepNum == 7) {
-			flightTime = 	0.154503; // Post transition flight time
-			touchDownAngle=	0.414741;
-			
-			legSpringConstant = 	13562.369159;
-			forwardVelocity = 	4.000000;
-			maxSLIPHeight = 	0.909612;
-			touchDownLength = 	0.970000;
-			stanceTime = 	0.202447;
-		}
-		if (transitionController && stepNum == 8) {
-			flightTime = 	0.133714;
-		}
-		
-		
-		if (vDesDisplay != prevvDes && stepNum > 1) {
-			transitionStep = true;
-			transitionStep = true;
-			prevForwardVelocity = forwardVelocity;
-			prevStanceTime = stanceTime;
-			prevFlightTime = flightTime;
-			prevLegSpringConstant = legSpringConstant;
-			prevTouchDownAngle = touchDownAngle;
-			prevMaxSLIPHeight = maxSLIPHeight;
-			prevTouchDownLength = touchDownLength;
-		}
-		else {
-			transitionStep = false;
-		}
-
-		
-
-		if (! transitionController && (stepNum>=6 || !velocityTest)) {
-			int i=0;
-			while(1 == 1)
-			{
-				float Diff = SlipData[i][0]-vDesDisplay;
-				if (Diff*Diff < 1e-6 ) {
-					break;
-				}
-				i++;
-			}
-			prevvDes = vDesDisplay;
-			forwardVelocity = SlipData[i][0];
-			stanceTime = SlipData[i][1];
-			flightTime = SlipData[i][2];
-			legSpringConstant = SlipData[i][3];
-			touchDownAngle = SlipData[i][4];
-			maxSLIPHeight = SlipData[i][5];
-			touchDownLength = SlipData[i][6];
-		}
-		
-		
-		
-		
 		firstHalf = true;
 		VectorXF startPos(3),endPos(3),startVel(3), endVel(3);
 		
 		startPos = pFoot[flightLeg] - pCom;
 		
-		if (transitionController && stepNum == 6) {
-			Float touchDownLength2 = 0.970000;
-			Float touchDownAngle2 = 0.320423;
-			endPos << -touchDownLength2*sin(touchDownAngle2), stepWidth * flightYSign,-touchDownLength2*cos(touchDownAngle2)+.25;
-		}
-		else
-		{
-				endPos << -touchDownLength*sin(touchDownAngle), stepWidth * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
-		}
-		//endPos << -touchDownLength*sin(touchDownAngle), stepWidth * flightYSign,-touchDownLength*cos(touchDownAngle)+.25;
+		endPos << -thisStep.touchDownLength*sin(thisStep.touchDownAngle1), 
+						hipWidth/2. * flightYSign,-thisStep.touchDownLength*cos(thisStep.touchDownAngle1)+.25;
+		
 		startVel.setZero();
 		endVel.setZero();
-		flightFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
-		
+		flightFootSpline.init(startPos, startVel, endPos, endVel, thisStep.flightTime);
 		
 		startPos = pFoot[stanceLeg] - pCom;
-		endPos << touchDownLength*sin(touchDownAngle), stepWidth * stanceYSign,-touchDownLength*cos(touchDownAngle);
+		endPos << thisStep.touchDownLength*sin(thisStep.touchDownAngle1), 
+								hipWidth/2. * stanceYSign,-thisStep.touchDownLength*cos(thisStep.touchDownAngle1);
+		
 		startVel = vFoot[stanceLeg].tail(3) - vCom;
 		endVel.setZero();
-		stanceFootSpline.init(startPos, startVel, endPos, endVel, flightTime);
-		
-		
-		
-		/*startPos.setZero();
-		endPos.setZero();
-		endPos(2) = .2;
-		startVel.setZero();
-		endVel.setZero();
-		
-		verticalSpline.init(startPos,startVel,endPos,endVel,flightTime/2.);
-		firstHalf = true;*/
+		stanceFootSpline.init(startPos, startVel, endPos, endVel, thisStep.flightTime);
 	}
 	
 	if ( (pFoot[0](2) < .002 || pFoot[1](2) < .002) && stateTime > .05) {
 		cout << "Touchdown" << endl;
 		transitionFlag=true;
 		state=STANCE1;
-		cout << "Flight Time " << stateTime << " vs. Desired " << flightTime << endl;
+		cout << "Flight Time " << stateTime << " vs. Desired " << thisStep.flightTime << endl;
 		return;
 	}
 	
 	
 	if(firstHalf && vCom(2) < 0)
 	{
-		fprintf(pTOFData,"%.5lf %.5lf %.5lf %.5lf\n",forwardVelocity, vCom(0), maxSLIPHeight,pCom(2));
+		fprintf(pTOFData,"%.5lf %.5lf %.5lf %.5lf\n",thisStep.vx0, vCom(0), thisStep.h0,pCom(2));
 		vActDisplay   = vCom(0);
 		firstHalf = false;
 	}
 	
-	
-	/*if ((stateTime > flightTime/2.) && firstHalf) {
-		
-		VectorXF startPos(3),endPos(3),startVel(3), endVel(3);
-		startPos.setZero();
-		endPos.setZero();
-		startVel.setZero();
-		endVel.setZero();
-		verticalSpline.reInit(stateTime, endPos, endVel, flightTime/2.);
-		firstHalf = false;
-	}*/
 	
 	// This is for prettier graphs
 	aComDes.setZero(3);
@@ -998,17 +661,8 @@ void RunningStateMachine::Flight1()
 	AssignFootMaxLoad(0,0);
 	AssignFootMaxLoad(1,0);
 	
-	/*if (pFoot[0](2) > .01 && pFoot[1](2) > .01) {
-		pDesFoot[0] << 0.254750, -.13,-0.894429;
-		pDesFoot[1] << 0.254750, .13,-0.894429;
-	}*/
-	
-	
 	
 	VectorXF p(3), pd(3), pdd(3);
-	
-	
-	
 	
 	flightFootSpline.eval(stateTime, p,pd, pdd);
 	
@@ -1016,17 +670,11 @@ void RunningStateMachine::Flight1()
 	vDesFoot[flightLeg].tail(3) = pd;
 	aDesFoot[flightLeg].tail(3) = pdd;
 	
-	
 	stanceFootSpline.eval(stateTime, p,pd, pdd);
 	
 	pDesFoot[stanceLeg] = p;
 	vDesFoot[stanceLeg].tail(3) = pd;
 	aDesFoot[stanceLeg].tail(3) = pdd;
-	
-	//pDesFoot[0] = pFoot[0];
-	//pDesFoot[0](2) += .1;
-	//pDesFoot[1] = pFoot[1];
-	//pDesFoot[1](2) += .1;
 	
 	kpFoot[0]=50;
 	kdFoot[0]=2*sqrt(50);
@@ -1034,13 +682,10 @@ void RunningStateMachine::Flight1()
 	kpFoot[1]=50;
 	kdFoot[1]=2*sqrt(50);
 	
-	
 	transitionFlag = false;
 	
 	OptimizationSchedule.head(6).setConstant(-1);
 	OptimizationSchedule.tail(12).setConstant(1);
-	
-
 }
 
 void RunningStateMachine::Flight2()
@@ -1131,12 +776,12 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 		(this->*stateFunctions[state])();
 	} while (transitionFlag);
 	
-	/*if (stateTime == simThread->cdt) {
+	if (stateTime == simThread->cdt) {
 		
 		cout << "after machine State = " << stateNames[state] << endl;
 		cout << "Weights = " << endl << TaskWeight << endl;
 		cout << "Schedule = " << endl << OptimizationSchedule << endl;
-	}*/
+	}
 	
 	
 	if (state != DROP) {

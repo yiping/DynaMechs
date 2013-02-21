@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		191FCE5416D29B02005764F8 /* SlipModel3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191FCE5316D29B02005764F8 /* SlipModel3D.cpp */; };
+		191FD06616D69D8D005764F8 /* CoordinatedCubicSpline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191FD06516D69D8D005764F8 /* CoordinatedCubicSpline.cpp */; };
 		192003E915A5F9FD0006A823 /* HumanoidStateMachineController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 192003E715A5F9FD0006A823 /* HumanoidStateMachineController.cpp */; };
 		192003EA15A5F9FD0006A823 /* StateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 192003E815A5F9FD0006A823 /* StateMachine.cpp */; };
 		192587F214D2F26600778EA7 /* dm.h in Headers */ = {isa = PBXBuildFile; fileRef = 1925864014D2E95000778EA7 /* dm.h */; };
@@ -715,6 +717,10 @@
 
 /* Begin PBXFileReference section */
 		1908ABA415A3201D001F0075 /* CommandLine Stuff */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommandLine Stuff"; sourceTree = "<group>"; };
+		191FCE5216D29AF6005764F8 /* SlipModel3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlipModel3D.h; path = src/humanoid/h/SlipModel3D.h; sourceTree = "<group>"; };
+		191FCE5316D29B02005764F8 /* SlipModel3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SlipModel3D.cpp; path = src/humanoid/cpp/SlipModel3D.cpp; sourceTree = "<group>"; };
+		191FD06416D69D84005764F8 /* CoordinatedCubicSpline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoordinatedCubicSpline.h; path = src/humanoid/h/CoordinatedCubicSpline.h; sourceTree = "<group>"; };
+		191FD06516D69D8D005764F8 /* CoordinatedCubicSpline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoordinatedCubicSpline.cpp; path = src/humanoid/cpp/CoordinatedCubicSpline.cpp; sourceTree = "<group>"; };
 		192003E715A5F9FD0006A823 /* HumanoidStateMachineController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HumanoidStateMachineController.cpp; path = src/humanoid/cpp/HumanoidStateMachineController.cpp; sourceTree = "<group>"; };
 		192003E815A5F9FD0006A823 /* StateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StateMachine.cpp; path = src/humanoid/cpp/StateMachine.cpp; sourceTree = "<group>"; };
 		192003EB15A5FA0D0006A823 /* HumanoidStateMachineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HumanoidStateMachineController.h; path = src/humanoid/h/HumanoidStateMachineController.h; sourceTree = "<group>"; };
@@ -1420,8 +1426,10 @@
 		198016D215994F9F00DB8AD5 /* humanoid Utils */ = {
 			isa = PBXGroup;
 			children = (
+				191FCE5316D29B02005764F8 /* SlipModel3D.cpp */,
 				19F3C7CC169F168F007004E6 /* LipModel.cpp */,
 				19F3C7CD169F168F007004E6 /* LipModel.h */,
+				191FCE5216D29AF6005764F8 /* SlipModel3D.h */,
 				19F3C7CE169F168F007004E6 /* SlipModel.h */,
 				19CA6503169CC2AA009742EE /* SlipModel.cpp */,
 				19F88BE3169B72B400B62ABE /* RunningStateMachine.h */,
@@ -1634,6 +1642,8 @@
 			isa = PBXGroup;
 			children = (
 				1974711415E521FE00E7AA0A /* BezierCurve.h */,
+				191FD06416D69D84005764F8 /* CoordinatedCubicSpline.h */,
+				191FD06516D69D8D005764F8 /* CoordinatedCubicSpline.cpp */,
 				1974711515E521FE00E7AA0A /* BezierCurve.cpp */,
 				19801DD9159B62EE00DB8AD5 /* CubicSpline.h */,
 				19801DDA159B62EE00DB8AD5 /* CubicSplineTrajectory.h */,
@@ -2588,6 +2598,8 @@
 				19F88BE5169B72B400B62ABE /* RunningStateMachine.cpp in Sources */,
 				19CA6504169CC2AA009742EE /* SlipModel.cpp in Sources */,
 				19F3C7CF169F168F007004E6 /* LipModel.cpp in Sources */,
+				191FCE5416D29B02005764F8 /* SlipModel3D.cpp in Sources */,
+				191FD06616D69D8D005764F8 /* CoordinatedCubicSpline.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,7 @@
 #include "dmRigidBody.hpp"
 #include "CoordinatedCubicSpline.h"
 
-const Float liftHeight1 = .35;
+const Float liftHeight1 = .30;
 const Float dropHeight2 = .15;
 
 RunningStateMachine::RunningStateMachine(dmArticulation * robot) 
@@ -178,7 +178,7 @@ RunningStateMachine::RunningStateMachine(dmArticulation * robot)
 	footAngles << 0, M_PI/4, M_PI/2, M_PI/3, M_PI/6, 0, 0;
 	
 	
-	//footAngles*=.2;
+	footAngles*=.5;
 	
 }
 
@@ -269,7 +269,7 @@ void RunningStateMachine::Floating() {
 	vDesFoot[1].setZero();
 	
 	Vector3F angAx;
-	angAx << 0, M_PI/2,0;
+	angAx << 0, footAngles(2),0;
 	matrixExpOmegaCross(angAx, RDesFoot[0]);
 	RDesFoot[0] = RDesFoot[0]*initRDesFoot;
 	
@@ -441,12 +441,12 @@ void RunningStateMachine::Stance1()
 			int flightYSign = (flightLeg == 0 ? -1 : 1);
 			
 			
-			endPos << thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*3./4., 
+			endPos << thisStep.touchDownLength*sin(thisStep.touchDownAngle1), 
 							hipWidth/2 * flightYSign, startPos(2)-dropHeight2;
 
 			
 			endVel.setZero();
-			flightFootSpline.init(startPos, startVel, endPos, endVel, thisStep.stanceTime*1.1);
+			flightFootSpline.init(startPos, startVel, endPos, endVel, thisStep.stanceTime*1.5);
 			
 			MatrixXF angles = footAngles.tail(5).transpose();
 			VectorXF zeroRate(1);
@@ -655,7 +655,7 @@ void RunningStateMachine::Flight1()
 		// Flight foot
 		startPos = pFoot[flightLeg] - pCom;
 		
-		endPos << -thisStep.touchDownLength*sin(thisStep.touchDownAngle1), 
+		endPos << -thisStep.touchDownLength*sin(thisStep.touchDownAngle1)-.04, 
 						hipWidth/2. * flightYSign,-thisStep.touchDownLength*cos(thisStep.touchDownAngle1)+liftHeight1;
 		
 		startVel.setZero();
@@ -945,17 +945,17 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				kpAnk = 120;
 				wAnk  = .1;
 				
-				kpKnee = 240;
+				kpKnee = 120;
 				wKnee   = .5;
 				
-				kpHip = 120/3.;
+				kpHip = 120;
 				wHip  = .1;
 				//;//
-				kpShould = 420;///3.;
-				wShould  = 10.0*2.6;///3.;
+				kpShould = 420/2.5;///3.;
+				wShould  = 10.0*2.6/2.5;///3.;
 				
-				kpElbow = 240;///3.;
-				wElbow  = 10*2;///3.;
+				kpElbow = 240/2.5;///3.;
+				wElbow  = 10*2/2.5;///3.;
 				
 				kpTorso = 440.;
 				wTorso = 10.;
@@ -1042,6 +1042,9 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				 offset = -.1;
 				 ampFactor = .7;
 				 
+				 offset = -.1;
+				 ampFactor = .9;
+				 
 				Float angle, rate;
 				Vector3F relPos = pFoot[1] - pCom;
 				Vector3F relVel = vFoot[1].tail(3) - vCom;
@@ -1068,7 +1071,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				dR2 = cr3(omega)*R2;
 				ddR2 = cr3(omegaDot)*R2 + cr3(omega)*dR2;
 				
-				angAx<< -.2,0,0;
+				angAx<< -.3,0,0;
 				matrixExpOmegaCross(angAx, R3);
 				
 				RDesJoint[10] = R3*R2*R1;
@@ -1105,7 +1108,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				omega << 0, -rate, 0;
 				dR2 = cr3(omega)*R2;
 				
-				angAx<< .2,0,0;
+				angAx<< .3,0,0;
 				matrixExpOmegaCross(angAx, R3);
 				
 				RDesJoint[12] = R3*R2*R1;

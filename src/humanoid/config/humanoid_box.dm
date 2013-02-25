@@ -227,7 +227,7 @@ Articulation {
 			Center_of_Gravity	0.299338	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.438912	0.000000	0.000000
-			MDH_Parameters	0.270662	0.000000	0.000000	0.500000
+			MDH_Parameters	0.270662	0.000000	0.000000	1.308997
 			Initial_Joint_Velocity	0
 			Joint_Limits	0	0
 			Joint_Limit_Spring_Constant	0
@@ -268,7 +268,7 @@ Articulation {
 			Center_of_Gravity	0.299338	0.000000	0.000000
 			Number_of_Contact_Points	1
 			Contact_Locations	0.438912	0.000000	0.000000
-			MDH_Parameters	0.270662	0.000000	0.000000	0.500000
+			MDH_Parameters	0.270662	0.000000	0.000000	1.308997
 			Initial_Joint_Velocity	0
 			Joint_Limits	0	0
 			Joint_Limit_Spring_Constant	0

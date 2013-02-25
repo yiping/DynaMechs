@@ -38,7 +38,7 @@ links{7}.pos = [0  torsoLink.hipWidth/2 torsoLink.hipOffset];
 links{11}.pos = [0 -torsoLink.shoulderWidth/2 torsoLink.length-torsoLink.shoulderOffset];
 links{13}.pos = [0 torsoLink.shoulderWidth/2 torsoLink.length-torsoLink.shoulderOffset];
 
-return
+
 %addpath ../DynamicsLibrary
 
 % Torso orientation
@@ -74,7 +74,8 @@ quat = RtoQuat(R3*R2*R);
 dmQuat = [quat(2:4) quat(1)];
 links{11}.quat = dmQuat;
 links{12}.mdh(4) = .70000;
-links{12}.mdh(4) = .50000;
+links{12}.mdh(4) = .70000;
+links{12}.mdh(4) = pi/2/1.2;
 
 % Initial Orientation for Left Arm
 R = [1 0 0;0 0 1;0 -1 0]';
@@ -87,7 +88,8 @@ quat = RtoQuat(R3*R2*R);
 dmQuat = [quat(2:4) quat(1)];
 links{13}.quat = dmQuat;
 links{14}.mdh(4) = .30000;
-links{14}.mdh(4) = .50000;
+links{14}.mdh(4) = .70000;
+links{14}.mdh(4) = pi/2/1.2;
 
 
 N=14;
@@ -105,7 +107,7 @@ end
 
 %footLink
 
-return
+
 
 
 fid = fopen('../config/humanoid_box.dm','w');

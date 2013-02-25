@@ -429,6 +429,7 @@
 			19EB72B316DBF95D00AB1515 /* PBXTextBookmark */ = 19EB72B316DBF95D00AB1515 /* PBXTextBookmark */;
 			19EB72BA16DBF9C700AB1515 /* PBXTextBookmark */ = 19EB72BA16DBF9C700AB1515 /* PBXTextBookmark */;
 			19EB72C016DBFB1400AB1515 /* PBXTextBookmark */ = 19EB72C016DBFB1400AB1515 /* PBXTextBookmark */;
+			19EB72C616DBFBC700AB1515 /* PBXTextBookmark */ = 19EB72C616DBFBC700AB1515 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
 		userBuildSettings = {
@@ -1909,7 +1910,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 1244";
 		rLen = 0;
-		rLoc = 34938;
+		rLoc = 34940;
 		rType = 0;
 		vrLen = 1788;
 		vrLoc = 29676;
@@ -1949,7 +1950,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 1213";
 		rLen = 0;
-		rLoc = 34130;
+		rLoc = 34132;
 		rType = 0;
 		vrLen = 2038;
 		vrLoc = 3421;
@@ -4954,7 +4955,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 1267";
 		rLen = 0;
-		rLoc = 32496;
+		rLoc = 32498;
 		rType = 0;
 		vrLen = 2201;
 		vrLoc = 31039;
@@ -4968,6 +4969,16 @@
 		rType = 0;
 		vrLen = 2651;
 		vrLoc = 14867;
+	};
+	19EB72C616DBFBC700AB1515 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 1268";
+		rLen = 0;
+		rLoc = 32471;
+		rType = 0;
+		vrLen = 2228;
+		vrLoc = 31410;
 	};
 	19EC853215D1639000874729 /* TaskSpaceControllerC.h */ = {
 		uiCtxt = {
@@ -5099,9 +5110,9 @@
 	};
 	19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {757, 14817}}";
-			sepNavSelRange = "{17174, 0}";
-			sepNavVisRange = "{14867, 2651}";
+			sepNavIntBoundsRect = "{{0, 0}, {876, 14608}}";
+			sepNavSelRange = "{32471, 0}";
+			sepNavVisRange = "{31410, 2228}";
 			sepNavWindowFrame = "{{-1660, 188}, {955, 721}}";
 		};
 	};

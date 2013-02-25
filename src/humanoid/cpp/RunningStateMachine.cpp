@@ -1265,7 +1265,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					//aCom.setZero();
 				}
 				else {
-					cout << "Foot " << i << " e= " << eOmega.transpose() << endl;
+					//cout << "Foot " << i << " e= " << eOmega.transpose() << endl;
 				}
 
 				

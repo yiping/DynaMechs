@@ -339,7 +339,7 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>19EB72C016DBFB1400AB1515</string>
+										<string>19EB72C616DBFBC700AB1515</string>
 										<key>history</key>
 										<array>
 											<string>19EB72AB16DBF75900AB1515</string>
@@ -541,12 +541,11 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>19EB72C116DBFB1400AB1515</string>
 		<string>19EB72B616DBF95D00AB1515</string>
 		<string>19EB72B716DBF95D00AB1515</string>
 		<string>1925863714D2E86400778EA7</string>
-		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>-1174 -142 1174 992 -1680 -198 1680 1050 </string>

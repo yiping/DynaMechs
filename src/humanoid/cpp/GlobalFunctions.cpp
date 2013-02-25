@@ -13,11 +13,13 @@ using namespace std;
 
 void matrixExpOmegaCross(const Vector3F & omega,Matrix3F & R) {
 	Float theta = omega.norm();
-	Matrix3F omegaHat = cr3(omega/theta);
-	
-	//R = I + omegaHat sin(theta) + omegaHat^2 (1-cos(theta))
 	R.setIdentity();
-	R+=omegaHat*(sin(theta)*Matrix3F::Identity() + omegaHat*(1-cos(theta)));
+	
+	if (theta > 1e-9) {
+		Matrix3F omegaHat = cr3(omega/theta);
+		//R = I + omegaHat sin(theta) + omegaHat^2 (1-cos(theta))
+		R+=omegaHat*(sin(theta)*Matrix3F::Identity() + omegaHat*(1-cos(theta)));
+	}
 }
 
 void matrixLogRot(const Matrix3F & R, Vector3F & omega) {

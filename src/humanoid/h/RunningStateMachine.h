@@ -116,6 +116,9 @@ private:
 	
 	FILE * pTOFData;
 	
+	VectorXF footAngles;
+	Matrix3F initRDesFoot;
+	
 };
 
 

@@ -73,7 +73,7 @@ void CoordinatedCubicSpline::computeCoefficients(const VectorXF & times, const M
 		
 		row+=2;
 	}
-	cout << "A" << endl << A << endl;
+	//cout << "A" << endl << A << endl;
 	
 	
 	FullPivLU<MatrixXF> luDecomp(A);
@@ -94,7 +94,7 @@ void CoordinatedCubicSpline::computeCoefficients(const VectorXF & times, const M
 		b(finalRow,j) = vf(j);
 	}
 	
-	cout << "b" << endl << b << endl;
+	//cout << "b" << endl << b << endl;
 	
 	
 	MatrixXF x = luDecomp.solve(b);

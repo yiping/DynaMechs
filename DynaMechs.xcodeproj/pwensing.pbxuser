@@ -30,7 +30,7 @@
 			199269E915AD0A0100E51313 /* BasicGLPane.cpp:534 */,
 			19B2079B15C720FB005EA3A3 /* humanoidWx.cpp:346 */,
 			19B2080215C7348E005EA3A3 /* humanoidWx.cpp:379 */,
-			199F916A169CF58000B53AAD /* RunningStateMachine.cpp:639 */,
+			199F916A169CF58000B53AAD /* RunningStateMachine.cpp:637 */,
 			199F9171169CF67300B53AAD /* humanoidWx.cpp:440 */,
 			19F3C83D169F4D93007004E6 /* RunningStateMachine.cpp:183 */,
 		);
@@ -184,8 +184,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 383510814;
-			PBXWorkspaceStateSaveDate = 383510814;
+			PBXPerProjectTemplateStateSaveDate = 383514249;
+			PBXWorkspaceStateSaveDate = 383514249;
 		};
 		perUserProjectItems = {
 			191FCE5B16D29D66005764F8 = 191FCE5B16D29D66005764F8 /* PBXTextBookmark */;
@@ -373,53 +373,62 @@
 			1970FE0716C212D9002284BA = 1970FE0716C212D9002284BA /* PBXTextBookmark */;
 			19DDC52516C02F200068D6B4 = 19DDC52516C02F200068D6B4 /* PBXTextBookmark */;
 			19DDC53716C02FAD0068D6B4 = 19DDC53716C02FAD0068D6B4 /* PBXTextBookmark */;
-			19EB71D916DBE92E00AB1515 /* PBXBookmark */ = 19EB71D916DBE92E00AB1515 /* PBXBookmark */;
-			19EB71DA16DBE92E00AB1515 /* PBXTextBookmark */ = 19EB71DA16DBE92E00AB1515 /* PBXTextBookmark */;
-			19EB71E416DBE99A00AB1515 /* PBXTextBookmark */ = 19EB71E416DBE99A00AB1515 /* PBXTextBookmark */;
-			19EB71E816DBE9D100AB1515 /* PBXTextBookmark */ = 19EB71E816DBE9D100AB1515 /* PBXTextBookmark */;
-			19EB71E916DBEA4100AB1515 /* PBXTextBookmark */ = 19EB71E916DBEA4100AB1515 /* PBXTextBookmark */;
-			19EB71EA16DBEA4100AB1515 /* PBXTextBookmark */ = 19EB71EA16DBEA4100AB1515 /* PBXTextBookmark */;
-			19EB71EB16DBEA4100AB1515 /* PBXTextBookmark */ = 19EB71EB16DBEA4100AB1515 /* PBXTextBookmark */;
-			19EB71EC16DBEA5900AB1515 /* PBXTextBookmark */ = 19EB71EC16DBEA5900AB1515 /* PBXTextBookmark */;
-			19EB71ED16DBEA7700AB1515 /* PBXTextBookmark */ = 19EB71ED16DBEA7700AB1515 /* PBXTextBookmark */;
-			19EB71EE16DBEA9500AB1515 /* PBXTextBookmark */ = 19EB71EE16DBEA9500AB1515 /* PBXTextBookmark */;
-			19EB71EF16DBEAA500AB1515 /* PBXTextBookmark */ = 19EB71EF16DBEAA500AB1515 /* PBXTextBookmark */;
-			19EB71F016DBEABC00AB1515 /* PBXTextBookmark */ = 19EB71F016DBEABC00AB1515 /* PBXTextBookmark */;
-			19EB71F116DBEAE400AB1515 /* PBXTextBookmark */ = 19EB71F116DBEAE400AB1515 /* PBXTextBookmark */;
-			19EB71F216DBEB3F00AB1515 /* PBXTextBookmark */ = 19EB71F216DBEB3F00AB1515 /* PBXTextBookmark */;
-			19EB71F516DBEBA700AB1515 /* PBXTextBookmark */ = 19EB71F516DBEBA700AB1515 /* PBXTextBookmark */;
-			19EB71F616DBEBDF00AB1515 /* PBXTextBookmark */ = 19EB71F616DBEBDF00AB1515 /* PBXTextBookmark */;
-			19EB71F716DBEBDF00AB1515 /* PBXTextBookmark */ = 19EB71F716DBEBDF00AB1515 /* PBXTextBookmark */;
-			19EB71F816DBEBDF00AB1515 /* PBXTextBookmark */ = 19EB71F816DBEBDF00AB1515 /* PBXTextBookmark */;
-			19EB71FB16DBEBFB00AB1515 /* PBXTextBookmark */ = 19EB71FB16DBEBFB00AB1515 /* PBXTextBookmark */;
-			19EB71FF16DBEC4B00AB1515 /* PBXTextBookmark */ = 19EB71FF16DBEC4B00AB1515 /* PBXTextBookmark */;
-			19EB720016DBEC4B00AB1515 /* PBXTextBookmark */ = 19EB720016DBEC4B00AB1515 /* PBXTextBookmark */;
-			19EB720116DBEC4B00AB1515 /* PBXTextBookmark */ = 19EB720116DBEC4B00AB1515 /* PBXTextBookmark */;
-			19EB720416DBED1A00AB1515 /* PBXTextBookmark */ = 19EB720416DBED1A00AB1515 /* PBXTextBookmark */;
-			19EB720816DBED6A00AB1515 /* PBXTextBookmark */ = 19EB720816DBED6A00AB1515 /* PBXTextBookmark */;
-			19EB720B16DBEDBA00AB1515 /* PBXTextBookmark */ = 19EB720B16DBEDBA00AB1515 /* PBXTextBookmark */;
-			19EB720F16DBEE1000AB1515 /* PBXTextBookmark */ = 19EB720F16DBEE1000AB1515 /* PBXTextBookmark */;
-			19EB721016DBEE1000AB1515 /* PBXTextBookmark */ = 19EB721016DBEE1000AB1515 /* PBXTextBookmark */;
-			19EB721116DBEE1000AB1515 /* PBXTextBookmark */ = 19EB721116DBEE1000AB1515 /* PBXTextBookmark */;
-			19EB721516DBEE4100AB1515 /* PBXTextBookmark */ = 19EB721516DBEE4100AB1515 /* PBXTextBookmark */;
-			19EB721916DBEE7D00AB1515 /* PBXTextBookmark */ = 19EB721916DBEE7D00AB1515 /* PBXTextBookmark */;
-			19EB721D16DBEEB200AB1515 /* PBXTextBookmark */ = 19EB721D16DBEEB200AB1515 /* PBXTextBookmark */;
-			19EB722316DBEF3900AB1515 /* PBXTextBookmark */ = 19EB722316DBEF3900AB1515 /* PBXTextBookmark */;
-			19EB722416DBEF3900AB1515 /* PBXTextBookmark */ = 19EB722416DBEF3900AB1515 /* PBXTextBookmark */;
-			19EB722516DBEF3900AB1515 /* PBXTextBookmark */ = 19EB722516DBEF3900AB1515 /* PBXTextBookmark */;
-			19EB722616DBEF3900AB1515 /* PBXTextBookmark */ = 19EB722616DBEF3900AB1515 /* PBXTextBookmark */;
-			19EB722A16DBEF8000AB1515 /* PBXTextBookmark */ = 19EB722A16DBEF8000AB1515 /* PBXTextBookmark */;
-			19EB722E16DBEFE700AB1515 /* PBXTextBookmark */ = 19EB722E16DBEFE700AB1515 /* PBXTextBookmark */;
-			19EB722F16DBEFE700AB1515 /* PBXTextBookmark */ = 19EB722F16DBEFE700AB1515 /* PBXTextBookmark */;
-			19EB723016DBEFE700AB1515 /* PBXTextBookmark */ = 19EB723016DBEFE700AB1515 /* PBXTextBookmark */;
-			19EB723316DBF0B000AB1515 /* PBXTextBookmark */ = 19EB723316DBF0B000AB1515 /* PBXTextBookmark */;
-			19EB723716DBF15800AB1515 /* PBXTextBookmark */ = 19EB723716DBF15800AB1515 /* PBXTextBookmark */;
-			19EB723B16DBF1AE00AB1515 /* PBXTextBookmark */ = 19EB723B16DBF1AE00AB1515 /* PBXTextBookmark */;
-			19EB723E16DBF2A100AB1515 /* PBXTextBookmark */ = 19EB723E16DBF2A100AB1515 /* PBXTextBookmark */;
-			19EB724316DBF30600AB1515 /* PBXTextBookmark */ = 19EB724316DBF30600AB1515 /* PBXTextBookmark */;
-			19EB724B16DBF41800AB1515 /* PBXTextBookmark */ = 19EB724B16DBF41800AB1515 /* PBXTextBookmark */;
-			19EB725416DBF4B300AB1515 /* PBXTextBookmark */ = 19EB725416DBF4B300AB1515 /* PBXTextBookmark */;
-			19EB725816DBF4FE00AB1515 /* PBXTextBookmark */ = 19EB725816DBF4FE00AB1515 /* PBXTextBookmark */;
+			19EB71D916DBE92E00AB1515 = 19EB71D916DBE92E00AB1515 /* PBXBookmark */;
+			19EB71DA16DBE92E00AB1515 = 19EB71DA16DBE92E00AB1515 /* PBXTextBookmark */;
+			19EB71E416DBE99A00AB1515 = 19EB71E416DBE99A00AB1515 /* PBXTextBookmark */;
+			19EB71E816DBE9D100AB1515 = 19EB71E816DBE9D100AB1515 /* PBXTextBookmark */;
+			19EB71E916DBEA4100AB1515 = 19EB71E916DBEA4100AB1515 /* PBXTextBookmark */;
+			19EB71EA16DBEA4100AB1515 = 19EB71EA16DBEA4100AB1515 /* PBXTextBookmark */;
+			19EB71EB16DBEA4100AB1515 = 19EB71EB16DBEA4100AB1515 /* PBXTextBookmark */;
+			19EB71EC16DBEA5900AB1515 = 19EB71EC16DBEA5900AB1515 /* PBXTextBookmark */;
+			19EB71ED16DBEA7700AB1515 = 19EB71ED16DBEA7700AB1515 /* PBXTextBookmark */;
+			19EB71EE16DBEA9500AB1515 = 19EB71EE16DBEA9500AB1515 /* PBXTextBookmark */;
+			19EB71EF16DBEAA500AB1515 = 19EB71EF16DBEAA500AB1515 /* PBXTextBookmark */;
+			19EB71F016DBEABC00AB1515 = 19EB71F016DBEABC00AB1515 /* PBXTextBookmark */;
+			19EB71F116DBEAE400AB1515 = 19EB71F116DBEAE400AB1515 /* PBXTextBookmark */;
+			19EB71F216DBEB3F00AB1515 = 19EB71F216DBEB3F00AB1515 /* PBXTextBookmark */;
+			19EB71F516DBEBA700AB1515 = 19EB71F516DBEBA700AB1515 /* PBXTextBookmark */;
+			19EB71F616DBEBDF00AB1515 = 19EB71F616DBEBDF00AB1515 /* PBXTextBookmark */;
+			19EB71F716DBEBDF00AB1515 = 19EB71F716DBEBDF00AB1515 /* PBXTextBookmark */;
+			19EB71F816DBEBDF00AB1515 = 19EB71F816DBEBDF00AB1515 /* PBXTextBookmark */;
+			19EB71FB16DBEBFB00AB1515 = 19EB71FB16DBEBFB00AB1515 /* PBXTextBookmark */;
+			19EB71FF16DBEC4B00AB1515 = 19EB71FF16DBEC4B00AB1515 /* PBXTextBookmark */;
+			19EB720016DBEC4B00AB1515 = 19EB720016DBEC4B00AB1515 /* PBXTextBookmark */;
+			19EB720116DBEC4B00AB1515 = 19EB720116DBEC4B00AB1515 /* PBXTextBookmark */;
+			19EB720416DBED1A00AB1515 = 19EB720416DBED1A00AB1515 /* PBXTextBookmark */;
+			19EB720816DBED6A00AB1515 = 19EB720816DBED6A00AB1515 /* PBXTextBookmark */;
+			19EB720B16DBEDBA00AB1515 = 19EB720B16DBEDBA00AB1515 /* PBXTextBookmark */;
+			19EB720F16DBEE1000AB1515 = 19EB720F16DBEE1000AB1515 /* PBXTextBookmark */;
+			19EB721016DBEE1000AB1515 = 19EB721016DBEE1000AB1515 /* PBXTextBookmark */;
+			19EB721116DBEE1000AB1515 = 19EB721116DBEE1000AB1515 /* PBXTextBookmark */;
+			19EB721516DBEE4100AB1515 = 19EB721516DBEE4100AB1515 /* PBXTextBookmark */;
+			19EB721916DBEE7D00AB1515 = 19EB721916DBEE7D00AB1515 /* PBXTextBookmark */;
+			19EB721D16DBEEB200AB1515 = 19EB721D16DBEEB200AB1515 /* PBXTextBookmark */;
+			19EB722316DBEF3900AB1515 = 19EB722316DBEF3900AB1515 /* PBXTextBookmark */;
+			19EB722416DBEF3900AB1515 = 19EB722416DBEF3900AB1515 /* PBXTextBookmark */;
+			19EB722516DBEF3900AB1515 = 19EB722516DBEF3900AB1515 /* PBXTextBookmark */;
+			19EB722616DBEF3900AB1515 = 19EB722616DBEF3900AB1515 /* PBXTextBookmark */;
+			19EB722A16DBEF8000AB1515 = 19EB722A16DBEF8000AB1515 /* PBXTextBookmark */;
+			19EB722E16DBEFE700AB1515 = 19EB722E16DBEFE700AB1515 /* PBXTextBookmark */;
+			19EB722F16DBEFE700AB1515 = 19EB722F16DBEFE700AB1515 /* PBXTextBookmark */;
+			19EB723016DBEFE700AB1515 = 19EB723016DBEFE700AB1515 /* PBXTextBookmark */;
+			19EB723316DBF0B000AB1515 = 19EB723316DBF0B000AB1515 /* PBXTextBookmark */;
+			19EB723716DBF15800AB1515 = 19EB723716DBF15800AB1515 /* PBXTextBookmark */;
+			19EB723B16DBF1AE00AB1515 = 19EB723B16DBF1AE00AB1515 /* PBXTextBookmark */;
+			19EB723E16DBF2A100AB1515 = 19EB723E16DBF2A100AB1515 /* PBXTextBookmark */;
+			19EB724316DBF30600AB1515 = 19EB724316DBF30600AB1515 /* PBXTextBookmark */;
+			19EB724B16DBF41800AB1515 = 19EB724B16DBF41800AB1515 /* PBXTextBookmark */;
+			19EB725416DBF4B300AB1515 = 19EB725416DBF4B300AB1515 /* PBXTextBookmark */;
+			19EB725816DBF4FE00AB1515 = 19EB725816DBF4FE00AB1515 /* PBXTextBookmark */;
+			19EB72A016DBF69300AB1515 /* PBXBookmark */ = 19EB72A016DBF69300AB1515 /* PBXBookmark */;
+			19EB72A116DBF69300AB1515 /* PBXTextBookmark */ = 19EB72A116DBF69300AB1515 /* PBXTextBookmark */;
+			19EB72AB16DBF75900AB1515 /* PBXTextBookmark */ = 19EB72AB16DBF75900AB1515 /* PBXTextBookmark */;
+			19EB72AC16DBF75900AB1515 /* PBXTextBookmark */ = 19EB72AC16DBF75900AB1515 /* PBXTextBookmark */;
+			19EB72AD16DBF75900AB1515 /* PBXTextBookmark */ = 19EB72AD16DBF75900AB1515 /* PBXTextBookmark */;
+			19EB72AE16DBF7DE00AB1515 /* PBXTextBookmark */ = 19EB72AE16DBF7DE00AB1515 /* PBXTextBookmark */;
+			19EB72B316DBF95D00AB1515 /* PBXTextBookmark */ = 19EB72B316DBF95D00AB1515 /* PBXTextBookmark */;
+			19EB72BA16DBF9C700AB1515 /* PBXTextBookmark */ = 19EB72BA16DBF9C700AB1515 /* PBXTextBookmark */;
+			19EB72C016DBFB1400AB1515 /* PBXTextBookmark */ = 19EB72C016DBFB1400AB1515 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1925863914D2E86400778EA7 /* Source Control */;
 		userBuildSettings = {
@@ -627,7 +636,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 675";
 		rLen = 0;
-		rLoc = 12506;
+		rLoc = 12435;
 		rType = 0;
 		vrLen = 2193;
 		vrLoc = 15293;
@@ -697,7 +706,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 456";
 		rLen = 0;
-		rLoc = 11457;
+		rLoc = 11386;
 		rType = 0;
 		vrLen = 2288;
 		vrLoc = 9175;
@@ -707,7 +716,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 615";
 		rLen = 0;
-		rLoc = 17731;
+		rLoc = 17701;
 		rType = 0;
 		vrLen = 2373;
 		vrLoc = 15334;
@@ -747,7 +756,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 443";
 		rLen = 0;
-		rLoc = 12005;
+		rLoc = 11934;
 		rType = 0;
 		vrLen = 2217;
 		vrLoc = 8783;
@@ -757,7 +766,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 473";
 		rLen = 0;
-		rLoc = 12755;
+		rLoc = 12686;
 		rType = 0;
 		vrLen = 2089;
 		vrLoc = 9457;
@@ -767,7 +776,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 523";
 		rLen = 0;
-		rLoc = 13824;
+		rLoc = 13757;
 		rType = 0;
 		vrLen = 1717;
 		vrLoc = 10958;
@@ -777,7 +786,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 523";
 		rLen = 0;
-		rLoc = 13824;
+		rLoc = 13757;
 		rType = 0;
 		vrLen = 1691;
 		vrLoc = 11056;
@@ -847,7 +856,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 425";
 		rLen = 0;
-		rLoc = 11142;
+		rLoc = 11071;
 		rType = 0;
 		vrLen = 1595;
 		vrLoc = 11209;
@@ -857,7 +866,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 420";
 		rLen = 0;
-		rLoc = 10950;
+		rLoc = 10879;
 		rType = 0;
 		vrLen = 2094;
 		vrLoc = 8356;
@@ -867,7 +876,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 525";
 		rLen = 0;
-		rLoc = 13824;
+		rLoc = 13757;
 		rType = 0;
 		vrLen = 1764;
 		vrLoc = 11070;
@@ -887,7 +896,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 515";
 		rLen = 0;
-		rLoc = 13589;
+		rLoc = 13522;
 		rType = 0;
 		vrLen = 1885;
 		vrLoc = 3744;
@@ -897,7 +906,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 536";
 		rLen = 0;
-		rLoc = 14343;
+		rLoc = 14276;
 		rType = 0;
 		vrLen = 1597;
 		vrLoc = 11283;
@@ -907,7 +916,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 413";
 		rLen = 1;
-		rLoc = 10774;
+		rLoc = 10703;
 		rType = 0;
 		vrLen = 1601;
 		vrLoc = 11358;
@@ -948,7 +957,7 @@
 		comments = "'pdh' was not declared in this scope";
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		rLen = 1;
-		rLoc = 586;
+		rLoc = 584;
 		rType = 1;
 	};
 	191FCECF16D2B754005764F8 /* PBXTextBookmark */ = {
@@ -956,7 +965,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 524";
 		rLen = 0;
-		rLoc = 13755;
+		rLoc = 13688;
 		rType = 0;
 		vrLen = 195;
 		vrLoc = 11753;
@@ -976,7 +985,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 413";
 		rLen = 1;
-		rLoc = 10774;
+		rLoc = 10703;
 		rType = 0;
 		vrLen = 1572;
 		vrLoc = 11389;
@@ -986,7 +995,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 405";
 		rLen = 0;
-		rLoc = 10236;
+		rLoc = 10165;
 		rType = 0;
 		vrLen = 1998;
 		vrLoc = 8295;
@@ -996,7 +1005,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 510";
 		rLen = 2;
-		rLoc = 13478;
+		rLoc = 13411;
 		rType = 0;
 		vrLen = 1042;
 		vrLoc = 11428;
@@ -1006,7 +1015,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 477";
 		rLen = 0;
-		rLoc = 12782;
+		rLoc = 12715;
 		rType = 0;
 		vrLen = 1966;
 		vrLoc = 9980;
@@ -1016,7 +1025,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 510";
 		rLen = 2;
-		rLoc = 13478;
+		rLoc = 13411;
 		rType = 0;
 		vrLen = 1144;
 		vrLoc = 11432;
@@ -1026,7 +1035,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 430";
 		rLen = 0;
-		rLoc = 11415;
+		rLoc = 11344;
 		rType = 0;
 		vrLen = 2331;
 		vrLoc = 8860;
@@ -1036,7 +1045,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 510";
 		rLen = 0;
-		rLoc = 13478;
+		rLoc = 13411;
 		rType = 0;
 		vrLen = 1196;
 		vrLoc = 10526;
@@ -1116,7 +1125,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 456";
 		rLen = 0;
-		rLoc = 11727;
+		rLoc = 11656;
 		rType = 0;
 		vrLen = 2240;
 		vrLoc = 9219;
@@ -1136,7 +1145,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 456";
 		rLen = 0;
-		rLoc = 11711;
+		rLoc = 11640;
 		rType = 0;
 		vrLen = 2247;
 		vrLoc = 9273;
@@ -1166,7 +1175,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 496";
 		rLen = 0;
-		rLoc = 12782;
+		rLoc = 12715;
 		rType = 0;
 		vrLen = 2208;
 		vrLoc = 9926;
@@ -1176,7 +1185,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 496";
 		rLen = 0;
-		rLoc = 12782;
+		rLoc = 12715;
 		rType = 0;
 		vrLen = 2109;
 		vrLoc = 10025;
@@ -1196,7 +1205,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 496";
 		rLen = 0;
-		rLoc = 12782;
+		rLoc = 12715;
 		rType = 0;
 		vrLen = 2276;
 		vrLoc = 10048;
@@ -1256,7 +1265,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 496";
 		rLen = 0;
-		rLoc = 12782;
+		rLoc = 12715;
 		rType = 0;
 		vrLen = 2137;
 		vrLoc = 10048;
@@ -1286,7 +1295,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 551";
 		rLen = 0;
-		rLoc = 14133;
+		rLoc = 14066;
 		rType = 0;
 		vrLen = 1511;
 		vrLoc = 12003;
@@ -1316,7 +1325,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 397";
 		rLen = 30;
-		rLoc = 9585;
+		rLoc = 9514;
 		rType = 0;
 		vrLen = 2197;
 		vrLoc = 9076;
@@ -1510,7 +1519,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 534";
 		rLen = 0;
-		rLoc = 13589;
+		rLoc = 13522;
 		rType = 0;
 		vrLen = 1889;
 		vrLoc = 2311;
@@ -1750,7 +1759,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 376";
 		rLen = 0;
-		rLoc = 9104;
+		rLoc = 9033;
 		rType = 0;
 		vrLen = 2792;
 		vrLoc = 7236;
@@ -1850,7 +1859,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 937";
 		rLen = 0;
-		rLoc = 26091;
+		rLoc = 26061;
 		rType = 0;
 		vrLen = 2170;
 		vrLoc = 22219;
@@ -1860,7 +1869,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 531";
 		rLen = 0;
-		rLoc = 13449;
+		rLoc = 13382;
 		rType = 0;
 		vrLen = 1815;
 		vrLoc = 11584;
@@ -1870,7 +1879,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 501";
 		rLen = 0;
-		rLoc = 12827;
+		rLoc = 12760;
 		rType = 0;
 		vrLen = 1923;
 		vrLoc = 11398;
@@ -1880,7 +1889,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 422";
 		rLen = 0;
-		rLoc = 10236;
+		rLoc = 10165;
 		rType = 0;
 		vrLen = 2200;
 		vrLoc = 8911;
@@ -1890,7 +1899,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 937";
 		rLen = 0;
-		rLoc = 26077;
+		rLoc = 26047;
 		rType = 0;
 		vrLen = 2115;
 		vrLoc = 21633;
@@ -1900,7 +1909,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 1244";
 		rLen = 0;
-		rLoc = 34868;
+		rLoc = 34938;
 		rType = 0;
 		vrLen = 1788;
 		vrLoc = 29676;
@@ -1940,7 +1949,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 1213";
 		rLen = 0;
-		rLoc = 34060;
+		rLoc = 34130;
 		rType = 0;
 		vrLen = 2038;
 		vrLoc = 3421;
@@ -1950,7 +1959,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 847";
 		rLen = 0;
-		rLoc = 23863;
+		rLoc = 23833;
 		rType = 0;
 		vrLen = 2146;
 		vrLoc = 20066;
@@ -1960,7 +1969,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 548";
 		rLen = 0;
-		rLoc = 13755;
+		rLoc = 13688;
 		rType = 0;
 		vrLen = 248;
 		vrLoc = 11856;
@@ -1970,7 +1979,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 896";
 		rLen = 6;
-		rLoc = 25268;
+		rLoc = 25238;
 		rType = 0;
 		vrLen = 2511;
 		vrLoc = 17316;
@@ -1980,7 +1989,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 482";
 		rLen = 0;
-		rLoc = 12246;
+		rLoc = 12175;
 		rType = 0;
 		vrLen = 1763;
 		vrLoc = 10915;
@@ -1990,7 +1999,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 928";
 		rLen = 0;
-		rLoc = 26046;
+		rLoc = 26016;
 		rType = 0;
 		vrLen = 2121;
 		vrLoc = 21597;
@@ -2000,7 +2009,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 524";
 		rLen = 0;
-		rLoc = 13328;
+		rLoc = 13261;
 		rType = 0;
 		vrLen = 1916;
 		vrLoc = 11268;
@@ -2010,7 +2019,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 534";
 		rLen = 0;
-		rLoc = 13476;
+		rLoc = 13409;
 		rType = 0;
 		vrLen = 1956;
 		vrLoc = 11316;
@@ -2020,7 +2029,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 524";
 		rLen = 0;
-		rLoc = 13328;
+		rLoc = 13261;
 		rType = 0;
 		vrLen = 1990;
 		vrLoc = 11316;
@@ -2030,7 +2039,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 549";
 		rLen = 0;
-		rLoc = 13755;
+		rLoc = 13688;
 		rType = 0;
 		vrLen = 204;
 		vrLoc = 11897;
@@ -2040,7 +2049,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 524";
 		rLen = 0;
-		rLoc = 13328;
+		rLoc = 13261;
 		rType = 0;
 		vrLen = 1844;
 		vrLoc = 11462;
@@ -2060,7 +2069,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 933";
 		rLen = 0;
-		rLoc = 26077;
+		rLoc = 26047;
 		rType = 0;
 		vrLen = 2156;
 		vrLoc = 21876;
@@ -2070,7 +2079,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 612";
 		rLen = 0;
-		rLoc = 15566;
+		rLoc = 15499;
 		rType = 0;
 		vrLen = 2094;
 		vrLoc = 13256;
@@ -2136,7 +2145,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 400";
 		rLen = 30;
-		rLoc = 9585;
+		rLoc = 9514;
 		rType = 0;
 		vrLen = 1502;
 		vrLoc = 9042;
@@ -2396,6 +2405,13 @@
 			sepNavIntBoundsRect = "{{0, 0}, {725, 880}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 579}";
+		};
+	};
+	191FD06516D69D8D005764F8 /* CoordinatedCubicSpline.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {828, 1452}}";
+			sepNavSelRange = "{2162, 0}";
+			sepNavVisRange = "{723, 2394}";
 		};
 	};
 	192003E715A5F9FD0006A823 /* HumanoidStateMachineController.cpp */ = {
@@ -3449,7 +3465,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 675";
 		rLen = 0;
-		rLoc = 12506;
+		rLoc = 12435;
 		rType = 0;
 		vrLen = 1396;
 		vrLoc = 15969;
@@ -3518,7 +3534,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 675";
 		rLen = 0;
-		rLoc = 12506;
+		rLoc = 12435;
 		rType = 0;
 		vrLen = 1396;
 		vrLoc = 15969;
@@ -4000,7 +4016,7 @@
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
-	199F916A169CF58000B53AAD /* RunningStateMachine.cpp:639 */ = {
+	199F916A169CF58000B53AAD /* RunningStateMachine.cpp:637 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -4012,7 +4028,7 @@
 		functionName = "RunningStateMachine::Flight1()";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 639;
+		lineNumber = 637;
 		location = humanoidWx;
 		modificationTime = 379538841.0175861;
 		originalNumberOfMultipleMatches = 1;
@@ -4414,7 +4430,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 524";
 		rLen = 0;
-		rLoc = 13285;
+		rLoc = 13218;
 		rType = 0;
 		vrLen = 1869;
 		vrLoc = 11584;
@@ -4424,7 +4440,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 524";
 		rLen = 0;
-		rLoc = 13285;
+		rLoc = 13218;
 		rType = 0;
 		vrLen = 1869;
 		vrLoc = 11584;
@@ -4434,7 +4450,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 583";
 		rLen = 0;
-		rLoc = 14772;
+		rLoc = 14705;
 		rType = 0;
 		vrLen = 1739;
 		vrLoc = 12357;
@@ -4464,7 +4480,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 404";
 		rLen = 30;
-		rLoc = 9585;
+		rLoc = 9514;
 		rType = 0;
 		vrLen = 2985;
 		vrLoc = 7000;
@@ -4474,7 +4490,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 409";
 		rLen = 0;
-		rLoc = 9744;
+		rLoc = 9673;
 		rType = 0;
 		vrLen = 2333;
 		vrLoc = 8791;
@@ -4484,7 +4500,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 443";
 		rLen = 0;
-		rLoc = 10719;
+		rLoc = 10648;
 		rType = 0;
 		vrLen = 2404;
 		vrLoc = 8791;
@@ -4494,7 +4510,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 557";
 		rLen = 0;
-		rLoc = 13556;
+		rLoc = 13489;
 		rType = 0;
 		vrLen = 1734;
 		vrLoc = 12462;
@@ -4504,7 +4520,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 578";
 		rLen = 0;
-		rLoc = 14133;
+		rLoc = 14066;
 		rType = 0;
 		vrLen = 1924;
 		vrLoc = 12460;
@@ -4524,7 +4540,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 626";
 		rLen = 0;
-		rLoc = 15155;
+		rLoc = 15088;
 		rType = 0;
 		vrLen = 2300;
 		vrLoc = 13677;
@@ -4534,7 +4550,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 677";
 		rLen = 0;
-		rLoc = 17295;
+		rLoc = 17265;
 		rType = 0;
 		vrLen = 2408;
 		vrLoc = 14230;
@@ -4544,7 +4560,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 708";
 		rLen = 0;
-		rLoc = 17930;
+		rLoc = 17900;
 		rType = 0;
 		vrLen = 1773;
 		vrLoc = 16784;
@@ -4614,7 +4630,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 269";
 		rLen = 0;
-		rLoc = 6483;
+		rLoc = 6412;
 		rType = 0;
 		vrLen = 2005;
 		vrLoc = 4629;
@@ -4644,7 +4660,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 269";
 		rLen = 0;
-		rLoc = 6314;
+		rLoc = 6301;
 		rType = 0;
 		vrLen = 1902;
 		vrLoc = 4473;
@@ -4674,7 +4690,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 269";
 		rLen = 0;
-		rLoc = 6314;
+		rLoc = 6301;
 		rType = 0;
 		vrLen = 1905;
 		vrLoc = 4842;
@@ -4684,7 +4700,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 271";
 		rLen = 0;
-		rLoc = 6419;
+		rLoc = 6301;
 		rType = 0;
 		vrLen = 1932;
 		vrLoc = 5333;
@@ -4694,7 +4710,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 274";
 		rLen = 0;
-		rLoc = 6479;
+		rLoc = 6408;
 		rType = 0;
 		vrLen = 1940;
 		vrLoc = 5365;
@@ -4704,7 +4720,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 273";
 		rLen = 0;
-		rLoc = 6464;
+		rLoc = 6301;
 		rType = 0;
 		vrLen = 1982;
 		vrLoc = 5362;
@@ -4733,8 +4749,8 @@
 		isa = PBXTextBookmark;
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 270";
-		rLen = 19;
-		rLoc = 6319;
+		rLen = 0;
+		rLoc = 6301;
 		rType = 0;
 		vrLen = 1978;
 		vrLoc = 5362;
@@ -4744,7 +4760,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 271";
 		rLen = 0;
-		rLoc = 6363;
+		rLoc = 6301;
 		rType = 0;
 		vrLen = 1913;
 		vrLoc = 5440;
@@ -4754,7 +4770,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 1041";
 		rLen = 0;
-		rLoc = 26449;
+		rLoc = 26419;
 		rType = 0;
 		vrLen = 2031;
 		vrLoc = 25499;
@@ -4774,7 +4790,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 1056";
 		rLen = 0;
-		rLoc = 26828;
+		rLoc = 26798;
 		rType = 0;
 		vrLen = 2094;
 		vrLoc = 25499;
@@ -4804,7 +4820,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 772";
 		rLen = 0;
-		rLoc = 19126;
+		rLoc = 19096;
 		rType = 0;
 		vrLen = 1745;
 		vrLoc = 17115;
@@ -4834,7 +4850,7 @@
 		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
 		name = "RunningStateMachine.cpp: 683";
 		rLen = 0;
-		rLoc = 16508;
+		rLoc = 16441;
 		rType = 0;
 		vrLen = 2441;
 		vrLoc = 15360;
@@ -4868,6 +4884,90 @@
 		rType = 0;
 		vrLen = 2045;
 		vrLoc = 0;
+	};
+	19EB72A016DBF69300AB1515 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 191FD06516D69D8D005764F8 /* CoordinatedCubicSpline.cpp */;
+	};
+	19EB72A116DBF69300AB1515 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 191FD06516D69D8D005764F8 /* CoordinatedCubicSpline.cpp */;
+		name = "CoordinatedCubicSpline.cpp: 34";
+		rLen = 0;
+		rLoc = 722;
+		rType = 0;
+		vrLen = 2341;
+		vrLoc = 0;
+	};
+	19EB72AB16DBF75900AB1515 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 191FD06516D69D8D005764F8 /* CoordinatedCubicSpline.cpp */;
+		name = "CoordinatedCubicSpline.cpp: 76";
+		rLen = 0;
+		rLoc = 2162;
+		rType = 0;
+		vrLen = 2394;
+		vrLoc = 723;
+	};
+	19EB72AC16DBF75900AB1515 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 16";
+		rLen = 0;
+		rLoc = 334;
+		rType = 0;
+		vrLen = 2123;
+		vrLoc = 0;
+	};
+	19EB72AD16DBF75900AB1515 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 275";
+		rLen = 0;
+		rLoc = 6395;
+		rType = 0;
+		vrLen = 1992;
+		vrLoc = 5228;
+	};
+	19EB72AE16DBF7DE00AB1515 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 594";
+		rLen = 0;
+		rLoc = 14064;
+		rType = 0;
+		vrLen = 1849;
+		vrLoc = 12964;
+	};
+	19EB72B316DBF95D00AB1515 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 1246";
+		rLen = 0;
+		rLoc = 31767;
+		rType = 0;
+		vrLen = 2485;
+		vrLoc = 30727;
+	};
+	19EB72BA16DBF9C700AB1515 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 1267";
+		rLen = 0;
+		rLoc = 32496;
+		rType = 0;
+		vrLen = 2201;
+		vrLoc = 31039;
+	};
+	19EB72C016DBFB1400AB1515 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */;
+		name = "RunningStateMachine.cpp: 704";
+		rLen = 0;
+		rLoc = 17174;
+		rType = 0;
+		vrLen = 2651;
+		vrLoc = 14867;
 	};
 	19EC853215D1639000874729 /* TaskSpaceControllerC.h */ = {
 		uiCtxt = {
@@ -4999,9 +5099,9 @@
 	};
 	19F88BE4169B72B400B62ABE /* RunningStateMachine.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {757, 14795}}";
-			sepNavSelRange = "{334, 0}";
-			sepNavVisRange = "{0, 2045}";
+			sepNavIntBoundsRect = "{{0, 0}, {757, 14817}}";
+			sepNavSelRange = "{17174, 0}";
+			sepNavVisRange = "{14867, 2651}";
 			sepNavWindowFrame = "{{-1660, 188}, {955, 721}}";
 		};
 	};

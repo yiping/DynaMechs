@@ -269,11 +269,9 @@ void RunningStateMachine::Floating() {
 	vDesFoot[1].setZero();
 	
 	Vector3F angAx;
-	angAx << 0, footAngles(2),0;
+	angAx << 0, M_PI/2,0;
 	matrixExpOmegaCross(angAx, RDesFoot[0]);
-	//cout << RDesFoot[0] << endl;
 	RDesFoot[0] = RDesFoot[0]*initRDesFoot;
-	//cout << RDesFoot[0] << endl;
 	
 	//exit(-1);
 	
@@ -527,13 +525,13 @@ void RunningStateMachine::Stance1()
 	vComDes = SLIP.vel;
 	aComDes = SLIP.acc;
 	
-	cout << "pComDes = " << pComDes.transpose() << endl;
+	/*cout << "pComDes = " << pComDes.transpose() << endl;
 	cout << "pCom    = " << pCom.transpose() << endl;
 	
 	cout << "vComDes = " << vComDes.transpose() << endl;
 	cout << "vCom    = " << vCom.transpose() << endl;
 	
-	cout << "aComDes = " << aComDes.transpose() << endl;
+	cout << "aComDes = " << aComDes.transpose() << endl;*/
 	
 	
 	minfz =totalMass *(aComDes(2)+9.8)*.01;
@@ -703,6 +701,7 @@ void RunningStateMachine::Flight1()
 		MatrixXF stanceAngles = footAngles.tail(3).transpose();
 		VectorXF stanceTimes(3);
 		stanceTimes << 0, thisStep.flightTime/2., thisStep.flightTime;
+		initRate(0) = vFoot[stanceLeg](1);
 		stanceAngleSpline.computeCoefficients(stanceTimes, stanceAngles, initRate, zeroRate);
 		
 		
@@ -1243,6 +1242,9 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				eR = RDesFoot[i] * RFoot[i].transpose();
 				matrixLogRot(eR,eOmega);
 				
+				
+				
+				
 				// Use a PD to create a desired acceleration (everything here is in inertial coordinates)
 				aCom.head(3) = kpFoot[i] * eOmega;
 				
@@ -1262,6 +1264,10 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 					aCom = - 20 * vFoot[i];
 					//aCom.setZero();
 				}
+				else {
+					cout << "Foot " << i << " e= " << eOmega.transpose() << endl;
+				}
+
 				
 				
 				// Compute Task Information

@@ -438,6 +438,16 @@ void BasicGLPane::userGraphics()
 		}
 		
 		
+		theta = acos(qBase[3])*2 * 180 / M_PI;
+		
+		glPushMatrix();
+		glTranslatef(qBase[4], qBase[5], qBase[6]);
+		glRotatef(theta, qBase[0], qBase[1], qBase[2]);
+		
+		
+		glPopMatrix();
+		
+		
 		if (frame->showCoM->IsChecked()) {
 			// Draw COM Info
 			glBegin(GL_LINES);

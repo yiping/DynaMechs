@@ -164,11 +164,20 @@ void BasicGLPane::keyPressed(wxKeyEvent& event)
 	}
 	
 	if (event.GetKeyCode() == 315) {
-		((RunningStateMachine *) humanoid)->vDesDisplay+=.05;
+		((RunningStateMachine *) humanoid)->vDesDisplay+=.1;
 	}
 	if (event.GetKeyCode() == 317) {
-		((RunningStateMachine *) humanoid)->vDesDisplay-=.05;
+		((RunningStateMachine *) humanoid)->vDesDisplay-=.1;
 	}
+	if (event.GetKeyCode() == 314) {
+		((RunningStateMachine *) humanoid)->pushRequest = true;
+		((RunningStateMachine *) humanoid)->pushDirection = false;
+	}
+	if (event.GetKeyCode() == 316) {
+		((RunningStateMachine *) humanoid)->pushRequest = true;
+		((RunningStateMachine *) humanoid)->pushDirection = true;
+	}
+	
 	
 	
 	cout << event.GetKeyCode() << endl;

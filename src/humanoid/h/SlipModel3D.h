@@ -26,6 +26,11 @@ public:
 	Float restLength;
 	Float mass;
 	Float time;
+	
+	Float expandRate;
+	
+	
+	
 	Float tContact,tFlight;
 	
 	

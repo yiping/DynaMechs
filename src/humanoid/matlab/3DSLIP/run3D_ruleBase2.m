@@ -3,7 +3,7 @@ function hop()
     dynParams.g=9.8;   dynParams.m=72.5748; 
     
     robotLegLength = .97;
-    robotHipDisp = .09;
+    robotHipDisp = 0.2542032/2;
     dynParams.robotLegLength = robotLegLength;
     dynParams.robotHipDisp  = robotHipDisp;
         
@@ -86,7 +86,7 @@ function hop()
     
    
     
-    VX  = 3.5:.5:5.5;
+    VX  = 3:.1:7.5;
     EVX = -.5:.1:.5;
     VY  = -.1:.1:.4;
     H   = .9:.05:1.1;
@@ -104,13 +104,21 @@ function hop()
     VXinits = cell(length(VX),1);
     Vstiffs = zeros(length(VX),1);
     
+    fid = fopen('SlipRuleBaseInfo.txt','w');
+    length(VX)
+    fprintf(fid,'%d\n',length(VX));
+    fclose(fid);
+    
+    
+    fid = fopen('SlipRuleBase.txt','w');
+    
     for i=1:length(VX)
         vx = VX(i);
         tStanceDes =10^-0.2*vx^-0.82;
         cad = 2.551*vx*vx-8.8*vx+172.87;
         tFlightDes = 60/cad - tStanceDes;
     
-        options = optimset('display','none');
+        options = optimset('display','iter');
         [params resnorm res] = lsqnonlin(@periodResidualSS,params0,[0,.5,.5,0],[pi/4,150,2,1],options);
         VXresults = [VXresults ; params];
         params0 = params;
@@ -132,111 +140,162 @@ function hop()
         K_ss = - Ju_ss\Js_ss;
         VXfb{i} = K_ss;
         
+        K_ss
+        
+        % vx k theta
+        fprintf(fid,'%.9f \t%.9f \t%.9f ',vx, params(2), params(1)); 
+        fprintf(fid,'\t%.9f \t%.9f ',params(4), params(3));
+        fprintf(fid,'\t%.9f \t%.9f \t%.9f',robotLegLength, tStanceDes, tFlightDes);
+        
+        fprintf(fid,'\t%.9f \t%.9f \t%.9f ',K_ss(1,1),K_ss(1,2),K_ss(1,3));
+        fprintf(fid,'\t%.9f \t%.9f \t%.9f ',K_ss(2,1),K_ss(2,2),K_ss(2,3));
+        fprintf(fid,'\t%.9f \t%.9f \t%.9f ',K_ss(3,1),K_ss(3,2),K_ss(3,3));
+        fprintf(fid,'\n');
     end
+    fclose(fid);
     
     
-    maxRes = 0;
-    global ruleParams
-    global ruleFeedback
-    ruleParams = [];
-    ruleFeedback = cell(numRules,1);
-    for i=214:numRules
-        ruleNum = i-1;
-        mfIndices = zeros(4,1);
-        for j=1:4;
-           mfIndex = mod(ruleNum, numMFs(j));
-           ruleNum = (ruleNum-mfIndex)/numMFs(j);
-           mfIndices(j) = mfIndex+1; 
-        end
-        
-        h0 = H(mfIndices(1));
-        vy0 = VY(mfIndices(2));
-        evx = EVX(mfIndices(3));
-        vxf = VX(mfIndices(4));
-        vx0 = vxf + evx;
-        
-        hf = VXresults(mfIndices(4),3);
-        vyf = -VXresults(mfIndices(4),4);
-
-        %params0 = [0.7802 0 2.6721e+04/1e4/8 2.6721e+04/1e4/8];
-    
-        params0 = VXparams{mfIndices(4)}+(VXfb{mfIndices(4)}*([h0 vx0 vy0]' - VXinits{mfIndices(4)}))';
-        
-
-        while robotLegLength*cos(params0(1)) > h0
-            params0(1) = params0(1)+.1;
-        end
-        
-%         dynParams.plot = 1;
-%         output = periodResidual(params0)
-        dynParams.k0 = Vstiffs(mfIndices(4));
-        
-        options = optimset('display','none','TolFun',1e-9,'TolX',1e-9,'MaxFunEvals',500);
-        [params resnorm res] = lsqnonlin(@periodResidual,params0,[0,-pi/4,-15],[pi/4,pi/4,15],options);
-
-        if resnorm > maxRes
-            maxRes = resnorm;
-        end
-         
-        stateInit = zeros(6,1);
-        stateInit(3) = h0;
-        stateInit(4) = vx0;
-        stateInit(5) = vy0;
-        
-        [Js_nss Ju_nss] = evalJacobian2(stateInit, params, dynParams);
-        K_nss = - Ju_nss\Js_nss;
-    
-        ruleParams = [ruleParams ; params];
-        ruleFeedback{i} = K_nss;
-        
-         fprintf('i=%d  vxf= %.2f vx0=%.2f vyf=%.2f vy0=%.2f h0=%.3f hf=%.3f res=%e v %e\n',i,vxf, vx0, vyf, vy0, h0,hf,resnorm,maxRes);
-%         options = optimset('display','iter','TolFun',1e-9);
-%         %params0 = [VXresults(mfIndices(4),1) 0 VXresults(mfIndices(4),2) VXresults(mfIndices(4),2)];
-%         params0 = [0.7802 0 2.6721e+04/1e4/8 2.6721e+04/1e4/8];
-%         [params resnorm res] = lsqnonlin(@periodResidual,params0,[0,-pi/4,1000/1e4,1000/1e4],[pi/4,pi/4,150000/1e4,150000/1e4],options);
-%          res
-%          norm(res)
-         
-%          [Js Ju] = evalJacobian2(stateInit, params, dynParams);
-%          dParams = - (Ju\res)'
-%          
+%     
+%     maxRes = 0;
+%     global ruleParams
+%     global ruleFeedback
+%     ruleParams = [];
+%     ruleFeedback = cell(numRules,1);
+%     for i=214:numRules
+%         ruleNum = i-1;
+%         mfIndices = zeros(4,1);
+%         for j=1:4;
+%            mfIndex = mod(ruleNum, numMFs(j));
+%            ruleNum = (ruleNum-mfIndex)/numMFs(j);
+%            mfIndices(j) = mfIndex+1; 
+%         end
+%         
+%         h0 = H(mfIndices(1));
+%         vy0 = VY(mfIndices(2));
+%         evx = EVX(mfIndices(3));
+%         vxf = VX(mfIndices(4));
+%         vx0 = vxf + evx;
+%         
+%         hf = VXresults(mfIndices(4),3);
+%         vyf = -VXresults(mfIndices(4),4);
 % 
-%          params0 = params - (Ju\res)'*.1;
-%          [params resnorm res] = lsqnonlin(@periodResidual,params0,[0,-pi/4,1000/1e4,1000/1e4],[pi/4,pi/4,150000/1e4,150000/1e4],options);
-%          
-%          
-%          dynParams.plot = 1;
-%          periodResidual(params)
-%          return
-          
-         
-         
-         
-%         %params
+%         %params0 = [0.7802 0 2.6721e+04/1e4/8 2.6721e+04/1e4/8];
+%     
+%         params0 = VXparams{mfIndices(4)}+(VXfb{mfIndices(4)}*([h0 vx0 vy0]' - VXinits{mfIndices(4)}))';
 %         
-%         stateInit = zeros(6,1);     
-%         dynParams.tdParams = [params(1) params(2)];
-%         dynParams.heightThreshold = robotLegLength*cos(dynParams.tdParams(1));
-%         dynParams.L0 = sqrt(robotLegLength^2+robotHipDisp^2 +...
-%                                 2*robotLegLength*robotHipDisp*sin(dynParams.tdParams(1))*sin(dynParams.tdParams(2)));
-%         dynParams.k1 = params(3)*1e4;
-%         dynParams.k2 = params(4)*1e4;        
-%         dynParams.side = 1;
+% 
+%         while robotLegLength*cos(params0(1)) > h0
+%             params0(1) = params0(1)+.1;
+%         end
 %         
+% %         dynParams.plot = 1;
+% %         output = periodResidual(params0)
+%         dynParams.k0 = Vstiffs(mfIndices(4));
+%         
+%         options = optimset('display','none','TolFun',1e-9,'TolX',1e-9,'MaxFunEvals',500);
+%         [params resnorm res] = lsqnonlin(@periodResidual,params0,[0,-pi/4,-15],[pi/4,pi/4,15],options);
+% 
+%         if resnorm > maxRes
+%             maxRes = resnorm;
+%         end
+%          
+%         stateInit = zeros(6,1);
 %         stateInit(3) = h0;
 %         stateInit(4) = vx0;
 %         stateInit(5) = vy0;
-%         t0=0;
 %         
-%         [T_out STATE_out FOOT_out tf statef EN_out stanceTime tdPos] = simulatePeriod(t0,stateInit,dynParams);
+%         [Js_nss Ju_nss] = evalJacobian2(stateInit, params, dynParams);
+%         K_nss = - Ju_nss\Js_nss;
+%     
+%         ruleParams = [ruleParams ; params];
+%         ruleFeedback{i} = K_nss;
+%         
+%          fprintf('i=%d  vxf= %.2f vx0=%.2f vyf=%.2f vy0=%.2f h0=%.3f hf=%.3f res=%e v %e\n',i,vxf, vx0, vyf, vy0, h0,hf,resnorm,maxRes);
+% %         options = optimset('display','iter','TolFun',1e-9);
+% %         %params0 = [VXresults(mfIndices(4),1) 0 VXresults(mfIndices(4),2) VXresults(mfIndices(4),2)];
+% %         params0 = [0.7802 0 2.6721e+04/1e4/8 2.6721e+04/1e4/8];
+% %         [params resnorm res] = lsqnonlin(@periodResidual,params0,[0,-pi/4,1000/1e4,1000/1e4],[pi/4,pi/4,150000/1e4,150000/1e4],options);
+% %          res
+% %          norm(res)
+%          
+% %          [Js Ju] = evalJacobian2(stateInit, params, dynParams);
+% %          dParams = - (Ju\res)'
+% %          
+% % 
+% %          params0 = params - (Ju\res)'*.1;
+% %          [params resnorm res] = lsqnonlin(@periodResidual,params0,[0,-pi/4,1000/1e4,1000/1e4],[pi/4,pi/4,150000/1e4,150000/1e4],options);
+% %          
+% %          
+% %          dynParams.plot = 1;
+% %          periodResidual(params)
+% %          return
+%           
+%          
+%          
+%          
+% %         %params
+% %         
+% %         stateInit = zeros(6,1);     
+% %         dynParams.tdParams = [params(1) params(2)];
+% %         dynParams.heightThreshold = robotLegLength*cos(dynParams.tdParams(1));
+% %         dynParams.L0 = sqrt(robotLegLength^2+robotHipDisp^2 +...
+% %                                 2*robotLegLength*robotHipDisp*sin(dynParams.tdParams(1))*sin(dynParams.tdParams(2)));
+% %         dynParams.k1 = params(3)*1e4;
+% %         dynParams.k2 = params(4)*1e4;        
+% %         dynParams.side = 1;
+% %         
+% %         stateInit(3) = h0;
+% %         stateInit(4) = vx0;
+% %         stateInit(5) = vy0;
+% %         t0=0;
+% %         
+% %         [T_out STATE_out FOOT_out tf statef EN_out stanceTime tdPos] = simulatePeriod(t0,stateInit,dynParams);
+% % 
+% %         
+% %         stanceTime
+% %         tStanceDes
+%         
+%         return
 % 
-%         
-%         stanceTime
-%         tStanceDes
-        
-        return
-
-    end    
+%     end    
+    
+    load SlipRuleBase.txt
+    figure(1)
+    plot(SlipRuleBase(:,1), SlipRuleBase(:,2),'o')
+    ylabel('k');
+    
+    figure(2)
+    plot(SlipRuleBase(:,1), SlipRuleBase(:,3),'o')
+    ylabel('theta');
+    
+    figure(3)
+    plot(SlipRuleBase(:,1), SlipRuleBase(:,4),'o')
+    ylabel('vy');
+    
+    figure(4)
+    plot(SlipRuleBase(:,1), SlipRuleBase(:,5),'o')
+    ylabel('h');
+    
+    figure(5)
+    plot(SlipRuleBase(:,1), SlipRuleBase(:,6),'o')
+    ylabel('cad');
+    
+    
+    figure(6)
+    plot(SlipRuleBase(:,1), SlipRuleBase(:,7),'o')
+    ylabel('tStanceDes');
+    
+    figure(7)
+    plot(SlipRuleBase(:,1), SlipRuleBase(:,8),'o')
+    ylabel('tFlightDes');
+    
+    figure(8)
+    plot(SlipRuleBase(:,1), SlipRuleBase(:,7)./(SlipRuleBase(:,7)+SlipRuleBase(:,8)),'o')
+    ylabel('DF');
+    
+    
+    
+    
     
     
     

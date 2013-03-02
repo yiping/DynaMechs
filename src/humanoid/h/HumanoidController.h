@@ -45,6 +45,8 @@ public:
 	
 	
 	vector<Float > kpFoot, kdFoot;
+	vector<Float > kpFootRot, kdFootRot;
+	
 	vector<VectorXF > aDesFoot;
 	vector<Vector3F > pDesFoot;
 	vector<Matrix3F > RDesFoot;

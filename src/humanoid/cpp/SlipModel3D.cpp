@@ -27,5 +27,8 @@ void SlipModel3D::dynamics()
 	relPos /= length;
 	
 	acc = springConst * (restLength-length)*relPos / mass;
+	
+	expandRate = relPos.dot(vel);
+	
 	acc(2)-=9.8;
 }

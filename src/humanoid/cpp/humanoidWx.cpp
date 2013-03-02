@@ -440,11 +440,11 @@ void BasicGLPane::userGraphics()
 		
 		if (frame->showCoM->IsChecked()) {
 			// Draw COM Info
-			//glBegin(GL_LINES);
-			//glColor4f(0.0, 0.0, 1.0,1.0);
-			//glVertex3f(ComDes[0], ComDes[1], ComDes[2]);
-			//glVertex3f(ComDes[0], ComDes[1], 0      );
-			//glEnd();
+			glBegin(GL_LINES);
+			glColor4f(0.0, 0.0, 1.0,1.0);
+			glVertex3f(ComDes[0], ComDes[1], ComDes[2]);
+			glVertex3f(ComDes[0], ComDes[1], 0      );
+			glEnd();
 			
 			glBegin(GL_LINES);
 			glColor4f(1.0, 0.0, 0.0,1.0);
@@ -667,8 +667,8 @@ void BasicGLPane::updateSim(wxTimerEvent & event) {
 	if (update_time > 2.5)
 	{
 		timer_count ++;
-		cerr << "time/real_time: " << simThread->sim_time << '/' << rtime
-		<< "  frame_rate: " << (double) timer_count/rtime << endl;
+		//cerr << "time/real_time: " << simThread->sim_time << '/' << rtime
+		//<< "  frame_rate: " << (double) timer_count/rtime << endl;
 		dmGetSysTime(&update_tv);
 	}
 }

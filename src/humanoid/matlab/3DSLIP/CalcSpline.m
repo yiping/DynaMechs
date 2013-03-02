@@ -7,7 +7,10 @@ ts = [0 tFlight tFlight+tStance tFlight*2+tStance];
 
 ts = [0 tFlight/2 tFlight tFlight+tStance/2 tFlight+tStance tFlight*3/2+tStance tFlight*2+tStance tFlight*2+tStance];
 
-pts = pts7
+%pts = pts7
+pts = [-0.268065, -0.580000, -0.600000, -0.319159, 0.144500, 0.420000, 0.268065, 0.000000, 0.152683, 0.350000, 0.305924, 0.183641, 0.049529, 0.000000];
+pts = reshape(pts,7,2);
+
 %pts = [pts7 ; pts7(end,1)-3.5*.1
 M = 2;
 
@@ -48,8 +51,8 @@ fprintf(1,'%f, ',slimPts)
 
 A = zeros(4*N);
 b = zeros(4*N,1);
-% vInit = [-3.5 -.7]';
-% vFinal = [-3.5 .7]';
+vInit = [-3.5 -.7]';
+vFinal = [-3.5 .7]';
 
 j=1;
 

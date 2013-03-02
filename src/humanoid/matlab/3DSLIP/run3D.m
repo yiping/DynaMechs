@@ -18,7 +18,7 @@ function hop()
     
     tStanceDes = .35*.45; % .35s estimated from paper
     tFlightDes = .35*.55;
-    vx = 5;
+    vx = 7;
     
     tStanceDes =10^-0.2*vx^-0.82;
         cad = 2.551*vx*vx-8.8*vx+172.87;

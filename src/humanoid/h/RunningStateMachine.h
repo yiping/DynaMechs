@@ -53,6 +53,11 @@ public:
 	Float vDesDisplay;
 	Float vActDisplay;
 	
+	volatile bool pushRequest;
+	volatile bool pushDirection;
+	Float pushTime;
+	bool pushActive;
+	
 private:
 	
 	void Floating();
@@ -70,12 +75,20 @@ private:
 		Float touchDownAngle1;
 		Float touchDownAngle2;
 		Float k;
+		Float k2;
+		Float k1;
 		Float h0;
 		Float vx0;
 		Float vy0;
 		Float flightTime, stanceTime;
-		Float stepWidth;
 		Float footLength, CoPInitOffset, CoPVel;
+	
+		Vector3F pToF;
+		Vector3F vToF;
+		//Vector3F vInit;
+		
+		
+		MatrixXF feedBack;
 	} StepData;
 	
 	
@@ -118,6 +131,10 @@ private:
 	
 	VectorXF footAngles;
 	Matrix3F initRDesFoot;
+	
+	vector<StepData> ruleBase; 
+	
+ 
 	
 };
 

@@ -47,7 +47,7 @@ typedef vector<MatrixX6F> XformVector;
 typedef vector<string > StringVector;
 
 class ArticulationSpecializer {
-protected:
+public:
 	dmArticulation * artic;	
 };
 

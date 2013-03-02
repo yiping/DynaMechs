@@ -31,7 +31,7 @@
 			19B2079B15C720FB005EA3A3 /* humanoidWx.cpp:346 */,
 			19B2080215C7348E005EA3A3 /* humanoidWx.cpp:379 */,
 			199F916A169CF58000B53AAD /* RunningStateMachine.cpp:803 */,
-			199F9171169CF67300B53AAD /* humanoidWx.cpp:450 */,
+			199F9171169CF67300B53AAD /* humanoidWx.cpp:456 */,
 			19F3C83D169F4D93007004E6 /* RunningStateMachine.cpp:292 */,
 		);
 		codeSenseManager = 1925863A14D2E86400778EA7 /* Code sense */;
@@ -184,8 +184,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 383885836;
-			PBXWorkspaceStateSaveDate = 383885836;
+			PBXPerProjectTemplateStateSaveDate = 383886005;
+			PBXWorkspaceStateSaveDate = 383886005;
 		};
 		perUserProjectItems = {
 			196DD7C016E1328A00BBADD4 = 196DD7C016E1328A00BBADD4 /* PBXTextBookmark */;
@@ -213,10 +213,19 @@
 			196DD80B16E1694B00BBADD4 = 196DD80B16E1694B00BBADD4 /* PBXTextBookmark */;
 			196DD80C16E1694B00BBADD4 = 196DD80C16E1694B00BBADD4 /* PBXTextBookmark */;
 			196DD81C16E16CE800BBADD4 = 196DD81C16E16CE800BBADD4 /* PBXTextBookmark */;
-			196DD88416E1A22900BBADD4 /* PBXTextBookmark */ = 196DD88416E1A22900BBADD4 /* PBXTextBookmark */;
-			196DD88516E1A22900BBADD4 /* PBXTextBookmark */ = 196DD88516E1A22900BBADD4 /* PBXTextBookmark */;
-			196DD88616E1A22900BBADD4 /* PBXTextBookmark */ = 196DD88616E1A22900BBADD4 /* PBXTextBookmark */;
-			196DD88716E1A22900BBADD4 /* PBXTextBookmark */ = 196DD88716E1A22900BBADD4 /* PBXTextBookmark */;
+			196DD88416E1A22900BBADD4 = 196DD88416E1A22900BBADD4 /* PBXTextBookmark */;
+			196DD88516E1A22900BBADD4 = 196DD88516E1A22900BBADD4 /* PBXTextBookmark */;
+			196DD88616E1A22900BBADD4 = 196DD88616E1A22900BBADD4 /* PBXTextBookmark */;
+			196DD88716E1A22900BBADD4 = 196DD88716E1A22900BBADD4 /* PBXTextBookmark */;
+			196DD8DA16E1A42100BBADD4 /* PBXTextBookmark */ = 196DD8DA16E1A42100BBADD4 /* PBXTextBookmark */;
+			196DD8DB16E1A42100BBADD4 /* PBXTextBookmark */ = 196DD8DB16E1A42100BBADD4 /* PBXTextBookmark */;
+			196DD8DC16E1A42100BBADD4 /* PBXTextBookmark */ = 196DD8DC16E1A42100BBADD4 /* PBXTextBookmark */;
+			196DD8DD16E1A42100BBADD4 /* PBXTextBookmark */ = 196DD8DD16E1A42100BBADD4 /* PBXTextBookmark */;
+			196DD8ED16E1A57800BBADD4 /* PBXTextBookmark */ = 196DD8ED16E1A57800BBADD4 /* PBXTextBookmark */;
+			196DD8EE16E1A57800BBADD4 /* PBXTextBookmark */ = 196DD8EE16E1A57800BBADD4 /* PBXTextBookmark */;
+			196DD8EF16E1A57800BBADD4 /* PBXTextBookmark */ = 196DD8EF16E1A57800BBADD4 /* PBXTextBookmark */;
+			196DD8F016E1A57800BBADD4 /* XCBuildMessageTextBookmark */ = 196DD8F016E1A57800BBADD4 /* XCBuildMessageTextBookmark */;
+			196DD8F116E1A57800BBADD4 /* PBXTextBookmark */ = 196DD8F116E1A57800BBADD4 /* PBXTextBookmark */;
 			19EB746216DD117100AB1515 = 19EB746216DD117100AB1515 /* PBXTextBookmark */;
 			19EB746416DD117100AB1515 = 19EB746416DD117100AB1515 /* PBXTextBookmark */;
 			19EB746516DD117100AB1515 = 19EB746516DD117100AB1515 /* PBXTextBookmark */;
@@ -1303,8 +1312,8 @@
 	};
 	194A858815A1F92A007CBCFE /* Humanoid.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1060, 767}}";
-			sepNavSelRange = "{351, 6}";
+			sepNavIntBoundsRect = "{{0, 0}, {910, 588}}";
+			sepNavSelRange = "{265, 23}";
 			sepNavVisRange = "{0, 469}";
 		};
 	};
@@ -1568,7 +1577,7 @@
 		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
 		name = "humanoidWx.cpp: 443";
 		rLen = 0;
-		rLoc = 10981;
+		rLoc = 11284;
 		rType = 0;
 		vrLen = 1827;
 		vrLoc = 10558;
@@ -1578,7 +1587,7 @@
 		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
 		name = "humanoidWx.cpp: 464";
 		rLen = 0;
-		rLoc = 11590;
+		rLoc = 11893;
 		rType = 0;
 		vrLen = 1884;
 		vrLoc = 10558;
@@ -1762,7 +1771,7 @@
 		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
 		name = "humanoidWx.cpp: 464";
 		rLen = 0;
-		rLoc = 11590;
+		rLoc = 11893;
 		rType = 0;
 		vrLen = 1273;
 		vrLoc = 10667;
@@ -1776,6 +1785,95 @@
 		rType = 0;
 		vrLen = 1288;
 		vrLoc = 9839;
+	};
+	196DD8DA16E1A42100BBADD4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801737159955E500DB8AD5 /* HumanoidMainFrame.h */;
+		name = "HumanoidMainFrame.h: 35";
+		rLen = 0;
+		rLoc = 715;
+		rType = 0;
+		vrLen = 1591;
+		vrLoc = 345;
+	};
+	196DD8DB16E1A42100BBADD4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DB3159B623A00DB8AD5 /* BasicGLPane.cpp */;
+		name = "BasicGLPane.cpp: 160";
+		rLen = 0;
+		rLoc = 4579;
+		rType = 0;
+		vrLen = 1568;
+		vrLoc = 4069;
+	};
+	196DD8DC16E1A42100BBADD4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
+		name = "humanoidWx.cpp: 439";
+		rLen = 0;
+		rLoc = 10730;
+		rType = 0;
+		vrLen = 1288;
+		vrLoc = 9839;
+	};
+	196DD8DD16E1A42100BBADD4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
+		name = "humanoidWx.cpp: 453";
+		rLen = 0;
+		rLoc = 11200;
+		rType = 0;
+		vrLen = 1198;
+		vrLoc = 10558;
+	};
+	196DD8ED16E1A57800BBADD4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DBA159B627A00DB8AD5 /* HumanoidController.h */;
+		name = "HumanoidController.h: 48";
+		rLen = 0;
+		rLoc = 1455;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 146;
+	};
+	196DD8EE16E1A57800BBADD4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 194A858815A1F92A007CBCFE /* Humanoid.h */;
+		name = "Humanoid.h: 15";
+		rLen = 23;
+		rLoc = 265;
+		rType = 0;
+		vrLen = 469;
+		vrLoc = 0;
+	};
+	196DD8EF16E1A57800BBADD4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19801DBF159B629B00DB8AD5 /* GlobalTypes.h */;
+		name = "GlobalTypes.h: 50";
+		rLen = 0;
+		rLoc = 876;
+		rType = 0;
+		vrLen = 991;
+		vrLoc = 0;
+	};
+	196DD8F016E1A57800BBADD4 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'theta' was not declared in this scope";
+		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 441;
+		rType = 1;
+	};
+	196DD8F116E1A57800BBADD4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */;
+		name = "humanoidWx.cpp: 442";
+		rLen = 0;
+		rLoc = 10815;
+		rType = 0;
+		vrLen = 1165;
+		vrLoc = 10514;
 	};
 	1974711415E521FE00E7AA0A /* BezierCurve.h */ = {
 		uiCtxt = {
@@ -1875,9 +1973,9 @@
 	};
 	19801737159955E500DB8AD5 /* HumanoidMainFrame.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {810, 968}}";
+			sepNavIntBoundsRect = "{{0, 0}, {910, 957}}";
 			sepNavSelRange = "{715, 0}";
-			sepNavVisRange = "{345, 1759}";
+			sepNavVisRange = "{345, 1591}";
 		};
 	};
 	19801738159955E500DB8AD5 /* HumanoidMainFrame.cpp */ = {
@@ -1905,9 +2003,9 @@
 	};
 	19801DB3159B623A00DB8AD5 /* BasicGLPane.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1058, 6534}}";
-			sepNavSelRange = "{4838, 0}";
-			sepNavVisRange = "{3541, 2222}";
+			sepNavIntBoundsRect = "{{0, 0}, {910, 6545}}";
+			sepNavSelRange = "{4579, 0}";
+			sepNavVisRange = "{4069, 1568}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};
@@ -1936,9 +2034,9 @@
 	};
 	19801DBA159B627A00DB8AD5 /* HumanoidController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {756, 1034}}";
+			sepNavIntBoundsRect = "{{0, 0}, {910, 990}}";
 			sepNavSelRange = "{1455, 0}";
-			sepNavVisRange = "{146, 2009}";
+			sepNavVisRange = "{146, 1606}";
 		};
 	};
 	19801DBB159B627A00DB8AD5 /* HumanoidDataLogger.h */ = {
@@ -1971,9 +2069,9 @@
 	};
 	19801DBF159B629B00DB8AD5 /* GlobalTypes.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {872, 814}}";
-			sepNavSelRange = "{481, 5}";
-			sepNavVisRange = "{0, 1000}";
+			sepNavIntBoundsRect = "{{0, 0}, {910, 616}}";
+			sepNavSelRange = "{876, 0}";
+			sepNavVisRange = "{0, 991}";
 		};
 	};
 	19801DC2159B62C100DB8AD5 /* TaskSpaceControllerB.cpp */ = {
@@ -2272,7 +2370,7 @@
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
-	199F9171169CF67300B53AAD /* humanoidWx.cpp:450 */ = {
+	199F9171169CF67300B53AAD /* humanoidWx.cpp:456 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -2284,7 +2382,7 @@
 		functionName = "BasicGLPane::userGraphics()";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 450;
+		lineNumber = 456;
 		location = humanoidWx;
 		modificationTime = 379538841.017741;
 		originalNumberOfMultipleMatches = 1;
@@ -2387,9 +2485,9 @@
 	};
 	19B85EAD158F7D1100788BE5 /* humanoidWx.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {910, 9119}}";
-			sepNavSelRange = "{10730, 0}";
-			sepNavVisRange = "{9839, 1288}";
+			sepNavIntBoundsRect = "{{0, 0}, {910, 9185}}";
+			sepNavSelRange = "{10815, 0}";
+			sepNavVisRange = "{10514, 1165}";
 			sepNavWindowFrame = "{{15, 57}, {1142, 721}}";
 		};
 	};

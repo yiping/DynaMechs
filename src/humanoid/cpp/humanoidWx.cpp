@@ -437,14 +437,20 @@ void BasicGLPane::userGraphics()
 			
 		}
 		
-		
-		theta = acos(qBase[3])*2 * 180 / M_PI;
+		Float qBase[7], qdBase[7];
+		humanoid->artic->getLink(0)->getState(qBase,qdBase);
+		Float theta = acos(qBase[3])*2 * 180 / M_PI;
 		
 		glPushMatrix();
 		glTranslatef(qBase[4], qBase[5], qBase[6]);
 		glRotatef(theta, qBase[0], qBase[1], qBase[2]);
+		SpatialVector forceVec;
+		( (dmRigidBody *) humanoid->artic->getLink(0))->getExternalForce(forceVec);
 		
-		
+		Vector3F myVec,zero;
+		zero.setZero();
+		myVec << 0, forceVec[4]/1000,0;
+		drawArrow(zero, myVec, .05, .08, .1);
 		glPopMatrix();
 		
 		

@@ -901,6 +901,9 @@ void RunningStateMachine::Flight1()
 		startVel(1) = vFoot[flightLeg](4) -vCom(1);
 		
 		endVel.setZero();
+		endVel(2) = liftHeight1/thisStep.flightTime/2;
+		endVel(0) = sin(thisStep.touchDownAngle1)*thisStep.touchDownLength / thisStep.stanceTime/4;
+		
 		flightFootSpline.init(startPos, startVel, endPos, endVel, thisStep.flightTime);
 		
 		VectorXF flightTimes(7);
@@ -1305,8 +1308,8 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				 offset = -.1;
 				 ampFactor = .7;
 				 
-				 offset = -.3;
-				 ampFactor = .9;
+				 offset = -.1;
+				 ampFactor = .85;
 				 
 				Float angle, rate;
 				Vector3F relPos = pFoot[1] - pCom;

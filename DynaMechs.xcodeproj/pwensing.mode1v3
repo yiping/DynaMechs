@@ -283,7 +283,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>48</integer>
+									<integer>38</integer>
 									<integer>30</integer>
 									<integer>9</integer>
 									<integer>3</integer>
@@ -291,7 +291,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 972}, {287, 607}}</string>
+							<string>{{0, 165}, {287, 607}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -328,7 +328,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>humanoidWx.cpp</string>
+								<string>RunningStateMachine.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -336,19 +336,15 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>humanoidWx.cpp</string>
+										<string>RunningStateMachine.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>196DD8F116E1A57800BBADD4</string>
+										<string>196DDA0216E43F0D00BBADD4</string>
 										<key>history</key>
 										<array>
-											<string>196DD8DA16E1A42100BBADD4</string>
-											<string>196DD8DB16E1A42100BBADD4</string>
-											<string>196DD8ED16E1A57800BBADD4</string>
-											<string>196DD8EE16E1A57800BBADD4</string>
-											<string>196DD8EF16E1A57800BBADD4</string>
-											<string>196DD8F016E1A57800BBADD4</string>
+											<string>196DD9F616E43B4600BBADD4</string>
+											<string>196DD9F716E43B4600BBADD4</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -406,9 +402,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>196DD8DE16E1A42100BBADD4</string>
+				<string>196DD9D616E4309100BBADD4</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>196DD8DF16E1A42100BBADD4</string>
+				<string>196DD9D716E4309100BBADD4</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -546,12 +542,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>196DD8F316E1A57800BBADD4</string>
-		<string>196DD8F416E1A57800BBADD4</string>
-		<string>196DD8F516E1A57800BBADD4</string>
+		<string>196DD9E816E436B000BBADD4</string>
+		<string>196DD9E916E436B000BBADD4</string>
 		<string>1C78EAAD065D492600B07095</string>
-		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 		<string>1925863714D2E86400778EA7</string>
+		<string>1CD10A99069EF8BA00B06720</string>
+		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>0 112 1280 666 0 0 1280 778 </string>
@@ -570,14 +566,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>humanoidWx.cpp</string>
+								<string></string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -633,7 +627,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1925863714D2E86400778EA7</string>
-				<string>196DD8E016E1A42100BBADD4</string>
+				<string>196DD9D816E4309100BBADD4</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -646,7 +640,7 @@
 			<key>WindowToolGUID</key>
 			<string>1925863714D2E86400778EA7</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
@@ -720,19 +714,19 @@
 									<key>DebugVariablesTableConfiguration</key>
 									<array>
 										<string>Name</string>
-										<real>228.578125</real>
+										<real>220.578125</real>
 										<string>Value</string>
-										<real>237.9609375</real>
+										<real>230.9609375</real>
 										<string>Summary</string>
 										<real>80</real>
 									</array>
 									<key>Frame</key>
 									<string>{{335, 0}, {557, 345}}</string>
 									<key>RubberWindowFrame</key>
-									<string>376 113 892 665 0 0 1280 778 </string>
+									<string>2264 117 892 665 1280 -280 1920 1080 </string>
 								</dict>
 								<key>RubberWindowFrame</key>
-								<string>376 113 892 665 0 0 1280 778 </string>
+								<string>2264 117 892 665 1280 -280 1920 1080 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXDebugSessionModule</string>
@@ -755,22 +749,22 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>196DD8E116E1A42100BBADD4</string>
+				<string>196DD9D916E4309100BBADD4</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>196DD8E216E1A42100BBADD4</string>
-				<string>196DD8E316E1A42100BBADD4</string>
-				<string>196DD8E416E1A42100BBADD4</string>
-				<string>196DD8E516E1A42100BBADD4</string>
-				<string>196DD8E616E1A42100BBADD4</string>
+				<string>196DD9DA16E4309100BBADD4</string>
+				<string>196DD9DB16E4309100BBADD4</string>
+				<string>196DD9DC16E4309100BBADD4</string>
+				<string>196DD9DD16E4309100BBADD4</string>
+				<string>196DD9DE16E4309100BBADD4</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
 			<key>WindowString</key>
-			<string>376 113 892 665 0 0 1280 778 </string>
+			<string>2264 117 892 665 1280 -280 1920 1080 </string>
 			<key>WindowToolGUID</key>
 			<string>1CD10A99069EF8BA00B06720</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
@@ -915,7 +909,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C78EAAD065D492600B07095</string>
-				<string>196DD8F216E1A57800BBADD4</string>
+				<string>196DD9E416E436AF00BBADD4</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>

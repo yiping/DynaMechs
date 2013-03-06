@@ -683,7 +683,7 @@ void RunningStateMachine::Stance1()
 	cout << "aComDes = " << aComDes.transpose() << endl;*/
 	
 	
-	minfz =totalMass *(aComDes(2)+9.8)*.01;
+	minfz =totalMass *(aComDes(2)+9.8)*.05;
 	if (minfz < 0) {
 		minfz = 0;
 	}
@@ -1105,7 +1105,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	
 	// These are set in the stance state
 	//TaskWeight.segment(0,3).setConstant(10/8.);
-	TaskWeight.segment(3,3).setConstant(100/4.);
+	TaskWeight.segment(3,3).setConstant(100/3.);
 	
 	
 	/*TaskWeight.segment(0,3).setConstant(200/10.);
@@ -1575,6 +1575,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				taskRow+=6;
 			}
 		}
+		
 		//OptimizationSchedule.head(3).setConstant(-1);
 		
 		//cout << "Total Tasks! " << taskRow << endl;

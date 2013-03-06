@@ -60,7 +60,7 @@
 const float RADTODEG = (float)(180.0/M_PI);    // M_PI is defined in math.h
 const float DEGTORAD = (float)(M_PI/180.0);
 
-void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, double headWidth, double headLength);
+void drawArrow(const Vector3F & location, Vector3F & direction,double lineWidth, double headWidth, double headLength);
 
  
 void myInit (void); 
@@ -478,8 +478,8 @@ void BasicGLPane::userGraphics()
 		glColor4f(1.0, 0.0, 0.0, 1.0);
 		Vector3F myVec,zero;
 		zero.setZero();
-		myVec << 0, forceVec[4]/1600,0;
-		drawArrow(zero, myVec, .03, .05, .1);
+		myVec << forceVec[3]/1600, forceVec[4]/1600,forceVec[5]/1600;
+		drawArrow(-myVec, myVec, .03, .05, .1);
 		glPopMatrix();
 		
 		Vector3F CoM;
@@ -924,7 +924,7 @@ void BasicGLPane::updateSim(wxTimerEvent & event) {
 	}
 }
 
-void drawArrow(Vector3F & location, Vector3F & direction,double lineWidth, double headWidth, double headLength) {
+void drawArrow(const Vector3F & location, Vector3F & direction,double lineWidth, double headWidth, double headLength) {
 	Vector3F zup; zup << 0,0,1;
 	
 	Vector3F normedDirection = direction.normalized();

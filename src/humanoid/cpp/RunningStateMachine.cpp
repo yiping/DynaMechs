@@ -29,6 +29,8 @@ const bool useFeedback = true;
 
 const bool transitionPauses = false;
 const bool reportSchedule = false;
+float pushDuration = .04;
+float pushMagnitude = 750;
 
 
 RunningStateMachine::RunningStateMachine(dmArticulation * robot) 
@@ -547,11 +549,13 @@ void RunningStateMachine::Stance1()
 	
 	static Float finishHeight = 0;
 	
+	static bool pushNow = false;
+	
 	static bool firstHalf = true;
 	if (transitionFlag) {
 		bof= false;
 		
-		
+		pushNow = false;
 		
 		//Initilize right foot spline
 		{
@@ -605,9 +609,14 @@ void RunningStateMachine::Stance1()
 
 			
 			
-			SLIP.anchor(0) = pFoot[stanceLeg](0);
+			/*SLIP.anchor(0) = pFoot[stanceLeg](0);
 			SLIP.anchor(1) = stepWidth*stanceYSign+thisStep.pToF(1);
+			SLIP.anchor(2) = 0;*/
+			
+			SLIP.anchor(0) = pCom(0)+thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*cos(thisStep.touchDownAngle2);
+			SLIP.anchor(1) = pCom(1)+stanceYSign*(hipWidth/2. + thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*sin(thisStep.touchDownAngle2));
 			SLIP.anchor(2) = 0;
+			
 			
 			SLIP.pos(0) = SLIP.anchor(0) - thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*cos(thisStep.touchDownAngle2);
 			SLIP.pos(1) = SLIP.anchor(1) - stanceYSign*(hipWidth/2. + thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*sin(thisStep.touchDownAngle2));
@@ -662,6 +671,30 @@ void RunningStateMachine::Stance1()
 	
 	SLIP.dynamics();
 
+	if (stateTime > (thisStep.stanceTime - pushDuration) && !pushNow && (stepNum == 5 || stepNum ==8 || stepNum == 9 || stepNum==10)) {
+		pushRequest = true;
+		pushDirection = false;
+		pushNow = true;
+		if (stepNum ==9) {
+			pushMagnitude = 750;
+		}
+		else if (stepNum == 5) {
+			pushMagnitude = 1000;
+		}
+		else {
+			pushMagnitude = 750;
+		}
+	}
+	
+	if (stateTime > (thisStep.stanceTime - pushDuration -.04) && !pushNow && (stepNum == 13 || stepNum == 16) ) {
+		pushRequest = true;
+		pushDirection = false;
+		pushNow = true;
+		if (stepNum == 16) {
+			pushDirection = true;
+		}
+		pushMagnitude = 1000;
+	}
 	
 	int stanceYSign = (stanceLeg == 0 ? -1 : 1);
 	
@@ -876,6 +909,10 @@ void RunningStateMachine::Flight1()
 				thisStep.touchDownAngle2 += dParams(1);
 				thisStep.k1 += dParams(2)*1e4;
 				thisStep.k2 -= dParams(2)*1e4;
+				
+				Float timeToTD = sqrt(2*(hToF-thisStep.touchDownLength*cos(thisStep.touchDownAngle1))/GRAVITY);
+				thisStep.flightTime = timeToTOF+timeToTD;
+				
 			}
 			
 			simThread->paused_flag ^= transitionPauses;
@@ -1105,7 +1142,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 	
 	// These are set in the stance state
 	//TaskWeight.segment(0,3).setConstant(10/8.);
-	TaskWeight.segment(3,3).setConstant(100/3.);
+	TaskWeight.segment(3,3).setConstant(100/4);
 	
 	
 	/*TaskWeight.segment(0,3).setConstant(200/10.);
@@ -1638,23 +1675,35 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 		pushTime = simThread->sim_time;
 		pushActive = true;
 		pushRequest = false;
-		SpatialVector push;
-		push[0] =0; push[1]=0; push[2]=0; push[3]=0; push[4] = 1000; push[5] = 0;
-		if (pushDirection) {
-			push[4]*=-1;
-		}
 		
-		((dmRigidBody *) (artic->m_link_list[0]->link))->setExternalForce(push);
 		
 		
 		
 	}
-	if (pushActive && (simThread->sim_time-pushTime)>.02) {
+
+	if (pushActive && (simThread->sim_time-pushTime)>pushDuration) {
 		pushActive = false;
 		SpatialVector push;
 		push[0] =0; push[1]=0; push[2]=0; push[3]=0; push[4] = 0; push[5] = 0;
 		((dmRigidBody *) (artic->m_link_list[0]->link))->setExternalForce(push);
 	}
+	
+	if (pushActive) {
+		
+		SpatialVector push, pushFB;
+		push[0] =0; push[1]=0; push[2]=0; push[3]=0; push[4] = pushMagnitude; push[5] = 0;
+		if (pushDirection) {
+			push[4]*=-1;
+		}
+		artic->m_link_list[0]->link->rtxFromInboard(push, pushFB);
+		artic->m_link_list[0]->link->rtxFromInboard(push+3, pushFB+3);
+		
+		cout << pushFB[3] << ", " << pushFB[4] << ", " << pushFB[5] << endl;
+		
+		
+		((dmRigidBody *) (artic->m_link_list[0]->link))->setExternalForce(pushFB);
+	}
+	
 	
 	
 	if (frame->logDataCheckBox->IsChecked()) {

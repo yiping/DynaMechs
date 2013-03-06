@@ -951,6 +951,11 @@ void RunningStateMachine::Flight1()
 		
 		
 	}
+	SLIP.anchor(0) = pCom(0) + thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*cos(thisStep.touchDownAngle2);
+	SLIP.anchor(1) = pCom(1) + stanceYSign*(hipWidth/2. + thisStep.touchDownLength*sin(thisStep.touchDownAngle1)*sin(thisStep.touchDownAngle2));
+	SLIP.anchor(2) = pCom(2) - thisStep.touchDownLength*cos(thisStep.touchDownAngle1);
+	
+
 	
 	if ( (pFoot[0](2) < .002 || pFoot[1](2) < .002 || grfInfo.fCoPs[0](2)>0 || grfInfo.fCoPs[1](2)>0) && stateTime > .05) {
 		VectorXF p(3), pd(3), pdd(3);
@@ -1420,6 +1425,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 						//TaskWeight.segment(taskRow+1,1).setConstant(90);
 						TaskWeight.segment(taskRow+2,1).setConstant(70/5.);
 						
+						//TaskWeight.segment(taskRow,3) *= 3;
 						/*if (state == STANCE1) {
 							TaskWeight.segment(taskRow,3).setConstant(180);
 						}*/
@@ -1569,6 +1575,8 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 				taskRow+=6;
 			}
 		}
+		//OptimizationSchedule.head(3).setConstant(-1);
+		
 		//cout << "Total Tasks! " << taskRow << endl;
 		//cout << "Size " << TaskBias.size() << endl;
 		HumanoidController::HumanoidControl(ci);
@@ -1640,7 +1648,7 @@ void RunningStateMachine::StateControl(ControlInfo & ci)
 		
 		
 	}
-	if (pushActive && (simThread->sim_time-pushTime)>.01) {
+	if (pushActive && (simThread->sim_time-pushTime)>.02) {
 		pushActive = false;
 		SpatialVector push;
 		push[0] =0; push[1]=0; push[2]=0; push[3]=0; push[4] = 0; push[5] = 0;

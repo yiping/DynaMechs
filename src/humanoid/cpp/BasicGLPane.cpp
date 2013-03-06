@@ -499,6 +499,43 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 	
 	glPopMatrix ();
 	
+	{
+		/*glPushMatrix();
+		glScissor(0.6*getWidth(), 0.6*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight() );
+		glViewport (0.7*getWidth(), 0.7*getHeight(), getWidth() - 0.7*getWidth(), getHeight()-0.7*getHeight());
+		glClearColor (1.0, 1.0, 1.0,1.0); // background colour  lyp
+		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity ();
+		
+		gluOrtho2D (-5, 5, -5, 5);
+		glMatrixMode (GL_MODELVIEW);
+		glLoadIdentity ();*/
+		
+		/*// red triangle
+		glColor4f(1, 0, 0, 1);
+		glBegin(GL_TRIANGLES);                      // Drawing Using Triangles
+		glVertex3f( 0.0f, 1.0f, 0.0f);              // Top
+		glVertex3f(-1.0f,-1.0f, 0.0f);              // Bottom Left
+		glVertex3f( 1.0f,-1.0f, 0.0f);              // Bottom Right
+		glEnd(); 
+		glColor3f(1.0, 1.0, 1.0); 
+		
+		
+		glDepthFunc (GL_ALWAYS);
+		glColor4f (0,0,1,1);
+		glRasterPos2f(10, 10);
+		char * displaytext = (char *) "Contact";
+		int len = (int) strlen(displaytext);
+		for (int i = 0; i<len; ++i)
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, displaytext[i]); //GLUT_BITMAP_HELVETICA_18
+		glDepthFunc (GL_LESS);
+		glColor3f(1.0, 1.0, 1.0); */
+		
+		glPopMatrix();
+		
+	}
+	
 	// Setup Viewport
 	{
 		//// Write some information on the viewport
@@ -508,6 +545,8 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix ();
 		glLoadIdentity();
+		Float vxDes = ((RunningStateMachine * ) humanoid)->vDesDisplay;
+		Float vxAct = ((RunningStateMachine * ) humanoid)->vActDisplay;
 		
 		GLint viewport [4];
 		glGetIntegerv (GL_VIEWPORT, viewport);
@@ -522,13 +561,71 @@ void BasicGLPane::render( wxPaintEvent& evt ) {
 		int len = (int) strlen(displaytext);
 		for (int i = 0; i<len; ++i)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, displaytext[i]);
-		glColor3f (1,1,1);
-		glRasterPos2f(10, 40);
+		
+		Float boxPad = 10;
+		Float textHeight = 20;
+		Float textWidth = 135;
+		Float boxHeight = textHeight+2*boxPad;
+		Float boxWidth  = textWidth+2*boxPad;
+		
+		glTranslatef((viewport[2]-boxWidth)/2., viewport[3]-boxHeight-20,0);
+		
+		
+		glColor4f(0.,0., 0., 1.);
+		Float border = 2;
+		glBegin(GL_QUADS);
+		glVertex2d(-border, -border);
+		glVertex2d(-border,boxHeight+border);
+		glVertex2d(boxWidth+border, boxHeight+border);
+		glVertex2d(boxWidth+border,-border);
+		glEnd();
+		
+		
+		glColor4f(1.,1., 1., 1.);
+		glBegin(GL_QUADS);
+		glVertex2d(0, 0);
+		glVertex2d(0,boxHeight);
+		glVertex2d(boxWidth, boxHeight);
+		glVertex2d(boxWidth,0);
+		glEnd();
+		
+	
+		
+		
+		glColor3f (0,0,0);
+		/*glRasterPos2f(boxPad, boxPad+15);
 		char buffer [50];
-		sprintf (buffer, "%.2f", simThread->sim_time);
+		sprintf (buffer, "Desired Speed:");
 		len = (int) strlen(buffer);
 		for (int i = 0; i<len; ++i)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);
+		
+		glRasterPos2f(boxPad+135, boxPad+15);
+		sprintf (buffer, "%.2f m/s", vxDes);
+		len = (int) strlen(buffer);
+		for (int i = 0; i<len; ++i)
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);*/
+		
+		
+		
+		char buffer[60];
+		glRasterPos2f(boxPad, boxPad+15);
+		sprintf (buffer, "Speed: %.2f m/s", vxAct);
+		len = (int) strlen(buffer);
+		for (int i = 0; i<len; ++i)
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);
+		
+		/*glRasterPos2f(boxPad+135, boxPad+15);
+		sprintf (buffer, "%.2f m/s", vxAct);
+		len = (int) strlen(buffer);
+		for (int i = 0; i<len; ++i)
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);*/
+		
+		
+		
+		
+		//cout << "View " << viewport[2] << "," << viewport[3] << endl;
+		
 		
 		glDepthFunc (GL_LESS);
 		glPopMatrix ();

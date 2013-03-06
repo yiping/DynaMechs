@@ -57,6 +57,7 @@ public:
 	volatile bool pushDirection;
 	Float pushTime;
 	bool pushActive;
+	SlipModel3D SLIP;
 	
 private:
 	
@@ -108,7 +109,7 @@ private:
 	Float kpCM, kdCM, kdAM;
 	
 	
-	SlipModel3D SLIP;
+	
 	//SlipModel SLIP, prevSLIP;
 	//bool transitionStep;
 	//LipModel LIP;

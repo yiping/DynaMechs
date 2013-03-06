@@ -288,6 +288,34 @@ int MyApp::OnExit() {
 }
  
 
+void drawPortion(float starta, float enda, float startb, float endb, float r, float slices, float color)
+{
+	glColor4f(1.0*color, 1.0*color, 1.0*color,1.0);
+	
+	
+	float da = (enda-starta)/slices;
+	float db = (endb-startb)/slices;
+	for(float a = starta; a< enda;a+=da)
+	{
+		for(float b=startb;b<endb;b+=db)
+		{
+			glBegin(GL_QUADS);
+			float a1 = a;
+			float a2 = a+da;
+			float b1 = b;
+			float b2 = b+db;
+			
+			glVertex3f(r*sin(b1)*cos(a2), r*sin(b1)*sin(a2), r*cos(b1));
+			glVertex3f(r*sin(b1)*cos(a1), r*sin(b1)*sin(a1), r*cos(b1));
+			glVertex3f(r*sin(b2)*cos(a1), r*sin(b2)*sin(a1), r*cos(b2));
+			glVertex3f(r*sin(b2)*cos(a2), r*sin(b2)*sin(a2), r*cos(b2));
+			
+			glEnd();
+		}
+	}
+	
+}
+
 void BasicGLPane::userGraphics()
 {
 	typedef vector<Vector3F > PositionList;
@@ -302,7 +330,7 @@ void BasicGLPane::userGraphics()
 	
 	
 	//if (simThread->sim_time < 7) {
-		frame->glPane->camera->setCOI(ComPos[0], 2, .5);
+		frame->glPane->camera->setCOI(ComPos[0], ComPos[1], .8);
 	//}
 	//else {
 	//	
@@ -447,16 +475,25 @@ void BasicGLPane::userGraphics()
 		SpatialVector forceVec;
 		( (dmRigidBody *) humanoid->artic->getLink(0))->getExternalForce(forceVec);
 		
+		glColor4f(1.0, 0.0, 0.0, 1.0);
 		Vector3F myVec,zero;
 		zero.setZero();
-		myVec << 0, forceVec[4]/1000,0;
-		drawArrow(zero, myVec, .05, .08, .1);
+		myVec << 0, forceVec[4]/1600,0;
+		drawArrow(zero, myVec, .03, .05, .1);
 		glPopMatrix();
+		
+		Vector3F CoM;
+		CoM(0) = ComPos[0];
+		CoM(1) = ComPos[1];
+		CoM(2) = ComPos[2];
+		
+		Vector3F anchor;
+		anchor = ((RunningStateMachine *) humanoid)->SLIP.anchor;
 		
 		
 		if (frame->showCoM->IsChecked()) {
 			// Draw COM Info
-			glBegin(GL_LINES);
+			/*glBegin(GL_LINES);
 			glColor4f(0.0, 0.0, 1.0,1.0);
 			glVertex3f(ComDes[0], ComDes[1], ComDes[2]);
 			glVertex3f(ComDes[0], ComDes[1], 0      );
@@ -466,14 +503,212 @@ void BasicGLPane::userGraphics()
 			glColor4f(1.0, 0.0, 0.0,1.0);
 			glVertex3f(ComPos[0], ComPos[1], ComPos[2]);
 			glVertex3f(ComPos[0], ComPos[1], 0      );
-			glEnd();
+			glEnd();*/
 			
 			glPushMatrix();
 			glTranslatef(ComPos[0],ComPos[1],ComPos[2]); 
-			gluSphere(quadratic,.03f,32,32);
+			//gluSphere(quadratic,.03f,32,32);
+			{
+				
+				float slices = 100;
+				float r = .07/1.3;
+				
+				drawPortion(0, M_PI/2, 0, M_PI/2, r, slices, 1);
+				drawPortion(M_PI/2, M_PI, 0, M_PI/2, r, slices, 0);
+				drawPortion(M_PI, M_PI*3./2., 0, M_PI/2, r, slices, 1);
+				drawPortion(M_PI*3./2., M_PI*2, 0, M_PI/2, r, slices, 0);
+				
+				drawPortion(0, M_PI/2, M_PI/2, M_PI, r, slices, 0);
+				drawPortion(M_PI/2, M_PI, M_PI/2, M_PI, r, slices, 1);
+				drawPortion(M_PI, M_PI*3./2., M_PI/2, M_PI, r, slices, 0);
+				drawPortion(M_PI*3./2., M_PI*2, M_PI/2, M_PI, r, slices, 1);
+				
+			}
+			
 			glPopMatrix();
 			
-			Vector3F vDraw = humanoid->vCom/6.;
+			{
+				glColor4f(0.0, 0.0, 0.0,1.0);
+				
+				glPushMatrix();
+				glTranslatef(anchor(0), anchor(1), anchor(2));
+				Vector3F zero,dir;
+				zero.setZero();
+				dir = CoM-anchor;
+				
+				if(false)
+				{
+					Vector3F normDir;
+					normDir(0) = 0;
+					normDir(1) = dir(2);
+					normDir(2) = -dir(1);
+					
+					
+					Float lineWid = .001;
+					int numZigs = 6;
+					Float zigWidth = .15;
+					Float zigHeight =.15*tan(25*M_PI/180) * dir.norm()/.97;
+					
+					Float otherLenth = (dir.norm()-numZigs*zigHeight)/2;
+					
+					dir.normalize();
+					normDir.normalize();
+					
+					
+					Vector3F zag = -zigWidth*normDir+zigHeight*dir;
+					Vector3F zig = zigWidth*normDir+zigHeight*dir;
+					Vector3F shortZig = zig/2;
+					
+					Vector3F pos;
+					pos.setZero();
+					
+					Vector3F otherDist = dir*otherLenth;
+					
+					drawArrow(zero, otherDist, lineWid, 0, 0);
+					pos+=otherDist;
+					drawArrow(pos, shortZig, lineWid, 0, 0);
+					pos+=shortZig;
+					for(int i=1;i<numZigs;i++)
+					{
+						drawArrow(pos, zag, lineWid, 0, 0);
+						pos+=zag;
+						i++;
+						if (i<numZigs) {
+							drawArrow(pos, zig, lineWid, 0, 0);
+							pos+=zig;
+						}
+					}
+					drawArrow(pos, shortZig, lineWid, 0, 0);
+					pos+=shortZig;
+					
+					drawArrow(pos, otherDist, lineWid, 0, 0);
+					pos+=otherDist;
+				}
+				else {
+				
+					Vector3F normDir1,normDir2;
+					normDir1(0) = 0;
+					normDir1(1) = dir(2);
+					normDir1(2) = -dir(1);
+					
+					normDir2(0) = dir(2);
+					normDir2(1) = 0;
+					normDir2(2) = -dir(0);
+					
+					
+					
+					Float lineWid = .003;
+					int numZigs = 6;
+					int numSlices = 50;
+					
+					Float diam = .115;
+					Float zigWidth = diam;
+					Float zigHeight =diam*tan(35*M_PI/180) * dir.norm()/.97;
+					
+					Float otherLenth = (dir.norm()-(numZigs+.5)*zigHeight)/2;
+					
+					dir.normalize();
+					normDir1.normalize();
+					normDir2.normalize();
+					
+					
+					Vector3F zag = -zigWidth*normDir1+zigHeight*dir;
+					Vector3F zig = zigWidth*normDir1+zigHeight*dir;
+					Vector3F shortZig = zig/2;
+					
+					Vector3F pos;
+					pos.setZero();
+					
+					Vector3F otherDist = dir*otherLenth;
+					
+					//glColor4f(.5,.1,.1, .8);
+					glColor4f(1.,0.,0., .8);
+					drawArrow(zero, otherDist, lineWid, 0, 0);
+					pos+=otherDist;
+					
+					{
+						Float tStart = 3*M_PI/2;
+						Float tEnd   = 2*M_PI;
+						Float dt = (tEnd-tStart)/numSlices;
+						Float rStart = 0;
+						Float rEnd   = zigWidth/2.;
+						Float dr  = (rEnd-rStart)/numSlices;
+						
+						Float r = rStart;
+						for(Float t= tStart ; t<tEnd ; t+=dt)
+						{
+							Vector3F posA = (normDir1*cos(t)+normDir2*sin(t))*r;
+							Vector3F posB = (normDir1*cos(t+dt)+normDir2*sin(t+dt))*(r+dr);
+							posB+= zigHeight*dir/numSlices/2;
+							Vector3F rel = posB-posA;
+							
+							drawArrow(pos, rel, lineWid, 0, 0);
+							
+							pos+=rel;
+							r+=dr;
+						}
+					}
+					
+					//drawArrow(pos, shortZig, lineWid, 0, 0);
+					//pos+=shortZig;
+					for(int i=0;i<numZigs;i++)
+					{
+						Float tEnd = 2*M_PI;
+						if (i==(numZigs-1)) {
+							tEnd=M_PI;
+						}
+						Float dt = 2*M_PI/numSlices;
+						for(Float t=0; t<tEnd ; t+=dt)
+						{
+							Vector3F posA = (normDir1*cos(t)+normDir2*sin(t))*zigWidth/2;
+							Vector3F posB = (normDir1*cos(t+dt)+normDir2*sin(t+dt))*zigWidth/2;
+							posB+= zigHeight*dir/numSlices;
+							Vector3F rel = posB-posA;
+							
+							drawArrow(pos, rel, lineWid, 0, 0);
+							pos+=rel;
+						}
+					}
+							
+					//drawArrow(pos, shortZig, lineWid, 0, 0);
+					//pos+=shortZig;
+					
+					{
+						Float tStart = M_PI;
+						Float tEnd   = 3*M_PI/2;
+						Float dt = (tEnd-tStart)/numSlices;
+						Float rStart = zigWidth/2;
+						Float rEnd   = 0;
+						Float dr  = (rEnd-rStart)/numSlices;
+						
+						Float r = rStart;
+						for(Float t= tStart ; t<tEnd ; t+=dt)
+						{
+							Vector3F posA = (normDir1*cos(t)+normDir2*sin(t))*r;
+							Vector3F posB = (normDir1*cos(t+dt)+normDir2*sin(t+dt))*(r+dr);
+							posB+= zigHeight*dir/numSlices/2;
+							Vector3F rel = posB-posA;
+							
+							drawArrow(pos, rel, lineWid, 0, 0);
+							
+							pos+=rel;
+							r+=dr;
+						}
+					}
+					
+					
+					
+					drawArrow(pos, otherDist, lineWid, 0, 0);
+					pos+=otherDist;
+					
+				}
+
+				
+				glPopMatrix();
+			}
+			
+			
+			/*Vector3F vDraw = humanoid->vCom/6.;
 			glColor4f(1, 0, 0, 1.0);
 			drawArrow(humanoid->pCom, vDraw, .001, .02, .05);
 			
@@ -481,7 +716,7 @@ void BasicGLPane::userGraphics()
 			//vDraw << ((RunningStateMachine *) humanoid)->vDesDisplay/6.,0,0;
 			
 			glColor4f(0, 0, 1, 1.0);
-			drawArrow(humanoid->pCom, vDraw, .001, .02, .05);
+			drawArrow(humanoid->pCom, vDraw, .001, .02, .05);*/
 			
 			
 			//glTranslatef(-ComPos[0],-ComPos[1],-ComPos[2]);

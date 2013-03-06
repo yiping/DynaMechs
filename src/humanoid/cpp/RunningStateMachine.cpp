@@ -536,6 +536,7 @@ void RunningStateMachine::PreHop()
 	AssignFootMaxLoad(0,0);
 	AssignFootMaxLoad(1,0);
 	
+	
 
 	
 	

@@ -310,7 +310,7 @@
 							<real>287</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>-1665 -104 1370 927 -1680 -198 1680 1050 </string>
+						<string>-1665 -105 1370 927 -1680 -198 1680 1050 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -340,7 +340,7 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>196DDCD616E7CACD00BBADD4</string>
+										<string>196DDCE816E7E6B200BBADD4</string>
 										<key>history</key>
 										<array>
 											<string>196DDC5C16E7B74B00BBADD4</string>
@@ -351,7 +351,7 @@
 											<string>196DDC9416E7C12F00BBADD4</string>
 											<string>196DDC9516E7C12F00BBADD4</string>
 											<string>196DDCA316E7C30200BBADD4</string>
-											<string>196DDCA416E7C30200BBADD4</string>
+											<string>196DDCE716E7E6B200BBADD4</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -365,7 +365,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1061, 881}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-1665 -104 1370 927 -1680 -198 1680 1050 </string>
+								<string>-1665 -105 1370 927 -1680 -198 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -385,7 +385,7 @@
 								<key>Frame</key>
 								<string>{{0, 886}, {1061, 0}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-1665 -104 1370 927 -1680 -198 1680 1050 </string>
+								<string>-1665 -105 1370 927 -1680 -198 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -551,13 +551,13 @@
 	<array>
 		<string>196DDC5816E7B51400BBADD4</string>
 		<string>196DDC5916E7B51400BBADD4</string>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>1CD10A99069EF8BA00B06720</string>
 		<string>1925863714D2E86400778EA7</string>
 		<string>/Users/pwensing/Documents/Research/Projects/Simulator/DynaMechs/DynaMechs.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>-1665 -104 1370 927 -1680 -198 1680 1050 </string>
+	<string>-1665 -105 1370 927 -1680 -198 1680 1050 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -649,7 +649,7 @@
 			<key>WindowToolGUID</key>
 			<string>1925863714D2E86400778EA7</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
@@ -930,7 +930,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

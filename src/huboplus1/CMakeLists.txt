@@ -48,6 +48,7 @@ SET(SRCS gui_src/wxMain.cpp
          ctrl_src/math_funcs.cpp
          ctrl_src/DataLogger.cpp
          ctrl_src/TaskSpaceControllerA.cpp
+         ctrl_src/TaskSpaceControllerConic.cpp
          ctrl_src/HumanoidController.cpp
          ctrl_src/HumanoidControllerStateMachine.cpp
          ctrl_src/HuboController.cpp

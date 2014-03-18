@@ -1,0 +1,1072 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>DynaMechs-Debug@DynaMechs</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.make.core.makeBuilder</name>
+			<triggers>clean,full,incremental,</triggers>
+			<arguments>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.cleanBuildTarget</key>
+					<value>clean</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableCleanBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.append_environment</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.stopOnError</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enabledIncrementalBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.command</key>
+					<value>/usr/bin/make</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.contents</key>
+					<value>org.eclipse.cdt.make.core.activeConfigSettings</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.inc</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.arguments</key>
+					<value>-j2</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.buildLocation</key>
+					<value>/home/yiping/ros/Yiping/DynaMechs</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
+					<value>false</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.environment</key>
+					<value>VERBOSE=1|CMAKE_NO_VERBOSE=1|</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableFullBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.auto</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableAutoBuild</key>
+					<value>false</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.clean</key>
+					<value>clean</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.fullBuildTarget</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.buildArguments</key>
+					<value></value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.location</key>
+					<value>/home/yiping/ros/Yiping/DynaMechs</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.autoBuildTarget</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.core.errorOutputParser</key>
+					<value>org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser;</value>
+				</dictionary>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.cdt.make.core.ScannerConfigBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>org.eclipse.cdt.make.core.makeNature</nature>
+		<nature>org.eclipse.cdt.make.core.ScannerConfigNature</nature>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[Subprojects]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmObject.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmObject.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmSystem.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSystem.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmArticulation.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmArticulation.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmClosedArticulation.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmClosedArticulation.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmLink.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmLink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmStaticRootLink.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmStaticRootLink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmZScrewTxLink.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmZScrewTxLink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmRigidBody.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmRigidBody.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmMobileBaseLink.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmMobileBaseLink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmSphericalLink.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSphericalLink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmQuaternionLink.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmQuaternionLink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmMDHLink.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmMDHLink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmPrismaticLink.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmPrismaticLink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmRevoluteLink.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmRevoluteLink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmActuator.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmActuator.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmRevDCMotor.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmRevDCMotor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmEnvironment.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmEnvironment.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmTreadmill.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmTreadmill.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmForce.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmForce.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmContactModel.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmContactModel.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmDynamicContactModel.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmDynamicContactModel.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmContactSystem.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmContactSystem.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmSecondaryForce.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondaryForce.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmSecondaryJoint.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondaryJoint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmSecondarySphericalJoint.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondarySphericalJoint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmSecondaryPrismaticJoint.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondaryPrismaticJoint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmSecondaryRevoluteJoint.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondaryRevoluteJoint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmIntegrator.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmIntegrator.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmIntegEuler.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmIntegEuler.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmIntegRK4.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmIntegRK4.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/dmIntegRK45.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmIntegRK45.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/svd_linpack.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/svd_linpack.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Source Files/gldraw.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/gldraw.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dm.h</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dm.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmTime.h</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmTime.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmObject.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmObject.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmSystem.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSystem.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmArticulation.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmArticulation.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmClosedArticulation.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmClosedArticulation.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmLink.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmLink.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmStaticRootLink.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmStaticRootLink.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmZScrewTxLink.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmZScrewTxLink.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmRigidBody.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmRigidBody.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmMobileBaseLink.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmMobileBaseLink.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmSphericalLink.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSphericalLink.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmQuaternionLink.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmQuaternionLink.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmMDHLink.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmMDHLink.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmPrismaticLink.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmPrismaticLink.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmRevoluteLink.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmRevoluteLink.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmActuator.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmActuator.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmRevDCMotor.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmRevDCMotor.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmEnvironment.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmEnvironment.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmTreadmill.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmTreadmill.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmForce.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmForce.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmContactModel.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmContactModel.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmDynamicContactModel.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmDynamicContactModel.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmContactSystem.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmContactSystem.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmSecondaryForce.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondaryForce.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmSecondaryJoint.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondaryJoint.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmSecondarySphericalJoint.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondarySphericalJoint.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmSecondaryPrismaticJoint.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondaryPrismaticJoint.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmSecondaryRevoluteJoint.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmSecondaryRevoluteJoint.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmIntegrator.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmIntegrator.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmIntegEuler.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmIntegEuler.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmIntegRK4.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmIntegRK4.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Header Files/dmIntegRK45.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dm/dmIntegRK45.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dm/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files/dmUtils.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmUtils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files/dmLoadFile.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmLoadFile.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files/dmLoadFile_dm.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmLoadFile_dm.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files/dmLoadFile_dm40.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmLoadFile_dm40.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files/dmLoadFile_dm30.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmLoadFile_dm30.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files/dmLoadFile_dm21.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmLoadFile_dm21.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files/dmLoadFile_dm203.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmLoadFile_dm203.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files/dmLoadFile_env.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmLoadFile_env.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Source Files/glLoadModels.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/glLoadModels.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Header Files/dmu.h</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Header Files/dmLoadFile.h</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/dmLoadFile.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Header Files/glLoadModels.h</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmu/glLoadModels.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmu/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Source Files/dmGLMouse.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLMouse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Source Files/dmGLCamera.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLCamera.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Source Files/dmGLFlyCamera.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLFlyCamera.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Source Files/dmGLPolarCamera.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLPolarCamera.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Source Files/dmGLPolarCamera_zup.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLPolarCamera_zup.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Source Files/dmGLPolarCamera_yup.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLPolarCamera_yup.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Header Files/dmGL.h</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGL.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Header Files/dmGLMouse.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLMouse.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Header Files/dmGLCamera.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLCamera.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Header Files/dmGLFlyCamera.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLFlyCamera.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Header Files/dmGLPolarCamera.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLPolarCamera.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Header Files/dmGLPolarCamera_zup.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLPolarCamera_zup.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Header Files/dmGLPolarCamera_yup.hpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/dmgl/dmGLPolarCamera_yup.hpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] dmgl/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Source Files/wxDMGLMouse.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/wxdmgl/wxDMGLMouse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Source Files/wxDMGLCamera.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/wxdmgl/wxDMGLCamera.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Source Files/wxDMGLPolarCamera.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/wxdmgl/wxDMGLPolarCamera.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Source Files/wxDMGLPolarCamera_zup.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/wxdmgl/wxDMGLPolarCamera_zup.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Source Files/wxDMGLPolarCamera_yup.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/wxdmgl/wxDMGLPolarCamera_yup.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Source Files/wxDMGLFlyCamera.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/wxdmgl/wxDMGLFlyCamera.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] wxdmgl/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/humanoidWx.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/humanoidWx.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/StateMachine.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/StateMachine.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/BalanceDemoStateMachine.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/BalanceDemoStateMachine.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/JumpingStateMachine.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/JumpingStateMachine.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/BasicGLPane.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/BasicGLPane.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/HumanoidMainFrame.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/HumanoidMainFrame.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/Humanoid.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/Humanoid.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/HumanoidController.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/HumanoidController.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/HumanoidDataLogger.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/HumanoidDataLogger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/HumanoidStateMachineController.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/HumanoidStateMachineController.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/SimulationThread.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/SimulationThread.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/CubicSpline.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/CubicSpline.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/CubicSplineTrajectory.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/CubicSplineTrajectory.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/DataLogger.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/DataLogger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/GlobalDefines.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/GlobalDefines.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/GlobalFunctions.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/GlobalFunctions.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/TaskSpaceController.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/TaskSpaceController.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/TaskSpaceControllerA.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/TaskSpaceControllerA.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/TaskSpaceControllerB.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/TaskSpaceControllerB.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/wxBoxSlider.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/wxBoxSlider.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Source Files/wxNumericTextCtrl.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/humanoid/cpp/wxNumericTextCtrl.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] humanoid/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Source Files/wxMain.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/showRobot/src/wxMain.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Source Files/BasicGLPane.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/showRobot/src/BasicGLPane.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Source Files/MainFrame.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/showRobot/src/MainFrame.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Source Files/SimulationThread.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/showRobot/src/SimulationThread.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Source Files/globalVariables.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/showRobot/src/globalVariables.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Source Files/globalFunctions.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/showRobot/src/globalFunctions.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Source Files/userGraphics.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/showRobot/src/userGraphics.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Source Files/math_funcs.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/showRobot/src/math_funcs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] showRobot/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/wxMain.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/gui_src/wxMain.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/BasicGLPane.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/gui_src/BasicGLPane.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/MainFrame.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/gui_src/MainFrame.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/SimulationThread.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/gui_src/SimulationThread.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/globalVariables.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/gui_src/globalVariables.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/userGraphics.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/gui_src/userGraphics.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/globalFunctions.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/ctrl_src/globalFunctions.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/math_funcs.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/ctrl_src/math_funcs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/DataLogger.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/ctrl_src/DataLogger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/TaskSpaceControllerA.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/ctrl_src/TaskSpaceControllerA.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/TaskSpaceControllerConic.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/ctrl_src/TaskSpaceControllerConic.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/HumanoidController.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/ctrl_src/HumanoidController.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/HumanoidControllerStateMachine.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/ctrl_src/HumanoidControllerStateMachine.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/HuboController.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/ctrl_src/HuboController.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Source Files/HuboBalanceController.cpp</name>
+			<type>1</type>
+			<location>/home/yiping/ros/Yiping/DynaMechs/src/huboplus1/ctrl_src/HuboBalanceController.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] hbp1/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

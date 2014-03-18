@@ -30,7 +30,8 @@
 #define RATE_SIZE  (NJ+6)
 
 
-HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerA(robot) 
+//HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerA(robot) 
+HumanoidController::HumanoidController(dmArticulation * robot) : TaskSpaceControllerConic(robot)
 {
 
 

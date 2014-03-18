@@ -6,11 +6,12 @@
 #define __HUMANOID_CONTROLLER_H__
 
 #include "TaskSpaceControllerA.h"
-
+#include "TaskSpaceControllerConic.h"
 
 #define COPY_P_TO_VEC(p,pvec) pvec << p[0], p[1], p[2]; 
 
-class HumanoidController : public TaskSpaceControllerA 
+//class HumanoidController : public TaskSpaceControllerA 
+class HumanoidController : public TaskSpaceControllerConic 
 {
 public:
 	HumanoidController(dmArticulation * robot);
